@@ -345,6 +345,10 @@
 (require 'py-isort)
 (add-hook 'before-save-hook 'py-isort-before-save)
 
+;; org-mode
+(setq org-directory "~/Dropbox/org")
+(setq org-log-done t)
+
 ;;----------------------------------------------------------------------------
 ;; Defuns
 ;;----------------------------------------------------------------------------
