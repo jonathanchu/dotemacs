@@ -1,0 +1,8 @@
+#+TITLE:     README
+#+AUTHOR:    Jonathan Chu
+#+EMAIL:     jonathan.chu@me.com
+#+DATE:      2015-03-01
+
+* My Emacs Configuration
+
+This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire emacs configuration is one file `~/.emacs.d/init.el` and aims to provide you with a barebones configuration with sane defaults, built upon `package.el`.
