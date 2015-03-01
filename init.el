@@ -62,7 +62,6 @@
 (defvar my-packages '(
                       ag
                       atom-dark-theme
-                      css-eldoc
                       dedicated
                       deft
                       dired+
@@ -275,8 +274,6 @@
 
 ;; css
 (setq css-indent-offset 2)
-
-(require 'css-eldoc)
 
 (require 'dedicated) ;; sticky windows
 
