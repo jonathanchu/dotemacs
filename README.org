@@ -7,10 +7,10 @@
 
 This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire configuration is one file =~/.emacs.d/init.el= and aims to provide you with a barebones configuration with sane defaults, built upon =package.el=.
 
-TODO
-1) Initial setup config
-2) Packages
-3) Global config
-4) Functinos
-5) Modes
-6) Key bindings
+** TODO
+- [ ] Initial setup config
+- [ ] Packages
+- [ ] Global config
+- [ ] Functions
+- [ ] Modes
+- [ ] Key bindings
