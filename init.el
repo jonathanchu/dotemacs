@@ -273,6 +273,9 @@
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
 
+;; makefile-mode
+(add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode))
+
 ;; css
 (setq css-indent-offset 2)
 
