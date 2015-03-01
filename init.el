@@ -343,6 +343,10 @@
 (require 'auto-complete)
 (global-auto-complete-mode t)
 
+;; py-isort
+(require 'py-isort)
+(add-hook 'before-save-hook 'py-isort-before-save)
+
 ;;----------------------------------------------------------------------------
 ;; Defuns
 ;;----------------------------------------------------------------------------
