@@ -5,4 +5,4 @@
 
 * My Emacs Configuration
 
-This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire emacs configuration is one file `~/.emacs.d/init.el` and aims to provide you with a barebones configuration with sane defaults, built upon `package.el`.
+This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire configuration is one file =~/.emacs.d/init.el= and aims to provide you with a barebones configuration with sane defaults, built upon =package.el=.
