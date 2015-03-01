@@ -62,6 +62,7 @@
 (defvar my-packages '(
                       ag
                       atom-dark-theme
+                      auto-complete
                       dedicated
                       deft
                       dired+
