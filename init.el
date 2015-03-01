@@ -35,7 +35,7 @@
       user-mail-address "jonathan.chu@me.com")
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(setq magit-git-executable "/usr/bin/git")
+(add-to-list 'exec-path "/usr/local/bin")
 
 (defvar current-user
       (getenv
@@ -43,11 +43,393 @@
 
 (message "Your Emacs is powering up... Be patient, Master %s!" current-user)
 
-;; package.el
+;;----------------------------------------------------------------------------
+;; Packages
+;;----------------------------------------------------------------------------
+
 (require 'package)
 
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/"))
+
+(package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(defvar my-packages '(
+                      ag
+                      atom-dark-theme
+                      css-eldoc
+                      dedicated
+                      deft
+                      dired+
+                      dired-single
+                      exec-path-from-shell
+                      flx-ido
+                      flycheck
+                      flymake-cursor
+                      flymake-jslint
+                      grizzl
+                      idle-highlight-mode
+                      ido-vertical-mode
+                      magit
+                      nav
+                      paredit
+                      projectile
+                      py-isort
+                      pymacs
+                      python-mode
+                      rainbow-delimiters
+                      scratch
+                      smart-mode-line
+                      smex
+                      textmate
+                      web-mode
+                      yasnippet
+                      )
+  "A list of packages to ensure are installed at launch.")
+
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+;; set paths from shell
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
+;; load in custom-set-variables early. FIXME
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("c5a044ba03d43a725bd79700087dea813abcb6beb6be08c7eb3303ed90782482" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;;----------------------------------------------------------------------------
+;; Global Config
+;;----------------------------------------------------------------------------
+
+;; only type 'y' or 'n' instead of 'yes' or 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; no splash screen
+(setq inhibit-splash-screen t)
+
+;; no message on startup
+(setq initial-scratch-message nil)
+
+;; M-q
+(setq fill-column 80)
+
+;; no menu bar
+(menu-bar-mode -1)
+
+;; no toolbar
+(when (functionp 'tool-bar-mode)
+  (tool-bar-mode -1))  ;; no toolbar
+
+;; disable scroll bars
+(if window-system
+    (progn
+      (scroll-bar-mode -1)
+      (set-frame-font "Inconsolata 15"))) ;; Set font
+
+;; make the font more visually pleasing
+(set-face-attribute 'default nil :height 160)
+
+; nice fonts in OS X
+(setq mac-allow-anti-aliasing t)
+
+;; no word wrap
+(setq-default truncate-lines 1)
+
+(setq-default line-spacing 4)
+
+;; no tabs
+(setq-default indent-tabs-mode nil)
+
+
+;; delete trailing whitespace in all modes
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; show line number in mode line
+(line-number-mode 1)
+
+;; show column number in the mode line
+(column-number-mode 1)
+
+;; show extra whitespace
+(setq show-trailing-whitespace t)
+
+;; ensure last line is a return
+(setq require-final-newline t)
+
+;; set encoding
+(prefer-coding-system 'utf-8)
+
+;; and tell emacs to play nice with encoding
+(define-coding-system-alias 'UTF-8 'utf-8)
+(define-coding-system-alias 'utf8 'utf-8)
+
+;; cursor
+(setq-default cursor-type 'bar)
+(blink-cursor-mode 1)
+
+;; highlight brackets
+(require 'paren)
+(show-paren-mode 1)
+
+;; linum mode
+(require 'linum)
+(global-linum-mode 1)
+(setq linum-format
+    (lambda (line) (propertize
+        (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+            (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
+
+;; make sure looking at most recent changes
+(global-auto-revert-mode 1)
+
+;; whitespace cleanup
+(global-whitespace-mode 1)
+(setq whitespace-action '(auto-cleanup)) ;; automatically clean up bad whitespace
+(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
+
+(setq window-combination-resize t)
+
+;; scroll one line at a time
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-conservatively 10000)
+
+;; save place
+(require 'saveplace)
+(setq-default save-place t)
+(setq save-place-file "~/.emacs.d/saved-places")
+
+;; color theme atom dark
+(load-theme 'atom-dark t)
+
+;;----------------------------------------------------------------------------
+;; Modes
+;;----------------------------------------------------------------------------
+
+;; flycheck
+(require 'flycheck)
+
+;; uniquify
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+
+;; ido-mode
+(ido-mode t)
+(setq ido-use-faces nil)
+
+;; ido-vertical-mode
+(require 'ido-vertical-mode)
+(ido-mode 1)
+(ido-vertical-mode 1)
+
+;; python
+(require 'python-mode)
+
+(add-hook 'python-mode-hook (lambda ()
+                            (flycheck-mode 1)
+                            (setq fill-column 80)))
+
+(add-to-list 'auto-mode-alist '("\\.py" . python-mode))
+
+;; javascript
+(add-hook 'js-mode-hook (lambda ()
+                        (flymake-jslint-load)
+                        (paredit-mode -1)))
+
+;; web mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+
+;; everything is indented 2 spaces
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+
+;; css
+(setq css-indent-offset 2)
+
+(require 'css-eldoc)
+
+(require 'dedicated) ;; sticky windows
+
+(textmate-mode)
+
+;; magit
+(global-set-key "\C-xg" 'magit-status)
+
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "green3")
+     (set-face-foreground 'magit-diff-del "red3")))
+
+;; deft
+(require 'deft)
+(setq deft-extension "txt")
+(setq deft-directory "~/Dropbox/Simplenote")
+(setq deft-text-mode 'text-mode)
+(setq deft-use-filename-as-title t)
+
+;; nav-mode
+(require 'nav)
+(nav-disable-overeager-window-splitting)
+
+;; smex
+(require 'smex)
+(smex-initialize)
+
+;; server mdoe
+(if (not server-mode)
+    (server-start nil t))
+
+;; yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
+(setq yas-snippet-dirs (append yas-snippet-dirs
+                               '("~/.emacs.d/snippets")))
+
+;; smart-mode-line
+(require 'smart-mode-line)
+(add-hook 'after-init-hook 'sml/setup)
+(sml/apply-theme 'respectful)
+
+;; projectile
+(projectile-global-mode)
+(setq projectile-completion-system 'grizzl)
+
+;; pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+(autoload 'pymacs-autoload "pymacs")
+(setenv "PYMACS_PYTHON" "/usr/local/bin/python")
+(setq py-load-pymacs-p 'nil)
+
+;; ropemacs
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+
+;; auto-complete
+(require 'auto-complete)
+(global-auto-complete-mode t)
+
+;;----------------------------------------------------------------------------
+;; Defuns
+;;----------------------------------------------------------------------------
+
+; make zap-to-char act like zap-up-to-char
+(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
+  "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
+  The CHAR is replaced and the point is put before CHAR."
+  (insert char)
+  (forward-char -1))
+
+; smarter navigation to the beginning of a line
+(defun smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+; Highlight the call to ipdb
+; src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
+(defun annotate-pdb ()
+  (interactive)
+  (highlight-lines-matching-regexp "import ipdb")
+  (highlight-lines-matching-regexp "pdb.set_trace()"))
+(add-hook 'python-mode-hook 'annotate-pdb)
+
+;; Write temp files to directory to not clutter the filesystem
+(defvar user-temporary-file-directory
+  (concat temporary-file-directory user-login-name "/"))
+(make-directory user-temporary-file-directory t)
+(setq backup-by-copying t)
+(setq backup-directory-alist
+      `(("." . ,user-temporary-file-directory)
+        (,tramp-file-name-regexp nil)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
+
+;; duplicate the current line function
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+
+;;----------------------------------------------------------------------------
+;; Key Bindings
+;;----------------------------------------------------------------------------
+
+;; duplicate the current line
+(global-set-key [C-return] 'duplicate-line)
+
+;; sorting
+(global-set-key (kbd "M-`") 'sort-lines)
+
+;; font-size
+(define-key global-map (kbd "C-=") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+
+;; smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line]
+                'smarter-move-beginning-of-line)
+
 ;;; init.el ends here
