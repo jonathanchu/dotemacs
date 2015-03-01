@@ -1,0 +1,16 @@
+.DS_Store
+*.elc
+eshell
+session*
+.org-id-locations
+tramp
+url
+ac-comphist.dat
+*.egg-info
+*.pyc
+projectile-bookmarks.eld
+recentf
+saved-places
+elpa
+request
+ido.last
