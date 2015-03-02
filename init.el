@@ -143,7 +143,7 @@
 (if window-system
     (progn
       (scroll-bar-mode -1)
-      (set-frame-font "Inconsolata 15"))) ;; Set font
+      (set-frame-font "Inconsolata 15"))) ;; set font
 
 ;; make the font more visually pleasing
 (set-face-attribute 'default nil :height 160)
