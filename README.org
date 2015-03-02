@@ -9,7 +9,7 @@ This is my emacs configuration, where this README is meant to be a form of liter
 
 ** TODO
 - [X] Installation
-- [ ] Packages
+- [X] Packages
 - [ ] Global config
 - [ ] Functions
 - [ ] Modes
