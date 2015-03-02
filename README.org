@@ -18,8 +18,7 @@ There is a =Makefile= provided that will create the symlink for you at =~/.emacs
 : make setup
 
 ** TODO
-- [ ] Installation
-- [ ] Inital setup config
+- [X] Installation
 - [ ] Packages
 - [ ] Global config
 - [ ] Functions
