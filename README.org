@@ -10,7 +10,7 @@ This is my emacs configuration, where this README is meant to be a form of liter
 ** TODO TODO
 - [X] Installation
 - [X] Packages
-- [ ] Global config
+- [X] Global config
 - [ ] Functions
 - [ ] Modes
 - [ ] Key bindings
