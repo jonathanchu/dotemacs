@@ -7,6 +7,14 @@
 
 This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire configuration is one file =~/.emacs.d/init.el= and aims to provide you with a barebones configuration with sane defaults, built upon =package.el=.
 
+** TODO
+- [X] Installation
+- [ ] Packages
+- [ ] Global config
+- [ ] Functions
+- [ ] Modes
+- [ ] Key bindings
+
 ** Installation
 
 To install, it's recommended to clone this repo wherever you prefer and symlink the directory to =~/.emacs.d=.
@@ -17,10 +25,3 @@ There is a =Makefile= provided that will create the symlink for you at =~/.emacs
 
 : make setup
 
-** TODO
-- [X] Installation
-- [ ] Packages
-- [ ] Global config
-- [ ] Functions
-- [ ] Modes
-- [ ] Key bindings
