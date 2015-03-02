@@ -96,3 +96,5 @@ There are some very common things that most Emacs users do to setup and configur
 : (setq-default truncate-lines 1)  ;; no word wrap
 : (setq-default line-spacing 4)
 : (setq-default indent-tabs-mode nil)  ;; no tabs
+
+** Functions
