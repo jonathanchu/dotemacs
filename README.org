@@ -39,3 +39,42 @@ The following snippet tells Emacs to use =package.el= and to use Marmalade and t
 :              '("melpa" . "http://melpa.milkbox.net/packages/"))
 :
 : (package-initialize)
+
+Next, we define which packages to install if they're not already installed.  Think of this as a requirements file or list to run Emacs.  You can edit and modifying this list for your own needs.
+
+: (defvar my-packages '(
+:                       ag
+:                       atom-dark-theme
+:                       auto-complete
+:                       dedicated
+:                       deft
+:                       dired+
+:                       dired-single
+:                       exec-path-from-shell
+:                       flx-ido
+:                       flycheck
+:                       flymake-cursor
+:                       flymake-jslint
+:                       grizzl
+:                       idle-highlight-mode
+:                       ido-vertical-mode
+:                       magit
+:                       nav
+:                       paredit
+:                       projectile
+:                       py-isort
+:                       pymacs
+:                       python-mode
+:                       rainbow-delimiters
+:                       scratch
+:                       smart-mode-line
+:                       smex
+:                       textmate
+:                       web-mode
+:                       yasnippet
+:                       )
+:   "A list of packages to ensure are installed at launch.")
+:
+: (dolist (p my-packages)
+:   (when (not (package-installed-p p))
+:     (package-install p)))
