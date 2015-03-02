@@ -148,7 +148,7 @@
 ;; make the font more visually pleasing
 (set-face-attribute 'default nil :height 160)
 
-; nice fonts in OS X
+;; nice fonts in OS X
 (setq mac-allow-anti-aliasing t)
 
 ;; no word wrap
