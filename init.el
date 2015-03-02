@@ -189,14 +189,6 @@
 (require 'paren)
 (show-paren-mode 1)
 
-;; linum mode
-(require 'linum)
-(global-linum-mode 1)
-(setq linum-format
-    (lambda (line) (propertize
-        (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-            (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
-
 ;; make sure looking at most recent changes
 (global-auto-revert-mode 1)
 
@@ -350,6 +342,14 @@
 ;; org-mode
 (setq org-directory "~/Dropbox/org")
 (setq org-log-done t)
+
+;; linum mode
+(require 'linum)
+(global-linum-mode 1)
+(setq linum-format
+    (lambda (line) (propertize
+        (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+            (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
