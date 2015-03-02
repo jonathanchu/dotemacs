@@ -129,11 +129,11 @@
 ;; no message on startup
 (setq initial-scratch-message nil)
 
-;; M-q
-(setq fill-column 80)
-
 ;; no menu bar
 (menu-bar-mode -1)
+
+;; M-q
+(setq fill-column 80)
 
 ;; no toolbar
 (when (functionp 'tool-bar-mode)
