@@ -32,12 +32,10 @@ There is a =Makefile= provided that will create the symlink for you at =~/.emacs
 The following snippet tells Emacs to use =package.el= and to use Marmalade and the excellent MELPA as the package index.
 
 : (require 'package)
-:
 : (add-to-list 'package-archives
 :              '("marmalade" . "http://marmalade-repo.org/packages/"))
 : (add-to-list 'package-archives
 :              '("melpa" . "http://melpa.milkbox.net/packages/"))
-:
 : (package-initialize)
 
 Next, we define which packages to install if they're not already installed.  Think of this as a requirements file or list to run Emacs.  You can edit and modifying this list for your own needs.
@@ -74,7 +72,6 @@ Next, we define which packages to install if they're not already installed.  Thi
 :                       yasnippet
 :                       )
 :   "A list of packages to ensure are installed at launch.")
-:
 : (dolist (p my-packages)
 :   (when (not (package-installed-p p))
 :     (package-install p)))
