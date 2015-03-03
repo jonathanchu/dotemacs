@@ -132,6 +132,12 @@
 ;; no menu bar
 (menu-bar-mode -1)
 
+;; start position and frame size
+(add-to-list 'default-frame-alist '(left . 0))
+(add-to-list 'default-frame-alist '(top . 0))
+(add-to-list 'default-frame-alist '(height . 50))
+(add-to-list 'default-frame-alist '(width . 155))
+
 ;; M-q
 (setq fill-column 80)
 
