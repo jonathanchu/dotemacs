@@ -348,6 +348,9 @@
 ;; org-mode
 (setq org-directory "~/Dropbox/org")
 (setq org-log-done t)
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "|" "DONE(d)")
+        (sequence "|" "CANCELED(c)")))
 
 ;; linum mode
 (require 'linum)
