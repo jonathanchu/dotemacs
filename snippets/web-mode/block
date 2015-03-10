@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: {% block ... %} ... {% endblock %}
+# key: block
+# --
+{% block ${1:enumerate} %}$0{% endblock $1 %}

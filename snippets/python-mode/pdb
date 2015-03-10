@@ -1,0 +1,5 @@
+# -*- coding: utf-8 -*-
+# name: Insert a pdb breakpoint
+# key: pdb
+# --
+import pdb; pdb.set_trace()
