@@ -350,7 +350,7 @@
 (setq org-log-done t)
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)")
-        (sequence "|" "CANCELED(c)")))
+        (sequence "WAITING(w)" "|" "CANCELED(c)")))
 
 ;; linum mode
 (require 'linum)
