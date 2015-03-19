@@ -253,6 +253,7 @@
 (add-hook 'js-mode-hook (lambda ()
                         (flymake-jslint-load)
                         (paredit-mode -1)))
+(setq js-indent-level 2)
 
 ;; web mode
 (require 'web-mode)
