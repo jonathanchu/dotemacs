@@ -275,6 +275,7 @@
 (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode))
 
 ;; css
+(add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
 (setq css-indent-offset 2)
 
 (require 'dedicated) ;; sticky windows
