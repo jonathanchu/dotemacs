@@ -1,17 +1,16 @@
-;; init.el --- My personal Emacs configuration entry point.
+;; init.el --- My personal Emacs configuration.
 ;;
 ;; Copyright (c) 2015
 ;;
 ;; Author: Jonathan Chu <jonathan.chu@me.com>
-;; URL: https://github.com/jonathanchu/emacs
+;; URL: https://github.com/jonathanchu/dotemacs
 ;; Version: 1.0
 
 ;; This file is not part of GNU Emacs.
 
 ;;; Commentary:
 
-;; This file simply sets up the default load path and requires
-;; the various modules used in this config.
+;; This is the whole #!
 
 ;;; License:
 
