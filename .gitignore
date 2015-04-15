@@ -4,7 +4,6 @@ eshell
 session*
 .org-id-locations
 tramp
-url
 ac-comphist.dat
 *.egg-info
 *.pyc
