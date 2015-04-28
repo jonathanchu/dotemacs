@@ -134,7 +134,7 @@
 ;; start position and frame size
 (add-to-list 'default-frame-alist '(left . 0))
 (add-to-list 'default-frame-alist '(top . 0))
-(add-to-list 'default-frame-alist '(height . 65))
+(add-to-list 'default-frame-alist '(height . 43))
 (add-to-list 'default-frame-alist '(width . 150))
 
 ;; M-q
