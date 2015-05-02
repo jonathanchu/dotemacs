@@ -219,6 +219,10 @@
 ;; color theme atom dark
 (load-theme 'atom-dark t)
 
+;; open with in original frame, not new window
+(setq ns-pop-up-frames nil)
+
+
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
