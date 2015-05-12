@@ -86,6 +86,7 @@
                       smart-mode-line
                       smex
                       textmate
+                      undo-tree
                       web-mode
                       yasnippet
                       )
@@ -370,6 +371,10 @@
 
 ;; dired+ mode
 (require 'dired+)
+
+;; undo-tree mode
+(require 'undo-tree)
+(global-undo-tree-mode)
 
 
 ;;----------------------------------------------------------------------------
