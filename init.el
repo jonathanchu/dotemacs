@@ -222,6 +222,9 @@
 ;; open with in original frame, not new window
 (setq ns-pop-up-frames nil)
 
+;; sentences end with single space
+(setq sentence-end-double-space nil)
+
 
 ;;----------------------------------------------------------------------------
 ;; Modes
