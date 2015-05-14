@@ -382,6 +382,9 @@
 (require 'fullframe)
 (fullframe magit-status magit-mode-quit-window)
 
+;; magit
+(setq magit-last-seen-setup-instructions "1.4.0")
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
