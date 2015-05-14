@@ -71,6 +71,7 @@
                       flycheck
                       flymake-cursor
                       flymake-jslint
+                      fullframe
                       git-timemachine
                       grizzl
                       idle-highlight-mode
@@ -376,6 +377,10 @@
 ;; undo-tree mode
 (require 'undo-tree)
 (global-undo-tree-mode)
+
+;; fullframe
+(require 'fullframe)
+(fullframe magit-status magit-mode-quit-window)
 
 
 ;;----------------------------------------------------------------------------
