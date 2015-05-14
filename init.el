@@ -71,6 +71,7 @@
                       flycheck
                       flymake-cursor
                       flymake-jslint
+                      git-timemachine
                       grizzl
                       idle-highlight-mode
                       ido-vertical-mode
