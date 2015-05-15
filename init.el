@@ -72,6 +72,7 @@
                       flymake-cursor
                       flymake-jslint
                       fullframe
+                      github-browse-file
                       git-timemachine
                       grizzl
                       idle-highlight-mode
