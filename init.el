@@ -484,4 +484,8 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
+;; recentf
+;; bind to infrequently used find-file-read-only.
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
 ;;; init.el ends here
