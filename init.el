@@ -389,6 +389,11 @@
 ;; magit
 (setq magit-last-seen-setup-instructions "1.4.0")
 
+;; recentf
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
