@@ -76,6 +76,7 @@
                       git-timemachine
                       grizzl
                       idle-highlight-mode
+                      ido-ubiquitous
                       ido-vertical-mode
                       magit
                       nav
@@ -246,12 +247,16 @@
 
 ;; ido-mode
 (ido-mode t)
+(ido-everywhere t)
 (setq ido-use-faces nil)
 
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
 (ido-mode 1)
 (ido-vertical-mode 1)
+
+;; ido-ubiquitous
+(ido-ubiquitous-mode 1)
 
 ;; python
 (require 'python-mode)
