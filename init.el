@@ -31,7 +31,7 @@
 
 ;;; Code:
 (setq user-full-name "Jonathan Chu"
-      user-mail-address "jonathan.chu@me.com")
+      user-mail-address "me@jonathanchu.is")
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (add-to-list 'exec-path "/usr/local/bin")
