@@ -267,9 +267,8 @@
 (add-to-list 'auto-mode-alist '("\\.py" . python-mode))
 
 ;; javascript
-(add-hook 'js-mode-hook (lambda ()
-                        (flymake-jslint-load)
-                        (paredit-mode -1)))
+(add-hook 'js-mode-hook
+          (lambda () (flycheck-mode t)))
 (setq js-indent-level 2)
 
 ;; web mode
