@@ -228,6 +228,9 @@
 ;; sentences end with single space
 (setq sentence-end-double-space nil)
 
+;; useful for camelCase
+(subword-mode 1)
+
 
 ;;----------------------------------------------------------------------------
 ;; Modes
