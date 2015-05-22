@@ -69,8 +69,6 @@
                       exec-path-from-shell
                       flx-ido
                       flycheck
-                      flymake-cursor
-                      flymake-jslint
                       fullframe
                       github-browse-file
                       git-timemachine
