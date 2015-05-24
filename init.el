@@ -73,6 +73,8 @@
                       github-browse-file
                       git-timemachine
                       grizzl
+                      helm
+                      helm-projectile
                       idle-highlight-mode
                       ido-ubiquitous
                       ido-vertical-mode
