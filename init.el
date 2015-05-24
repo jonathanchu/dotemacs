@@ -401,6 +401,10 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 
+;; helm
+(require 'helm-config)
+(helm-mode 1)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
