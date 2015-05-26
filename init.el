@@ -545,8 +545,4 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
-;; recentf
-;; bind to infrequently used find-file-read-only.
-;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
-
 ;;; init.el ends here
