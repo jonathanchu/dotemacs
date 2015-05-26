@@ -547,6 +547,6 @@ This functions should be added to the hooks of major modes for programming."
 
 ;; recentf
 ;; bind to infrequently used find-file-read-only.
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;;; init.el ends here
