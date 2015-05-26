@@ -437,6 +437,10 @@
 (global-set-key (kbd "C-h C-l") 'helm-locate-library)
 (global-set-key (kbd "C-x C-r") 'helm-recentf)
 
+(set-face-attribute 'helm-selection nil
+                    :background "purple"
+                    :foreground "white")
+
 (helm-autoresize-mode 1)
 
 
