@@ -311,9 +311,9 @@
 
 ;; deft
 (require 'deft)
-(setq deft-extension "txt")
 (setq deft-directory "~/Dropbox/Simplenote")
-(setq deft-text-mode 'text-mode)
+(setq deft-extension "txt")
+(setq deft-text-mode 'org-mode)
 (setq deft-use-filename-as-title t)
 
 ;; nav-mode
