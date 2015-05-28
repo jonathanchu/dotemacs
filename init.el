@@ -398,7 +398,9 @@
 ;; recentf
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
+(setq recentf-max-menu-items 15)
+(setq recentf-max-saved-items 500)
+(setq recentf-cleanup 'never)
 (setq recentf-exclude '("^/var/folders\\.*"
                         "COMMIT_EDITMSG\\'"
                         ".*-autoloads\\.el\\'"
