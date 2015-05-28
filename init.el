@@ -298,6 +298,7 @@
 
 (require 'dedicated) ;; sticky windows
 
+;; textmate -mode
 (textmate-mode)
 
 ;; magit
