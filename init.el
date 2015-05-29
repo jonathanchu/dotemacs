@@ -376,6 +376,7 @@
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)")
         (sequence "WAITING(w)" "|" "CANCELED(c)")))
+(setq org-completion-use-ido t)
 
 ;; linum mode
 (require 'linum)
