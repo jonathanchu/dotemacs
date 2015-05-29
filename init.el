@@ -310,6 +310,9 @@
      (set-face-foreground 'magit-diff-add "green3")
      (set-face-foreground 'magit-diff-del "red3")))
 
+;; use ido when checking out branches
+(setq magit-completing-read-function 'magit-ido-completing-read)
+
 ;; deft
 (require 'deft)
 (setq deft-directory "~/Dropbox/Simplenote")
