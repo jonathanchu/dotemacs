@@ -62,6 +62,7 @@
                       ag
                       atom-dark-theme
                       auto-complete
+                      cider
                       dedicated
                       deft
                       dired+
