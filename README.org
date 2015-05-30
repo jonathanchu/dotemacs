@@ -83,7 +83,7 @@ Next, we define which packages to install if they're not already installed.  Thi
 
 ** Global Config
 
-There are some very common things that most Emacs users do to setup and configure their text editor.
+There are some very common things that most Emacs users do to setup and configure their text editor environment.
 
 : (fset 'yes-or-no-p 'y-or-n-p)  ;; only type 'y' or 'n' instead of 'yes' or 'no'
 : (setq inhibit-splash-screen t)  ;; no splash screen
