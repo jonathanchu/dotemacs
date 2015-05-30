@@ -103,3 +103,7 @@ There are some very common things that most Emacs users do to setup and configur
 : (setq-default indent-tabs-mode nil)  ;; no tabs
 
 ** Functions
+
+** Modes
+
+** Key bindings
