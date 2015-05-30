@@ -108,4 +108,4 @@ There are some very common things that most Emacs users do to setup and configur
 
 ** Key bindings
 
-I prefer to use `smex` instead of the default <kbd>M-x</kbd>, in which I mapped `smex` to @@html:<kbd>M-x</kbd>@@.
+I prefer to use `smex` instead of the default <kbd>M-x</kbd>, in which I mapped `smex` to @@html:<kbd>@@M-x@@html:</kbd>@@.
