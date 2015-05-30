@@ -45,6 +45,7 @@ Next, we define which packages to install if they're not already installed.  Thi
 :                       ag
 :                       atom-dark-theme
 :                       auto-complete
+:                       cider
 :                       dedicated
 :                       deft
 :                       dired+
@@ -52,10 +53,12 @@ Next, we define which packages to install if they're not already installed.  Thi
 :                       exec-path-from-shell
 :                       flx-ido
 :                       flycheck
-:                       flymake-cursor
-:                       flymake-jslint
+:                       fullframe
+:                       github-browse-file
+:                       git-timemachine
 :                       grizzl
 :                       idle-highlight-mode
+:                       ido-ubiquitous
 :                       ido-vertical-mode
 :                       magit
 :                       nav
@@ -69,6 +72,7 @@ Next, we define which packages to install if they're not already installed.  Thi
 :                       smart-mode-line
 :                       smex
 :                       textmate
+:                       undo-tree
 :                       web-mode
 :                       yasnippet
 :                       )
