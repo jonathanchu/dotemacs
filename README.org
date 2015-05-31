@@ -25,19 +25,26 @@ upon =package.el=.
 
 ** Installation
 
-To install, it's recommended to clone this repo wherever you prefer and symlink the directory to =~/.emacs.d=.
+To install, it's recommended to clone this repo wherever you prefer
+and symlink the directory to =~/.emacs.d=.
 
 : git clone https://github.com/jonathanchu/dotemacs.git
 
-There is a =Makefile= provided that will create the symlink for you at =~/.emacs.d=:
+There is a =Makefile= provided that will create the symlink for you at
+=~/.emacs.d=:
 
 : make setup
 
 ** Packages
 
-=package.el= is new in Emacs 24 and is the package manager library for ELPA (Emacs Lisp Package Archive). =package.el= makes it easy to install, update, and remove third-party packages with ease.  It essentially has removed my need for a =vendor= directory to keep these third-party libraries separate.
+=package.el= is new in Emacs 24 and is the package manager library for
+ELPA (Emacs Lisp Package Archive). =package.el= makes it easy to
+install, update, and remove third-party packages with ease. It
+essentially has removed my need for a =vendor= directory to keep these
+third-party libraries separate.
 
-The following snippet tells Emacs to use =package.el= and to use Marmalade and the excellent MELPA as the package index.
+The following snippet tells Emacs to use =package.el= and to use
+Marmalade and the excellent MELPA as the package index.
 
 : (require 'package)
 : (add-to-list 'package-archives
@@ -46,7 +53,9 @@ The following snippet tells Emacs to use =package.el= and to use Marmalade and t
 :              '("melpa" . "http://melpa.milkbox.net/packages/"))
 : (package-initialize)
 
-Next, we define which packages to install if they're not already installed.  Think of this as a requirements file or list to run Emacs.  You can edit and modifying this list for your own needs.
+Next, we define which packages to install if they're not already
+installed. Think of this as a requirements file or list to run Emacs.
+You can edit and modifying this list for your own needs.
 
 : (defvar my-packages '(
 :                       ag
@@ -90,7 +99,8 @@ Next, we define which packages to install if they're not already installed.  Thi
 
 ** Global Config
 
-There are some very common things that most Emacs users do to setup and configure their text editor environment.
+There are some very common things that most Emacs users do to setup
+and configure their text editor environment.
 
 : (fset 'yes-or-no-p 'y-or-n-p)  ;; only type 'y' or 'n' instead of 'yes' or 'no'
 : (setq inhibit-splash-screen t)  ;; no splash screen
@@ -115,4 +125,6 @@ There are some very common things that most Emacs users do to setup and configur
 
 ** Key bindings
 
-I prefer to use `smex` instead of the default @@html:<kbd>@@M-x@@html:</kbd>@@ behavior.  I map `smex` to @@html:<kbd>@@M-x@@html:</kbd>@@.
+I prefer to use `smex` instead of the default
+@@html:<kbd>@@M-x@@html:</kbd>@@ behavior. I map `smex` to
+@@html:<kbd>@@M-x@@html:</kbd>@@.
