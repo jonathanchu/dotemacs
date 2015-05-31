@@ -494,6 +494,13 @@ This functions should be added to the hooks of major modes for programming."
           1 font-lock-warning-face t))))
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 
+;; use ido selection for recentf
+(defun ido-choose-from-recentf ()
+  "Use ido to select a recently visited file from the `recentf-list'"
+  (interactive)
+  (find-file (ido-completing-read "Open file: " recentf-list nil t)))
+
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
@@ -519,8 +526,8 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
- ;; recentf
+ ;; recentf with ido selection
  ;; bind to infrequently used find-file-read-only.
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
+(global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
 
 ;;; init.el ends here
