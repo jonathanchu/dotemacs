@@ -24,8 +24,10 @@ config is geared towards the following languages and workflows:
 * Clojure
 
 ** TODO TODO
+- [ ] Introduction
 - [X] Installation
 - [ ] Requirements
+- [ ] Updates
 - [X] Packages
 - [X] Global config
 - [ ] Functions
