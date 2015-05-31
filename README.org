@@ -8,11 +8,20 @@
 
 This is my emacs configuration, a somewhat simple config compared to
 most. It's geared towards OS X, although it should work on most *nix
-configs. I've never tried this on Windows.
+configs. I've never tried this on Windows, so YMMV.
 
 The entire configuration is one file =~/.emacs.d/init.el= and aims to
 provide you with a barebones configuration with sane defaults, built
 upon =package.el=.
+
+Although emacs has support for many, many programming languages, this
+config is geared towards the following languages and workflows:
+
+* Python
+* CSS / LESS
+* JavaScript
+* Markdown
+* Clojure
 
 ** TODO TODO
 - [X] Installation
