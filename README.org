@@ -6,10 +6,17 @@
 
 ** Introduction
 
-This is my emacs configuration, where this README is meant to be a form of literate programming.  The entire configuration is one file =~/.emacs.d/init.el= and aims to provide you with a barebones configuration with sane defaults, built upon =package.el=.
+This is my emacs configuration, a somewhat simple config compared to
+most. It's geared towards OS X, although it should work on most *nix
+configs. I've never tried this on Windows.
+
+The entire configuration is one file =~/.emacs.d/init.el= and aims to
+provide you with a barebones configuration with sane defaults, built
+upon =package.el=.
 
 ** TODO TODO
 - [X] Installation
+- [ ] Requirements
 - [X] Packages
 - [X] Global config
 - [ ] Functions
