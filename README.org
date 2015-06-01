@@ -46,6 +46,21 @@ There is a =Makefile= provided that will create the symlink for you at
 
 : make setup
 
+My emacs distro of choice is:
+
+: brew install emacs --with-cocoa
+
+Please note, this requires `homebrew` to be installed.
+
+** Requirements
+
+There are a few requirements needed for this config to properly run.
+All of these prerequisites can be installed via `homebrew` and `npm`.
+
+* brew install ag
+* brew install node
+* npm install jshint
+
 ** Packages
 
 =package.el= is new in Emacs 24 and is the package manager library for
