@@ -14,7 +14,7 @@ The entire configuration is one file =~/.emacs.d/init.el= and aims to
 provide you with a barebones configuration with sane defaults, built
 upon =package.el=.
 
-Although emacs has support for many, many programming languages, this
+Although emacs has support for many programming languages, this
 config is geared towards the following languages and workflows:
 
 - Python
