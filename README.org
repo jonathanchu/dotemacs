@@ -53,6 +53,7 @@ My emacs distro of choice is:
 
 Please note, this requires `homebrew` to be installed.
 
+
 ** Requirements
 
 There are a few requirements needed for this config to properly run.
@@ -61,6 +62,7 @@ All of these prerequisites can be installed via `homebrew` and `npm`.
 - brew install ag
 - brew install node
 - npm install jshint
+
 
 ** Packages
 
@@ -124,6 +126,7 @@ You can edit and modifying this list for your own needs.
 :   (when (not (package-installed-p p))
 :     (package-install p)))
 
+
 ** Global Config
 
 There are some very common things that most Emacs users do to setup
@@ -146,9 +149,12 @@ and configure their text editor environment.
 : (setq-default line-spacing 4)
 : (setq-default indent-tabs-mode nil)  ;; no tabs
 
+
 ** Functions
 
+
 ** Modes
+
 
 ** Key bindings
 
