@@ -318,7 +318,7 @@
 (setq deft-extension "txt")
 (setq deft-text-mode 'org-mode)
 (setq deft-use-filename-as-title t)
-(setq deft-auto-save-interval nil)
+(setq deft-auto-save-interval 0)
 
 ;; nav-mode
 (require 'nav)
