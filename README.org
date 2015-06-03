@@ -4,6 +4,17 @@
 #+EMAIL:     jonathan.chu@me.com
 #+DATE:      2015-03-01
 
+** TODO TODO
+- [ ] Introduction
+- [X] Installation
+- [ ] Requirements
+- [ ] Updates
+- [X] Packages
+- [X] Global config
+- [ ] Functions
+- [ ] Modes
+- [ ] Key bindings
+
 ** Introduction
 
 This is my emacs configuration, a somewhat simple config compared to
@@ -23,16 +34,6 @@ config is geared towards the following languages and workflows:
 - Markdown
 - Clojure
 
-** TODO TODO
-- [ ] Introduction
-- [X] Installation
-- [ ] Requirements
-- [ ] Updates
-- [X] Packages
-- [X] Global config
-- [ ] Functions
-- [ ] Modes
-- [ ] Key bindings
 
 ** Installation
 
