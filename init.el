@@ -231,6 +231,9 @@
 ;; useful for camelCase
 (subword-mode 1)
 
+;; delete selection, insert text
+(delete-selection-mode 1)
+
 
 ;;----------------------------------------------------------------------------
 ;; Modes
