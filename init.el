@@ -421,6 +421,10 @@
 (setq nrepl-log-messages t)
 (setq nrepl-hide-special-buffers t)
 
+;; expand-region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
