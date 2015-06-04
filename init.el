@@ -517,8 +517,8 @@ This functions should be added to the hooks of major modes for programming."
 (global-set-key (kbd "M-`") 'sort-lines)
 
 ;; font-size
-(define-key global-map (kbd "C-=") 'text-scale-increase)
-(define-key global-map (kbd "C--") 'text-scale-decrease)
+(define-key global-map (kbd "s-=") 'text-scale-increase)
+(define-key global-map (kbd "s--") 'text-scale-decrease)
 
 ;; smex
 (global-set-key (kbd "M-x") 'smex)
