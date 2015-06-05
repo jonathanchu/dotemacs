@@ -47,8 +47,8 @@
  '(font-lock-comment-face ((t (:foreground "#7C7C7C"))))
  '(font-lock-constant-face ((t (:foreground "#99CC99"))))
  '(font-lock-doc-face ((t (:inherit (font-lock-string-face)))))
- '(font-lock-function-name-face ((t (:foreground "#FFD2A7"))))
- '(font-lock-keyword-face ((t (:foreground "#96CBFE"))))
+ '(font-lock-function-name-face ((t (:foreground "#61afef"))))    ;; done, blue
+ '(font-lock-keyword-face ((t (:foreground "#c678dd"))))      ;; done, purple
  '(font-lock-preprocessor-face ((t (:foreground "#8996A8"))))
  '(font-lock-regexp-grouping-backslash ((t (:inherit font-lock-string-face))))
  '(font-lock-regexp-grouping-construct ((t (:foreground "#C6A24F"))))
