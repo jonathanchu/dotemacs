@@ -9,7 +9,6 @@
 - [X] Installation
 - [ ] Requirements
 - [ ] Updates
-- [X] Packages
 - [X] Global config
 - [ ] Functions
 - [ ] Modes
@@ -64,67 +63,7 @@ All of these prerequisites can be installed via `homebrew` and `npm`.
 - npm install jshint
 
 
-** Packages
-
-=package.el= is new in Emacs 24 and is the package manager library for
-ELPA (Emacs Lisp Package Archive). =package.el= makes it easy to
-install, update, and remove third-party packages with ease. It
-essentially has removed my need for a =vendor= directory to keep these
-third-party libraries separate.
-
-The following snippet tells Emacs to use =package.el= and to use
-Marmalade and the excellent MELPA as the package index.
-
-: (require 'package)
-: (add-to-list 'package-archives
-:              '("marmalade" . "http://marmalade-repo.org/packages/"))
-: (add-to-list 'package-archives
-:              '("melpa" . "http://melpa.milkbox.net/packages/"))
-: (package-initialize)
-
-Next, we define which packages to install if they're not already
-installed. Think of this as a requirements file or list to run Emacs.
-You can edit and modifying this list for your own needs.
-
-: (defvar my-packages '(
-:                       ag
-:                       atom-dark-theme
-:                       auto-complete
-:                       cider
-:                       dedicated
-:                       deft
-:                       dired+
-:                       dired-single
-:                       exec-path-from-shell
-:                       flx-ido
-:                       flycheck
-:                       fullframe
-:                       github-browse-file
-:                       git-timemachine
-:                       grizzl
-:                       idle-highlight-mode
-:                       ido-ubiquitous
-:                       ido-vertical-mode
-:                       magit
-:                       nav
-:                       paredit
-:                       projectile
-:                       py-isort
-:                       pymacs
-:                       python-mode
-:                       rainbow-delimiters
-:                       scratch
-:                       smart-mode-line
-:                       smex
-:                       textmate
-:                       undo-tree
-:                       web-mode
-:                       yasnippet
-:                       )
-:   "A list of packages to ensure are installed at launch.")
-: (dolist (p my-packages)
-:   (when (not (package-installed-p p))
-:     (package-install p)))
+** Updates
 
 
 ** Global Config
