@@ -65,6 +65,9 @@ All of these prerequisites can be installed via `homebrew` and `npm`.
 
 ** Updates
 
+To update the packages, type @@html:<kbd>@@M-x
+list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
+followed by @@html:<kbd>@@x@@html:</kbd>@@.
 
 ** Global Config
 
