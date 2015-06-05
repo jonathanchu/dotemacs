@@ -42,10 +42,10 @@
  '(variable-pitch ((t (:family "Sans Serif"))))
 
  ;; Font-lock
- '(font-lock-builtin-face ((t (:foreground "#DAD085"))))
- '(font-lock-comment-delimiter-face ((default (:inherit (font-lock-comment-face)))))
- '(font-lock-comment-face ((t (:foreground "#7C7C7C"))))
- '(font-lock-constant-face ((t (:foreground "#99CC99"))))
+  '(font-lock-builtin-face ((t (:foreground "#56b6c2"))))    ;; done, cyan
+ '(font-lock-comment-delimiter-face ((default (:inherit (font-lock-comment-face)))))    ;; done, green
+ '(font-lock-comment-face ((t (:foreground "#98c379"))))    ;; done, green
+ '(font-lock-constant-face ((t (:foreground "#d19a66"))))    ;; done, orange 1
  '(font-lock-doc-face ((t (:inherit (font-lock-string-face)))))
  '(font-lock-function-name-face ((t (:foreground "#61afef"))))    ;; done, blue
  '(font-lock-keyword-face ((t (:foreground "#c678dd"))))      ;; done, purple
