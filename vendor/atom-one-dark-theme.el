@@ -59,10 +59,10 @@
  '(font-lock-warning-face ((t (:foreground "#ff982d" :weight bold))))
 
  ;; mode-line
- '(mode-line ((t (:background "grey10" :foreground "#96CBFE"))))
+ '(mode-line ((t (:background "#21252B" :foreground "#96CBFE"))))
  '(mode-line-buffer-id ((t (:weight bold))))
  '(mode-line-emphasis ((t (:weight bold))))
- '(mode-line-highlight ((((class color) (min-colors 88)) (:box (:line-width 2 :color "#1d1f21" :style released-button))) (t (:inherit (highlight)))))
+ ;; '(mode-line-highlight ((((class color) (min-colors 88)) (:box (:line-width 2 :color "#21252B" :style released-button))) (t (:inherit (highlight)))))
  '(mode-line-inactive ((default (:inherit (mode-line))) (((class color) (min-colors 88) (background light)) (:background "#7c7c7c" :foreground "grey20" :box (:line-width -1 :color "grey75" :style nil) :weight light)) (((class color) (min-colors 88) (background dark)) (:background "grey30" :foreground "grey80" :box (:line-width -1 :color "grey40" :style nil) :weight light))))
 
  ;; isearch
