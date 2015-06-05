@@ -221,7 +221,10 @@
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;; color theme atom dark
-(load-theme 'atom-dark t)
+;; (load-theme 'atom-dark t)
+
+(load-file "~/.emacs.d/vendor/atom-one-dark-theme.el")
+(load-theme 'atom-one-dark t)
 
 ;; open with in original frame, not new window
 (setq ns-pop-up-frames nil)
