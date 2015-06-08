@@ -15,24 +15,38 @@
 (deftheme atom-one-dark
   "Atom One Dark - An Emacs port of the Atom One Dark theme from Atom.io.")
 
-(custom-theme-set-faces 'atom-one-dark
- '(default ((t (:foreground "#fdf4c1" :background "#282828" ))))
- '(cursor ((t (:background "#fdf4c1" ))))
- '(fringe ((t (:background "#282828" ))))
- '(mode-line ((t (:foreground "#282828" :background "#7c6f64" ))))
- '(region ((t (:background "#504945" ))))
- '(secondary-selection ((t (:background "#3e3834" ))))
- '(font-lock-builtin-face ((t (:foreground "#fe8019" ))))
- '(font-lock-comment-face ((t (:foreground "#7c6f64" ))))
- '(font-lock-function-name-face ((t (:foreground "#b8bb26" ))))
- '(font-lock-keyword-face ((t (:foreground "#fb4934" ))))
- '(font-lock-string-face ((t (:foreground "#b8bb26" ))))
- '(font-lock-type-face ((t (:foreground "#d3869b" ))))
- '(font-lock-constant-face ((t (:foreground "#d3869b" ))))
- '(font-lock-variable-name-face ((t (:foreground "#83a598" ))))
- '(minibuffer-prompt ((t (:foreground "#b8bb26" :bold t ))))
- '(font-lock-warning-face ((t (:foreground "red" :bold t ))))
- )
+(custom-theme-set-faces
+  'atom-one-dark
+
+  '(default ((t (:foreground "#c5c8c6" :background "#31343F" ))))
+  '(cursor ((t (:background "#8599FF" ))))
+  '(fringe ((t (:background "#31343F" ))))
+  '(region ((t (:background "#504945" ))))
+  '(highlight ((t (:background "#484b5b"))))
+  '(secondary-selection ((t (:background "#262626" ))))
+  '(minibuffer-prompt ((t (:foreground "#FF8000"))))
+  '(region ((t (:background "grey70"))))
+
+  '(font-lock-builtin-face ((t (:foreground "#56b6c2" ))))
+  '(font-lock-comment-face ((t (:foreground "#5C6370" ))))
+  '(font-lock-comment-delimiter-face ((default (:foreground "#5C6370"))))
+  '(font-lock-comment-delimiter-face ((default (:inherit (font-lock-comment-face)))))
+  '(font-lock-function-name-face ((t (:foreground "#61afef" ))))
+  '(font-lock-keyword-face ((t (:foreground "#c678dd" ))))
+  '(font-lock-string-face ((t (:foreground "#98c379" ))))
+  '(font-lock-type-face ((t (:foreground "#CFCB90" ))))
+  '(font-lock-constant-face ((t (:foreground "#d19a66" ))))
+  '(font-lock-variable-name-face ((t (:foreground "#e5c07b" ))))
+  '(font-lock-warning-face ((t (:foreground "#ff982d" :bold t ))))
+
+  ;; mode-line
+  '(mode-line ((t (:background "#21252B" :foreground "#96CBFE"))))
+  '(mode-line-buffer-id ((t (:weight bold))))
+  '(mode-line-emphasis ((t (:weight bold))))
+
+  ;; flx-ido (https://github.com/lewang/flx)
+  '(flx-highlight-face ((t (:inherit (link) :weight bold))))
+  )
 
 ;;;###autoload
 (and load-file-name
