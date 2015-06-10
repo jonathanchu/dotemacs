@@ -420,6 +420,7 @@
                         ))
 
 ;; cider
+(require 'cider)
 (add-hook 'cider-mode-hook 'eldoc-mode)
 (setq nrepl-log-messages t)
 (setq nrepl-hide-special-buffers t)
