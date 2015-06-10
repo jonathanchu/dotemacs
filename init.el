@@ -58,6 +58,7 @@
   (package-refresh-contents))
 
 (defvar my-packages '(
+                      4clojure
                       ag
                       atom-dark-theme
                       atom-one-dark-theme
