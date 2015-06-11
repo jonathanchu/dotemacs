@@ -90,6 +90,7 @@
                       rainbow-delimiters
                       scratch
                       smart-mode-line
+                      smartparens
                       smex
                       textmate
                       undo-tree
@@ -447,6 +448,9 @@ opening 4clojure questions"
 
 ;; rainbow delimiters
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+;; smartparens mode
+(require 'smartparens-config)
 
 
 ;;----------------------------------------------------------------------------
