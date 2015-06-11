@@ -445,6 +445,9 @@ opening 4clojure questions"
   (unless cider-current-clojure-buffer
     (cider-jack-in)))
 
+;; rainbow delimiters
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
