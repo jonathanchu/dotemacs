@@ -465,6 +465,7 @@ opening 4clojure questions"
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook 'enable-paredit-mode)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(add-hook 'python-mode-hook 'enable-paredit-mode)
 
 
 ;;----------------------------------------------------------------------------
