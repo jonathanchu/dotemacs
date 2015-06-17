@@ -466,10 +466,14 @@ opening 4clojure questions"
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook 'enable-paredit-mode)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-(defun paredit-kill-only-mode ()
+(defun paredit-subset-mode ()
+  (global-set-key (kbd "C-d") 'paredit-forward-delete)
+  (global-set-key (kbd "M-d") 'paredit-forward-kill-word)
+  (global-set-key (kbd "DEL") 'paredit-backward-delete)
+  (global-set-key (kbd "M-DEL") 'paredit-backward-kill-word)
   (global-set-key (kbd "C-k") 'paredit-kill)
   )
-(add-hook 'python-mode-hook 'paredit-kill-only-mode)
+(add-hook 'python-mode-hook 'paredit-subset-mode)
 
 ;; latex-preview-pane
 (latex-preview-pane-enable)
