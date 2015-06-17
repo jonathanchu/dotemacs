@@ -466,6 +466,10 @@ opening 4clojure questions"
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook 'enable-paredit-mode)
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(defun paredit-kill-only-mode ()
+  (global-set-key (kbd "C-k") 'paredit-kill)
+  )
+(add-hook 'python-mode-hook 'paredit-kill-only-mode)
 
 ;; latex-preview-pane
 (latex-preview-pane-enable)
