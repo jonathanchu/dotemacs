@@ -478,6 +478,14 @@ opening 4clojure questions"
 ;; latex-preview-pane
 (latex-preview-pane-enable)
 
+;; idle highlight mode
+(defun idle-highlight-mode-hook ()
+  (idle-highlight-mode t))
+(add-hook 'python-mode-hook 'idle-highlight-mode-hook)
+(add-hook 'clojure-mode-hook 'idle-highlight-mode-hook)
+(add-hook 'web-mode-hook 'idle-highlight-mode-hook)
+(add-hook 'emacs-lisp-mode-hook 'idle-highlight-mode-hook)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
