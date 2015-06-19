@@ -455,26 +455,6 @@ opening 4clojure questions"
 (require 'smartparens-config)
 (sp-local-pair 'web-mode "{%" "%}")
 
-;; paredit-mode
-(autoload 'enable-paredit-mode "paredit"
-  "Turn on pseudo-structural editing of Lisp code."
-  t)
-(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
-(add-hook 'ielm-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-(add-hook 'scheme-mode-hook 'enable-paredit-mode)
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
-(defun paredit-subset-mode ()
-  (global-set-key (kbd "C-d") 'paredit-forward-delete)
-  (global-set-key (kbd "M-d") 'paredit-forward-kill-word)
-  (global-set-key (kbd "DEL") 'paredit-backward-delete)
-  (global-set-key (kbd "M-DEL") 'paredit-backward-kill-word)
-  (global-set-key (kbd "C-k") 'paredit-kill)
-  )
-(add-hook 'python-mode-hook 'paredit-subset-mode)
-
 ;; latex-preview-pane
 (latex-preview-pane-enable)
 
