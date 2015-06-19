@@ -457,13 +457,20 @@ opening 4clojure questions"
 (setq sp-autoskip-closing-pair 'always
       ;; Don't kill the entire symbol on C-k
       sp-hybrid-kill-entire-symbol nil)
-(show-smartparens-global-mode t)
-(sp-pair "(" ")" :wrap "M-(")
-(global-set-key (kbd "C-k") 'sp-kill-hybrid-sexp)
-(global-set-key (kbd "C-)") 'sp-forward-slurp-sexp)
-(global-set-key (kbd "C-(") 'sp-forward-barf-sexp)
-(global-set-key (kbd "C-M-)") 'sp-backward-slurp-sexp)
-(global-set-key (kbd "C-M-(") 'sp-backward-barf-sexp)
+
+;; paredit-mode
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing of Lisp code."
+  t)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'scheme-mode-hook 'enable-paredit-mode)
+(add-hook 'clojure-mode-hook 'enable-paredit-mode)
+(add-hook 'python-mode-hook
+          (lambda () (local-set-key (kbd "C-k") 'paredit-kill)))
 
 ;; latex-preview-pane
 (latex-preview-pane-enable)
