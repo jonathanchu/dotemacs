@@ -96,7 +96,6 @@
                       textmate
                       undo-tree
                       web-mode
-                      wrap-region
                       yasnippet
                       )
   "A list of packages to ensure are installed at launch.")
@@ -487,9 +486,6 @@ opening 4clojure questions"
 (add-hook 'clojure-mode-hook 'idle-highlight-mode-hook)
 (add-hook 'web-mode-hook 'idle-highlight-mode-hook)
 (add-hook 'emacs-lisp-mode-hook 'idle-highlight-mode-hook)
-
-;; wrap region
-(wrap-region-mode t)
 
 
 ;;----------------------------------------------------------------------------
