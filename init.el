@@ -454,6 +454,16 @@ opening 4clojure questions"
 (smartparens-global-mode t)
 (require 'smartparens-config)
 (sp-local-pair 'web-mode "{%" "%}")
+(setq sp-autoskip-closing-pair 'always
+      ;; Don't kill the entire symbol on C-k
+      sp-hybrid-kill-entire-symbol nil)
+(show-smartparens-global-mode t)
+(sp-pair "(" ")" :wrap "M-(")
+(global-set-key (kbd "C-k") 'sp-kill-hybrid-sexp)
+(global-set-key (kbd "C-)") 'sp-forward-slurp-sexp)
+(global-set-key (kbd "C-(") 'sp-forward-barf-sexp)
+(global-set-key (kbd "C-M-)") 'sp-backward-slurp-sexp)
+(global-set-key (kbd "C-M-(") 'sp-backward-barf-sexp)
 
 ;; latex-preview-pane
 (latex-preview-pane-enable)
