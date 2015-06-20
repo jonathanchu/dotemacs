@@ -453,6 +453,7 @@ opening 4clojure questions"
 ;; smartparens mode
 (smartparens-global-mode t)
 (sp-local-pair 'web-mode "{%" "%}")
+(require 'smartparens-config)
 (setq sp-autoskip-closing-pair 'always
       ;; Don't kill the entire symbol on C-k
       sp-hybrid-kill-entire-symbol nil)
