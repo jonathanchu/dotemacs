@@ -264,6 +264,7 @@
 ;; ido-vertical-mode
 (require 'ido-vertical-mode)
 (ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; ido-ubiquitous
 (ido-ubiquitous-mode 1)
