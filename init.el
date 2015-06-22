@@ -93,6 +93,7 @@
                       smart-mode-line
                       smartparens
                       smex
+                      swiper
                       textmate
                       undo-tree
                       web-mode
@@ -488,6 +489,13 @@ opening 4clojure questions"
 (add-hook 'web-mode-hook 'idle-highlight-mode-hook)
 (add-hook 'emacs-lisp-mode-hook 'idle-highlight-mode-hook)
 
+;; swiper
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(global-set-key "\C-s" 'swiper)
+(global-set-key "\C-r" 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key [f6] 'ivy-resume)
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
