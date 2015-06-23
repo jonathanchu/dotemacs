@@ -59,6 +59,7 @@
 
 (defvar my-packages '(
                       4clojure
+                      ace-window
                       ag
                       atom-dark-theme
                       atom-one-dark-theme
@@ -496,6 +497,14 @@ opening 4clojure questions"
 (global-set-key "\C-r" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key [f6] 'ivy-resume)
+
+;; ace-window
+(setq avy-keys
+      '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
+(setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+(avy-setup-default)
+(global-set-key (kbd "C-x C-o")'ace-window)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
