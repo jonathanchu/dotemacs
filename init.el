@@ -65,6 +65,7 @@
                       atom-one-dark-theme
                       auto-complete
                       cider
+                      command-log-mode
                       dedicated
                       deft
                       dired+
