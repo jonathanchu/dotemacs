@@ -5,7 +5,7 @@
 #+DATE:      2015-03-01
 
 ** TODO TODO
-- [ ] Introduction
+- [X] Introduction
 - [X] Installation
 - [ ] Requirements
 - [ ] Updates
