@@ -506,6 +506,9 @@ opening 4clojure questions"
 (avy-setup-default)
 (global-set-key (kbd "C-x C-o")'ace-window)
 
+;; multiple scratch buffers
+(autoload 'scratch "scratch" nil t)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
