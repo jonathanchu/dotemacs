@@ -199,8 +199,8 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
 ;; cursor
-(setq-default cursor-type 'bar)
-(blink-cursor-mode 1)
+;; (setq-default cursor-type 'bar)
+(blink-cursor-mode -1)
 
 ;; highlight brackets
 (require 'paren)
