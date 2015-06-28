@@ -509,6 +509,9 @@ opening 4clojure questions"
 ;; multiple scratch buffers
 (autoload 'scratch "scratch" nil t)
 
+;; flyspell
+(add-hook 'text-mode-hook 'flyspell-mode)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
