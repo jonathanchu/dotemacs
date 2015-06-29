@@ -61,6 +61,7 @@
                       4clojure
                       ace-window
                       ag
+                      anzu
                       atom-dark-theme
                       atom-one-dark-theme
                       auto-complete
@@ -511,6 +512,12 @@ opening 4clojure questions"
 
 ;; flyspell
 (add-hook 'text-mode-hook 'flyspell-mode)
+
+;; anzu
+(require 'anzu)
+(global-anzu-mode)
+(global-set-key (kbd "M-%") 'anzu-query-replace)
+(global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
 
 
 ;;----------------------------------------------------------------------------
