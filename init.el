@@ -317,7 +317,7 @@
 (textmate-mode)
 
 ;; magit
-(global-set-key "\C-xg" 'magit-status)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; use ido when checking out branches
 (setq magit-completing-read-function 'magit-ido-completing-read)
