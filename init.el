@@ -86,6 +86,7 @@
                       magit
                       markdown-mode
                       nav
+                      org-bullets
                       paredit
                       projectile
                       py-isort
@@ -513,6 +514,10 @@ opening 4clojure questions"
 (global-anzu-mode)
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 (global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
+
+;; org bullets
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 
 ;;----------------------------------------------------------------------------
