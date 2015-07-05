@@ -231,7 +231,6 @@
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;; color theme
-;; (load-theme 'atom-dark t)
 (load-theme 'atom-one-dark t)
 
 ;; open with in original frame, not new window
