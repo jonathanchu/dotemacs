@@ -583,17 +583,6 @@ point reaches the beginning or end of the buffer, stop there."
   (yank)
   )
 
-;; highlight comment annotations
-;; from http://emacsredux.com/blog/2013/07/24/highlight-comment-annotations/
-(defun font-lock-comment-annotations ()
-  "Highlight a bunch of well known comment annotations.
-
-This functions should be added to the hooks of major modes for programming."
-  (font-lock-add-keywords
-   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
-          1 font-lock-warning-face t))))
-(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
-
 ;; use ido selection for recentf
 (defun ido-choose-from-recentf ()
   "Use ido to select a recently visited file from the `recentf-list'"
