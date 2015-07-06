@@ -573,7 +573,7 @@ point reaches the beginning or end of the buffer, stop there."
       `((".*" ,user-temporary-file-directory t)))
 
 ;; duplicate the current line function
-(defun duplicate-line()
+(defun duplicate-line ()
   (interactive)
   (move-beginning-of-line 1)
   (kill-line)
