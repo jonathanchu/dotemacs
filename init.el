@@ -590,7 +590,6 @@ point reaches the beginning or end of the buffer, stop there."
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
 
-
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
 ;;----------------------------------------------------------------------------
