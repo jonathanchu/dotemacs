@@ -33,7 +33,7 @@
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'exec-path "/usr/local/bin")
 
 (defvar current-user
