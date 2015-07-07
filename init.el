@@ -86,7 +86,6 @@
                       magit
                       markdown-mode
                       nav
-                      org-bullets
                       paredit
                       projectile
                       py-isort
