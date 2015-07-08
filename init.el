@@ -519,9 +519,9 @@ opening 4clojure questions"
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;; magit-gh-pulls
-(require 'ert)
-(require 'magit-gh-pulls)
-(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+;; (require 'ert)
+;; (require 'magit-gh-pulls)
+;; (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 ;; clj-refactor
 (require 'clj-refactor)
