@@ -579,8 +579,7 @@ point reaches the beginning or end of the buffer, stop there."
   (yank)
   (open-line 1)
   (next-line 1)
-  (yank)
-  )
+  (yank))
 
 ;; use ido selection for recentf
 (defun ido-choose-from-recentf ()
