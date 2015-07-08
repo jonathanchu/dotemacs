@@ -66,6 +66,7 @@
                       atom-one-dark-theme
                       auto-complete
                       cider
+                      clj-refactor
                       command-log-mode
                       dedicated
                       deft
@@ -522,6 +523,13 @@ opening 4clojure questions"
 (require 'magit-gh-pulls)
 (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
+;; clj-refactor
+(require 'clj-refactor)
+(defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+(add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
