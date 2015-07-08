@@ -84,6 +84,7 @@
                       ido-vertical-mode
                       latex-preview-pane
                       magit
+                      magit-gh-pulls
                       markdown-mode
                       nav
                       paredit
@@ -515,6 +516,11 @@ opening 4clojure questions"
 ;; org bullets (custom)
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+;; magit-gh-pulls
+(require 'ert)
+(require 'magit-gh-pulls)
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 
 ;;----------------------------------------------------------------------------
