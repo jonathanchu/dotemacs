@@ -457,6 +457,18 @@ opening 4clojure questions"
       ;; Don't kill the entire symbol on C-k
       sp-hybrid-kill-entire-symbol nil)
 
+;; clojure-mode
+(require 'clojure-mode)
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2)
+  (POST 2)
+  (PUT 2)
+  (DELETE 2)
+  (HEAD 2)
+  (ANY 2)
+  (context 2))
+
 ;; paredit-mode
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code."
