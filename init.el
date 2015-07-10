@@ -68,6 +68,7 @@
                       cider
                       clj-refactor
                       command-log-mode
+                      company
                       dedicated
                       deft
                       dired+
@@ -536,6 +537,9 @@ opening 4clojure questions"
     (yas-minor-mode 1) ; for adding require/use/import
     (cljr-add-keybindings-with-prefix "C-c C-m"))
 (add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
+
+;; company-mode
+(add-hook 'after-init-hook 'global-company-mode)
 
 
 ;;----------------------------------------------------------------------------
