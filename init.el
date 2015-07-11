@@ -62,6 +62,7 @@
                       ace-window
                       ag
                       aggressive-indent
+                      anaconda-mode
                       anzu
                       atom-dark-theme
                       atom-one-dark-theme
@@ -69,6 +70,7 @@
                       clj-refactor
                       command-log-mode
                       company
+                      company-anaconda
                       dedicated
                       deft
                       dired+
@@ -281,6 +283,9 @@
                             (setq fill-column 80)))
 
 (add-to-list 'auto-mode-alist '("\\.py" . python-mode))
+
+;; anaconda-mode
+(add-hook 'python-mode-hook 'anaconda-mode)
 
 ;; javascript
 (add-hook 'js-mode-hook
@@ -534,8 +539,12 @@ opening 4clojure questions"
     (cljr-add-keybindings-with-prefix "C-c C-m"))
 (add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
-;; company-mode
+;; company-mode and backends
 (add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load 'company
+  (progn
+    '(add-to-list 'company-backends 'company-anaconda)
+    ))
 
 ;; aggressive-indent
 (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
