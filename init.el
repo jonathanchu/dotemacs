@@ -93,7 +93,6 @@
                       paredit
                       projectile
                       py-isort
-                      pymacs
                       python-mode
                       rainbow-delimiters
                       scratch
@@ -361,16 +360,6 @@
 ;; projectile
 (projectile-global-mode)
 (setq projectile-completion-system 'grizzl)
-
-;; pymacs
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
-(setenv "PYMACS_PYTHON" "/usr/local/bin/python")
-(setq py-load-pymacs-p 'nil)
 
 ;; py-isort
 ;; (require 'py-isort)
