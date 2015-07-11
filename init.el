@@ -61,6 +61,7 @@
                       4clojure
                       ace-window
                       ag
+                      aggressive-indent
                       anzu
                       atom-dark-theme
                       atom-one-dark-theme
@@ -535,6 +536,10 @@ opening 4clojure questions"
 
 ;; company-mode
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; aggressive-indent
+(add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
 
 
 ;;----------------------------------------------------------------------------
