@@ -372,11 +372,6 @@
 (setenv "PYMACS_PYTHON" "/usr/local/bin/python")
 (setq py-load-pymacs-p 'nil)
 
-;; ropemacs
-(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
-
 ;; py-isort
 ;; (require 'py-isort)
 ;; (add-hook 'before-save-hook 'py-isort-before-save)
