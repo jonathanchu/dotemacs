@@ -64,7 +64,6 @@
                       anzu
                       atom-dark-theme
                       atom-one-dark-theme
-                      auto-complete
                       cider
                       clj-refactor
                       command-log-mode
@@ -371,10 +370,6 @@
 (require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
 (setq ropemacs-enable-autoimport t)
-
-;; auto-complete
-(require 'auto-complete)
-(global-auto-complete-mode t)
 
 ;; py-isort
 ;; (require 'py-isort)
