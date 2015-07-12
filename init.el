@@ -35,6 +35,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'exec-path "/usr/local/bin")
+(add-to-list 'exec-path "~/.local/bin")
 
 (defvar current-user
       (getenv
