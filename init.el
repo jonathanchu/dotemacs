@@ -289,7 +289,7 @@
 
 ;; javascript
 (add-hook 'js-mode-hook
-          (lambda () (flycheck-mode t)))
+          (lambda () (flycheck-mode 1)))
 (setq js-indent-level 2)
 
 ;; web mode
