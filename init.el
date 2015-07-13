@@ -86,6 +86,7 @@
                       gitignore-mode
                       git-timemachine
                       grizzl
+                      guru-mode
                       idle-highlight-mode
                       ido-ubiquitous
                       ido-vertical-mode
@@ -537,6 +538,9 @@ opening 4clojure questions"
 ;; aggressive-indent
 (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+
+;; guru-mode
+(guru-global-mode 1)
 
 
 ;;----------------------------------------------------------------------------
