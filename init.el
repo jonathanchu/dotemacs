@@ -280,11 +280,9 @@
 
 ;; python
 (require 'python-mode)
-
 (add-hook 'python-mode-hook (lambda ()
-                            (flycheck-mode 1)
-                            (setq fill-column 80)))
-
+                              (flycheck-mode 1)
+                              (setq fill-column 80)))
 (add-to-list 'auto-mode-alist '("\\.py" . python-mode))
 
 ;; anaconda-mode
