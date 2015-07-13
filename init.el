@@ -81,7 +81,9 @@
                       flx-ido
                       flycheck
                       fullframe
+                      gitconfig-mode
                       github-browse-file
+                      gitignore-mode
                       git-timemachine
                       grizzl
                       idle-highlight-mode
