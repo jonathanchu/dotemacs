@@ -222,6 +222,9 @@
 
 (setq window-combination-resize t)
 
+;;keep cursor at same position when scrolling
+(setq scroll-preserve-screen-position 1)
+
 ;; scroll one line at a time
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
