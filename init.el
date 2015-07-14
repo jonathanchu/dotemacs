@@ -37,8 +37,8 @@
 (add-to-list 'exec-path "/usr/local/bin")
 
 (defvar current-user
-      (getenv
-       (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+  (getenv
+   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
 
 (message "Your Emacs is powering up... Be patient, Master %s!" current-user)
 
