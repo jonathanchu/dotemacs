@@ -252,6 +252,11 @@
 ;; delete selection, insert text
 (delete-selection-mode 1)
 
+;; prevent active process query on quit
+(require 'cl)
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  (flet ((process-list ())) ad-do-it))
+
 
 ;;----------------------------------------------------------------------------
 ;; Modes
