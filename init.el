@@ -618,6 +618,19 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
+;; swaps windows
+(defun transpose-windows ()
+  "If you have two windows, it swaps them."
+  (interactive)
+  (let ((this-buffer (window-buffer (selected-window)))
+        (other-buffer (prog2
+                          (other-window +1)
+                          (window-buffer (selected-window))
+                        (other-window -1))))
+    (switch-to-buffer other-buffer)
+    (switch-to-buffer-other-window this-buffer)
+    (other-window -1)))
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
