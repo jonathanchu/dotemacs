@@ -632,6 +632,21 @@ point reaches the beginning or end of the buffer, stop there."
     (switch-to-buffer-other-window this-buffer)
     (other-window -1)))
 
+;; Convert word DOuble CApitals to Single Capitals
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+
+(add-hook 'post-self-insert-hook 'dcaps-to-scaps nil 'local)
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
