@@ -645,7 +645,7 @@ point reaches the beginning or end of the buffer, stop there."
                 (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
               (capitalize-word 1)))))
 
-(add-hook 'post-self-insert-hook 'dcaps-to-scaps nil 'local)
+(add-hook 'post-self-insert-hook 'dcaps-to-scaps)
 
 
 ;;----------------------------------------------------------------------------
