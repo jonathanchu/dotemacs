@@ -553,14 +553,14 @@ opening 4clojure questions"
 ;; Defuns
 ;;----------------------------------------------------------------------------
 
-; make zap-to-char act like zap-up-to-char
+;; make zap-to-char act like zap-up-to-char
 (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
   "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
   The CHAR is replaced and the point is put before CHAR."
   (insert char)
   (forward-char -1))
 
-; smarter navigation to the beginning of a line
+;; smarter navigation to the beginning of a line
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 Move point to the first non-whitespace character on this line.
@@ -582,8 +582,8 @@ point reaches the beginning or end of the buffer, stop there."
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
 
-; Highlight the call to ipdb
-; src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
+;; Highlight the call to ipdb
+;; src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
 (defun annotate-pdb ()
   (interactive)
   (highlight-lines-matching-regexp "import ipdb")
@@ -672,8 +672,8 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)
 
- ;; recentf with ido selection
- ;; bind to infrequently used find-file-read-only.
+;; recentf with ido selection
+;; bind to infrequently used find-file-read-only.
 (global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
 
 ;;scroll window up/down by one line
