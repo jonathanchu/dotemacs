@@ -388,9 +388,9 @@
 (require 'linum)
 (global-linum-mode 1)
 (setq linum-format
-    (lambda (line) (propertize
-        (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-            (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
+      (lambda (line) (propertize
+                      (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+                                (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
 
 ;; dired+ mode
 (require 'dired+)
@@ -529,9 +529,9 @@ opening 4clojure questions"
 ;; clj-refactor
 (require 'clj-refactor)
 (defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (clj-refactor-mode 1)
+  (yas-minor-mode 1) ; for adding require/use/import
+  (cljr-add-keybindings-with-prefix "C-c C-m"))
 (add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
 ;; company-mode and backends
