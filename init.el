@@ -509,6 +509,7 @@ opening 4clojure questions"
 (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
 (avy-setup-default)
 (global-set-key (kbd "C-x C-o")'ace-window)
+(global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
 
 ;; multiple scratch buffers
 (autoload 'scratch "scratch" nil t)
