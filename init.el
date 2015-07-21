@@ -85,7 +85,6 @@
                       git-timemachine
                       grizzl
                       guru-mode
-                      idle-highlight-mode
                       ido-ubiquitous
                       ido-vertical-mode
                       latex-preview-pane
@@ -482,18 +481,6 @@ opening 4clojure questions"
 
 ;; latex-preview-pane
 (latex-preview-pane-enable)
-
-;; idle highlight mode
-(defcustom idle-highlight-idle-time 3.0
-  "Time after which to highlight the word at point."
-  :group 'idle-highlight
-  :type 'float)
-(defun idle-highlight-mode-hook ()
-  (idle-highlight-mode t))
-(add-hook 'python-mode-hook 'idle-highlight-mode-hook)
-(add-hook 'clojure-mode-hook 'idle-highlight-mode-hook)
-(add-hook 'web-mode-hook 'idle-highlight-mode-hook)
-(add-hook 'emacs-lisp-mode-hook 'idle-highlight-mode-hook)
 
 ;; swiper
 (ivy-mode 1)
