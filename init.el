@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2015
 ;;
-;; Author: Jonathan Chu <jonathan.chu@me.com>
+;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
 ;; Version: 1.0
 
