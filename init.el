@@ -333,6 +333,7 @@
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
+(setq magit-push-always-verify nil)
 
 ;; use ido when checking out branches
 (setq magit-completing-read-function 'magit-ido-completing-read)
