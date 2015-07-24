@@ -538,6 +538,9 @@ opening 4clojure questions"
 ;; guru-mode
 (guru-global-mode 1)
 
+;; paradox
+(setq paradox-execute-asynchronously t)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
