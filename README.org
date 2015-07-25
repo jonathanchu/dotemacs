@@ -50,7 +50,7 @@ My emacs distro of choice is:
 
 : brew install emacs --with-cocoa
 
-Please note, this requires `homebrew` to be installed.
+Please note, this requires [[http://brew.sh][homebrew]] to be installed.
 
 
 ** Requirements
