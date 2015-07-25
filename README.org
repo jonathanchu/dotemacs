@@ -1,7 +1,7 @@
 #+STARTUP: showall
 #+TITLE:     My Emacs Configuration
 #+AUTHOR:    Jonathan Chu
-#+EMAIL:     jonathan.chu@me.com
+#+EMAIL:     me@jonathanchu.is
 #+DATE:      2015-03-01
 
 ** TODO TODO
