@@ -46,7 +46,7 @@ There is a =Makefile= provided that will create the symlink for you at
 
 : make setup
 
-My emacs distro of choice is:
+My current emacs distro of choice is:
 
 : brew install emacs --with-cocoa
 
