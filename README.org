@@ -58,16 +58,16 @@ Please note, this requires [[http://brew.sh][homebrew]] to be installed.
 There are a few requirements needed for this config to properly run.
 All of these prerequisites can be installed via =homebrew= and =npm=.
 
-- brew install ag
-- brew install node
-- npm install jshint
+: brew install ag
+: brew install node
+: npm install jshint
 
 For editing Python files, you'll need to have =pip= installed and
 install the following packages:
 
-- pip install jedi
-- pip install service-factory
-- pip install six
+: pip install jedi
+: pip install service-factory
+: pip install six
 
 ** Updates
 
