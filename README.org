@@ -74,6 +74,12 @@ To update the packages, type @@html:<kbd>@@M-x
 list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
 followed by @@html:<kbd>@@x@@html:</kbd>@@.
 
+I recently started to use @Malabarba's excellent [[https://github.com/Malabarba/paradox/][paradox]], which can be
+invoked similarly as such - @@html:<kbd>@@M-x
+paradox-list-packages@@html:</kbd>@@, then
+@@html:<kbd>@@U@@html:</kbd>@@ followed by
+@@html:<kbd>@@x@@html:</kbd>@@.
+
 ** Global Config
 
 There are some very common things that most Emacs users do to setup
