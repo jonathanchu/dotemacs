@@ -70,6 +70,7 @@
                       command-log-mode
                       company
                       company-anaconda
+                      counsel
                       dedicated
                       deft
                       dired+
