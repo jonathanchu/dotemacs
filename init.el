@@ -543,6 +543,9 @@ opening 4clojure questions"
 ;; paradox
 (setq paradox-execute-asynchronously t)
 
+;; counsel
+(global-set-key (kbd "C-c g") 'counsel-git-grep)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
