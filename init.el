@@ -336,7 +336,8 @@
 (setq magit-push-always-verify nil)
 
 ;; use ido when checking out branches
-(setq magit-completing-read-function 'magit-ido-completing-read)
+;; (setq magit-completing-read-function 'magit-ido-completing-read)
+(setq magit-completing-read-function 'ivy-completing-read)
 
 ;; deft
 (require 'deft)
