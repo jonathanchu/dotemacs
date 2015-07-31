@@ -75,6 +75,7 @@
                       deft
                       dired+
                       dired-single
+                      easy-kill
                       exec-path-from-shell
                       expand-region
                       flx-ido
@@ -546,6 +547,8 @@ opening 4clojure questions"
 ;; counsel
 (global-set-key (kbd "C-c g") 'counsel-git-grep)
 
+;; easy-kill
+(global-set-key [remap kill-ring-save] 'easy-kill)
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
