@@ -670,8 +670,7 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; remap C-a to `smarter-move-beginning-of-line'
-(global-set-key [remap move-beginning-of-line]
-                'smarter-move-beginning-of-line)
+(global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
 
 ;; recentf with ido selection
 ;; bind to infrequently used find-file-read-only.
