@@ -493,7 +493,6 @@ opening 4clojure questions"
 (global-set-key "\C-s" 'swiper)
 (global-set-key "\C-r" 'swiper)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key [f6] 'ivy-resume)
 
 ;; ace-window
 (setq avy-keys
