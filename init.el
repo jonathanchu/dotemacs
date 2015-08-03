@@ -513,6 +513,7 @@ opening 4clojure questions"
 (global-anzu-mode 1)
 (global-set-key (kbd "M-%") 'anzu-query-replace)
 (global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
+(set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
 
 ;; org bullets (custom)
 (require 'org-bullets)
