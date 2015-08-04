@@ -99,6 +99,7 @@
                       py-isort
                       python-mode
                       rainbow-delimiters
+                      restclient
                       scratch
                       smart-mode-line
                       smartparens
