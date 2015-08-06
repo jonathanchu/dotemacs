@@ -67,7 +67,6 @@
                       atom-one-dark-theme
                       cider
                       clj-refactor
-                      clojure-cheatsheet
                       command-log-mode
                       company
                       company-anaconda
@@ -551,11 +550,6 @@ opening 4clojure questions"
 
 ;; easy-kill
 (global-set-key [remap kill-ring-save] 'easy-kill)
-
-;; clojure cheatsheet
-(eval-after-load 'clojure-mode
-  '(progn
-     (define-key clojure-mode-map (kbd "C-c C-h") 'clojure-cheatsheet)))
 
 
 ;;----------------------------------------------------------------------------
