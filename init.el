@@ -107,6 +107,7 @@
                       swiper
                       textmate
                       undo-tree
+                      use-package
                       web-mode
                       yasnippet
                       )
