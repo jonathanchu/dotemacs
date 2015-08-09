@@ -267,6 +267,9 @@
 ;; Modes
 ;;----------------------------------------------------------------------------
 
+;; use-package
+(require 'use-package)
+
 ;; flycheck
 (require 'flycheck)
 
