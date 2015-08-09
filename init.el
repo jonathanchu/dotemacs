@@ -416,16 +416,20 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; recentf
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 15)
-(setq recentf-max-saved-items 500)
-(setq recentf-cleanup 'never)
-(setq recentf-exclude '("^/var/folders\\.*"
-                        "COMMIT_EDITMSG\\'"
-                        ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"
-                        ))
+(use-package recentf
+  :config
+  (setq recentf-max-saved-items 500
+        recentf-max-menu-items 15
+        ;; Cleanup recent files only when Emacs is idle, but not when the mode
+        ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
+        ;; idles often enough to have the recent files list clean up regularly
+        recentf-auto-cleanup 300
+        recentf-exclude (list "^/var/folders\\.*"
+                              "COMMIT_EDITMSG\\'"
+                              ".*-autoloads\\.el\\'"
+                              "[/\\]\\.elpa/"
+                              "/\\.git/.*\\'"))
+  (recentf-mode))
 
 ;; cider
 (require 'cider)
