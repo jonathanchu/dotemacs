@@ -59,7 +59,7 @@
 (defvar my-packages '(
                       ace-window  ;; done
                       ag
-                      aggressive-indent
+                      aggressive-indent  ;; done
                       anaconda-mode
                       anzu
                       atom-dark-theme
@@ -539,8 +539,10 @@
     ))
 
 ;; aggressive-indent
-(add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
-(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+(use-package aggressive-indent
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 ;; guru-mode
 (guru-global-mode 1)
