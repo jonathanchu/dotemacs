@@ -57,7 +57,7 @@
   (package-refresh-contents))
 
 (defvar my-packages '(
-                      ace-window
+                      ace-window  ;; done
                       ag
                       aggressive-indent
                       anaconda-mode
