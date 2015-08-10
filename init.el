@@ -57,7 +57,6 @@
   (package-refresh-contents))
 
 (defvar my-packages '(
-                      4clojure
                       ace-window
                       ag
                       aggressive-indent
@@ -447,14 +446,6 @@
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-;; be an 4clojure hero
-(defadvice 4clojure-open-question (around 4clojure-open-question-around)
-  "Start a cider/nREPL connection if one hasn't already been started when
-opening 4clojure questions"
-  ad-do-it
-  (unless cider-current-clojure-buffer
-    (cider-jack-in)))
 
 ;; rainbow delimiters
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
