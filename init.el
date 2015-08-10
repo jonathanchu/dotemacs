@@ -61,7 +61,7 @@
                       ag
                       aggressive-indent  ;; done
                       anaconda-mode
-                      anzu
+                      anzu  ;; done
                       atom-dark-theme
                       atom-one-dark-theme
                       cider
@@ -513,11 +513,14 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 
 ;; anzu
-(require 'anzu)
-(global-anzu-mode 1)
-(global-set-key (kbd "M-%") 'anzu-query-replace)
-(global-set-key (kbd "C-M-%") 'anzu-query-replace-regexp)
-(set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
+(use-package anzu
+  :init
+  :config
+  (global-anzu-mode 1)
+  (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
+  :bind
+  (("M-%" . anzu-query-replace)
+   ("C-M-%" . anzu-query-replace-regexp)))
 
 ;; org bullets (custom)
 (require 'org-bullets)
