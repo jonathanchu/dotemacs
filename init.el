@@ -495,12 +495,16 @@
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 
 ;; ace-window
-(setq avy-keys
-      '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
-(setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
-(avy-setup-default)
-(global-set-key (kbd "C-x C-o")'ace-window)
-(global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
+(use-package ace-window
+  :init
+  (setq avy-keys
+        '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u)
+        aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+  :config
+  (avy-setup-default)
+  :bind
+  (("C-x C-o" . ace-window)
+   ("C-c j" . avy-goto-word-or-subword-1)))
 
 ;; multiple scratch buffers
 (autoload 'scratch "scratch" nil t)
