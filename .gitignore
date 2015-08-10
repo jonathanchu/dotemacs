@@ -18,3 +18,4 @@ smex-items
 helm-adaptive-history
 /var
 /url
+*.log
