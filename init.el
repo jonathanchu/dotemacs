@@ -64,7 +64,7 @@
                       anzu  ;; done
                       atom-dark-theme
                       atom-one-dark-theme
-                      cider
+                      cider  ;; done
                       clj-refactor
                       command-log-mode
                       company
@@ -431,10 +431,12 @@
   (recentf-mode))
 
 ;; cider
-(require 'cider)
-(add-hook 'cider-mode-hook 'eldoc-mode)
-(setq nrepl-log-messages t)
-(setq nrepl-hide-special-buffers t)
+(use-package cider
+  :ensure
+  :config
+  (setq nrepl-log-messages t)
+  (setq nrepl-hide-special-buffers t)
+  (add-hook 'cider-mode-hook 'eldoc-mode))
 
 ;; expand-region
 (require 'expand-region)
