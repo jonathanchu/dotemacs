@@ -417,7 +417,7 @@
 ;; recentf
 (use-package recentf
   :config
-  (setq recentf-max-saved-items 500
+  (setq recentf-max-saved-items 250
         recentf-max-menu-items 15
         ;; Cleanup recent files only when Emacs is idle, but not when the mode
         ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
