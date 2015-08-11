@@ -74,7 +74,7 @@
                       deft
                       dired+
                       dired-single
-                      easy-kill
+                      easy-kill  ;; done
                       exec-path-from-shell
                       expand-region
                       flx-ido
@@ -561,7 +561,10 @@
 (global-set-key (kbd "C-c g") 'counsel-git-grep)
 
 ;; easy-kill
-(global-set-key [remap kill-ring-save] 'easy-kill)
+(use-package easy-kill
+  :ensure
+  :config
+  (global-set-key [remap kill-ring-save] 'easy-kill))
 
 
 ;;----------------------------------------------------------------------------
