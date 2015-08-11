@@ -498,6 +498,7 @@
 
 ;; ace-window
 (use-package ace-window
+  :ensure
   :init
   (setq avy-keys
         '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u)
@@ -516,7 +517,7 @@
 
 ;; anzu
 (use-package anzu
-  :init
+  :ensure
   :config
   (global-anzu-mode 1)
   (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
@@ -545,6 +546,7 @@
 
 ;; aggressive-indent
 (use-package aggressive-indent
+  :ensure
   :init
   (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
