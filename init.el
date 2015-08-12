@@ -100,7 +100,7 @@
                       rainbow-delimiters
                       restclient
                       scratch
-                      smart-mode-line
+                      smart-mode-line  ;; done
                       smartparens
                       smex
                       swiper
@@ -372,9 +372,12 @@
                                '("~/.emacs.d/snippets")))
 
 ;; smart-mode-line
-(require 'smart-mode-line)
-(add-hook 'after-init-hook 'sml/setup)
-(sml/apply-theme 'respectful)
+(use-package smart-mode-line
+  :ensure
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/theme 'respectful)
+  (add-hook 'after-init-hook 'sml/setup))
 
 ;; projectile
 (projectile-global-mode)
