@@ -90,7 +90,7 @@
                       ido-vertical-mode
                       latex-preview-pane
                       magit
-                      markdown-mode
+                      markdown-mode  ;; done
                       nav
                       paradox
                       paredit
@@ -449,11 +449,9 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; markdown-mode
-(require 'markdown-mode)
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(use-package markdown-mode
+  :ensure
+  :mode "\\.md\\'")
 
 ;; rainbow delimiters
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
