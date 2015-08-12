@@ -75,7 +75,7 @@
                       dired+
                       dired-single
                       easy-kill  ;; done
-                      exec-path-from-shell
+                      exec-path-from-shell  ;; done
                       expand-region
                       flx-ido
                       flycheck
@@ -117,7 +117,10 @@
     (package-install p)))
 
 ;; set paths from shell
-(when (memq window-system '(mac ns))
+(use-package exec-path-from-shell
+  :ensure
+  :if (memq window-system '(mac ns))
+  :config
   (exec-path-from-shell-initialize))
 
 ;; load in custom-set-variables early. FIXME
