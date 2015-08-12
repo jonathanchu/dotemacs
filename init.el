@@ -63,7 +63,7 @@
                       anaconda-mode
                       anzu  ;; done
                       atom-dark-theme
-                      atom-one-dark-theme
+                      atom-one-dark-theme  ;; done
                       cider  ;; done
                       clj-refactor
                       command-log-mode
@@ -242,7 +242,10 @@
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;; color theme
-(load-theme 'atom-one-dark t)
+(use-package atom-one-dark
+  :ensure
+  :config
+  (load-theme 'atom-one-dark t))
 
 ;; open with in original frame, not new window
 (setq ns-pop-up-frames nil)
