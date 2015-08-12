@@ -116,6 +116,9 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+;; use-package
+(require 'use-package)
+
 ;; set paths from shell
 (use-package exec-path-from-shell
   :ensure
@@ -271,9 +274,6 @@
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
-
-;; use-package
-(require 'use-package)
 
 ;; flycheck
 (require 'flycheck)
