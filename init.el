@@ -79,7 +79,7 @@
                       expand-region
                       flx-ido
                       flycheck
-                      fullframe
+                      fullframe  ;; done
                       gitconfig-mode
                       github-browse-file
                       gitignore-mode
@@ -414,8 +414,10 @@
 (global-undo-tree-mode)
 
 ;; fullframe
-(require 'fullframe)
-(fullframe magit-status magit-mode-quit-window)
+(use-package fullframe
+  :ensure
+  :config
+  (fullframe magit-status magit-mode-quit-window))
 
 ;; magit
 (setq magit-last-seen-setup-instructions "1.4.0")
