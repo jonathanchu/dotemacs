@@ -97,7 +97,7 @@
                       projectile
                       py-isort
                       python-mode
-                      rainbow-delimiters
+                      rainbow-delimiters  ;; done
                       restclient
                       scratch
                       smart-mode-line  ;; done
@@ -459,7 +459,10 @@
   :mode "\\.md\\'")
 
 ;; rainbow delimiters
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :ensure
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; smartparens mode
 (smartparens-global-mode t)
