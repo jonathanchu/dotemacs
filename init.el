@@ -76,7 +76,7 @@
                       dired-single
                       easy-kill  ;; done
                       exec-path-from-shell  ;; done
-                      expand-region
+                      expand-region  ;; done
                       flx-ido
                       flycheck
                       fullframe  ;; done
@@ -450,8 +450,10 @@
   (add-hook 'cider-mode-hook 'eldoc-mode))
 
 ;; expand-region
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
+(use-package expand-region
+  :ensure
+  :bind
+  ("C-=" . er/expand-region))
 
 ;; markdown-mode
 (use-package markdown-mode
