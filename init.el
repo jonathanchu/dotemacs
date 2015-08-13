@@ -94,7 +94,7 @@
                       nav
                       paradox
                       paredit
-                      projectile
+                      projectile  ;; done
                       py-isort
                       python-mode
                       rainbow-delimiters  ;; done
@@ -386,8 +386,12 @@
   (add-hook 'after-init-hook 'sml/setup))
 
 ;; projectile
-(projectile-global-mode)
-(setq projectile-completion-system 'grizzl)
+(use-package projectile
+  :ensure
+  :diminish ""
+  :config
+  (projectile-global-mode 1)
+  (setq projectile-completion-system 'grizzl))
 
 ;; py-isort
 ;; (require 'py-isort)
