@@ -103,7 +103,7 @@
                       smart-mode-line  ;; done
                       smartparens
                       smex
-                      swiper
+                      swiper  ;; done
                       textmate
                       undo-tree
                       use-package
@@ -499,11 +499,15 @@
 (latex-preview-pane-enable)
 
 ;; swiper
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(use-package swiper
+  :ensure
+  :bind
+  ("C-s" . swiper)
+  ("C-r" . swiper)
+  ("C-c C-r" . ivy-resume)
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t))
 
 ;; ace-window
 (use-package ace-window
