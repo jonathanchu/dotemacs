@@ -96,7 +96,7 @@
                       paredit
                       projectile  ;; done
                       py-isort
-                      python-mode
+                      python-mode  ;; done
                       rainbow-delimiters  ;; done
                       restclient
                       scratch
@@ -299,11 +299,14 @@
 (ido-ubiquitous-mode 1)
 
 ;; python
-(require 'python-mode)
-(add-hook 'python-mode-hook (lambda ()
-                              (flycheck-mode 1)
-                              (setq fill-column 80)))
-(add-to-list 'auto-mode-alist '("\\.py" . python-mode))
+(use-package python-mode
+  :ensure
+  :config
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (flycheck-mode 1)
+               (setq fill-column 80)))
+  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
 ;; anaconda-mode
 (add-hook 'python-mode-hook 'anaconda-mode)
