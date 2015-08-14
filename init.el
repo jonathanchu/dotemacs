@@ -60,7 +60,7 @@
                       ace-window  ;; done
                       ag
                       aggressive-indent  ;; done
-                      anaconda-mode
+                      anaconda-mode  ;; done
                       anzu  ;; done
                       atom-dark-theme
                       atom-one-dark-theme  ;; done
@@ -309,8 +309,13 @@
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
 ;; anaconda-mode
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'eldoc-mode)
+(use-package anaconda-mode
+  :ensure
+  :config
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (anaconda-mode 1)
+               (eldoc-mode 1))))
 
 ;; javascript
 (add-hook 'js-mode-hook
