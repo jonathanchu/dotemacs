@@ -67,8 +67,8 @@
                       cider  ;; done
                       clj-refactor
                       command-log-mode
-                      company
-                      company-anaconda
+                      company  ;; done
+                      company-anaconda  ;; done
                       counsel
                       dedicated
                       deft
@@ -567,11 +567,14 @@
 (add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
 ;; company-mode and backends
-(add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  (progn
-    '(add-to-list 'company-backends 'company-anaconda)
-    ))
+(use-package company
+  :ensure
+  :config
+  (global-company-mode)
+  (eval-after-load 'company
+    (progn
+      '(add-to-list 'company-backends 'company-anaconda)
+      )))
 
 ;; aggressive-indent
 (use-package aggressive-indent
