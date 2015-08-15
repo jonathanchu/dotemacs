@@ -69,7 +69,7 @@
                       company  ;; done
                       company-anaconda  ;; done
                       counsel  ;; done
-                      deft
+                      deft  ;; done
                       dired+
                       dired-single
                       easy-kill  ;; done
@@ -359,12 +359,14 @@
 (setq magit-completing-read-function 'ivy-completing-read)
 
 ;; deft
-(require 'deft)
-(setq deft-directory "~/Dropbox/Simplenote")
-(setq deft-extension "txt")
-(setq deft-text-mode 'org-mode)
-(setq deft-use-filename-as-title t)
-(setq deft-auto-save-interval 0)
+(use-package deft
+  :ensure
+  :config
+  (setq deft-directory "~/Dropbox/Simplenote")
+  (setq deft-extension "txt")
+  (setq deft-text-mode 'org-mode)
+  (setq deft-use-filename-as-title t)
+  (setq deft-auto-save-interval 0))
 
 ;; nav-mode
 (require 'nav)
