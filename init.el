@@ -71,7 +71,7 @@
                       counsel  ;; done
                       deft  ;; done
                       dired+  ;; done
-                      dired-single
+                      dired-single  ;; done
                       easy-kill  ;; done
                       exec-path-from-shell  ;; done
                       expand-region  ;; done
@@ -432,6 +432,9 @@
 
 ;; dired+ mode
 (use-package dired+ :ensure)
+
+;; dired-single
+(use-package dired-single :ensure)
 
 ;; undo-tree mode
 (require 'undo-tree)
