@@ -70,7 +70,7 @@
                       company-anaconda  ;; done
                       counsel  ;; done
                       deft  ;; done
-                      dired+
+                      dired+  ;; done
                       dired-single
                       easy-kill  ;; done
                       exec-path-from-shell  ;; done
@@ -431,7 +431,7 @@
                                 (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
 
 ;; dired+ mode
-(require 'dired+)
+(use-package dired+ :ensure)
 
 ;; undo-tree mode
 (require 'undo-tree)
