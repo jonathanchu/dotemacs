@@ -62,7 +62,6 @@
                       aggressive-indent  ;; done
                       anaconda-mode  ;; done
                       anzu  ;; done
-                      atom-dark-theme
                       atom-one-dark-theme  ;; done
                       cider  ;; done
                       clj-refactor
