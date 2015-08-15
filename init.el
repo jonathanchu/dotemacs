@@ -65,7 +65,7 @@
                       atom-one-dark-theme  ;; done
                       cider  ;; done
                       clj-refactor  ;; done
-                      command-log-mode
+                      command-log-mode  ;; done
                       company  ;; done
                       company-anaconda  ;; done
                       counsel
@@ -273,6 +273,9 @@
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
+
+;; command-log-mode
+(use-package command-log-mode :ensure)
 
 ;; flycheck
 (require 'flycheck)
