@@ -64,7 +64,7 @@
                       anzu  ;; done
                       atom-one-dark-theme  ;; done
                       cider  ;; done
-                      clj-refactor
+                      clj-refactor  ;; done
                       command-log-mode
                       company  ;; done
                       company-anaconda  ;; done
@@ -574,12 +574,14 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;; clj-refactor
-(require 'clj-refactor)
-(defun my-clojure-mode-hook ()
-  (clj-refactor-mode 1)
-  (yas-minor-mode 1) ; for adding require/use/import
-  (cljr-add-keybindings-with-prefix "C-c C-m"))
-(add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
+(use-package clj-refactor
+  :ensure
+  :config
+  (defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 ;; company-mode and backends
 (use-package company
