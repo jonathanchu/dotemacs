@@ -58,7 +58,7 @@
 
 (defvar my-packages '(
                       ace-window  ;; done
-                      ag
+                      ag  ;; done
                       aggressive-indent  ;; done
                       anaconda-mode  ;; done
                       anzu  ;; done
@@ -392,6 +392,14 @@
   (setq sml/no-confirm-load-theme t)
   (setq sml/theme 'respectful)
   (add-hook 'after-init-hook 'sml/setup))
+
+;; ag
+(use-package ag
+  :ensure
+  :config
+  (progn
+    (setq ag-highlight-search t
+          ag-reuse-buffers t)))
 
 ;; projectile
 (use-package projectile
