@@ -75,7 +75,7 @@
                       easy-kill  ;; done
                       exec-path-from-shell  ;; done
                       expand-region  ;; done
-                      flx-ido
+                      flx-ido  ;; done
                       flycheck
                       fullframe  ;; done
                       gitconfig-mode
@@ -285,6 +285,9 @@
 (setq uniquify-separator " • ")
 (setq uniquify-after-kill-buffer-p t)
 (setq uniquify-ignore-buffers-re "^\\*")
+
+;; flx-ido
+(use-package flx-ido :ensure)
 
 ;; ido-mode
 (ido-mode t)
