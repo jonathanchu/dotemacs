@@ -68,7 +68,7 @@
                       command-log-mode  ;; done
                       company  ;; done
                       company-anaconda  ;; done
-                      counsel
+                      counsel  ;; done
                       dedicated
                       deft
                       dired+
@@ -610,7 +610,10 @@
 (setq paradox-execute-asynchronously t)
 
 ;; counsel
-(global-set-key (kbd "C-c g") 'counsel-git-grep)
+(use-package counsel
+  :ensure
+  :bind
+  ("C-c g" . counsel-git-grep))
 
 ;; easy-kill
 (use-package easy-kill
