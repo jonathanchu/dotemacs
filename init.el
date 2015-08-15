@@ -90,7 +90,7 @@
                       magit
                       markdown-mode  ;; done
                       nav
-                      paradox
+                      paradox  ;; done
                       paredit
                       projectile  ;; done
                       py-isort
@@ -612,7 +612,11 @@
 (guru-global-mode 1)
 
 ;; paradox
-(setq paradox-execute-asynchronously t)
+(use-package paradox
+  :ensure
+  :config
+  (setq paradox-execute-asynchronously t)
+  )
 
 ;; counsel
 (use-package counsel
