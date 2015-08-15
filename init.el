@@ -69,7 +69,6 @@
                       company  ;; done
                       company-anaconda  ;; done
                       counsel  ;; done
-                      dedicated
                       deft
                       dired+
                       dired-single
@@ -347,8 +346,6 @@
 ;; css
 (add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
 (setq css-indent-offset 2)
-
-(require 'dedicated) ;; sticky windows
 
 ;; textmate-mode
 (textmate-mode)
