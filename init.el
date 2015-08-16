@@ -103,7 +103,7 @@
                       smex
                       swiper  ;; done
                       textmate
-                      undo-tree
+                      undo-tree  ;; done
                       use-package
                       web-mode
                       yasnippet
@@ -441,8 +441,12 @@
 (use-package dired-single :ensure)
 
 ;; undo-tree mode
-(require 'undo-tree)
-(global-undo-tree-mode)
+(use-package undo-tree
+  :ensure
+  :config
+  (global-undo-tree-mode 1)
+  (setq undo-tree-visualizer-diff t
+        undo-tree-visualizer-timestamps t))
 
 ;; fullframe
 (use-package fullframe
