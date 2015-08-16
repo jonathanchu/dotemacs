@@ -76,7 +76,7 @@
                       exec-path-from-shell  ;; done
                       expand-region  ;; done
                       flx-ido  ;; done
-                      flycheck
+                      flycheck  ;; done
                       fullframe  ;; done
                       gitconfig-mode
                       github-browse-file
@@ -277,7 +277,11 @@
 (use-package command-log-mode :ensure)
 
 ;; flycheck
-(require 'flycheck)
+(use-package flycheck
+  :ensure
+  :defer 2
+  :config
+  (global-flycheck-mode 1))
 
 ;; uniquify
 (require 'uniquify)
@@ -308,7 +312,6 @@
   :config
   (add-hook 'python-mode-hook
             '(lambda ()
-               (flycheck-mode 1)
                (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
@@ -322,8 +325,6 @@
                (eldoc-mode 1))))
 
 ;; javascript
-(add-hook 'js-mode-hook
-          (lambda () (flycheck-mode 1)))
 (setq js-indent-level 2)
 
 ;; web mode
