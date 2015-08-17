@@ -78,7 +78,7 @@
                       flx-ido  ;; done
                       flycheck  ;; done
                       fullframe  ;; done
-                      gitconfig-mode
+                      gitconfig-mode  ;; done
                       github-browse-file
                       gitignore-mode
                       git-timemachine
@@ -275,6 +275,9 @@
 
 ;; command-log-mode
 (use-package command-log-mode :ensure)
+
+;; gitconfig-mode
+(use-package gitconfig-mode :ensure)
 
 ;; flycheck
 (use-package flycheck
