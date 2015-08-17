@@ -737,6 +737,23 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'post-self-insert-hook 'dcaps-to-scaps)
 
+;; timestamps in *Messages*
+;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
+(defun current-time-microseconds ()
+  (let* ((nowtime (current-time))
+         (now-ms (nth 2 nowtime)))
+    (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
+
+(defadvice message (before test-symbol activate)
+  (if (not (string-equal (ad-get-arg 0) "%s%s"))
+      (let ((inhibit-read-only t)
+            (deactivate-mark nil))
+        (with-current-buffer "*Messages*"
+          (goto-char (point-max))
+          (if (not (bolp))
+              (newline))
+          (insert (current-time-microseconds))))))
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
