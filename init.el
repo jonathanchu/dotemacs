@@ -85,7 +85,7 @@
                       grizzl  ;; done
                       guru-mode  ;; done
                       ido-ubiquitous  ;; done
-                      ido-vertical-mode
+                      ido-vertical-mode  ;; done
                       latex-preview-pane
                       magit
                       markdown-mode  ;; done
@@ -308,9 +308,11 @@
 (setq ido-use-faces nil)
 
 ;; ido-vertical-mode
-(require 'ido-vertical-mode)
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(use-package ido-vertical-mode
+  :ensure
+  :config
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 ;; ido-ubiquitous
 (use-package ido-ubiquitous
