@@ -86,7 +86,7 @@
                       guru-mode  ;; done
                       ido-ubiquitous  ;; done
                       ido-vertical-mode  ;; done
-                      latex-preview-pane
+                      latex-preview-pane  ;; done
                       magit
                       markdown-mode  ;; done
                       nav
@@ -550,7 +550,10 @@
           (lambda () (local-set-key (kbd "C-k") 'paredit-kill)))
 
 ;; latex-preview-pane
-(latex-preview-pane-enable)
+(use-package latex-preview-pane
+  :ensure
+  :config
+  (latex-preview-pane-enable))
 
 ;; swiper
 (use-package swiper
