@@ -83,7 +83,7 @@
                       gitignore-mode  ;; done
                       git-timemachine  ;; done
                       grizzl  ;; done
-                      guru-mode
+                      guru-mode  ;; done
                       ido-ubiquitous
                       ido-vertical-mode
                       latex-preview-pane
@@ -628,7 +628,10 @@
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 ;; guru-mode
-(guru-global-mode 1)
+(use-package guru-mode
+  :ensure
+  :config
+  (guru-global-mode 1))
 
 ;; paradox
 (use-package paradox
