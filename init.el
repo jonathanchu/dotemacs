@@ -81,7 +81,7 @@
                       gitconfig-mode  ;; done
                       github-browse-file
                       gitignore-mode  ;; done
-                      git-timemachine
+                      git-timemachine  ;; done
                       grizzl
                       guru-mode
                       ido-ubiquitous
@@ -281,6 +281,9 @@
 
 ;; gitignore-mode
 (use-package gitignore-mode :ensure)
+
+;; git-timemachine
+(use-package git-timemachine :ensure)
 
 ;; flycheck
 (use-package flycheck
