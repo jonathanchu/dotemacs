@@ -80,7 +80,7 @@
                       fullframe  ;; done
                       gitconfig-mode  ;; done
                       github-browse-file
-                      gitignore-mode
+                      gitignore-mode  ;; done
                       git-timemachine
                       grizzl
                       guru-mode
@@ -278,6 +278,9 @@
 
 ;; gitconfig-mode
 (use-package gitconfig-mode :ensure)
+
+;; gitignore-mode
+(use-package gitignore-mode :ensure)
 
 ;; flycheck
 (use-package flycheck
