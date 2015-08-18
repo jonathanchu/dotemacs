@@ -82,7 +82,7 @@
                       github-browse-file
                       gitignore-mode  ;; done
                       git-timemachine  ;; done
-                      grizzl
+                      grizzl  ;; done
                       guru-mode
                       ido-ubiquitous
                       ido-vertical-mode
@@ -414,6 +414,9 @@
   (progn
     (setq ag-highlight-search t
           ag-reuse-buffers t)))
+
+;; grizzl
+(use-package grizzl :ensure)
 
 ;; projectile
 (use-package projectile
