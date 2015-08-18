@@ -637,8 +637,7 @@
 (use-package paradox
   :ensure
   :config
-  (setq paradox-execute-asynchronously t)
-  )
+  (setq paradox-execute-asynchronously t))
 
 ;; counsel
 (use-package counsel
