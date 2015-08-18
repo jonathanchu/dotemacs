@@ -540,13 +540,15 @@
 
 ;; swiper
 (use-package swiper
+  :init
+  (ivy-mode 1)
   :ensure
   :bind
   ("C-s" . swiper)
   ("C-r" . swiper)
   ("C-c C-r" . ivy-resume)
   :config
-  (ivy-mode 1)
+  ;; (ivy-mode 1)
   (setq ivy-use-virtual-buffers t))
 
 ;; ace-window
