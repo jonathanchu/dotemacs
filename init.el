@@ -79,7 +79,7 @@
                       flycheck  ;; done
                       fullframe  ;; done
                       gitconfig-mode  ;; done
-                      github-browse-file
+                      github-browse-file  ;; done
                       gitignore-mode  ;; done
                       git-timemachine  ;; done
                       grizzl  ;; done
@@ -284,6 +284,9 @@
 
 ;; git-timemachine
 (use-package git-timemachine :ensure)
+
+;; github-browse-fle
+(use-package github-browse-file :ensure)
 
 ;; flycheck
 (use-package flycheck
