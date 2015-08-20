@@ -87,7 +87,7 @@
                       ido-ubiquitous  ;; done
                       ido-vertical-mode  ;; done
                       latex-preview-pane  ;; done
-                      magit
+                      magit  ;; done
                       markdown-mode  ;; done
                       nav
                       paradox  ;; done
@@ -372,12 +372,16 @@
 (textmate-mode)
 
 ;; magit
-(global-set-key (kbd "C-x g") 'magit-status)
-(setq magit-push-always-verify nil)
-
-;; use ido when checking out branches
-;; (setq magit-completing-read-function 'magit-ido-completing-read)
-(setq magit-completing-read-function 'ivy-completing-read)
+(use-package magit
+  :ensure
+  :config
+  (progn
+    (setq magit-push-always-verify nil)
+    (setq magit-completing-read-function 'ivy-completing-read)
+    (setq magit-last-seen-setup-instructions "1.4.0"))
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c C-a" . magit-commit-amend))
 
 ;; deft
 (use-package deft
@@ -473,9 +477,6 @@
   :ensure
   :config
   (fullframe magit-status magit-mode-quit-window))
-
-;; magit
-(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; recentf
 (use-package recentf
