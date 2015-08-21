@@ -89,7 +89,7 @@
                       latex-preview-pane  ;; done
                       magit  ;; done
                       markdown-mode  ;; done
-                      nav
+                      nav  ;; done
                       paradox  ;; done
                       paredit
                       projectile  ;; done
@@ -394,8 +394,10 @@
   (setq deft-auto-save-interval 0))
 
 ;; nav-mode
-(require 'nav)
-(nav-disable-overeager-window-splitting)
+(use-package nav
+  :ensure
+  :config
+  (nav-disable-overeager-window-splitting))
 
 ;; smex
 (require 'smex)
