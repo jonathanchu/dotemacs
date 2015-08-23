@@ -102,7 +102,7 @@
                       smartparens
                       smex
                       swiper  ;; done
-                      textmate
+                      textmate  ;; done
                       undo-tree  ;; done
                       use-package
                       web-mode
@@ -369,7 +369,10 @@
 (setq css-indent-offset 2)
 
 ;; textmate-mode
-(textmate-mode)
+(use-package textmate
+  :ensure
+  :config
+  (textmate-mode 1))
 
 ;; magit
 (use-package magit
