@@ -274,19 +274,24 @@
 ;;----------------------------------------------------------------------------
 
 ;; command-log-mode
-(use-package command-log-mode :ensure)
+(use-package command-log-mode
+  :ensure)
 
 ;; gitconfig-mode
-(use-package gitconfig-mode :ensure)
+(use-package gitconfig-mode
+  :ensure)
 
 ;; gitignore-mode
-(use-package gitignore-mode :ensure)
+(use-package gitignore-mode
+  :ensure)
 
 ;; git-timemachine
-(use-package git-timemachine :ensure)
+(use-package git-timemachine
+  :ensure)
 
 ;; github-browse-fle
-(use-package github-browse-file :ensure)
+(use-package github-browse-file
+  :ensure)
 
 ;; flycheck
 (use-package flycheck
@@ -303,7 +308,8 @@
 (setq uniquify-ignore-buffers-re "^\\*")
 
 ;; flx-ido
-(use-package flx-ido :ensure)
+(use-package flx-ido
+  :ensure)
 
 ;; ido-mode
 (ido-mode t)
@@ -439,7 +445,8 @@
           ag-reuse-buffers t)))
 
 ;; grizzl
-(use-package grizzl :ensure)
+(use-package grizzl
+  :ensure)
 
 ;; projectile
 (use-package projectile
@@ -470,10 +477,12 @@
                                 (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))
 
 ;; dired+ mode
-(use-package dired+ :ensure)
+(use-package dired+
+  :ensure)
 
 ;; dired-single
-(use-package dired-single :ensure)
+(use-package dired-single
+  :ensure)
 
 ;; undo-tree mode
 (use-package undo-tree
