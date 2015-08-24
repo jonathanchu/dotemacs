@@ -105,7 +105,7 @@
                       textmate  ;; done
                       undo-tree  ;; done
                       use-package
-                      web-mode
+                      web-mode  ;; done
                       yasnippet
                       )
   "A list of packages to ensure are installed at launch.")
@@ -354,17 +354,19 @@
 ;; javascript
 (setq js-indent-level 2)
 
-;; web mode
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+;; web-mode
+(use-package web-mode
+  :ensure
+  :config
+  (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode)))
 
 ;; everything is indented 2 spaces
 (setq web-mode-markup-indent-offset 2)
