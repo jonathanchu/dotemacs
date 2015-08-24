@@ -96,7 +96,7 @@
                       py-isort  ;; done
                       python-mode  ;; done
                       rainbow-delimiters  ;; done
-                      restclient
+                      restclient  ;; done
                       scratch
                       smart-mode-line  ;; done
                       smartparens
@@ -291,6 +291,10 @@
 
 ;; github-browse-fle
 (use-package github-browse-file
+  :ensure)
+
+;; restclient
+(use-package restclient
   :ensure)
 
 ;; flycheck
