@@ -97,7 +97,7 @@
                       python-mode  ;; done
                       rainbow-delimiters  ;; done
                       restclient  ;; done
-                      scratch
+                      scratch  ;; done
                       smart-mode-line  ;; done
                       smartparens
                       smex  ;; done
@@ -620,7 +620,10 @@
   ("C-c j" . avy-goto-word-or-subword-1))
 
 ;; multiple scratch buffers
-(autoload 'scratch "scratch" nil t)
+(use-package scratch
+  :ensure
+  :config
+  (autoload 'scratch "scratch" nil t))
 
 ;; flyspell
 (add-hook 'text-mode-hook 'flyspell-mode)
