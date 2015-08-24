@@ -100,7 +100,7 @@
                       scratch  ;; done
                       smart-mode-line  ;; done
                       smartparens
-                      smex  ;; done
+                      smex
                       swiper  ;; done
                       textmate  ;; done
                       undo-tree  ;; done
@@ -418,14 +418,8 @@
   (nav-disable-overeager-window-splitting))
 
 ;; smex
-(use-package smex
-  :ensure
-  :config
-  (smex-initialize)
-  :bind
-  ("M-x" . smex)
-  ("M-x" . smex-major-mode-commands)
-  ("C-c C-c M-x" . execute-extended-command))
+(require 'smex)
+(smex-initialize)
 
 ;; server mdoe
 (if (not server-mode)
@@ -828,6 +822,12 @@ point reaches the beginning or end of the buffer, stop there."
 ;; font-size
 (define-key global-map (kbd "s-=") 'text-scale-increase)
 (define-key global-map (kbd "s--") 'text-scale-decrease)
+
+;; smex
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
