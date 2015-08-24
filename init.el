@@ -93,7 +93,7 @@
                       paradox  ;; done
                       paredit  ;; done
                       projectile  ;; done
-                      py-isort
+                      py-isort  ;; done
                       python-mode  ;; done
                       rainbow-delimiters  ;; done
                       restclient
@@ -457,8 +457,10 @@
   (setq projectile-completion-system 'grizzl))
 
 ;; py-isort
-;; (require 'py-isort)
-;; (add-hook 'before-save-hook 'py-isort-before-save)
+;; (use-package py-isort
+;;   :ensure
+;;   :config
+;;   (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; org-mode
 (setq org-directory "~/Dropbox/org")
