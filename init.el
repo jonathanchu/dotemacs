@@ -91,7 +91,7 @@
                       markdown-mode  ;; done
                       nav  ;; done
                       paradox  ;; done
-                      paredit
+                      paredit  ;; done
                       projectile  ;; done
                       py-isort
                       python-mode  ;; done
@@ -551,18 +551,19 @@
   (context 2))
 
 ;; paredit-mode
-(autoload 'enable-paredit-mode "paredit"
-  "Turn on pseudo-structural editing of Lisp code."
-  t)
-(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
-(add-hook 'ielm-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-(add-hook 'scheme-mode-hook 'enable-paredit-mode)
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
-(add-hook 'python-mode-hook
-          (lambda () (local-set-key (kbd "C-k") 'paredit-kill)))
+(use-package paredit
+  :ensure
+  :config
+  (autoload 'enable-paredit-mode "paredit" t)
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook 'enable-paredit-mode)
+  (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+  (add-hook 'python-mode-hook
+            (lambda () (local-set-key (kbd "C-k") 'paredit-kill))))
 
 ;; latex-preview-pane
 (use-package latex-preview-pane
