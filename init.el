@@ -217,8 +217,9 @@
 (setq-default cursor-type 'bar)
 
 ;; highlight brackets
-(require 'paren)
-(show-paren-mode 1)
+(use-package paren
+  :config
+  (show-paren-mode 1))
 
 ;; make sure looking at most recent changes
 (global-auto-revert-mode 1)
