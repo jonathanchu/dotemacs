@@ -242,9 +242,11 @@
 (setq scroll-conservatively 10000)
 
 ;; save place
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file "~/.emacs.d/saved-places")
+(use-package saveplace
+  :config
+  (progn
+    (setq-default save-place t)
+    (setq save-place-file "~/.emacs.d/saved-places")))
 
 ;; color theme
 (use-package atom-one-dark-theme
