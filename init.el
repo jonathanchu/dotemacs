@@ -314,8 +314,7 @@
     (setq uniquify-buffer-name-style 'reverse)
     (setq uniquify-separator " • ")
     (setq uniquify-after-kill-buffer-p t)
-    (setq uniquify-ignore-buffers-re "^\\*"))
-  )
+    (setq uniquify-ignore-buffers-re "^\\*")))
 
 ;; flx-ido
 (use-package flx-ido
