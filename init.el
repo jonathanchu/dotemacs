@@ -646,7 +646,9 @@
   (autoload 'scratch "scratch" nil t))
 
 ;; flyspell
-(add-hook 'text-mode-hook 'flyspell-mode)
+(use-package flyspell
+  :config
+  (add-hook 'text-mode-hook 'flyspell-mode))
 
 ;; anzu
 (use-package anzu
