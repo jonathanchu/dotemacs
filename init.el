@@ -106,7 +106,7 @@
                       undo-tree  ;; done
                       use-package
                       web-mode  ;; done
-                      yasnippet
+                      yasnippet  ;; done
                       )
   "A list of packages to ensure are installed at launch.")
 
@@ -432,10 +432,13 @@
     (server-start nil t))
 
 ;; yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
-(setq yas-snippet-dirs (append yas-snippet-dirs
-                               '("~/.emacs.d/snippets")))
+(use-package yasnippet
+  :ensure
+  :config
+  (progn
+    (yas-global-mode 1)
+    (setq yas-snippet-dirs (append yas-snippet-dirs
+                                   '("~/.emacs.d/snippets")))))
 
 ;; smart-mode-line
 (use-package smart-mode-line
