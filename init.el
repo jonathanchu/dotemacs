@@ -64,12 +64,9 @@
 (require 'diminish)
 (require 'bind-key)
 
-;; set paths from shell
-(use-package exec-path-from-shell
-  :ensure
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
+;;----------------------------------------------------------------------------
+;; Global Config
+;;----------------------------------------------------------------------------
 
 ;; load in custom-set-variables early. FIXME
 (custom-set-variables
@@ -89,9 +86,12 @@
  ;; If there is more than one, they won't work right.
  )
 
-;;----------------------------------------------------------------------------
-;; Global Config
-;;----------------------------------------------------------------------------
+;; set paths from shell
+(use-package exec-path-from-shell
+  :ensure
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -163,11 +163,6 @@
 ;; cursor
 (setq-default cursor-type 'bar)
 
-;; highlight brackets
-(use-package paren
-  :config
-  (show-paren-mode 1))
-
 ;; make sure looking at most recent changes
 (global-auto-revert-mode 1)
 
@@ -188,19 +183,6 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 (setq scroll-conservatively 10000)
 
-;; save place
-(use-package saveplace
-  :config
-  (progn
-    (setq-default save-place t)
-    (setq save-place-file "~/.emacs.d/saved-places")))
-
-;; color theme
-(use-package atom-one-dark-theme
-  :ensure
-  :config
-  (load-theme 'atom-one-dark t))
-
 ;; open with in original frame, not new window
 (setq ns-pop-up-frames nil)
 
@@ -213,15 +195,37 @@
 ;; delete selection, insert text
 (delete-selection-mode 1)
 
+;; javascript
+(setq js-indent-level 2)
+
+;; everything is indented 2 spaces
+
 ;; prevent active process query on quit
 (require 'cl)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   (flet ((process-list ())) ad-do-it))
 
-
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
+
+;; highlight brackets
+(use-package paren
+  :config
+  (show-paren-mode 1))
+
+;; save place
+(use-package saveplace
+  :config
+  (progn
+    (setq-default save-place t)
+    (setq save-place-file "~/.emacs.d/saved-places")))
+
+;; color theme
+(use-package atom-one-dark-theme
+  :ensure
+  :config
+  (load-theme 'atom-one-dark t))
 
 ;; command-log-mode
 (use-package command-log-mode
@@ -305,9 +309,6 @@
             '(lambda ()
                (anaconda-mode 1)
                (eldoc-mode 1))))
-
-;; javascript
-(setq js-indent-level 2)
 
 ;; web-mode
 (use-package web-mode
