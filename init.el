@@ -166,11 +166,6 @@
 ;; make sure looking at most recent changes
 (global-auto-revert-mode 1)
 
-;; whitespace cleanup
-(global-whitespace-mode 1)
-(setq whitespace-action '(auto-cleanup)) ;; automatically clean up bad whitespace
-(setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)) ;; only show bad whitespace
-
 (setq window-combination-resize t)
 
 ;;keep cursor at same position when scrolling
@@ -212,6 +207,14 @@
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
+
+;; whitespace
+(use-package whitespace
+  :config
+  (progn
+    (global-whitespace-mode 1)
+    (setq whitespace-action '(auto-cleanup))
+    (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
 
 ;; highlight brackets
 (use-package paren
