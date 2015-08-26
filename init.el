@@ -198,6 +198,9 @@
 ;; javascript
 (setq js-indent-level 2)
 
+;; css
+(setq css-indent-offset 2)
+
 ;; prevent active process query on quit
 (require 'cl)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
@@ -331,9 +334,11 @@
   :config
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
-;; css
-(add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
-(setq css-indent-offset 2)
+;; less-css-mode
+(use-package less-css-mode
+  :ensure
+  :config
+  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 ;; textmate-mode
 (use-package textmate
