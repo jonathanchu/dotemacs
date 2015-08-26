@@ -436,12 +436,15 @@
 ;;   (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; org-mode
-(setq org-directory "~/Dropbox/org")
-(setq org-log-done t)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "|" "DONE(d)")
-        (sequence "WAITING(w)" "|" "CANCELED(c)")))
-(setq org-completion-use-ido t)
+(use-package org
+  :config
+  (setq org-directory "~/Dropbox/org")
+  (setq org-log-done t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "|" "DONE(d)")
+          (sequence "WAITING(w)" "|" "CANCELED(c)")))
+  (setq org-completion-use-ido t)
+  (setq org-startup-folded nil))
 
 ;; linum mode
 (use-package linum
