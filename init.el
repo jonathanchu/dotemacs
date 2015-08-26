@@ -198,8 +198,6 @@
 ;; javascript
 (setq js-indent-level 2)
 
-;; everything is indented 2 spaces
-
 ;; prevent active process query on quit
 (require 'cl)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
