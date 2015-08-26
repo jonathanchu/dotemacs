@@ -365,11 +365,12 @@
 (use-package deft
   :ensure
   :config
-  (setq deft-directory "~/Dropbox/Simplenote")
-  (setq deft-extension "txt")
-  (setq deft-text-mode 'org-mode)
-  (setq deft-use-filename-as-title t)
-  (setq deft-auto-save-interval 0))
+  (progn
+    (setq deft-directory "~/Dropbox/Simplenote")
+    (setq deft-extension "org")
+    (setq deft-text-mode 'org-mode)
+    (setq deft-use-filename-as-title t)
+    (setq deft-auto-save-interval 0)))
 
 ;; nav-mode
 (use-package nav
