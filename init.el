@@ -115,7 +115,10 @@
     (package-install p)))
 
 ;; use-package
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
 ;; set paths from shell
 (use-package exec-path-from-shell
