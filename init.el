@@ -206,6 +206,9 @@
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   (flet ((process-list ())) ad-do-it))
 
+;; instantly display current key sequence in mini buffer
+(setq echo-keystrokes 0.02)
+
 ;;----------------------------------------------------------------------------
 ;; Modes
 ;;----------------------------------------------------------------------------
