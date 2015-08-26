@@ -623,8 +623,11 @@
    ("C-M-%" . anzu-query-replace-regexp)))
 
 ;; org bullets (custom)
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(use-package org-bullets
+  ;; :load-path "vendor/"
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  )
 
 ;; clj-refactor
 (use-package clj-refactor
