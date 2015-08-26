@@ -47,72 +47,16 @@
 ;;----------------------------------------------------------------------------
 
 (require 'package)
-
+(setq package-enable-at-startup nil)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")))
 
 (package-initialize)
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
-
-(defvar my-packages '(
-                      ace-window  ;; done
-                      ag  ;; done
-                      aggressive-indent  ;; done
-                      anaconda-mode  ;; done
-                      anzu  ;; done
-                      atom-one-dark-theme  ;; done
-                      cider  ;; done
-                      clj-refactor  ;; done
-                      command-log-mode  ;; done
-                      company  ;; done
-                      company-anaconda  ;; done
-                      counsel  ;; done
-                      deft  ;; done
-                      dired+  ;; done
-                      dired-single  ;; done
-                      easy-kill  ;; done
-                      exec-path-from-shell  ;; done
-                      expand-region  ;; done
-                      flx-ido  ;; done
-                      flycheck  ;; done
-                      fullframe  ;; done
-                      gitconfig-mode  ;; done
-                      github-browse-file  ;; done
-                      gitignore-mode  ;; done
-                      git-timemachine  ;; done
-                      grizzl  ;; done
-                      guru-mode  ;; done
-                      ido-ubiquitous  ;; done
-                      ido-vertical-mode  ;; done
-                      latex-preview-pane  ;; done
-                      magit  ;; done
-                      markdown-mode  ;; done
-                      nav  ;; done
-                      paradox  ;; done
-                      paredit  ;; done
-                      projectile  ;; done
-                      py-isort  ;; done
-                      python-mode  ;; done
-                      rainbow-delimiters  ;; done
-                      restclient  ;; done
-                      scratch  ;; done
-                      smart-mode-line  ;; done
-                      smartparens  ;; done
-                      smex  ;; done
-                      swiper  ;; done
-                      textmate  ;; done
-                      undo-tree  ;; done
-                      use-package
-                      web-mode  ;; done
-                      yasnippet  ;; done
-                      )
-  "A list of packages to ensure are installed at launch.")
-
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
 ;; use-package
 (eval-when-compile
