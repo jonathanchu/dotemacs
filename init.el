@@ -327,7 +327,9 @@
     (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
 
 ;; makefile-mode
-(add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode))
+(use-package makefile-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
 ;; css
 (add-to-list 'auto-mode-alist '("\\.less\\'" . css-mode))
