@@ -688,7 +688,7 @@
 ;; make zap-to-char act like zap-up-to-char
 (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
   "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
-  The CHAR is replaced and the point is put before CHAR."
+The CHAR is replaced and the point is put before CHAR."
   (insert char)
   (forward-char -1))
 
@@ -747,7 +747,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; use ido selection for recentf
 (defun ido-choose-from-recentf ()
-  "Use ido to select a recently visited file from the `recentf-list'"
+  "Use ido to select a recently visited file from the `recentf-list'."
   (interactive)
   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
