@@ -744,7 +744,7 @@ point reaches the beginning or end of the buffer, stop there."
   (kill-line)
   (yank)
   (open-line 1)
-  (next-line 1)
+  (forward-line 1)
   (yank))
 
 ;; use ido selection for recentf
