@@ -772,7 +772,7 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (and (= ?w (char-syntax (char-before)))
        (save-excursion
-         (and (if (called-interactively-p)
+         (and (if (called-interactively-p 1)
                   (skip-syntax-backward "w")
                 (= -3 (skip-syntax-backward "w")))
               (let (case-fold-search)
