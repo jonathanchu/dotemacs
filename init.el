@@ -444,7 +444,15 @@
   (setq org-log-done t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "|" "DONE(d)")
-          (sequence "WAITING(w)" "|" "CANCELED(c)")))
+          (sequence "WAITING(w)" "|" "CANCELED(c)")
+          (sequence "NEXT(n)" "|" "HOLD(h)")
+          ))
+  (setq org-todo-keyword-faces
+        '(("TODO" . (:foreground "green" :weight bold))
+          ("NEXT" :foreground "blue" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("HOLD" :foreground "magenta" :weight bold)
+          ("CANCELED" :foreground "red" :weight bold)))
   (setq org-completion-use-ido t)
   (setq org-startup-folded nil))
 
