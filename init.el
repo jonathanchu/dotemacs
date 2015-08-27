@@ -625,7 +625,7 @@
 
 ;; org bullets (custom)
 (use-package org-bullets
-  ;; :load-path "vendor/"
+  :load-path "vendor/"
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   )
