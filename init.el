@@ -717,6 +717,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Highlight the call to ipdb
 ;; src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
 (defun annotate-pdb ()
+  "Highlight lines using a regexp that set the pdb breakpoint."
   (interactive)
   (highlight-lines-matching-regexp "import ipdb")
   (highlight-lines-matching-regexp "pdb.set_trace()"))
@@ -737,6 +738,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; duplicate the current line function
 (defun duplicate-line ()
+  "Duplicate the current line."
   (interactive)
   (move-beginning-of-line 1)
   (kill-line)
