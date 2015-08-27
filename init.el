@@ -627,8 +627,7 @@
 (use-package org-bullets
   :load-path "vendor/"
   :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  )
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 ;; clj-refactor
 (use-package clj-refactor
