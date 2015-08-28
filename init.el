@@ -588,7 +588,8 @@
   ("C-c C-r" . ivy-resume)
   :config
   ;; (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-format-function 'ivy-format-function-arrow))
 
 ;; ace-window
 (use-package ace-window
