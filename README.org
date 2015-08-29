@@ -102,11 +102,10 @@ and configure their text editor environment.
 : (setq-default line-spacing 4)
 : (setq-default indent-tabs-mode nil)  ;; no tabs
 
+** Modes
+
 
 ** Functions
-
-
-** Modes
 
 
 ** Key bindings
