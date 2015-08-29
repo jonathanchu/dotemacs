@@ -448,7 +448,7 @@
           (sequence "NEXT(n)" "|" "HOLD(h)")
           ))
   (setq org-todo-keyword-faces
-        '(("TODO" . (:foreground "green" :weight bold))
+        '(("TODO" :foreground "green" :weight bold)
           ("NEXT" :foreground "blue" :weight bold)
           ("WAITING" :foreground "orange" :weight bold)
           ("HOLD" :foreground "magenta" :weight bold)
