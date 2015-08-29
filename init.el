@@ -587,7 +587,6 @@
   ("C-r" . swiper)
   ("C-c C-r" . ivy-resume)
   :config
-  ;; (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-format-function 'ivy-format-function-arrow))
 
