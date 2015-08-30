@@ -16,16 +16,16 @@
 
 ** Introduction
 
-This is my emacs configuration, a somewhat simple config compared to
-most. It's geared towards OS X, although it should work on most *nix
-configs. I've never tried this on Windows, so YMMV.
+   This is my emacs configuration, a somewhat simple config compared to
+   most. It's geared towards OS X, although it should work on most *nix
+   configs. I've never tried this on Windows, so YMMV.
 
-The entire configuration is one file =~/.emacs.d/init.el= and aims to
-provide you with a barebones configuration with sane defaults, built
-upon =package.el=.
+   The entire configuration is one file =~/.emacs.d/init.el= and aims to
+   provide you with a barebones configuration with sane defaults, built
+   upon =package.el=.
 
-Although emacs has support for many programming languages, this
-config is geared towards the following languages and workflows:
+   Although emacs has support for many programming languages, this
+   config is geared towards the following languages and workflows:
 
 - Python
 - CSS / LESS
@@ -36,33 +36,33 @@ config is geared towards the following languages and workflows:
 
 ** Installation
 
-To install, it's recommended to clone this repo wherever you prefer
-and symlink the directory to =~/.emacs.d=.
+   To install, it's recommended to clone this repo wherever you prefer
+   and symlink the directory to =~/.emacs.d=.
 
 : git clone https://github.com/jonathanchu/dotemacs.git
 
-There is a =Makefile= provided that will create the symlink for you at
-=~/.emacs.d=:
+   There is a =Makefile= provided that will create the symlink for you at
+   =~/.emacs.d=:
 
 : make setup
 
-My current emacs distro of choice is:
+   My current emacs distro of choice is:
 
 : brew install emacs --with-cocoa
 
-Please note, this requires [[http://brew.sh][homebrew]] to be installed.
+   Please note, this requires [[http://brew.sh][homebrew]] to be installed.
 
 ** Requirements
 
-There are a few requirements needed for this config to properly run.
-All of these prerequisites can be installed via =homebrew= and =npm=.
+   There are a few requirements needed for this config to properly run.
+   All of these prerequisites can be installed via =homebrew= and =npm=.
 
 : brew install ag
 : brew install node
 : npm install jshint
 
-For using =python-mode= and =anaconda=, you'll need to have =pip=
-installed and install the following packages:
+   For using =python-mode= and =anaconda=, you'll need to have =pip=
+   installed and install the following packages:
 
 : pip install jedi
 : pip install service-factory
@@ -70,20 +70,20 @@ installed and install the following packages:
 
 ** Updates
 
-To update the packages, type @@html:<kbd>@@M-x
-list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
-followed by @@html:<kbd>@@x@@html:</kbd>@@.
+   To update the packages, type @@html:<kbd>@@M-x
+   list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
+   followed by @@html:<kbd>@@x@@html:</kbd>@@.
 
-I recently started to use @Malabarba's excellent [[https://github.com/Malabarba/paradox/][paradox]], which can be
-invoked similarly as such - @@html:<kbd>@@M-x
-paradox-list-packages@@html:</kbd>@@, then
-@@html:<kbd>@@U@@html:</kbd>@@ followed by
-@@html:<kbd>@@x@@html:</kbd>@@.
+   I recently started to use @Malabarba's excellent [[https://github.com/Malabarba/paradox/][paradox]], which can be
+   invoked similarly as such - @@html:<kbd>@@M-x
+   paradox-list-packages@@html:</kbd>@@, then
+   @@html:<kbd>@@U@@html:</kbd>@@ followed by
+   @@html:<kbd>@@x@@html:</kbd>@@.
 
 ** Global Config
 
-There are some very common things that most Emacs users do to setup
-and configure their text editor environment.
+   There are some very common things that most Emacs users do to setup
+   and configure their text editor environment.
 
 : (fset 'yes-or-no-p 'y-or-n-p)  ;; only type 'y' or 'n' instead of 'yes' or 'no'
 : (setq inhibit-splash-screen t)  ;; no splash screen
