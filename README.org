@@ -110,11 +110,11 @@ and configure their text editor environment.
 *** Zap-to-char
 
 #+begin_src emacs-lisp
-    (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
-      "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
-    The CHAR is replaced and the point is put before CHAR."
-      (insert char)
-      (forward-char -1))
+(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
+  "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
+The CHAR is replaced and the point is put before CHAR."
+  (insert char)
+  (forward-char -1))
 #+end_src
 
 ** Key bindings
