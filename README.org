@@ -168,6 +168,45 @@
           `((".*" ,user-temporary-file-directory t)))
     #+END_SRC
 
+*** Duplicate the current line
+
+    #+BEGIN_SRC emacs-lisp
+    (defun duplicate-line ()
+      "Duplicate the current line."
+      (interactive)
+      (move-beginning-of-line 1)
+      (kill-line)
+      (yank)
+      (open-line 1)
+      (forward-line 1)
+      (yank))
+    #+END_SRC
+
+*** Use ido selection for `recentf`
+
+    #+BEGIN_SRC emacs-lisp
+    (defun ido-choose-from-recentf ()
+      "Use ido to select a recently visited file from the `recentf-list'."
+      (interactive)
+      (find-file (ido-completing-read "Open file: " recentf-list nil t)))
+    #+END_SRC
+
+*** Swap (transpose) windows
+
+    #+BEGIN_SRC emacs-lisp
+    (defun transpose-windows ()
+      "If you have two windows, it swaps them."
+      (interactive)
+      (let ((this-buffer (window-buffer (selected-window)))
+            (other-buffer (prog2
+                              (other-window +1)
+                              (window-buffer (selected-window))
+                            (other-window -1))))
+        (switch-to-buffer other-buffer)
+        (switch-to-buffer-other-window this-buffer)
+        (other-window -1)))
+    #+END_SRC
+
 ** Key bindings
 
    I prefer to use `smex` instead of the default
