@@ -85,22 +85,24 @@
    There are some very common things that most Emacs users do to setup
    and configure their text editor environment.
 
-: (fset 'yes-or-no-p 'y-or-n-p)  ;; only type 'y' or 'n' instead of 'yes' or 'no'
-: (setq inhibit-splash-screen t)  ;; no splash screen
-: (setq initial-scratch-message nil)  ;; no message on startup
-: (menu-bar-mode -1)  ;; no menu bar
-: (setq fill-column 80)  ;; M-q
-: (when (functionp 'tool-bar-mode)
-:   (tool-bar-mode -1))  ;; no toolbar
-: (if window-system
-:     (progn
-:       (scroll-bar-mode -1)  ;; disable scroll bars
-:       (set-frame-font "Inconsolata 15"))) ;; set font
-: (set-face-attribute 'default nil :height 160)  ;; make the font more visually pleasing
-: (setq mac-allow-anti-aliasing t)  ;; nice fonts in OS X
-: (setq-default truncate-lines 1)  ;; no word wrap
-: (setq-default line-spacing 4)
-: (setq-default indent-tabs-mode nil)  ;; no tabs
+   #+BEGIN_SRC emacs-lisp
+   (fset 'yes-or-no-p 'y-or-n-p)  ;; only type 'y' or 'n' instead of 'yes' or 'no'
+   (setq inhibit-splash-screen t)  ;; no splash screen
+   (setq initial-scratch-message nil)  ;; no message on startup
+   (menu-bar-mode -1)  ;; no menu bar
+   (setq fill-column 80)  ;; M-q
+   (when (functionp 'tool-bar-mode)
+     (tool-bar-mode -1))  ;; no toolbar
+   (if window-system
+       (progn
+         (scroll-bar-mode -1)  ;; disable scroll bars
+         (set-frame-font "Inconsolata 15"))) ;; set font
+   (set-face-attribute 'default nil :height 160)  ;; make the font more visually pleasing
+   (setq mac-allow-anti-aliasing t)  ;; nice fonts in OS X
+   (setq-default truncate-lines 1)  ;; no word wrap
+   (setq-default line-spacing 4)
+   (setq-default indent-tabs-mode nil)  ;; no tabs
+   #+END_SRC
 
 ** Modes
 
