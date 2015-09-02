@@ -454,8 +454,7 @@
           ("HOLD" :foreground "magenta" :weight bold)
           ("CANCELED" :foreground "red" :weight bold)))
   (setq org-completion-use-ido t)
-  (setq org-startup-folded nil)
-  (setq org-src-fontify-natively t))
+  (setq org-startup-folded nil))
 
 ;; linum mode
 (use-package linum
