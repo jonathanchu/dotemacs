@@ -168,6 +168,82 @@
           `((".*" ,user-temporary-file-directory t)))
     #+END_SRC
 
+*** Duplicate the current line
+
+    #+BEGIN_SRC emacs-lisp
+    (defun duplicate-line ()
+      "Duplicate the current line."
+      (interactive)
+      (move-beginning-of-line 1)
+      (kill-line)
+      (yank)
+      (open-line 1)
+      (forward-line 1)
+      (yank))
+    #+END_SRC
+
+*** Use ido selection for `recentf`
+
+    #+BEGIN_SRC emacs-lisp
+    (defun ido-choose-from-recentf ()
+      "Use ido to select a recently visited file from the `recentf-list'."
+      (interactive)
+      (find-file (ido-completing-read "Open file: " recentf-list nil t)))
+    #+END_SRC
+
+*** Swap (transpose) windows
+
+    #+BEGIN_SRC emacs-lisp
+    (defun transpose-windows ()
+      "If you have two windows, it swaps them."
+      (interactive)
+      (let ((this-buffer (window-buffer (selected-window)))
+            (other-buffer (prog2
+                              (other-window +1)
+                              (window-buffer (selected-window))
+                            (other-window -1))))
+        (switch-to-buffer other-buffer)
+        (switch-to-buffer-other-window this-buffer)
+        (other-window -1)))
+    #+END_SRC
+
+*** Convert word DOuble CApitals to Single Capitals
+
+    #+BEGIN_SRC emacs-lisp
+    (defun dcaps-to-scaps ()
+      "Convert word in DOuble CApitals to Single Capitals."
+      (interactive)
+      (and (= ?w (char-syntax (char-before)))
+           (save-excursion
+             (and (if (called-interactively-p 1)
+                      (skip-syntax-backward "w")
+                    (= -3 (skip-syntax-backward "w")))
+                  (let (case-fold-search)
+                    (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+                  (capitalize-word 1)))))
+
+    (add-hook 'post-self-insert-hook 'dcaps-to-scaps)
+    #+END_SRC
+
+*** Timestamps in *Messages*
+
+    #+BEGIN_SRC emacs-lisp
+    (defun current-time-microseconds ()
+      (let* ((nowtime (current-time))
+             (now-ms (nth 2 nowtime)))
+        (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
+
+    (defadvice message (before test-symbol activate)
+      (if (not (string-equal (ad-get-arg 0) "%s%s"))
+          (let ((inhibit-read-only t)
+                (deactivate-mark nil))
+            (with-current-buffer "*Messages*"
+              (goto-char (point-max))
+              (if (not (bolp))
+                  (newline))
+              (insert (current-time-microseconds))))))
+    #+END_SRC
+
 ** Key bindings
 
    I prefer to use `smex` instead of the default
