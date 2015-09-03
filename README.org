@@ -114,6 +114,28 @@
    (setq-default indent-tabs-mode nil)  ;; no tabs
    #+END_SRC
 
+** Packages
+
+   #+BEGIN_SRC emacs-lisp
+   (require 'package)
+   (setq package-enable-at-startup nil)
+   (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                            ("melpa" . "http://melpa.org/packages/")))
+
+   (package-initialize)
+
+   ;; Bootstrap `use-package'
+   (unless (package-installed-p 'use-package)
+     (package-refresh-contents)
+     (package-install 'use-package))
+
+   ;; use-package
+   (eval-when-compile
+     (require 'use-package))
+   (require 'diminish)
+   (require 'bind-key)
+   #+END_SRC
+
 ** Modes
 
 *** Whitespace
