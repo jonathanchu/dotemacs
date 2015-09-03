@@ -116,6 +116,17 @@
 
 ** Modes
 
+*** Whitespace
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package whitespace
+      :config
+      (progn
+        (global-whitespace-mode 1)
+        (setq whitespace-action '(auto-cleanup))
+        (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
