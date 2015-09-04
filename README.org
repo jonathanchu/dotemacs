@@ -157,6 +157,16 @@
       (show-paren-mode 1))
     #+END_SRC
 
+*** Saveplace
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package saveplace
+      :config
+      (progn
+        (setq-default save-place t)
+        (setq save-place-file "~/.emacs.d/saved-places")))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
