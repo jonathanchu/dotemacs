@@ -167,6 +167,15 @@
         (setq save-place-file "~/.emacs.d/saved-places")))
     #+END_SRC
 
+*** Color theme
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package atom-one-dark-theme
+      :ensure
+      :config
+      (load-theme 'atom-one-dark t))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
