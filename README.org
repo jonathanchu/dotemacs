@@ -149,6 +149,14 @@
         (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
     #+END_SRC
 
+*** Highlight brackets
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package paren
+      :config
+      (show-paren-mode 1))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
