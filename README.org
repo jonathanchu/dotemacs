@@ -183,6 +183,12 @@
       :ensure)
     #+END_SRC
 
+*** Gitconfig mode
+
+    #+BEGIN_SRC emacs-kisp
+    (use-package gitconfig-mode
+      :ensure)
+    #+END_SRC
 
 ** Functions
 
