@@ -190,6 +190,13 @@
       :ensure)
     #+END_SRC
 
+*** Gitignore mode
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package gitignore-mode
+      :ensure)
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
