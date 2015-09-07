@@ -211,7 +211,7 @@
       :ensure)
     #+END_SRC
 
-*** Restclinet
+*** Restclient
 
     #+BEGIN_SRC emacs-lisp
     (use-package restclient
