@@ -211,6 +211,13 @@
       :ensure)
     #+END_SRC
 
+*** Restclinet
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package restclient
+      :ensure)
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
