@@ -204,6 +204,13 @@
       :ensure)
     #+END_SRC
 
+*** GitHub browse file
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package github-browse-file
+      :ensure)
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
