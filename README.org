@@ -218,6 +218,16 @@
       :ensure)
     #+END_SRC
 
+*** Flycheck
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package flycheck
+      :ensure
+      :defer 2
+      :config
+      (global-flycheck-mode 1))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
