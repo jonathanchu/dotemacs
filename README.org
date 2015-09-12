@@ -240,6 +240,13 @@
         (setq uniquify-ignore-buffers-re "^\\*")))
     #+END_SRC
 
+*** Flx-ido
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package flx-ido
+      :ensure)
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
