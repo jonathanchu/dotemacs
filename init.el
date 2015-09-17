@@ -589,7 +589,8 @@
   ("C-c C-r" . ivy-resume)
   :config
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-format-function 'ivy-format-function-arrow))
+  (setq ivy-format-function 'ivy-format-function-arrow)
+  (advice-add 'swiper :after 'recenter))
 
 ;; ace-window
 (use-package ace-window
