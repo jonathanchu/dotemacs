@@ -277,6 +277,18 @@
       (ido-ubiquitous-mode 1))
     #+END_SRC
 
+*** Python mode
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package python-mode
+      :ensure
+      :config
+      (add-hook 'python-mode-hook
+                '(lambda ()
+                   (setq fill-column 80)))
+      (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
