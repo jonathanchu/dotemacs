@@ -323,6 +323,14 @@
         (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
     #+END_SRC
 
+*** Makefile mode
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package makefile-mode
+      :config
+      (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+    #+END_SRC
+
 ** Functions
 
 *** Zap-to-char
