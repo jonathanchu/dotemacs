@@ -26,3 +26,4 @@ smex-items
 /var
 /url
 *.log
+/.python-environments
