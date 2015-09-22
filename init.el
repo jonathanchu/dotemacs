@@ -307,21 +307,15 @@
                (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
-;; jedi
-(use-package jedi
+;; anaconda-mode
+(use-package anaconda-mode
   :ensure
   :config
-  (add-hook 'python-mode-hook 'jedi:setup))
-
-;; anaconda-mode
-;; (use-package anaconda-mode
-;;   :ensure
-;;   :config
-;;   (setq anaconda-mode-server-script "/usr/local/lib/python2.7/site-packages/anaconda_mode.py")
-;;   (add-hook 'python-mode-hook
-;;             '(lambda ()
-;;                (anaconda-mode 1)
-;;                (eldoc-mode 1))))
+  (setq anaconda-mode-server-script "/usr/local/lib/python2.7/site-packages/anaconda_mode.py")
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (anaconda-mode 1)
+               (eldoc-mode 1))))
 
 ;; web-mode
 (use-package web-mode
@@ -662,8 +656,7 @@
   (global-company-mode)
   (eval-after-load 'company
     (progn
-      ;; '(add-to-list 'company-backends 'company-anaconda)
-      '(add-to-list 'company-backends 'company-jedi)
+      '(add-to-list 'company-backends 'company-anaconda)
       )))
 
 ;; aggressive-indent
