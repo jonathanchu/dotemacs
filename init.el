@@ -228,10 +228,10 @@
     (setq save-place-file "~/.emacs.d/saved-places")))
 
 ;; color theme
-(use-package atom-one-dark-theme
-  :ensure
-  :config
-  (load-theme 'atom-one-dark t))
+;; (use-package atom-one-dark-theme
+;;   :ensure
+;;   :config
+;;   (load-theme 'atom-one-dark t))
 
 ;; command-log-mode
 (use-package command-log-mode
