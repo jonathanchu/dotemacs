@@ -862,4 +862,21 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
 
+;;----------------------------------------------------------------------------
+;; Literate Config Test
+;;----------------------------------------------------------------------------
+
+(defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
+  "Test configurations stored in this file.")
+
+(defvar my-org-file (expand-file-name "emacs-init.org" user-emacs-directory)
+  "All configurations tangled from this file.")
+
+(if (file-exists-p my-init-file)
+    (load-file my-init-file)
+  (progn
+    (org-babel-load-file
+     (expand-file-name "emacs-init.org" user-emacs-directory))))
+
+
 ;;; init.el ends here
