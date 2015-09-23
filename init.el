@@ -405,12 +405,12 @@
                                    '("~/.emacs.d/snippets")))))
 
 ;; smart-mode-line
-(use-package smart-mode-line
-  :ensure
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'respectful)
-  (add-hook 'after-init-hook 'sml/setup))
+;; (use-package smart-mode-line
+;;   :ensure
+;;   :config
+;;   (setq sml/no-confirm-load-theme t)
+;;   (setq sml/theme 'respectful)
+;;   (add-hook 'after-init-hook 'sml/setup))
 
 ;; ag
 (use-package ag

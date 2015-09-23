@@ -1,10 +1,22 @@
 #+AUTHOR: Jonathan Chu
 #+TITLE:  My Emacs Configuration
 
-* Color theme
+* Appearance
+
+** Color theme
   #+BEGIN_SRC emacs-lisp :tangle yes
     (use-package atom-one-dark-theme
       :ensure
       :config
       (load-theme 'atom-one-dark t))
   #+END_SRC
+
+** Smart-mode-line
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package smart-mode-line
+       :ensure
+       :config
+       (setq sml/no-confirm-load-theme t)
+       (setq sml/theme 'respectful)
+       (add-hook 'after-init-hook 'sml/setup))
+   #+END_SRC
