@@ -85,123 +85,123 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; set paths from shell
-(use-package exec-path-from-shell
-  :ensure
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
+;; ;; set paths from shell
+;; (use-package exec-path-from-shell
+;;   :ensure
+;;   :if (memq window-system '(mac ns))
+;;   :config
+;;   (exec-path-from-shell-initialize))
 
-;; only type 'y' or 'n' instead of 'yes' or 'no'
-(fset 'yes-or-no-p 'y-or-n-p)
+;; ;; only type 'y' or 'n' instead of 'yes' or 'no'
+;; (fset 'yes-or-no-p 'y-or-n-p)
 
-;; no splash screen
-(setq inhibit-splash-screen t)
+;; ;; no splash screen
+;; (setq inhibit-splash-screen t)
 
-;; no message on startup
-(setq initial-scratch-message nil)
+;; ;; no message on startup
+;; (setq initial-scratch-message nil)
 
-;; no menu bar
-(menu-bar-mode -1)
+;; ;; no menu bar
+;; (menu-bar-mode -1)
 
-;; start position and frame size
-(add-to-list 'default-frame-alist '(left . 0))
-(add-to-list 'default-frame-alist '(top . 0))
-(add-to-list 'default-frame-alist '(height . 43))
-(add-to-list 'default-frame-alist '(width . 150))
+;; ;; start position and frame size
+;; (add-to-list 'default-frame-alist '(left . 0))
+;; (add-to-list 'default-frame-alist '(top . 0))
+;; (add-to-list 'default-frame-alist '(height . 43))
+;; (add-to-list 'default-frame-alist '(width . 150))
 
-;; M-q
-(setq fill-column 80)
+;; ;; M-q
+;; (setq fill-column 80)
 
-;; no toolbar
-(when (functionp 'tool-bar-mode)
-  (tool-bar-mode -1))  ;; no toolbar
+;; ;; no toolbar
+;; (when (functionp 'tool-bar-mode)
+;;   (tool-bar-mode -1))  ;; no toolbar
 
-;; disable scroll bars
-(if window-system
-    (progn
-      (scroll-bar-mode -1)
-      (set-frame-font "Inconsolata 15"))) ;; set font
+;; ;; disable scroll bars
+;; (if window-system
+;;     (progn
+;;       (scroll-bar-mode -1)
+;;       (set-frame-font "Inconsolata 15"))) ;; set font
 
-;; make the font more visually pleasing
-(set-face-attribute 'default nil :height 160)
+;; ;; make the font more visually pleasing
+;; (set-face-attribute 'default nil :height 160)
 
-;; nice fonts in OS X
-(setq mac-allow-anti-aliasing t)
+;; ;; nice fonts in OS X
+;; (setq mac-allow-anti-aliasing t)
 
-;; no word wrap
-(setq-default truncate-lines 1)
+;; ;; no word wrap
+;; (setq-default truncate-lines 1)
 
-(setq-default line-spacing 4)
+;; (setq-default line-spacing 4)
 
-;; no tabs
-(setq-default indent-tabs-mode nil)
+;; ;; no tabs
+;; (setq-default indent-tabs-mode nil)
 
-;; delete trailing whitespace in all modes
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; ;; delete trailing whitespace in all modes
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; show line number in mode line
-(line-number-mode 1)
+;; ;; show line number in mode line
+;; (line-number-mode 1)
 
-;; show column number in the mode line
-(column-number-mode 1)
+;; ;; show column number in the mode line
+;; (column-number-mode 1)
 
-;; show extra whitespace
-(setq show-trailing-whitespace t)
+;; ;; show extra whitespace
+;; (setq show-trailing-whitespace t)
 
-;; ensure last line is a return
-(setq require-final-newline t)
+;; ;; ensure last line is a return
+;; (setq require-final-newline t)
 
-;; set encoding
-(prefer-coding-system 'utf-8)
+;; ;; set encoding
+;; (prefer-coding-system 'utf-8)
 
-;; and tell emacs to play nice with encoding
-(define-coding-system-alias 'UTF-8 'utf-8)
-(define-coding-system-alias 'utf8 'utf-8)
+;; ;; and tell emacs to play nice with encoding
+;; (define-coding-system-alias 'UTF-8 'utf-8)
+;; (define-coding-system-alias 'utf8 'utf-8)
 
-;; cursor
-(setq-default cursor-type 'bar)
+;; ;; cursor
+;; (setq-default cursor-type 'bar)
 
-;; make sure looking at most recent changes
-(global-auto-revert-mode 1)
+;; ;; make sure looking at most recent changes
+;; (global-auto-revert-mode 1)
 
-(setq window-combination-resize t)
+;; (setq window-combination-resize t)
 
-;;keep cursor at same position when scrolling
-(setq scroll-preserve-screen-position 1)
+;; ;;keep cursor at same position when scrolling
+;; (setq scroll-preserve-screen-position 1)
 
-;; scroll one line at a time
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(setq scroll-conservatively 10000)
+;; ;; scroll one line at a time
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+;; (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+;; (setq scroll-step 1) ;; keyboard scroll one line at a time
+;; (setq scroll-conservatively 10000)
 
-;; open with in original frame, not new window
-(setq ns-pop-up-frames nil)
+;; ;; open with in original frame, not new window
+;; (setq ns-pop-up-frames nil)
 
-;; sentences end with single space
-(setq sentence-end-double-space nil)
+;; ;; sentences end with single space
+;; (setq sentence-end-double-space nil)
 
-;; useful for camelCase
-(subword-mode 1)
+;; ;; useful for camelCase
+;; (subword-mode 1)
 
-;; delete selection, insert text
-(delete-selection-mode 1)
+;; ;; delete selection, insert text
+;; (delete-selection-mode 1)
 
-;; javascript
-(setq js-indent-level 2)
+;; ;; javascript
+;; (setq js-indent-level 2)
 
-;; css
-(setq css-indent-offset 2)
+;; ;; css
+;; (setq css-indent-offset 2)
 
-;; prevent active process query on quit
-(require 'cl)
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  (flet ((process-list ())) ad-do-it))
+;; ;; prevent active process query on quit
+;; (require 'cl)
+;; (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+;;   (flet ((process-list ())) ad-do-it))
 
-;; instantly display current key sequence in mini buffer
-(setq echo-keystrokes 0.02)
+;; ;; instantly display current key sequence in mini buffer
+;; (setq echo-keystrokes 0.02)
 
 ;;----------------------------------------------------------------------------
 ;; Modes
