@@ -165,3 +165,15 @@
           (ANY 2)
           (context 2)))
     #+END_SRC
+
+** Python
+
+    #+BEGIN_SRC emacs-lisp :tangle yes
+      (use-package python-mode
+        :ensure
+        :config
+        (add-hook 'python-mode-hook
+                  '(lambda ()
+                     (setq fill-column 80)))
+        (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+    #+END_SRC

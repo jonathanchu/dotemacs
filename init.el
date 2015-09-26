@@ -299,13 +299,13 @@
   (ido-ubiquitous-mode 1))
 
 ;; python
-(use-package python-mode
-  :ensure
-  :config
-  (add-hook 'python-mode-hook
-            '(lambda ()
-               (setq fill-column 80)))
-  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+;; (use-package python-mode
+;;   :ensure
+;;   :config
+;;   (add-hook 'python-mode-hook
+;;             '(lambda ()
+;;                (setq fill-column 80)))
+;;   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
 ;; anaconda-mode
 (use-package anaconda-mode
