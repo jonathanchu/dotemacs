@@ -353,16 +353,16 @@
   (textmate-mode 1))
 
 ;; magit
-(use-package magit
-  :ensure
-  :config
-  (progn
-    (setq magit-push-always-verify nil)
-    (setq magit-completing-read-function 'ivy-completing-read)
-    (setq magit-last-seen-setup-instructions "1.4.0"))
-  :bind
-  ("C-x g" . magit-status)
-  ("C-c C-a" . magit-commit-amend))
+;; (use-package magit
+;;   :ensure
+;;   :config
+;;   (progn
+;;     (setq magit-push-always-verify nil)
+;;     (setq magit-completing-read-function 'ivy-completing-read)
+;;     (setq magit-last-seen-setup-instructions "1.4.0"))
+;;   :bind
+;;   ("C-x g" . magit-status)
+;;   ("C-c C-a" . magit-commit-amend))
 
 ;; deft
 (use-package deft

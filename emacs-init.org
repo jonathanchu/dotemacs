@@ -211,3 +211,18 @@
          (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
          (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
    #+END_SRC
+
+** Magit
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package magit
+       :ensure
+       :config
+       (progn
+         (setq magit-push-always-verify nil)
+         (setq magit-completing-read-function 'ivy-completing-read)
+         (setq magit-last-seen-setup-instructions "1.4.0"))
+       :bind
+       ("C-x g" . magit-status)
+       ("C-c C-a" . magit-commit-amend))
+   #+END_SRC
