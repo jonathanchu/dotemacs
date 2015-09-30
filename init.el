@@ -396,13 +396,13 @@
     (server-start nil t))
 
 ;; yasnippet
-(use-package yasnippet
-  :ensure
-  :config
-  (progn
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs (append yas-snippet-dirs
-                                   '("~/.emacs.d/snippets")))))
+;; (use-package yasnippet
+;;   :ensure
+;;   :config
+;;   (progn
+;;     (yas-global-mode 1)
+;;     (setq yas-snippet-dirs (append yas-snippet-dirs
+;;                                    '("~/.emacs.d/snippets")))))
 
 ;; smart-mode-line
 ;; (use-package smart-mode-line

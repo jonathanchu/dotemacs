@@ -226,3 +226,15 @@
        ("C-x g" . magit-status)
        ("C-c C-a" . magit-commit-amend))
    #+END_SRC
+
+** Yasnippet
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package yasnippet
+       :ensure
+       :config
+       (progn
+         (yas-global-mode 1)
+         (setq yas-snippet-dirs (append yas-snippet-dirs
+                                        '("~/.emacs.d/snippets")))))
+   #+END_SRC
