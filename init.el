@@ -698,6 +698,9 @@
    ("M-l" . fix-word-downcase)
    ("M-c" . fix-word-capitalize)))
 
+;; evil mode
+(use-package evil :ensure)
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
