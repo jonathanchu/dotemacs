@@ -392,8 +392,8 @@
   ("C-c C-c M-x" . execute-extended-command))
 
 ;; server mdoe
-(if (not server-mode)
-    (server-start nil t))
+;; (if (not server-mode)
+;;     (server-start nil t))
 
 ;; yasnippet
 ;; (use-package yasnippet

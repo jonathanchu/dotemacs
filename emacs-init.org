@@ -143,6 +143,10 @@
 
     ;; instantly display current key sequence in mini buffer
     (setq echo-keystrokes 0.02)
+
+    ;; server mode
+    (if (not server-mode)
+        (server-start nil t))
   #+END_SRC
 
 * Major Modes
