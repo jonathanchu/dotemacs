@@ -447,7 +447,6 @@
   :diminish ""
   :config
   (projectile-global-mode 1)
-  (setq projectile-completion-system 'grizzl))
 
 ;; py-isort
 ;; (use-package py-isort
