@@ -351,9 +351,12 @@
 ;;   :ensure
 ;;   :config
 ;;   (textmate-mode 1))
+
+;; find-file-in-project
+(use-package find-file-in-project
   :ensure
-  :config
-  (textmate-mode 1))
+  :init
+  (bind-key "s-t" 'find-file-in-project))
 
 ;; magit
 ;; (use-package magit
