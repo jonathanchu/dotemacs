@@ -335,8 +335,8 @@
 ;;     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 ;;     (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
 
-;; makefile-mode
-(use-package makefile-mode
+;; make-mode
+(use-package make-mode
   :config
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
