@@ -356,7 +356,16 @@
 (use-package find-file-in-project
   :ensure
   :init
-  (bind-key "s-t" 'find-file-in-project))
+  (bind-key "s-t" 'find-file-in-project)
+  :config
+  (setq-default ffip-prune-patterns '(".git"
+                                      ".hg"
+                                      "*.svn"
+                                      "node_modules"
+                                      "bower_components"
+                                      ".direnv"
+                                      ".tox"
+                                      "data")))
 
 ;; magit
 ;; (use-package magit
