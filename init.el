@@ -432,6 +432,8 @@
   :diminish ""
   :config
   (projectile-global-mode 1)
+  :init
+  (bind-key "s-t" 'projectile-find-file))
 
 ;; py-isort
 ;; (use-package py-isort
