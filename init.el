@@ -347,7 +347,10 @@
   (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 ;; textmate-mode
-(use-package textmate
+;; (use-package textmate
+;;   :ensure
+;;   :config
+;;   (textmate-mode 1))
   :ensure
   :config
   (textmate-mode 1))
