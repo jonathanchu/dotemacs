@@ -100,9 +100,6 @@
     (define-coding-system-alias 'UTF-8 'utf-8)
     (define-coding-system-alias 'utf8 'utf-8)
 
-    ;; cursor
-    (setq-default cursor-type 'bar)
-
     ;; make sure looking at most recent changes
     (global-auto-revert-mode 1)
 
