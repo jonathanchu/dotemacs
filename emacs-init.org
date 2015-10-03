@@ -192,27 +192,6 @@
                     (eldoc-mode 1))))
    #+END_SRC
 
-** Web mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package web-mode
-       :ensure
-       :config
-       (progn
-         (setq web-mode-markup-indent-offset 2)
-         (setq web-mode-css-indent-offset 2)
-         (setq web-mode-code-indent-offset 2)
-         (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-         (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
-   #+END_SRC
-
 ** Magit
 
    #+BEGIN_SRC emacs-lisp :tangle yes
@@ -238,6 +217,27 @@
          (yas-global-mode 1)
          (setq yas-snippet-dirs (append yas-snippet-dirs
                                         '("~/.emacs.d/snippets")))))
+   #+END_SRC
+
+** Web mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package web-mode
+       :ensure
+       :config
+       (progn
+         (setq web-mode-markup-indent-offset 2)
+         (setq web-mode-css-indent-offset 2)
+         (setq web-mode-code-indent-offset 2)
+         (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+         (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
    #+END_SRC
 
 ** LESS CSS mode
