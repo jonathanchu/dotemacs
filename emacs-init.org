@@ -239,3 +239,12 @@
          (setq yas-snippet-dirs (append yas-snippet-dirs
                                         '("~/.emacs.d/snippets")))))
    #+END_SRC
+
+** LESS CSS mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package less-css-mode
+       :ensure
+       :config
+       (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+   #+END_SRC

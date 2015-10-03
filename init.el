@@ -343,10 +343,10 @@
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
 ;; less-css-mode
-(use-package less-css-mode
-  :ensure
-  :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+;; (use-package less-css-mode
+;;   :ensure
+;;   :config
+;;   (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 ;; textmate-mode
 ;; (use-package textmate
