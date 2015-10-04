@@ -258,11 +258,11 @@
   :ensure)
 
 ;; flycheck
-(use-package flycheck
-  :ensure
-  :defer 2
-  :config
-  (global-flycheck-mode 1))
+;; (use-package flycheck
+;;   :ensure
+;;   :defer 2
+;;   :config
+;;   (global-flycheck-mode 1))
 
 ;; uniquify
 (use-package uniquify

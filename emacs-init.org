@@ -248,3 +248,13 @@
        :config
        (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
    #+END_SRC
+
+** Flycheck
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package flycheck
+       :ensure
+       :defer 2
+       :config
+       (global-flycheck-mode 1))
+   #+END_SRC
