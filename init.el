@@ -48,7 +48,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
+			 ("melpa" . "http://melpa.org/packages/")))
 
 (package-initialize)
 
@@ -420,7 +420,7 @@
   :config
   (progn
     (setq ag-highlight-search t
-          ag-reuse-buffers t)))
+	  ag-reuse-buffers t)))
 
 ;; grizzl
 (use-package grizzl
@@ -447,16 +447,16 @@
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done t)
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "|" "DONE(d)")
-          (sequence "WAITING(w)" "|" "CANCELED(c)")
-          (sequence "NEXT(n)" "|" "HOLD(h)")
-          ))
+	'((sequence "TODO(t)" "|" "DONE(d)")
+	  (sequence "WAITING(w)" "|" "CANCELED(c)")
+	  (sequence "NEXT(n)" "|" "HOLD(h)")
+	  ))
   (setq org-todo-keyword-faces
-        '(("TODO" :foreground "green" :weight bold)
-          ("NEXT" :foreground "blue" :weight bold)
-          ("WAITING" :foreground "orange" :weight bold)
-          ("HOLD" :foreground "magenta" :weight bold)
-          ("CANCELED" :foreground "red" :weight bold)))
+	'(("TODO" :foreground "green" :weight bold)
+	  ("NEXT" :foreground "blue" :weight bold)
+	  ("WAITING" :foreground "orange" :weight bold)
+	  ("HOLD" :foreground "magenta" :weight bold)
+	  ("CANCELED" :foreground "red" :weight bold)))
   (setq org-completion-use-ido t)
   (setq org-startup-folded nil))
 
@@ -466,9 +466,9 @@
   (progn
     (global-linum-mode 1)
     (setq linum-format
-          (lambda (line) (propertize
-                          (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-                                    (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))))
+	  (lambda (line) (propertize
+			  (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+				    (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))))
 
 ;; dired+ mode
 (use-package dired+
@@ -484,7 +484,7 @@
   :config
   (global-undo-tree-mode 1)
   (setq undo-tree-visualizer-diff t
-        undo-tree-visualizer-timestamps t))
+	undo-tree-visualizer-timestamps t))
 
 ;; fullframe
 (use-package fullframe
@@ -496,16 +496,16 @@
 (use-package recentf
   :config
   (setq recentf-max-saved-items 250
-        recentf-max-menu-items 15
-        ;; Cleanup recent files only when Emacs is idle, but not when the mode
-        ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
-        ;; idles often enough to have the recent files list clean up regularly
-        recentf-auto-cleanup 300
-        recentf-exclude (list "^/var/folders\\.*"
-                              "COMMIT_EDITMSG\\'"
-                              ".*-autoloads\\.el\\'"
-                              "[/\\]\\.elpa/"
-                              "/\\.git/.*\\'"))
+	recentf-max-menu-items 15
+	;; Cleanup recent files only when Emacs is idle, but not when the mode
+	;; is enabled, because that unnecessarily slows down Emacs. My Emacs
+	;; idles often enough to have the recent files list clean up regularly
+	recentf-auto-cleanup 300
+	recentf-exclude (list "^/var/folders\\.*"
+			      "COMMIT_EDITMSG\\'"
+			      ".*-autoloads\\.el\\'"
+			      "[/\\]\\.elpa/"
+			      "/\\.git/.*\\'"))
   (recentf-mode))
 
 ;; cider
@@ -543,8 +543,8 @@
     (sp-local-pair 'web-mode "{%" "%}")
     (use-package smartparens-config)
     (setq sp-autoskip-closing-pair 'always
-          ;; Don't kill the entire symbol on C-k
-          sp-hybrid-kill-entire-symbol nil)))
+	  ;; Don't kill the entire symbol on C-k
+	  sp-hybrid-kill-entire-symbol nil)))
 
 ;; clojure-mode
 ;; (use-package clojure-mode
@@ -573,7 +573,7 @@
   (add-hook 'scheme-mode-hook 'enable-paredit-mode)
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
   (add-hook 'python-mode-hook
-            (lambda () (local-set-key (kbd "C-k") 'paredit-kill))))
+	    (lambda () (local-set-key (kbd "C-k") 'paredit-kill))))
 
 ;; latex-preview-pane
 (use-package latex-preview-pane
@@ -754,7 +754,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq backup-by-copying t)
 (setq backup-directory-alist
       `(("." . ,user-temporary-file-directory)
-        (,tramp-file-name-regexp nil)))
+	(,tramp-file-name-regexp nil)))
 (setq auto-save-list-file-prefix
       (concat user-temporary-file-directory ".auto-saves-"))
 (setq auto-save-file-name-transforms
@@ -782,10 +782,10 @@ point reaches the beginning or end of the buffer, stop there."
   "If you have two windows, it swaps them."
   (interactive)
   (let ((this-buffer (window-buffer (selected-window)))
-        (other-buffer (prog2
-                          (other-window +1)
-                          (window-buffer (selected-window))
-                        (other-window -1))))
+	(other-buffer (prog2
+			  (other-window +1)
+			  (window-buffer (selected-window))
+			(other-window -1))))
     (switch-to-buffer other-buffer)
     (switch-to-buffer-other-window this-buffer)
     (other-window -1)))
@@ -796,12 +796,12 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (and (= ?w (char-syntax (char-before)))
        (save-excursion
-         (and (if (called-interactively-p 1)
-                  (skip-syntax-backward "w")
-                (= -3 (skip-syntax-backward "w")))
-              (let (case-fold-search)
-                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
-              (capitalize-word 1)))))
+	 (and (if (called-interactively-p 1)
+		  (skip-syntax-backward "w")
+		(= -3 (skip-syntax-backward "w")))
+	      (let (case-fold-search)
+		(looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+	      (capitalize-word 1)))))
 
 (add-hook 'post-self-insert-hook 'dcaps-to-scaps)
 
@@ -809,34 +809,34 @@ point reaches the beginning or end of the buffer, stop there."
 ;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
 (defun current-time-microseconds ()
   (let* ((nowtime (current-time))
-         (now-ms (nth 2 nowtime)))
+	 (now-ms (nth 2 nowtime)))
     (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
 
 (defadvice message (before test-symbol activate)
   (if (not (string-equal (ad-get-arg 0) "%s%s"))
       (let ((inhibit-read-only t)
-            (deactivate-mark nil))
-        (with-current-buffer "*Messages*"
-          (goto-char (point-max))
-          (if (not (bolp))
-              (newline))
-          (insert (current-time-microseconds))))))
+	    (deactivate-mark nil))
+	(with-current-buffer "*Messages*"
+	  (goto-char (point-max))
+	  (if (not (bolp))
+	      (newline))
+	  (insert (current-time-microseconds))))))
 
 ;; Copy the buffer filename to the kill ring
 (defun copy-buffer-file-name-as-kill (choice)
   "Copy the buffer-file-name to the kill-ring"
   (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
   (let ((new-kill-string)
-        (name (if (eq major-mode 'dired-mode)
-                  (dired-get-filename)
-                (or (buffer-file-name) ""))))
+	(name (if (eq major-mode 'dired-mode)
+		  (dired-get-filename)
+		(or (buffer-file-name) ""))))
     (cond ((eq choice ?f)
-           (setq new-kill-string name))
-          ((eq choice ?p)
-           (setq new-kill-string (file-name-directory name)))
-          ((eq choice ?n)
-           (setq new-kill-string (file-name-nondirectory name)))
-          (t (message "Quit")))
+	   (setq new-kill-string name))
+	  ((eq choice ?p)
+	   (setq new-kill-string (file-name-directory name)))
+	  ((eq choice ?n)
+	   (setq new-kill-string (file-name-nondirectory name)))
+	  (t (message "Quit")))
     (when new-kill-string
       (message "%s copied" new-kill-string)
       (kill-new new-kill-string))))
@@ -847,7 +847,7 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (let (beg end)
     (if (region-active-p)
-        (setq beg (region-beginning) end (region-end))
+	(setq beg (region-beginning) end (region-end))
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)))
 
