@@ -880,6 +880,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; comment/uncomment current line or region
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
 
+;; fullscreen toggle
+(global-set-key [(s return)] 'toggle-frame-fullscreen)
+
 
 ;;----------------------------------------------------------------------------
 ;; Literate Config Test
