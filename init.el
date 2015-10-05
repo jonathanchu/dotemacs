@@ -704,6 +704,21 @@
 ;; evil mode
 (use-package evil :ensure)
 
+(setq debug-on-error t)
+
+;; jscs
+(use-package jscs
+  :ensure
+  :config
+  (autoload 'jscs-indent-apply "jscs" nil t)
+  (autoload 'jscs-fix "jscs" nil t)
+  (autoload 'jscs-fix-run-before-save "jscs" nil t)
+  (add-hook 'js-mode-hook #'jscs-indent-apply)
+  (add-hook 'js2-mode-hook #'jscs-indent-apply)
+  (add-hook 'js-mode-hook #'jscs-fix-run-before-save)
+  (add-hook 'js2-mode-hook #'jscs-fix-run-before-save)
+  (add-hook 'js3-mode-hook #'jscs-fix-run-before-save))
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
