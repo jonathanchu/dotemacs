@@ -278,14 +278,14 @@
 ;;   :ensure)
 
 ;; ido-mode
-(use-package ido
-  :config
-  (progn
-    (ido-mode t)
-    (ido-everywhere t)
-    (flx-ido-mode t)
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil)))
+;; (use-package ido
+;;   :config
+;;   (progn
+;;     (ido-mode t)
+;;     (ido-everywhere t)
+;;     (flx-ido-mode t)
+;;     (setq ido-enable-flex-matching t)
+;;     (setq ido-use-faces nil)))
 
 ;; ido-vertical-mode
 (use-package ido-vertical-mode
