@@ -278,3 +278,13 @@
          (setq ido-enable-flex-matching t)
          (setq ido-use-faces nil)))
    #+END_SRC
+
+** Ido vertical mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package ido-vertical-mode
+       :ensure
+       :config
+       (ido-vertical-mode 1)
+       (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+   #+END_SRC

@@ -288,11 +288,11 @@
 ;;     (setq ido-use-faces nil)))
 
 ;; ido-vertical-mode
-(use-package ido-vertical-mode
-  :ensure
-  :config
-  (ido-vertical-mode 1)
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+;; (use-package ido-vertical-mode
+;;   :ensure
+;;   :config
+;;   (ido-vertical-mode 1)
+;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 ;; ido-ubiquitous
 (use-package ido-ubiquitous
