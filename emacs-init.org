@@ -288,3 +288,12 @@
        (ido-vertical-mode 1)
        (setq ido-vertical-define-keys 'C-n-and-C-p-only))
    #+END_SRC
+
+** Ido ubiquitous
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package ido-ubiquitous
+       :ensure
+       :config
+       (ido-ubiquitous-mode 1))
+   #+END_SRC

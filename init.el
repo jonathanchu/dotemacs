@@ -295,10 +295,10 @@
 ;;   (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 ;; ido-ubiquitous
-(use-package ido-ubiquitous
-  :ensure
-  :config
-  (ido-ubiquitous-mode 1))
+;; (use-package ido-ubiquitous
+;;   :ensure
+;;   :config
+;;   (ido-ubiquitous-mode 1))
 
 ;; python
 ;; (use-package python-mode
