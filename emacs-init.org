@@ -258,3 +258,10 @@
        :config
        (global-flycheck-mode 1))
    #+END_SRC
+
+** Flx-ido
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package flx-ido
+       :ensure)
+   #+END_SRC

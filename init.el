@@ -274,8 +274,8 @@
     (setq uniquify-ignore-buffers-re "^\\*")))
 
 ;; flx-ido
-(use-package flx-ido
-  :ensure)
+;; (use-package flx-ido
+;;   :ensure)
 
 ;; ido-mode
 (use-package ido
