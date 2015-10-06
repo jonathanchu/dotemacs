@@ -384,14 +384,14 @@
   (nav-disable-overeager-window-splitting))
 
 ;; smex
-(use-package smex
-  :ensure
-  :init
-  (smex-initialize)
-  :bind
-  ("M-x" . smex)
-  ("M-X" . smex-major-mode-commands)
-  ("C-c C-c M-x" . execute-extended-command))
+;; (use-package smex
+;;   :ensure
+;;   :init
+;;   (smex-initialize)
+;;   :bind
+;;   ("M-x" . smex)
+;;   ("M-X" . smex-major-mode-commands)
+;;   ("C-c C-c M-x" . execute-extended-command))
 
 ;; server mdoe
 ;; (if (not server-mode)
