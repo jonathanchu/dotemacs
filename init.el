@@ -835,7 +835,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Copy the buffer filename to the kill ring
 (defun copy-buffer-file-name-as-kill (choice)
-  "Copy the buffer-file-name to the kill-ring"
+  "Copy the buffer-file-name to the kill-ring."
   (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
   (let ((new-kill-string)
         (name (if (eq major-mode 'dired-mode)
