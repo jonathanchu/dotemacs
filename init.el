@@ -422,10 +422,6 @@
     (setq ag-highlight-search t
           ag-reuse-buffers t)))
 
-;; grizzl
-(use-package grizzl
-  :ensure)
-
 ;; projectile
 (use-package projectile
   :ensure
