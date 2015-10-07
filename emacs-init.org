@@ -321,3 +321,15 @@
          (setq ag-highlight-search t
                 ag-reuse-buffers t)))
    #+END_SRC
+
+** Projectile
+
+    #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package projectile
+       :ensure
+       :diminish ""
+       :config
+       (projectile-global-mode 1)
+       :init
+       (bind-key "s-t" 'projectile-find-file))
+   #+END_SRC

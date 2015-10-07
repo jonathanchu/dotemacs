@@ -423,13 +423,13 @@
 ;;           ag-reuse-buffers t)))
 
 ;; projectile
-(use-package projectile
-  :ensure
-  :diminish ""
-  :config
-  (projectile-global-mode 1)
-  :init
-  (bind-key "s-t" 'projectile-find-file))
+;; (use-package projectile
+;;   :ensure
+;;   :diminish ""
+;;   :config
+;;   (projectile-global-mode 1)
+;;   :init
+;;   (bind-key "s-t" 'projectile-find-file))
 
 ;; py-isort
 ;; (use-package py-isort
