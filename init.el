@@ -415,12 +415,12 @@
 ;;   (add-hook 'after-init-hook 'sml/setup))
 
 ;; ag
-(use-package ag
-  :ensure
-  :config
-  (progn
-    (setq ag-highlight-search t
-          ag-reuse-buffers t)))
+;; (use-package ag
+;;   :ensure
+;;   :config
+;;   (progn
+;;     (setq ag-highlight-search t
+;;           ag-reuse-buffers t)))
 
 ;; projectile
 (use-package projectile

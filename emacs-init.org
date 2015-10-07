@@ -310,3 +310,14 @@
        ("M-X" . smex-major-mode-commands)
        ("C-c C-c M-x" . execute-extended-command))
    #+END_SRC
+
+** Ag
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package ag
+       :ensure
+       :config
+       (progn
+         (setq ag-highlight-search t
+                ag-reuse-buffers t)))
+   #+END_SRC
