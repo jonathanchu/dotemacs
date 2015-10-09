@@ -649,14 +649,14 @@
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 ;; company-mode and backends
-(use-package company
-  :ensure
-  :config
-  (global-company-mode)
-  (eval-after-load 'company
-    (progn
-      '(add-to-list 'company-backends 'company-anaconda)
-      )))
+;; (use-package company
+;;   :ensure
+;;   :config
+;;   (global-company-mode)
+;;   (eval-after-load 'company
+;;     (progn
+;;       '(add-to-list 'company-backends 'company-anaconda)
+;;       )))
 
 ;; aggressive-indent
 (use-package aggressive-indent

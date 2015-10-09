@@ -192,6 +192,20 @@
                     (eldoc-mode 1))))
    #+END_SRC
 
+** Company mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package company
+       :ensure
+       :config
+       (global-company-mode)
+       (eval-after-load 'company
+         (progn
+           '(add-to-list 'company-backends 'company-anaconda)
+           )))
+   #+END_SRC
+
+
 ** Magit
 
    #+BEGIN_SRC emacs-lisp :tangle yes
