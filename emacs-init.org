@@ -205,7 +205,6 @@
            )))
    #+END_SRC
 
-
 ** Magit
 
    #+BEGIN_SRC emacs-lisp :tangle yes
