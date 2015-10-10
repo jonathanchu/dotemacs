@@ -5,10 +5,10 @@
 
 ** Color theme
   #+BEGIN_SRC emacs-lisp :tangle yes
-    (use-package atom-one-dark-theme
+    (use-package atom-dark-theme
       :ensure
       :config
-      (load-theme 'atom-one-dark t))
+      (load-theme 'atom-dark t))
   #+END_SRC
 
 ** Smart-mode-line
