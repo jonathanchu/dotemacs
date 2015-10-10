@@ -874,7 +874,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;----------------------------------------------------------------------------
 
 ;; duplicate the current line
-(global-set-key [C-return] 'duplicate-line)
+(global-set-key (kbd "C-c d") 'duplicate-line)
 
 ;; sorting
 (global-set-key (kbd "M-`") 'sort-lines)
