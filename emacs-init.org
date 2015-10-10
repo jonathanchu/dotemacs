@@ -179,6 +179,16 @@
         (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
     #+END_SRC
 
+** Elpy
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package elpy
+       :ensure
+       :config
+       (elpy-enable))
+   #+END_SRC
+
+
 ** Magit
 
    #+BEGIN_SRC emacs-lisp :tangle yes

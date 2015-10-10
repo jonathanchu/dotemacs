@@ -649,10 +649,10 @@
   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 ;; elpy
-(use-package elpy
-  :ensure
-  :config
-  (elpy-enable))
+;; (use-package elpy
+;;   :ensure
+;;   :config
+;;   (elpy-enable))
 
 ;; company-mode and backends
 ;; (use-package company
