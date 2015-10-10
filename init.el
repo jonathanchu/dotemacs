@@ -900,6 +900,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; fullscreen toggle
 (global-set-key [(s return)] 'toggle-frame-fullscreen)
 
+;; fixup whitespace
+(global-set-key (kbd "C-c w") 'fixup-whitespace)
+
 
 ;;----------------------------------------------------------------------------
 ;; Literate Config Test
