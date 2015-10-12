@@ -216,9 +216,9 @@
 ;;     (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
 
 ;; highlight brackets
-(use-package paren
-  :config
-  (show-paren-mode 1))
+;; (use-package paren
+;;   :config
+;;   (show-paren-mode 1))
 
 ;; save place
 (use-package saveplace
