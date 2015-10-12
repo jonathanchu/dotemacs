@@ -352,3 +352,14 @@
        (setq org-completion-use-ido t)
        (setq org-startup-folded nil))
    #+END_SRC
+
+** Whitespace mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package whitespace
+       :config
+       (progn
+         (global-whitespace-mode 1)
+         (setq whitespace-action '(auto-cleanup))
+         (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
+   #+END_SRC
