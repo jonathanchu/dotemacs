@@ -28,3 +28,4 @@ smex-items
 *.log
 /.python-environments
 emacs-init.el
+flycheck_*.el
