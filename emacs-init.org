@@ -381,3 +381,10 @@
          (setq-default save-place t)
          (setq save-place-file "~/.emacs.d/saved-places")))
    #+END_SRC
+
+** Command log mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package command-log-mode
+       :ensure)
+   #+END_SRC

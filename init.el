@@ -234,8 +234,8 @@
 ;;   (load-theme 'atom-one-dark t))
 
 ;; command-log-mode
-(use-package command-log-mode
-  :ensure)
+;; (use-package command-log-mode
+;;   :ensure)
 
 ;; gitconfig-mode
 (use-package gitconfig-mode
