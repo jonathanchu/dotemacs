@@ -371,3 +371,13 @@
        :config
        (show-paren-mode 1))
    #+END_SRC
+
+** Save place
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package saveplace
+       :config
+       (progn
+         (setq-default save-place t)
+         (setq save-place-file "~/.emacs.d/saved-places")))
+   #+END_SRC

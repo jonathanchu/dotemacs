@@ -221,11 +221,11 @@
 ;;   (show-paren-mode 1))
 
 ;; save place
-(use-package saveplace
-  :config
-  (progn
-    (setq-default save-place t)
-    (setq save-place-file "~/.emacs.d/saved-places")))
+;; (use-package saveplace
+;;   :config
+;;   (progn
+;;     (setq-default save-place t)
+;;     (setq save-place-file "~/.emacs.d/saved-places")))
 
 ;; color theme
 ;; (use-package atom-one-dark-theme
