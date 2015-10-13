@@ -388,3 +388,10 @@
      (use-package command-log-mode
        :ensure)
    #+END_SRC
+
+** Gitconfig Mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package gitconfig-mode
+       :ensure)
+   #+END_SRC

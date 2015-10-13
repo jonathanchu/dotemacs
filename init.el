@@ -238,8 +238,8 @@
 ;;   :ensure)
 
 ;; gitconfig-mode
-(use-package gitconfig-mode
-  :ensure)
+;; (use-package gitconfig-mode
+;;   :ensure)
 
 ;; gitignore-mode
 (use-package gitignore-mode
