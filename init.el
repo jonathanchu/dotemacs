@@ -501,7 +501,8 @@
                               "COMMIT_EDITMSG\\'"
                               ".*-autoloads\\.el\\'"
                               "[/\\]\\.elpa/"
-                              "/\\.git/.*\\'"))
+                              "/\\.git/.*\\'"
+                              "ido.last"))
   (recentf-mode))
 
 ;; cider
