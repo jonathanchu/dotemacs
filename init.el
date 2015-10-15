@@ -722,6 +722,12 @@
   (add-hook 'js2-mode-hook #'jscs-fix-run-before-save)
   (add-hook 'js3-mode-hook #'jscs-fix-run-before-save))
 
+;; origami
+(use-package origami
+  :ensure
+  :config
+  (global-origami-mode t))
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
