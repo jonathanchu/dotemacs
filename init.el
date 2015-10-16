@@ -726,7 +726,10 @@
 (use-package origami
   :ensure
   :config
-  (global-origami-mode t))
+  (global-origami-mode t)
+  :bind
+  (("M-[" . origami-close-node)
+   ("M-]" . origami-open-node)))
 
 
 ;;----------------------------------------------------------------------------
