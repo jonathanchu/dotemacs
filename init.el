@@ -242,8 +242,8 @@
 ;;   :ensure)
 
 ;; gitignore-mode
-(use-package gitignore-mode
-  :ensure)
+;; (use-package gitignore-mode
+;;   :ensure)
 
 ;; git-timemachine
 (use-package git-timemachine

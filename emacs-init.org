@@ -395,3 +395,10 @@
      (use-package gitconfig-mode
        :ensure)
    #+END_SRC
+
+** Gitignore mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package gitignore-mode
+       :ensure)
+   #+END_SRC
