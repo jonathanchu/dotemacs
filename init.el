@@ -246,8 +246,8 @@
 ;;   :ensure)
 
 ;; git-timemachine
-(use-package git-timemachine
-  :ensure)
+;; (use-package git-timemachine
+;;   :ensure)
 
 ;; github-browse-fle
 (use-package github-browse-file

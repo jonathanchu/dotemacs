@@ -402,3 +402,10 @@
      (use-package gitignore-mode
        :ensure)
    #+END_SRC
+
+** Git timemachine
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package git-timemachine
+       :ensure)
+   #+END_SRC
