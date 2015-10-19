@@ -728,8 +728,10 @@
   :config
   (global-origami-mode t)
   :bind
-  (("M-[" . origami-close-node)
-   ("M-]" . origami-open-node)))
+  (("s-[" . origami-close-node-recursively)
+   ("s-]" . origami-open-node-recursively)
+   ("M-[" . origami-close-all-nodes)
+   ("M-]" . origami-open-all-nodes)))
 
 
 ;;----------------------------------------------------------------------------
