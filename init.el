@@ -250,8 +250,8 @@
 ;;   :ensure)
 
 ;; github-browse-fle
-(use-package github-browse-file
-  :ensure)
+;; (use-package github-browse-file
+;;   :ensure)
 
 ;; restclient
 (use-package restclient

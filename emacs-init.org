@@ -409,3 +409,10 @@
      (use-package git-timemachine
        :ensure)
    #+END_SRC
+
+** Git browse file
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package github-browse-file
+       :ensure)
+   #+END_SRC
