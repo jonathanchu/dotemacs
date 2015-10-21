@@ -416,3 +416,10 @@
      (use-package github-browse-file
        :ensure)
    #+END_SRC
+
+** Restclient mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package restclient
+       :ensure)
+   #+END_SRC

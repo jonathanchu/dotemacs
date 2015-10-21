@@ -254,8 +254,8 @@
 ;;   :ensure)
 
 ;; restclient
-(use-package restclient
-  :ensure)
+;; (use-package restclient
+;;   :ensure)
 
 ;; flycheck
 ;; (use-package flycheck
