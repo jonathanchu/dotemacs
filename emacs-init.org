@@ -144,6 +144,9 @@
     ;; server mode
     (if (not server-mode)
         (server-start nil t))
+
+    ;; cua mode
+    (cua-mode t)
   #+END_SRC
 
 * Major Modes
