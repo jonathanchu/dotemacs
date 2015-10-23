@@ -441,3 +441,11 @@
          (setq uniquify-after-kill-buffer-p t)
          (setq uniquify-ignore-buffers-re "^\\*")))
    #+END_SRC
+
+** Make mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package make-mode
+       :config
+       (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+   #+END_SRC
