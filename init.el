@@ -378,10 +378,10 @@
     (setq deft-auto-save-interval 0)))
 
 ;; nav-mode
-(use-package nav
-  :ensure
-  :config
-  (nav-disable-overeager-window-splitting))
+;; (use-package nav
+;;   :ensure
+;;   :config
+;;   (nav-disable-overeager-window-splitting))
 
 ;; smex
 ;; (use-package smex
