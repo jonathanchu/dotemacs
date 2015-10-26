@@ -467,8 +467,8 @@
 ;;                                     (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))))
 
 ;; dired+ mode
-(use-package dired+
-  :ensure)
+;; (use-package dired+
+;;   :ensure)
 
 ;; dired-single
 (use-package dired-single

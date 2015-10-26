@@ -471,3 +471,10 @@
                                (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
                                          (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))))
    #+END_SRC
+
+** Dired+ mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package dired+
+       :ensure)
+   #+END_SRC
