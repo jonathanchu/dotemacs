@@ -880,6 +880,12 @@ point reaches the beginning or end of the buffer, stop there."
       (setq beg (line-beginning-position) end (line-end-position)))
     (comment-or-uncomment-region beg end)))
 
+;; toggle between most recent buffers
+(defun switch-to-previous-buffer ()
+  "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
@@ -914,6 +920,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; fixup whitespace
 (global-set-key (kbd "C-c w") 'fixup-whitespace)
+
+;; switch to previous buffer
+(global-set-key (kbd "C-`") 'switch-to-previous-buffer)
 
 
 ;;----------------------------------------------------------------------------
