@@ -478,3 +478,10 @@
      (use-package dired+
        :ensure)
    #+END_SRC
+
+** Dired single
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package dired-single
+       :ensure)
+   #+END_SRC

@@ -471,8 +471,8 @@
 ;;   :ensure)
 
 ;; dired-single
-(use-package dired-single
-  :ensure)
+;; (use-package dired-single
+;;   :ensure)
 
 ;; undo-tree mode
 (use-package undo-tree
