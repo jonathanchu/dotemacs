@@ -485,3 +485,14 @@
      (use-package dired-single
        :ensure)
    #+END_SRC
+
+** Undo tree
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package undo-tree
+       :ensure
+       :config
+       (global-undo-tree-mode 1)
+       (setq undo-tree-visualizer-diff t
+             undo-tree-visualizer-timestamps t))
+   #+END_SRC

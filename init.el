@@ -475,12 +475,12 @@
 ;;   :ensure)
 
 ;; undo-tree mode
-(use-package undo-tree
-  :ensure
-  :config
-  (global-undo-tree-mode 1)
-  (setq undo-tree-visualizer-diff t
-        undo-tree-visualizer-timestamps t))
+;; (use-package undo-tree
+;;   :ensure
+;;   :config
+;;   (global-undo-tree-mode 1)
+;;   (setq undo-tree-visualizer-diff t
+;;         undo-tree-visualizer-timestamps t))
 
 ;; fullframe
 (use-package fullframe
