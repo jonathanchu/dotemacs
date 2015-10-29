@@ -496,3 +496,12 @@
        (setq undo-tree-visualizer-diff t
              undo-tree-visualizer-timestamps t))
    #+END_SRC
+
+** Fullframe
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package fullframe
+       :ensure
+       :config
+       (fullframe magit-status magit-mode-quit-window))
+   #+END_SRC

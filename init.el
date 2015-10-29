@@ -483,10 +483,10 @@
 ;;         undo-tree-visualizer-timestamps t))
 
 ;; fullframe
-(use-package fullframe
-  :ensure
-  :config
-  (fullframe magit-status magit-mode-quit-window))
+;; (use-package fullframe
+;;   :ensure
+;;   :config
+;;   (fullframe magit-status magit-mode-quit-window))
 
 ;; recentf
 (use-package recentf
