@@ -506,13 +506,12 @@
   (recentf-mode))
 
 ;; beacon mode
-;; (use-package beacon
-;;   :ensure
-;;   :init
-;;   (beacon-mode 1)
-;;   :config
-;;   (setq beacon-push-mark 35)
-;;   (setq beacon-color "#666600"))
+(use-package beacon
+  :ensure
+  :config
+  (beacon-mode 1)
+  (setq beacon-push-mark 35)
+  (setq beacon-color "#666600"))
 
 ;; cider
 (use-package cider
