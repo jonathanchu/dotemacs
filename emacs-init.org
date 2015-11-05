@@ -526,3 +526,14 @@
                                    "ido.last"))
        (recentf-mode))
    #+END_SRC
+
+** Beacon mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package beacon
+       :ensure
+       :config
+       (beacon-mode 1)
+       (setq beacon-push-mark 35)
+       (setq beacon-color "#61AFEF"))
+   #+END_SRC
