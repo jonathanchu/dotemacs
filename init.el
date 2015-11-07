@@ -514,12 +514,12 @@
 ;;   (setq beacon-color "#61AFEF"))
 
 ;; cider
-(use-package cider
-  :ensure
-  :config
-  (setq nrepl-log-messages t)
-  (setq nrepl-hide-special-buffers t)
-  (add-hook 'cider-mode-hook 'eldoc-mode))
+;; (use-package cider
+;;   :ensure
+;;   :config
+;;   (setq nrepl-log-messages t)
+;;   (setq nrepl-hide-special-buffers t)
+;;   (add-hook 'cider-mode-hook 'eldoc-mode))
 
 ;; expand-region
 (use-package expand-region
