@@ -559,3 +559,11 @@
        :bind
        ("C-=" . er/expand-region))
    #+END_SRC
+
+** Markdown mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package markdown-mode
+       :ensure
+       :mode "\\.md\\'")
+   #+END_SRC

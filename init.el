@@ -528,9 +528,9 @@
 ;;   ("C-=" . er/expand-region))
 
 ;; markdown-mode
-(use-package markdown-mode
-  :ensure
-  :mode "\\.md\\'")
+;; (use-package markdown-mode
+;;   :ensure
+;;   :mode "\\.md\\'")
 
 ;; rainbow delimiters
 (use-package rainbow-delimiters
