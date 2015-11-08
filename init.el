@@ -894,6 +894,13 @@ point reaches the beginning or end of the buffer, stop there."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
+;; transpose the last two words when at end of line
+(defadvice transpose-words
+    (before my/transpose-words)
+  "Transpose the last two words when at the end of line."
+  (if (looking-at "$")
+      (backward-word 1)))
+
 
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
