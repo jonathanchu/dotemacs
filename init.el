@@ -522,10 +522,10 @@
 ;;   (add-hook 'cider-mode-hook 'eldoc-mode))
 
 ;; expand-region
-(use-package expand-region
-  :ensure
-  :bind
-  ("C-=" . er/expand-region))
+;; (use-package expand-region
+;;   :ensure
+;;   :bind
+;;   ("C-=" . er/expand-region))
 
 ;; markdown-mode
 (use-package markdown-mode

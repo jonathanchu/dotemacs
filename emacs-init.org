@@ -173,6 +173,8 @@
           (context 2)))
     #+END_SRC
 
+
+
 ** Python
 
     #+BEGIN_SRC emacs-lisp :tangle yes
@@ -547,4 +549,13 @@
        (setq nrepl-log-messages t)
        (setq nrepl-hide-special-buffers t)
        (add-hook 'cider-mode-hook 'eldoc-mode))
+   #+END_SRC
+
+** Expand region
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package expand-region
+       :ensure
+       :bind
+       ("C-=" . er/expand-region))
    #+END_SRC
