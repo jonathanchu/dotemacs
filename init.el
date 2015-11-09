@@ -533,10 +533,10 @@
 ;;   :mode "\\.md\\'")
 
 ;; rainbow delimiters
-(use-package rainbow-delimiters
-  :ensure
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+;; (use-package rainbow-delimiters
+;;   :ensure
+;;   :config
+;;   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; smartparens mode
 (use-package smartparens
