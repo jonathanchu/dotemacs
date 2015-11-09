@@ -741,6 +741,11 @@
    ("M-[" . origami-close-all-nodes)
    ("M-]" . origami-open-all-nodes)))
 
+;; shell script mode
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
