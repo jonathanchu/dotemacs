@@ -539,17 +539,17 @@
 ;;   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; smartparens mode
-(use-package smartparens
-  :ensure
-  :init
-  (smartparens-global-mode t)
-  :config
-  (progn
-    (sp-local-pair 'web-mode "{%" "%}")
-    (use-package smartparens-config)
-    (setq sp-autoskip-closing-pair 'always
-          ;; Don't kill the entire symbol on C-k
-          sp-hybrid-kill-entire-symbol nil)))
+;; (use-package smartparens
+;;   :ensure
+;;   :init
+;;   (smartparens-global-mode t)
+;;   :config
+;;   (progn
+;;     (sp-local-pair 'web-mode "{%" "%}")
+;;     (use-package smartparens-config)
+;;     (setq sp-autoskip-closing-pair 'always
+;;           ;; Don't kill the entire symbol on C-k
+;;           sp-hybrid-kill-entire-symbol nil)))
 
 ;; clojure-mode
 ;; (use-package clojure-mode

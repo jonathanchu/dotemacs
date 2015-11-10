@@ -576,3 +576,19 @@
        :config
        (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
    #+END_SRC
+
+** Smartparens mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package smartparens
+       :ensure
+       :init
+       (smartparens-global-mode t)
+       :config
+       (progn
+         (sp-local-pair 'web-mode "{%" "%}")
+         (use-package smartparens-config)
+         (setq sp-autoskip-closing-pair 'always
+               ;; Don't kill the entire symbol on C-k
+               sp-hybrid-kill-entire-symbol nil)))
+   #+END_SRC
