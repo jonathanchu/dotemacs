@@ -581,10 +581,10 @@
 ;;             (lambda () (local-set-key (kbd "C-k") 'paredit-kill))))
 
 ;; latex-preview-pane
-(use-package latex-preview-pane
-  :ensure
-  :config
-  (latex-preview-pane-enable))
+;; (use-package latex-preview-pane
+;;   :ensure
+;;   :config
+;;   (latex-preview-pane-enable))
 
 ;; swiper
 (use-package swiper

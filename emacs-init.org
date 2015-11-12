@@ -610,3 +610,12 @@
        (add-hook 'python-mode-hook
                  (lambda () (local-set-key (kbd "C-k") 'paredit-kill))))
    #+END_SRC
+
+** Latex preview pane mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package latex-preview-pane
+       :ensure
+       :config
+       (latex-preview-pane-enable))
+   #+END_SRC
