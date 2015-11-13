@@ -747,12 +747,14 @@
   (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
 ;; diff-hl
-;; (use-package diff-hl
-;;   :ensure
-;;   :init
-;;   (global-diff-hl-mode)
-;;   :config
-;;   (add-hook 'vc-checkin-hook 'diff-hl-update))
+(use-package diff-hl
+  :ensure
+  :init
+  (global-diff-hl-mode)
+  :config
+  (diff-hl-margin-mode t)
+  (diff-hl-side (quote right))
+  (add-hook 'vc-checkin-hook 'diff-hl-update))
 
   :ensure
 
