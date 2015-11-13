@@ -746,6 +746,19 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
+;; diff-hl
+;; (use-package diff-hl
+;;   :ensure
+;;   :init
+;;   (global-diff-hl-mode)
+;;   :config
+;;   (add-hook 'vc-checkin-hook 'diff-hl-update))
+
+;; git gutter fringe plus
+(use-package git-gutter-fringe+
+  :ensure
+  )
+
 
 ;;----------------------------------------------------------------------------
 ;; Defuns
