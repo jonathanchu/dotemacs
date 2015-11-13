@@ -754,10 +754,7 @@
 ;;   :config
 ;;   (add-hook 'vc-checkin-hook 'diff-hl-update))
 
-;; git gutter fringe plus
-(use-package git-gutter-fringe+
   :ensure
-  )
 
 
 ;;----------------------------------------------------------------------------
