@@ -462,19 +462,6 @@
        (nav-disable-overeager-window-splitting))
    #+END_SRC
 
-** Linum mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package linum
-       :config
-       (progn
-         (global-linum-mode 1)
-         (setq linum-format
-               (lambda (line) (propertize
-                               (format (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-                                         (concat " %" (number-to-string w) "d ")) line) 'face 'linum)))))
-   #+END_SRC
-
 ** Dired+ mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
