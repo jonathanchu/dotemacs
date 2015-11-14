@@ -587,18 +587,18 @@
 ;;   (latex-preview-pane-enable))
 
 ;; swiper
-(use-package swiper
-  :init
-  (ivy-mode 1)
-  :ensure
-  :bind
-  ("C-s" . swiper)
-  ("C-r" . swiper)
-  ("C-c C-r" . ivy-resume)
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-format-function 'ivy-format-function-arrow)
-  (advice-add 'swiper :after 'recenter))
+;; (use-package swiper
+;;   :init
+;;   (ivy-mode 1)
+;;   :ensure
+;;   :bind
+;;   ("C-s" . swiper)
+;;   ("C-r" . swiper)
+;;   ("C-c C-r" . ivy-resume)
+;;   :config
+;;   (setq ivy-use-virtual-buffers t)
+;;   (setq ivy-format-function 'ivy-format-function-arrow)
+;;   (advice-add 'swiper :after 'recenter))
 
 ;; ace-window
 (use-package ace-window
