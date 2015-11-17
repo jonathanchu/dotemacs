@@ -601,12 +601,12 @@
 ;;   (advice-add 'swiper :after 'recenter))
 
 ;; ace-window
-(use-package ace-window
-  :ensure
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
-  :bind
-  (("C-x C-o" . ace-window)))
+;; (use-package ace-window
+;;   :ensure
+;;   :init
+;;   (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+;;   :bind
+;;   (("C-x C-o" . ace-window)))
 
 ;; avy
 (use-package avy

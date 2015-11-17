@@ -623,3 +623,14 @@
        (setq ivy-format-function 'ivy-format-function-arrow)
        (advice-add 'swiper :after 'recenter))
    #+END_SRC
+
+*** Ace window
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package ace-window
+       :ensure
+       :init
+       (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+       :bind
+       (("C-x C-o" . ace-window)))
+   #+END_SRC
