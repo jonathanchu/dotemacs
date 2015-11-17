@@ -624,7 +624,7 @@
        (advice-add 'swiper :after 'recenter))
    #+END_SRC
 
-*** Ace window
+** Ace window
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ace-window
