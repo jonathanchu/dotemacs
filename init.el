@@ -609,16 +609,16 @@
 ;;   (("C-x C-o" . ace-window)))
 
 ;; avy
-(use-package avy
-  :ensure
-  :init
-  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
-  :config
-  (avy-setup-default)
-  (setq avy-background t)
-  (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
-  :bind
-  ("C-c j" . avy-goto-word-or-subword-1))
+;; (use-package avy
+;;   :ensure
+;;   :init
+;;   (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
+;;   :config
+;;   (avy-setup-default)
+;;   (setq avy-background t)
+;;   (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
+;;   :bind
+;;   ("C-c j" . avy-goto-word-or-subword-1))
 
 ;; multiple scratch buffers
 (use-package scratch
