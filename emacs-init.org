@@ -649,3 +649,12 @@
        :bind
        ("C-c j" . avy-goto-word-or-subword-1))
    #+END_SRC
+
+** Scratch
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package scratch
+       :ensure
+       :config
+       (autoload 'scratch "scratch" nil t))
+   #+END_SRC

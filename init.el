@@ -621,10 +621,10 @@
 ;;   ("C-c j" . avy-goto-word-or-subword-1))
 
 ;; multiple scratch buffers
-(use-package scratch
-  :ensure
-  :config
-  (autoload 'scratch "scratch" nil t))
+;; (use-package scratch
+;;   :ensure
+;;   :config
+;;   (autoload 'scratch "scratch" nil t))
 
 ;; flyspell
 (use-package flyspell
