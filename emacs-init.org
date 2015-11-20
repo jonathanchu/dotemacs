@@ -658,3 +658,11 @@
        :config
        (autoload 'scratch "scratch" nil t))
    #+END_SRC
+
+** Flyspell
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package flyspell
+       :config
+       (add-hook 'text-mode-hook 'flyspell-mode))
+   #+END_SRC
