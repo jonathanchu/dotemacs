@@ -666,3 +666,16 @@
        :config
        (add-hook 'text-mode-hook 'flyspell-mode))
    #+END_SRC
+
+** Anzu
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package anzu
+       :ensure
+       :config
+       (global-anzu-mode 1)
+       (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
+       :bind
+       (("M-%" . anzu-query-replace)
+        ("C-M-%" . anzu-query-replace-regexp)))
+   #+END_SRC

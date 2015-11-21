@@ -632,14 +632,14 @@
 ;;   (add-hook 'text-mode-hook 'flyspell-mode))
 
 ;; anzu
-(use-package anzu
-  :ensure
-  :config
-  (global-anzu-mode 1)
-  (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
-  :bind
-  (("M-%" . anzu-query-replace)
-   ("C-M-%" . anzu-query-replace-regexp)))
+;; (use-package anzu
+;;   :ensure
+;;   :config
+;;   (global-anzu-mode 1)
+;;   (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
+;;   :bind
+;;   (("M-%" . anzu-query-replace)
+;;    ("C-M-%" . anzu-query-replace-regexp)))
 
 ;; org bullets (custom)
 (use-package org-bullets
