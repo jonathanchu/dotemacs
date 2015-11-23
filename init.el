@@ -648,14 +648,14 @@
 ;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 ;; clj-refactor
-(use-package clj-refactor
-  :ensure
-  :config
-  (defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-  (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
+;; (use-package clj-refactor
+;;   :ensure
+;;   :config
+;;   (defun my-clojure-mode-hook ()
+;;     (clj-refactor-mode 1)
+;;     (yas-minor-mode 1) ; for adding require/use/import
+;;     (cljr-add-keybindings-with-prefix "C-c C-m"))
+;;   (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
 
 ;; elpy
 ;; (use-package elpy
