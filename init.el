@@ -674,11 +674,11 @@
 ;;       )))
 
 ;; aggressive-indent
-(use-package aggressive-indent
-  :ensure
-  :init
-  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+;; (use-package aggressive-indent
+;;   :ensure
+;;   :init
+;;   (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+;;   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 ;; guru-mode
 (use-package guru-mode
