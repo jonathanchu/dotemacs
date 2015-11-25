@@ -681,10 +681,10 @@
 ;;   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 ;; guru-mode
-(use-package guru-mode
-  :ensure
-  :config
-  (guru-global-mode 1))
+;; (use-package guru-mode
+;;   :ensure
+;;   :config
+;;   (guru-global-mode 1))
 
 ;; paradox
 (use-package paradox
