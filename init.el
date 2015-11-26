@@ -687,10 +687,10 @@
 ;;   (guru-global-mode 1))
 
 ;; paradox
-(use-package paradox
-  :ensure
-  :config
-  (setq paradox-execute-asynchronously t))
+;; (use-package paradox
+;;   :ensure
+;;   :config
+;;   (setq paradox-execute-asynchronously t))
 
 ;; counsel
 (use-package counsel
