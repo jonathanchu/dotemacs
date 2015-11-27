@@ -693,10 +693,10 @@
 ;;   (setq paradox-execute-asynchronously t))
 
 ;; counsel
-(use-package counsel
-  :ensure
-  :bind
-  ("C-c g" . counsel-git-grep))
+;; (use-package counsel
+;;   :ensure
+;;   :bind
+;;   ("C-c g" . counsel-git-grep))
 
 ;; easy-kill
 (use-package easy-kill

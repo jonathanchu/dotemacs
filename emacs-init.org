@@ -720,3 +720,12 @@
        :config
        (setq paradox-execute-asynchronously t))
    #+END_SRC
+
+** Counsel
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package counsel
+       :ensure
+       :bind
+       ("C-c g" . counsel-git-grep))
+   #+END_SRC
