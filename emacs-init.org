@@ -729,3 +729,12 @@
        :bind
        ("C-c g" . counsel-git-grep))
    #+END_SRC
+
+** Easy kill
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package easy-kill
+       :ensure
+       :config
+       (global-set-key [remap kill-ring-save] 'easy-kill))
+   #+END_SRC

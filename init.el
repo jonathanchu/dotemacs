@@ -699,10 +699,10 @@
 ;;   ("C-c g" . counsel-git-grep))
 
 ;; easy-kill
-(use-package easy-kill
-  :ensure
-  :config
-  (global-set-key [remap kill-ring-save] 'easy-kill))
+;; (use-package easy-kill
+;;   :ensure
+;;   :config
+;;   (global-set-key [remap kill-ring-save] 'easy-kill))
 
 ;; fix-word
 (use-package fix-word
