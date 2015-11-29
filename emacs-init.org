@@ -738,3 +738,14 @@
        :config
        (global-set-key [remap kill-ring-save] 'easy-kill))
    #+END_SRC
+
+** Fix word
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package fix-word
+       :ensure
+       :bind
+       (("M-u" . fix-word-upcase)
+        ("M-l" . fix-word-downcase)
+        ("M-c" . fix-word-capitalize)))
+   #+END_SRC

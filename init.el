@@ -705,12 +705,12 @@
 ;;   (global-set-key [remap kill-ring-save] 'easy-kill))
 
 ;; fix-word
-(use-package fix-word
-  :ensure
-  :bind
-  (("M-u" . fix-word-upcase)
-   ("M-l" . fix-word-downcase)
-   ("M-c" . fix-word-capitalize)))
+;; (use-package fix-word
+;;   :ensure
+;;   :bind
+;;   (("M-u" . fix-word-upcase)
+;;    ("M-l" . fix-word-downcase)
+;;    ("M-c" . fix-word-capitalize)))
 
 ;; evil mode
 (use-package evil :ensure)
