@@ -749,3 +749,9 @@
         ("M-l" . fix-word-downcase)
         ("M-c" . fix-word-capitalize)))
    #+END_SRC
+
+** Evil mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package evil :ensure)
+   #+END_SRC

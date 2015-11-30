@@ -713,7 +713,7 @@
 ;;    ("M-c" . fix-word-capitalize)))
 
 ;; evil mode
-(use-package evil :ensure)
+;; (use-package evil :ensure)
 
 (setq debug-on-error t)
 
