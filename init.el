@@ -715,7 +715,7 @@
 ;; evil mode
 ;; (use-package evil :ensure)
 
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; jscs
 (use-package jscs
