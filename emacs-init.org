@@ -774,3 +774,17 @@
        (add-hook 'js2-mode-hook #'jscs-fix-run-before-save)
        (add-hook 'js3-mode-hook #'jscs-fix-run-before-save))
    #+END_SRC
+
+** Origami mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package origami
+       :ensure
+       :config
+       (global-origami-mode t)
+       :bind
+       (("s-[" . origami-close-node-recursively)
+        ("s-]" . origami-open-node-recursively)
+        ("M-[" . origami-close-all-nodes)
+        ("M-]" . origami-open-all-nodes)))
+   #+END_SRC

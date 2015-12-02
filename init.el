@@ -731,15 +731,15 @@
 ;;   (add-hook 'js3-mode-hook #'jscs-fix-run-before-save))
 
 ;; origami
-(use-package origami
-  :ensure
-  :config
-  (global-origami-mode t)
-  :bind
-  (("s-[" . origami-close-node-recursively)
-   ("s-]" . origami-open-node-recursively)
-   ("M-[" . origami-close-all-nodes)
-   ("M-]" . origami-open-all-nodes)))
+;; (use-package origami
+;;   :ensure
+;;   :config
+;;   (global-origami-mode t)
+;;   :bind
+;;   (("s-[" . origami-close-node-recursively)
+;;    ("s-]" . origami-open-node-recursively)
+;;    ("M-[" . origami-close-all-nodes)
+;;    ("M-]" . origami-open-all-nodes)))
 
 ;; shell script mode
 (use-package sh-script
