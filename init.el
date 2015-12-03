@@ -746,6 +746,9 @@
 ;;   :config
 ;;   (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
+;; save emacs sessions
+(desktop-save-mode t)
+
 ;; diff-hl
 (use-package diff-hl
   :ensure
