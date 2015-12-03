@@ -742,9 +742,9 @@
 ;;    ("M-]" . origami-open-all-nodes)))
 
 ;; shell script mode
-(use-package sh-script
-  :config
-  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+;; (use-package sh-script
+;;   :config
+;;   (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
 ;; diff-hl
 (use-package diff-hl
