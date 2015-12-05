@@ -799,3 +799,16 @@
        :config
        (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
    #+END_SRC
+
+** Diff hl mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package diff-hl
+       :ensure
+       :init
+       (global-diff-hl-mode t)
+       :config
+       (diff-hl-margin-mode t)
+       ;; (setq diff-hl-side 'right)
+       (add-hook 'vc-checkin-hook 'diff-hl-update))
+   #+END_SRC

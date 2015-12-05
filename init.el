@@ -750,14 +750,14 @@
 ;; (desktop-save-mode t)
 
 ;; diff-hl
-(use-package diff-hl
-  :ensure
-  :init
-  (global-diff-hl-mode t)
-  :config
-  (diff-hl-margin-mode t)
-  ;; (setq diff-hl-side 'right)
-  (add-hook 'vc-checkin-hook 'diff-hl-update))
+;; (use-package diff-hl
+;;   :ensure
+;;   :init
+;;   (global-diff-hl-mode t)
+;;   :config
+;;   (diff-hl-margin-mode t)
+;;   ;; (setq diff-hl-side 'right)
+;;   (add-hook 'vc-checkin-hook 'diff-hl-update))
 
 ;; goto-chg
 (use-package goto-chg
