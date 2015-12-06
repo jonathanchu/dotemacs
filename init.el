@@ -760,11 +760,11 @@
 ;;   (add-hook 'vc-checkin-hook 'diff-hl-update))
 
 ;; goto-chg
-(use-package goto-chg
-  :ensure
-  :bind
-  (("C-c b ," . goto-last-change)
-   ("C-c b ." . goto-last-change-reverse)))
+;; (use-package goto-chg
+;;   :ensure
+;;   :bind
+;;   (("C-c b ," . goto-last-change)
+;;    ("C-c b ." . goto-last-change-reverse)))
 
 ;; rainbow mode
 (use-package rainbow-mode

@@ -812,3 +812,13 @@
        ;; (setq diff-hl-side 'right)
        (add-hook 'vc-checkin-hook 'diff-hl-update))
    #+END_SRC
+
+** Goto chg mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package goto-chg
+       :ensure
+       :bind
+       (("C-c b ," . goto-last-change)
+        ("C-c b ." . goto-last-change-reverse)))
+   #+END_SRC
