@@ -822,3 +822,12 @@
        (("C-c b ," . goto-last-change)
         ("C-c b ." . goto-last-change-reverse)))
    #+END_SRC
+
+** Rainbow mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package rainbow-mode
+       :ensure
+       :config
+       (add-hook 'css-mode-hook 'rainbow-mode))
+   #+END_SRC

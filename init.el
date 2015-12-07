@@ -767,10 +767,10 @@
 ;;    ("C-c b ." . goto-last-change-reverse)))
 
 ;; rainbow mode
-(use-package rainbow-mode
-  :ensure
-  :config
-  (add-hook 'css-mode-hook 'rainbow-mode))
+;; (use-package rainbow-mode
+;;   :ensure
+;;   :config
+;;   (add-hook 'css-mode-hook 'rainbow-mode))
 
 ;; fringe
 (use-package fringe
