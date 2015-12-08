@@ -773,9 +773,9 @@
 ;;   (add-hook 'css-mode-hook 'rainbow-mode))
 
 ;; fringe
-(use-package fringe
-  :defer t
-  :config (fringe-mode '(20 . 8)))
+;; (use-package fringe
+;;   :defer t
+;;   :config (fringe-mode '(20 . 8)))
 
 ;; highlight tail
 (use-package highlight-tail
