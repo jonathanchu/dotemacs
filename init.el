@@ -778,11 +778,11 @@
 ;;   :config (fringe-mode '(20 . 8)))
 
 ;; highlight tail
-(use-package highlight-tail
-  :ensure
-  :config
-  (setq highlight-tail-steps 8
-        highlight-tail-timer 0.05))
+;; (use-package highlight-tail
+;;   :ensure
+;;   :config
+;;   (setq highlight-tail-steps 8
+;;         highlight-tail-timer 0.05))
 
 
 ;;----------------------------------------------------------------------------
