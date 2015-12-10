@@ -843,3 +843,6 @@
        (setq highlight-tail-steps 8
              highlight-tail-timer 0.05))
    #+END_SRC
+
+* Defuns
+
