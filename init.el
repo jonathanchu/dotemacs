@@ -790,11 +790,11 @@
 ;;----------------------------------------------------------------------------
 
 ;; make zap-to-char act like zap-up-to-char
-(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
-  "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
-The CHAR is replaced and the point is put before CHAR."
-  (insert char)
-  (forward-char -1))
+;; (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
+;;   "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
+;; The CHAR is replaced and the point is put before CHAR."
+;;   (insert char)
+;;   (forward-char -1))
 
 ;; smarter navigation to the beginning of a line
 (defun smarter-move-beginning-of-line (arg)
