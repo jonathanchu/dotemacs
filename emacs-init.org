@@ -175,8 +175,6 @@
           (context 2)))
     #+END_SRC
 
-
-
 ** Python
 
     #+BEGIN_SRC emacs-lisp :tangle yes
