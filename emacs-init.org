@@ -147,6 +147,11 @@
 
     ;; debugging
     (setq debug-on-error t)
+
+    ;; desktop save mode
+    (desktop-save-mode t)
+    (setq desktop-restore-eager 5)
+    (setq desktop-save t)
   #+END_SRC
 
 * Major Modes
