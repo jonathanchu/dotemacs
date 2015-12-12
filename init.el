@@ -820,12 +820,12 @@
 
 ;; Highlight the call to ipdb
 ;; src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
-(defun annotate-pdb ()
-  "Highlight lines using a regexp that set the pdb breakpoint."
-  (interactive)
-  (highlight-lines-matching-regexp "import ipdb")
-  (highlight-lines-matching-regexp "pdb.set_trace()"))
-(add-hook 'python-mode-hook 'annotate-pdb)
+;; (defun annotate-pdb ()
+;;   "Highlight lines using a regexp that set the pdb breakpoint."
+;;   (interactive)
+;;   (highlight-lines-matching-regexp "import ipdb")
+;;   (highlight-lines-matching-regexp "pdb.set_trace()"))
+;; (add-hook 'python-mode-hook 'annotate-pdb)
 
 ;; Write temp files to directory to not clutter the filesystem
 (defvar user-temporary-file-directory
