@@ -841,15 +841,15 @@
 ;;       `((".*" ,user-temporary-file-directory t)))
 
 ;; duplicate the current line function
-(defun duplicate-line ()
-  "Duplicate the current line."
-  (interactive)
-  (move-beginning-of-line 1)
-  (kill-line)
-  (yank)
-  (open-line 1)
-  (forward-line 1)
-  (yank))
+;; (defun duplicate-line ()
+;;   "Duplicate the current line."
+;;   (interactive)
+;;   (move-beginning-of-line 1)
+;;   (kill-line)
+;;   (yank)
+;;   (open-line 1)
+;;   (forward-line 1)
+;;   (yank))
 
 ;; use ido selection for recentf
 (defun ido-choose-from-recentf ()
@@ -976,7 +976,7 @@
 ;;----------------------------------------------------------------------------
 
 ;; duplicate the current line
-(global-set-key (kbd "C-c d") 'duplicate-line)
+;; (global-set-key (kbd "C-c d") 'duplicate-line)
 
 ;; sorting
 (global-set-key (kbd "M-`") 'sort-lines)

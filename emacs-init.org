@@ -894,6 +894,17 @@
            (concat user-temporary-file-directory ".auto-saves-"))
      (setq auto-save-file-name-transforms
            `((".*" ,user-temporary-file-directory t)))
+
+     ;; duplicate the current line function
+     (defun duplicate-line ()
+       "Duplicate the current line."
+       (interactive)
+       (move-beginning-of-line 1)
+       (kill-line)
+       (yank)
+       (open-line 1)
+       (forward-line 1)
+       (yank))
    #+END_SRC
 
 * Key Bindings
@@ -901,4 +912,7 @@
   #+BEGIN_SRC emacs-lisp :tangle yes
     ;; remap C-a to `smarter-move-beginning-of-line'
     (global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
+
+    ;; duplicate the current line
+    (global-set-key (kbd "C-c d") 'duplicate-line)
   #+END_SRC
