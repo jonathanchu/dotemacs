@@ -852,10 +852,10 @@
 ;;   (yank))
 
 ;; use ido selection for recentf
-(defun ido-choose-from-recentf ()
-  "Use ido to select a recently visited file from the `recentf-list'."
-  (interactive)
-  (find-file (ido-completing-read "Open file: " recentf-list nil t)))
+;; (defun ido-choose-from-recentf ()
+;;   "Use ido to select a recently visited file from the `recentf-list'."
+;;   (interactive)
+;;   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
 ;; swaps windows
 (defun transpose-windows ()
@@ -990,7 +990,7 @@
 
 ;; recentf with ido selection
 ;; bind to infrequently used find-file-read-only.
-(global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
+;; (global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
 
 ;;scroll window up/down by one line
 (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))

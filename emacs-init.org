@@ -905,6 +905,12 @@
        (open-line 1)
        (forward-line 1)
        (yank))
+
+     ;; use ido selection for recentf
+     (defun ido-choose-from-recentf ()
+       "Use ido to select a recently visited file from the `recentf-list'."
+       (interactive)
+       (find-file (ido-completing-read "Open file: " recentf-list nil t)))
    #+END_SRC
 
 * Key Bindings
@@ -915,4 +921,8 @@
 
     ;; duplicate the current line
     (global-set-key (kbd "C-c d") 'duplicate-line)
+
+    ;; recentf with ido selection
+    ;; bind to infrequently used find-file-read-only.
+    (global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
   #+END_SRC
