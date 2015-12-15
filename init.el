@@ -858,17 +858,17 @@
 ;;   (find-file (ido-completing-read "Open file: " recentf-list nil t)))
 
 ;; swaps windows
-(defun transpose-windows ()
-  "If you have two windows, it swaps them."
-  (interactive)
-  (let ((this-buffer (window-buffer (selected-window)))
-        (other-buffer (prog2
-                          (other-window +1)
-                          (window-buffer (selected-window))
-                        (other-window -1))))
-    (switch-to-buffer other-buffer)
-    (switch-to-buffer-other-window this-buffer)
-    (other-window -1)))
+;; (defun transpose-windows ()
+;;   "If you have two windows, it swaps them."
+;;   (interactive)
+;;   (let ((this-buffer (window-buffer (selected-window)))
+;;         (other-buffer (prog2
+;;                           (other-window +1)
+;;                           (window-buffer (selected-window))
+;;                         (other-window -1))))
+;;     (switch-to-buffer other-buffer)
+;;     (switch-to-buffer-other-window this-buffer)
+;;     (other-window -1)))
 
 ;; Convert word DOuble CApitals to Single Capitals
 (defun dcaps-to-scaps ()
@@ -938,11 +938,11 @@
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; transpose the last two words when at end of line
-(defadvice transpose-words
-    (before my/transpose-words)
-  "Transpose the last two words when at the end of line."
-  (if (looking-at "$")
-      (backward-word 1)))
+;; (defadvice transpose-words
+;;     (before my/transpose-words)
+;;   "Transpose the last two words when at the end of line."
+;;   (if (looking-at "$")
+;;       (backward-word 1)))
 
 ;; toggle window split
 (defun toggle-window-split ()
