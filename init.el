@@ -871,19 +871,19 @@
 ;;     (other-window -1)))
 
 ;; Convert word DOuble CApitals to Single Capitals
-(defun dcaps-to-scaps ()
-  "Convert word in DOuble CApitals to Single Capitals."
-  (interactive)
-  (and (= ?w (char-syntax (char-before)))
-       (save-excursion
-         (and (if (called-interactively-p 1)
-                  (skip-syntax-backward "w")
-                (= -3 (skip-syntax-backward "w")))
-              (let (case-fold-search)
-                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
-              (capitalize-word 1)))))
+;; (defun dcaps-to-scaps ()
+;;   "Convert word in DOuble CApitals to Single Capitals."
+;;   (interactive)
+;;   (and (= ?w (char-syntax (char-before)))
+;;        (save-excursion
+;;          (and (if (called-interactively-p 1)
+;;                   (skip-syntax-backward "w")
+;;                 (= -3 (skip-syntax-backward "w")))
+;;               (let (case-fold-search)
+;;                 (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+;;               (capitalize-word 1)))))
 
-(add-hook 'post-self-insert-hook 'dcaps-to-scaps)
+;; (add-hook 'post-self-insert-hook 'dcaps-to-scaps)
 
 ;; timestamps in *Messages*
 ;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
