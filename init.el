@@ -903,23 +903,23 @@
 ;;           (insert (current-time-microseconds))))))
 
 ;; Copy the buffer filename to the kill ring
-(defun copy-buffer-file-name-as-kill (choice)
-  "Copy the buffer-file-name to the kill-ring."
-  (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
-  (let ((new-kill-string)
-        (name (if (eq major-mode 'dired-mode)
-                  (dired-get-filename)
-                (or (buffer-file-name) ""))))
-    (cond ((eq choice ?f)
-           (setq new-kill-string name))
-          ((eq choice ?p)
-           (setq new-kill-string (file-name-directory name)))
-          ((eq choice ?n)
-           (setq new-kill-string (file-name-nondirectory name)))
-          (t (message "Quit")))
-    (when new-kill-string
-      (message "%s copied" new-kill-string)
-      (kill-new new-kill-string))))
+;; (defun copy-buffer-file-name-as-kill (choice)
+;;   "Copy the buffer-file-name to the kill-ring."
+;;   (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
+;;   (let ((new-kill-string)
+;;         (name (if (eq major-mode 'dired-mode)
+;;                   (dired-get-filename)
+;;                 (or (buffer-file-name) ""))))
+;;     (cond ((eq choice ?f)
+;;            (setq new-kill-string name))
+;;           ((eq choice ?p)
+;;            (setq new-kill-string (file-name-directory name)))
+;;           ((eq choice ?n)
+;;            (setq new-kill-string (file-name-nondirectory name)))
+;;           (t (message "Quit")))
+;;     (when new-kill-string
+;;       (message "%s copied" new-kill-string)
+;;       (kill-new new-kill-string))))
 
 ;; comments/uncomments the current line or the region if one is active
 (defun comment-or-uncomment-region-or-line ()
