@@ -975,6 +975,16 @@
          (when new-kill-string
            (message "%s copied" new-kill-string)
            (kill-new new-kill-string))))
+
+     ;; comments/uncomments the current line or the region if one is active
+     (defun comment-or-uncomment-region-or-line ()
+       "Comments or uncomments the region or the current line if there's no active region."
+       (interactive)
+       (let (beg end)
+         (if (region-active-p)
+             (setq beg (region-beginning) end (region-end))
+           (setq beg (line-beginning-position) end (line-end-position)))
+         (comment-or-uncomment-region beg end)))
    #+END_SRC
 
 * Key Bindings
@@ -996,4 +1006,7 @@
       "Transpose the last two words when at the end of line."
       (if (looking-at "$")
           (backward-word 1)))
+
+     ;; comment/uncomment current line or region
+     (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
   #+END_SRC

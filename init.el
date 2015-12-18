@@ -922,14 +922,14 @@
 ;;       (kill-new new-kill-string))))
 
 ;; comments/uncomments the current line or the region if one is active
-(defun comment-or-uncomment-region-or-line ()
-  "Comments or uncomments the region or the current line if there's no active region."
-  (interactive)
-  (let (beg end)
-    (if (region-active-p)
-        (setq beg (region-beginning) end (region-end))
-      (setq beg (line-beginning-position) end (line-end-position)))
-    (comment-or-uncomment-region beg end)))
+;; (defun comment-or-uncomment-region-or-line ()
+;;   "Comments or uncomments the region or the current line if there's no active region."
+;;   (interactive)
+;;   (let (beg end)
+;;     (if (region-active-p)
+;;         (setq beg (region-beginning) end (region-end))
+;;       (setq beg (line-beginning-position) end (line-end-position)))
+;;     (comment-or-uncomment-region beg end)))
 
 ;; toggle between most recent buffers
 (defun switch-to-previous-buffer ()
@@ -997,7 +997,7 @@
 (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
 ;; comment/uncomment current line or region
-(global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
+;; (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
 
 ;; fullscreen toggle
 (global-set-key [(s return)] 'toggle-frame-fullscreen)
