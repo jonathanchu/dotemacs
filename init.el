@@ -932,10 +932,10 @@
 ;;     (comment-or-uncomment-region beg end)))
 
 ;; toggle between most recent buffers
-(defun switch-to-previous-buffer ()
-  "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+;; (defun switch-to-previous-buffer ()
+;;   "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
+;;   (interactive)
+;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; transpose the last two words when at end of line
 ;; (defadvice transpose-words
@@ -1006,7 +1006,7 @@
 (global-set-key (kbd "C-c w") 'fixup-whitespace)
 
 ;; switch to previous buffer
-(global-set-key (kbd "C-`") 'switch-to-previous-buffer)
+;; (global-set-key (kbd "C-`") 'switch-to-previous-buffer)
 
 ;; toggle window split
 (global-set-key (kbd "C-x |") 'toggle-window-split)

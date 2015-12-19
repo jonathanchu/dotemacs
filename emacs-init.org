@@ -985,6 +985,12 @@
              (setq beg (region-beginning) end (region-end))
            (setq beg (line-beginning-position) end (line-end-position)))
          (comment-or-uncomment-region beg end)))
+
+     ;; toggle between most recent buffers
+     (defun switch-to-previous-buffer ()
+       "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
+       (interactive)
+       (switch-to-buffer (other-buffer (current-buffer) 1)))
    #+END_SRC
 
 * Key Bindings
@@ -1009,4 +1015,7 @@
 
      ;; comment/uncomment current line or region
      (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
+
+     ;; switch to previous buffer
+     (global-set-key (kbd "C-`") 'switch-to-previous-buffer)
   #+END_SRC
