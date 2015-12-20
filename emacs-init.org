@@ -152,6 +152,13 @@
     (desktop-save-mode t)
     (setq desktop-restore-eager 5)
     (setq desktop-save t)
+
+    ;; improve filename completion
+    (setq read-file-name-completion-ignore-case t)
+    (setq read-buffer-completion-ignore-case t)
+    (mapc (lambda (x)
+            (add-to-list 'completion-ignored-extensions x))
+          '(".gz" ".pyc" ".elc" ".exe"))
   #+END_SRC
 
 * Major Modes
