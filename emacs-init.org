@@ -851,6 +851,20 @@
              highlight-tail-timer 0.05))
    #+END_SRC
 
+** Deft
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+   (use-package deft
+     :ensure
+     :config
+     (progn
+       (setq deft-directory "~/Dropbox/Simplenote")
+       (setq deft-extension "org")
+       (setq deft-text-mode 'org-mode)
+       (setq deft-use-filename-as-title t)
+       (setq deft-auto-save-interval 0)))
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
