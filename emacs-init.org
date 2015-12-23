@@ -1068,4 +1068,7 @@
 
      ;; toggle window split
      (global-set-key (kbd "C-x |") 'toggle-window-split)
+
+     ;; sorting
+     (global-set-key (kbd "M-`") 'sort-lines)
   #+END_SRC

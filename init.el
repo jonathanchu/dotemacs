@@ -979,7 +979,7 @@
 ;; (global-set-key (kbd "C-c d") 'duplicate-line)
 
 ;; sorting
-(global-set-key (kbd "M-`") 'sort-lines)
+;; (global-set-key (kbd "M-`") 'sort-lines)
 
 ;; font-size
 (define-key global-map (kbd "s-=") 'text-scale-increase)
