@@ -865,6 +865,13 @@
        (setq deft-auto-save-interval 0)))
    #+END_SRC
 
+** Fireplace
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package fireplace
+       :ensure)
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
