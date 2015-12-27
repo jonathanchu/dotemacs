@@ -432,10 +432,10 @@
 ;;   (bind-key "s-t" 'projectile-find-file))
 
 ;; py-isort
-(use-package py-isort
-  :ensure
-  :config
-  (add-hook 'before-save-hook 'py-isort-before-save))
+;; (use-package py-isort
+;;   :ensure
+;;   :config
+;;   (add-hook 'before-save-hook 'py-isort-before-save))
 
 ;; org-mode
 ;; (use-package org
