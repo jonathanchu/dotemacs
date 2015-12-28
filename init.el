@@ -995,8 +995,8 @@
 ;; (global-set-key (kbd "M-`") 'sort-lines)
 
 ;; font-size
-(define-key global-map (kbd "s-=") 'text-scale-increase)
-(define-key global-map (kbd "s--") 'text-scale-decrease)
+;; (define-key global-map (kbd "s-=") 'text-scale-increase)
+;; (define-key global-map (kbd "s--") 'text-scale-decrease)
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 ;; (global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)

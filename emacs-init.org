@@ -1100,4 +1100,8 @@
 
      ;; sorting
      (global-set-key (kbd "M-`") 'sort-lines)
+
+     ;; font-size
+     (define-key global-map (kbd "s-=") 'text-scale-increase)
+     (define-key global-map (kbd "s--") 'text-scale-decrease)
   #+END_SRC
