@@ -359,6 +359,11 @@
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package org
+       :defer t
+       :bind
+       (("C-c a" . org-agenda)
+       ("C-c c" . org-capture)
+       ("C-c l" . org-store-link))
        :config
        (setq org-directory "~/Dropbox/org")
        (setq org-log-done t)
