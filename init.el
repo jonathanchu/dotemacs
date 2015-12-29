@@ -1006,8 +1006,8 @@
 ;; (global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
 
 ;;scroll window up/down by one line
-(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
-(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
+;; (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+;; (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
 ;; comment/uncomment current line or region
 ;; (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
