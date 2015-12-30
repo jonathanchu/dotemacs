@@ -1013,7 +1013,7 @@
 ;; (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
 
 ;; fullscreen toggle
-(global-set-key [(s return)] 'toggle-frame-fullscreen)
+;; (global-set-key [(s return)] 'toggle-frame-fullscreen)
 
 ;; fixup whitespace
 (global-set-key (kbd "C-c w") 'fixup-whitespace)
