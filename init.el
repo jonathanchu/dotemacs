@@ -1016,7 +1016,7 @@
 ;; (global-set-key [(s return)] 'toggle-frame-fullscreen)
 
 ;; fixup whitespace
-(global-set-key (kbd "C-c w") 'fixup-whitespace)
+;; (global-set-key (kbd "C-c w") 'fixup-whitespace)
 
 ;; switch to previous buffer
 ;; (global-set-key (kbd "C-`") 'switch-to-previous-buffer)

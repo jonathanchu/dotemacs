@@ -1144,4 +1144,7 @@
 
      ;; fullscreen toggle
      (global-set-key [(s return)] 'toggle-frame-fullscreen)
+
+     ;; fixup whitespace
+     (global-set-key (kbd "C-c w") 'fixup-whitespace)
   #+END_SRC
