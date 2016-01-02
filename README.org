@@ -2,17 +2,7 @@
 #+TITLE:     My Emacs Configuration
 #+AUTHOR:    Jonathan Chu
 #+EMAIL:     me@jonathanchu.is
-#+DATE:      2015-03-01
-
-** TODO TODO
-- [X] Introduction
-- [X] Installation
-- [ ] Requirements
-- [ ] Updates
-- [X] Global config
-- [ ] Functions
-- [ ] Modes
-- [ ] Key bindings
+#+DATE:      2016-01-02
 
 ** Introduction
 
