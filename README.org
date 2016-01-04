@@ -6,7 +6,7 @@
 
 ** Introduction
 
-   This is my emacs configuration, a somewhat simple config compared to
+   This is my Emacs configuration, a somewhat simple config compared to
    most. It's geared towards OS X, although it should work on most *nix
    configs. I've never tried this on Windows, so YMMV.
 
