@@ -23,7 +23,8 @@
 
 * Global Configuration
 
-  Some essential configuration.
+  There are some very common things that most Emacs users do to setup
+  and configure their text editor environment.
 
   #+BEGIN_SRC emacs-lisp :tangle yes
     ;; set paths from shell
