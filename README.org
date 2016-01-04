@@ -6,9 +6,9 @@
 
 ** Introduction
 
-   This is my Emacs configuration, a somewhat simple config compared to
-   most. It's geared towards OS X, although it should work on most *nix
-   configs. I've never tried this on Windows, so YMMV.
+   This is my Emacs configuration, a somewhat simple config compared
+   to most. It's geared towards OS X, although it should work on most
+   *nix configs. I've never tried this on Windows, so YMMV.
 
    The entire configuration is tangled using =org-babel-load-file=,
    which generates a file named =emacs-init.org= from the =emacs-lisp=
