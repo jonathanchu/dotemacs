@@ -62,13 +62,12 @@
    npm install jshint
    #+END_SRC
 
-   For using =python-mode= and =anaconda=, you'll need to have =pip=
+   For using =python-mode= and =elpy=, you'll need to have =pip=
    installed and install the following packages:
 
    #+BEGIN_SRC
-   pip install jedi
-   pip install service-factory
-   pip install six
+   pip install rope
+   pip install flake8
    #+END_SRC
 
 ** Updates
