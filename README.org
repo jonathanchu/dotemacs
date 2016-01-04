@@ -10,9 +10,9 @@
    most. It's geared towards OS X, although it should work on most *nix
    configs. I've never tried this on Windows, so YMMV.
 
-   The entire configuration is tangled using =org-babel-load-file=, which
-   generates a file named =emacs-init.org= from the =emacs-lisp= source
-   blocks.
+   The entire configuration is tangled using =org-babel-load-file=,
+   which generates a file named =emacs-init.org= from the =emacs-lisp=
+   source blocks. You can find the init org file [[https://github.com/jonathanchu/dotemacs/blob/master/emacs-init.org][here]].
 
    This configuration aims to provide you with a barebones
    configuration with sane defaults, built upon =package.el=.
