@@ -586,6 +586,8 @@
 
 ** Expand region
 
+   Context/Language aware region expansion/contraction.
+
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package expand-region
        :ensure
