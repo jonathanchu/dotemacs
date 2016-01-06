@@ -215,6 +215,14 @@
        (elpy-enable))
    #+END_SRC
 
+** Py-isort
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package py-isort
+       :ensure
+       :config
+       (add-hook 'before-save-hook 'py-isort-before-save))
+   #+END_SRC
 
 ** Magit
 
@@ -356,15 +364,6 @@
        (projectile-global-mode 1)
        :init
        (bind-key "s-t" 'projectile-find-file))
-   #+END_SRC
-
-** Py-isort
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package py-isort
-       :ensure
-       :config
-       (add-hook 'before-save-hook 'py-isort-before-save))
    #+END_SRC
 
 ** Org mode
