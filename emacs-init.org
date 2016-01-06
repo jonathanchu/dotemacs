@@ -194,6 +194,17 @@
        (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
    #+END_SRC
 
+** Cider
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package cider
+       :ensure
+       :config
+       (setq nrepl-log-messages t)
+       (setq nrepl-hide-special-buffers t)
+       (add-hook 'cider-mode-hook 'eldoc-mode))
+   #+END_SRC
+
 ** Python
 
     #+BEGIN_SRC emacs-lisp :tangle yes
@@ -571,17 +582,6 @@
        (beacon-mode 1)
        (setq beacon-push-mark 35)
        (setq beacon-color "#61AFEF"))
-   #+END_SRC
-
-** Cider
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package cider
-       :ensure
-       :config
-       (setq nrepl-log-messages t)
-       (setq nrepl-hide-special-buffers t)
-       (add-hook 'cider-mode-hook 'eldoc-mode))
    #+END_SRC
 
 ** Expand region
