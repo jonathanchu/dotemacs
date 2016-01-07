@@ -12,7 +12,8 @@
 
    The entire configuration is tangled using =org-babel-load-file=,
    which generates a file named =emacs-init.org= from the =emacs-lisp=
-   source blocks. You can find the init org file [[https://github.com/jonathanchu/dotemacs/blob/master/emacs-init.org][here]].
+   source blocks. You can find the init org file here - [[https://github.com/jonathanchu/dotemacs/blob/master/emacs-init.org][my literate
+   Emacs]].
 
    This configuration aims to provide you with a bare-bones
    configuration with sane defaults, built upon =package.el=.
