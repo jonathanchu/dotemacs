@@ -1,6 +1,9 @@
 #+AUTHOR: Jonathan Chu
 #+TITLE:  My Emacs Configuration
 
+This file is tangled using =org-babel-load-file= and it generates an
+=emacs-init.el= from the =emacs-lisp= source blocks.
+
 * Appearance
 
 ** Color theme
