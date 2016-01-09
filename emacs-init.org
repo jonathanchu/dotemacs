@@ -575,7 +575,8 @@ This file is tangled using =org-babel-load-file= and it generates an
        :ensure
        :config
        (fullframe magit-status magit-mode-quit-window)
-       (fullframe ibuffer ibuffer-quit))
+       (fullframe ibuffer ibuffer-quit)
+       (fullframe paradox-list-packages paradox-quit-and-close nil))
    #+END_SRC
 
 ** Recentf
