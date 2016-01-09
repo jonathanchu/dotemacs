@@ -547,6 +547,14 @@ This file is tangled using =org-babel-load-file= and it generates an
              undo-tree-visualizer-timestamps t))
    #+END_SRC
 
+** ibuffer
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package ibuffer
+       :bind
+       ("C-x C-b" . ibuffer))
+   #+END_SRC
+
 ** Fullframe
 
    #+BEGIN_SRC emacs-lisp :tangle yes
