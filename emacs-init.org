@@ -365,7 +365,9 @@ This file is tangled using =org-babel-load-file= and it generates an
        :config
        (progn
          (setq ag-highlight-search t
-                ag-reuse-buffers t)))
+                ag-reuse-buffers t))
+       :bind
+       ("s-F" . ag-project))
    #+END_SRC
 
 ** Projectile
