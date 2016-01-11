@@ -357,6 +357,17 @@ This file is tangled using =org-babel-load-file= and it generates an
        ("C-c C-c M-x" . execute-extended-command))
    #+END_SRC
 
+** Idomenu
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package idomenu
+       :ensure
+       :config
+       (setq imenu-auto-rescan t)
+       :bind
+       ("C-c i" . idomenu))
+   #+END_SRC
+
 ** Ag
 
    #+BEGIN_SRC emacs-lisp :tangle yes
