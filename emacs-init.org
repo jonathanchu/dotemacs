@@ -708,6 +708,8 @@ This file is tangled using =org-babel-load-file= and it generates an
        :config
        (setq ivy-use-virtual-buffers t)
        (setq ivy-format-function 'ivy-format-function-arrow)
+       (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+       (setq ivy-initial-inputs-alist nil)
        (advice-add 'swiper :after 'recenter))
    #+END_SRC
 
