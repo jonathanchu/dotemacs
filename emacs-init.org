@@ -243,6 +243,8 @@ This file is tangled using =org-babel-load-file= and it generates an
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package magit
        :ensure
+       :pin
+       melpa-stable
        :config
        (progn
          (setq magit-push-always-verify nil)
