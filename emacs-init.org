@@ -790,7 +790,11 @@ This file is tangled using =org-babel-load-file= and it generates an
      (use-package counsel
        :ensure
        :bind
-       ("C-c g" . counsel-git-grep))
+       ("M-x" . counsel-M-x)
+       ("C-x C-f" . counsel-find-file)
+       ("C-c g" . counsel-git)
+       ("C-c j" . counsel-git-grep)
+       ("C-c k" . counsel-ag))
    #+END_SRC
 
 ** Easy kill
