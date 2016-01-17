@@ -530,7 +530,9 @@ This file is tangled using =org-babel-load-file= and it generates an
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package neotree
-       :ensure)
+       :ensure
+       :bind
+       ("C-c n" . neotree-toggle))
    #+END_SRC
 
 ** Dired+ mode
