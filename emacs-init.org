@@ -352,7 +352,7 @@ This file is tangled using =org-babel-load-file= and it generates an
        :init
        (smex-initialize)
        :bind
-       ("M-x" . smex)
+       ;; ("M-x" . smex)
        ("M-X" . smex-major-mode-commands)
        ("C-c C-c M-x" . execute-extended-command))
    #+END_SRC
