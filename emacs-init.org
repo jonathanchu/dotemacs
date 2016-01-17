@@ -522,6 +522,13 @@ This file is tangled using =org-babel-load-file= and it generates an
        (nav-disable-overeager-window-splitting))
    #+END_SRC
 
+** Neotree
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package neotree
+       :ensure)
+   #+END_SRC
+
 ** Dired+ mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
