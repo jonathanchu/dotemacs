@@ -344,6 +344,19 @@ This file is tangled using =org-babel-load-file= and it generates an
        (ido-ubiquitous-mode 1))
    #+END_SRC
 
+** Smex
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package smex
+       :ensure
+       :init
+       (smex-initialize)
+       :bind
+       ("M-x" . smex)
+       ("M-X" . smex-major-mode-commands)
+       ("C-c C-c M-x" . execute-extended-command))
+   #+END_SRC
+
 ** Idomenu
 
    #+BEGIN_SRC emacs-lisp :tangle yes
