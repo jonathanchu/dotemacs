@@ -163,6 +163,9 @@ This file is tangled using =org-babel-load-file= and it generates an
     (mapc (lambda (x)
             (add-to-list 'completion-ignored-extensions x))
           '(".gz" ".pyc" ".elc" ".exe"))
+
+    ;; Suppress warnings for functions redefined with defadvice
+    (setq ad-redefinition-action 'accept)
   #+END_SRC
 
 * Major Modes
