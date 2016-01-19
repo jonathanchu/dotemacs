@@ -1,6 +1,6 @@
 #+AUTHOR: Jonathan Chu
 #+TITLE:  My Emacs Configuration
-#+TOC: listings
+#+OPTIONS: toc:2
 
 
 Inspired by a bunch of individuals who have transitioned their Emacs
