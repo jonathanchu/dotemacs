@@ -1,7 +1,8 @@
 #+AUTHOR: Jonathan Chu
 #+TITLE:  My Emacs Configuration
-#+OPTIONS: toc:2
+#+OPTIONS: toc:2 h:4
 
+* Introduction
 
 Inspired by a bunch of individuals who have transitioned their Emacs
 configuration to an org-mode file, I have converted mine as well. The
