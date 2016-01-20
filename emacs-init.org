@@ -579,7 +579,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ibuffer-vc
-       :ensure t t
+       :ensure t
        :defer t
        :init (add-hook 'ibuffer-hook
                        (lambda ()
