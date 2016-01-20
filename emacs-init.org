@@ -17,7 +17,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Color theme
   #+BEGIN_SRC emacs-lisp :tangle yes
     (use-package atom-one-dark-theme
-      :ensure
+      :ensure t
       :config
       (load-theme 'atom-one-dark t))
   #+END_SRC
@@ -25,7 +25,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Smart-mode-line
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package smart-mode-line
-       :ensure
+       :ensure t
        :config
        (setq sml/no-confirm-load-theme t)
        (setq sml/theme 'respectful)
@@ -40,7 +40,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
   #+BEGIN_SRC emacs-lisp :tangle yes
     ;; set paths from shell
     (use-package exec-path-from-shell
-      :ensure
+      :ensure t
       :if (memq window-system '(mac ns))
       :config
       (exec-path-from-shell-initialize))
@@ -182,7 +182,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package clojure-mode
-       :ensure
+       :ensure t
        :config
        (define-clojure-indent
          (defroutes 'defun)
@@ -199,7 +199,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package clj-refactor
-       :ensure
+       :ensure t
        :config
        (defun my-clojure-mode-hook ()
          (clj-refactor-mode 1)
@@ -212,7 +212,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package cider
-       :ensure
+       :ensure t
        :config
        (setq nrepl-log-messages t)
        (setq nrepl-hide-special-buffers t)
@@ -223,7 +223,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     #+BEGIN_SRC emacs-lisp :tangle yes
       (use-package python-mode
-        :ensure
+        :ensure t
         :config
         (add-hook 'python-mode-hook
                   '(lambda ()
@@ -235,7 +235,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package elpy
-       :ensure
+       :ensure t
        :config
        (elpy-enable))
    #+END_SRC
@@ -244,7 +244,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package py-isort
-       :ensure
+       :ensure t
        :config
        (add-hook 'before-save-hook 'py-isort-before-save))
    #+END_SRC
@@ -253,7 +253,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package magit
-       :ensure
+       :ensure t
        :config
        (progn
          (setq magit-push-always-verify nil)
@@ -268,7 +268,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package yasnippet
-       :ensure
+       :ensure t
        :config
        (progn
          (yas-global-mode 1)
@@ -280,7 +280,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package web-mode
-       :ensure
+       :ensure t
        :config
        (progn
          (setq web-mode-markup-indent-offset 2)
@@ -301,7 +301,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package less-css-mode
-       :ensure
+       :ensure t
        :config
        (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
    #+END_SRC
@@ -310,7 +310,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package flycheck
-       :ensure
+       :ensure t
        :defer 2
        :config
        (global-flycheck-mode 1))
@@ -320,7 +320,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package flx-ido
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Ido mode
@@ -340,7 +340,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ido-vertical-mode
-       :ensure
+       :ensure t
        :config
        (ido-vertical-mode 1)
        (setq ido-vertical-define-keys 'C-n-and-C-p-only))
@@ -350,7 +350,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ido-ubiquitous
-       :ensure
+       :ensure t
        :config
        (ido-ubiquitous-mode 1))
    #+END_SRC
@@ -359,7 +359,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package smex
-       :ensure
+       :ensure t
        :init
        (smex-initialize))
    #+END_SRC
@@ -368,7 +368,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package idomenu
-       :ensure
+       :ensure t
        :config
        (setq imenu-auto-rescan t)
        :bind
@@ -391,7 +391,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ag
-       :ensure
+       :ensure t
        :config
        (progn
          (setq ag-highlight-search t
@@ -404,7 +404,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package projectile
-       :ensure
+       :ensure t
        :diminish ""
        :config
        (projectile-global-mode 1)
@@ -487,42 +487,42 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package command-log-mode
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Gitconfig Mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package gitconfig-mode
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Gitignore mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package gitignore-mode
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Git timemachine
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package git-timemachine
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Git browse file
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package github-browse-file
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Restclient mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package restclient
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Make mode
@@ -537,7 +537,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package neotree
-       :ensure
+       :ensure t
        :bind
        ("C-c n" . neotree-toggle))
    #+END_SRC
@@ -546,21 +546,21 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package dired+
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Dired single
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package dired-single
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 ** Undo tree
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package undo-tree
-       :ensure
+       :ensure t
        :config
        (global-undo-tree-mode 1)
        (setq undo-tree-visualizer-diff t
@@ -579,7 +579,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ibuffer-vc
-       :ensure t
+       :ensure t t
        :defer t
        :init (add-hook 'ibuffer-hook
                        (lambda ()
@@ -592,7 +592,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package fullframe
-       :ensure
+       :ensure t
        :config
        (fullframe magit-status magit-mode-quit-window)
        (fullframe ibuffer ibuffer-quit)
@@ -623,7 +623,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package beacon
-       :ensure
+       :ensure t
        :config
        (beacon-mode 1)
        (setq beacon-push-mark 35)
@@ -636,7 +636,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package expand-region
-       :ensure
+       :ensure t
        :bind
        ("C-=" . er/expand-region))
    #+END_SRC
@@ -645,7 +645,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package markdown-mode
-       :ensure
+       :ensure t
        :mode "\\.md\\'")
    #+END_SRC
 
@@ -653,7 +653,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package rainbow-delimiters
-       :ensure
+       :ensure t
        :config
        (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
    #+END_SRC
@@ -662,7 +662,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package smartparens
-       :ensure
+       :ensure t
        :init
        (smartparens-global-mode t)
        :config
@@ -678,7 +678,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package paredit
-       :ensure
+       :ensure t
        :config
        (autoload 'enable-paredit-mode "paredit" t)
        (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
@@ -696,7 +696,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package latex-preview-pane
-       :ensure
+       :ensure t
        :config
        (latex-preview-pane-enable))
    #+END_SRC
@@ -707,7 +707,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package swiper
        :init
        (ivy-mode 1)
-       :ensure
+       :ensure t
        :bind
        ("C-s" . swiper)
        ("C-r" . swiper)
@@ -724,7 +724,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package ace-window
-       :ensure
+       :ensure t
        :init
        (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
        :bind
@@ -735,7 +735,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package avy
-       :ensure
+       :ensure t
        :init
        (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
        :config
@@ -750,7 +750,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package scratch
-       :ensure
+       :ensure t
        :config
        (autoload 'scratch "scratch" nil t))
    #+END_SRC
@@ -767,7 +767,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package anzu
-       :ensure
+       :ensure t
        :config
        (global-anzu-mode 1)
        (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
@@ -789,7 +789,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package aggressive-indent
-       :ensure
+       :ensure t
        :init
        (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
        (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
@@ -799,7 +799,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package paradox
-       :ensure
+       :ensure t
        :config
        (setq paradox-execute-asynchronously t))
    #+END_SRC
@@ -808,7 +808,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package counsel
-       :ensure
+       :ensure t
        :bind
        ("M-x" . counsel-M-x)
        ("C-x C-f" . counsel-find-file)
@@ -820,7 +820,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package easy-kill
-       :ensure
+       :ensure t
        :config
        (global-set-key [remap kill-ring-save] 'easy-kill))
    #+END_SRC
@@ -829,7 +829,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package fix-word
-       :ensure
+       :ensure t
        :bind
        (("M-u" . fix-word-upcase)
         ("M-l" . fix-word-downcase)
@@ -839,14 +839,14 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Evil mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package evil :ensure)
+     (use-package evil :ensure t)
    #+END_SRC
 
 ** JSCS mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package jscs
-       :ensure
+       :ensure t
        :config
        (autoload 'jscs-indent-apply "jscs" nil t)
        (autoload 'jscs-fix "jscs" nil t)
@@ -862,7 +862,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package origami
-       :ensure
+       :ensure t
        :config
        (global-origami-mode t)
        :bind
@@ -884,7 +884,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package diff-hl
-       :ensure
+       :ensure t
        :init
        (global-diff-hl-mode t)
        :config
@@ -897,7 +897,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package goto-chg
-       :ensure
+       :ensure t
        :bind
        (("C-c b ," . goto-last-change)
         ("C-c b ." . goto-last-change-reverse)))
@@ -907,7 +907,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package rainbow-mode
-       :ensure
+       :ensure t
        :config
        (add-hook 'css-mode-hook 'rainbow-mode))
    #+END_SRC
@@ -924,7 +924,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package highlight-tail
-       :ensure
+       :ensure t
        :config
        (setq highlight-tail-steps 8
              highlight-tail-timer 0.05))
@@ -934,7 +934,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
    (use-package deft
-     :ensure
+     :ensure t
      :config
      (progn
        (setq deft-directory "~/Dropbox/Simplenote")
@@ -948,7 +948,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package fireplace
-       :ensure)
+       :ensure t)
    #+END_SRC
 
 * Defuns
