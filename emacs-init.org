@@ -6,10 +6,11 @@
 
 Inspired by a bunch of individuals who have transitioned their Emacs
 configuration to an org-mode file, I have converted mine as well. The
-main goal of this is to help improve documentation of settings.
+main goal of the transition is to help improve documentation of my
+Emacs settings.
 
-This file is tangled using =org-babel-load-file= and it generates an
-=emacs-init.el= from the =emacs-lisp= source blocks.
+This org-mode file is tangled using =org-babel-load-file= and it
+generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
 * Appearance
 
