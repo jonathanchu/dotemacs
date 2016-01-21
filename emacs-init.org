@@ -264,18 +264,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        ("C-c C-a" . magit-commit-amend))
    #+END_SRC
 
-** Yasnippet
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package yasnippet
-       :ensure t
-       :config
-       (progn
-         (yas-global-mode 1)
-         (setq yas-snippet-dirs (append yas-snippet-dirs
-                                        '("~/.emacs.d/snippets")))))
-   #+END_SRC
-
 ** Web mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
@@ -307,6 +295,18 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
    #+END_SRC
 
 * Utilities
+
+** Yasnippet
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package yasnippet
+       :ensure t
+       :config
+       (progn
+         (yas-global-mode 1)
+         (setq yas-snippet-dirs (append yas-snippet-dirs
+                                        '("~/.emacs.d/snippets")))))
+   #+END_SRC
 
 ** Flycheck
 
