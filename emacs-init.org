@@ -306,6 +306,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
    #+END_SRC
 
+* Utilities
+
 ** Flycheck
 
    #+BEGIN_SRC emacs-lisp :tangle yes
