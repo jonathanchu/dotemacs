@@ -215,9 +215,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package cider
        :ensure t
        :config
-       (setq nrepl-log-messages t)
-       (setq nrepl-hide-special-buffers t)
-       (add-hook 'cider-mode-hook 'eldoc-mode))
+       (progn
+         (setq nrepl-log-messages t)
+         (setq nrepl-hide-special-buffers t)
+         (add-hook 'cider-mode-hook 'eldoc-mode)))
    #+END_SRC
 
 ** Python
