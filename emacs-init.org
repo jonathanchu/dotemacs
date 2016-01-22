@@ -435,6 +435,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        ("C-x v m" . git-messenger:popup-message))
    #+END_SRC
 
+** Company
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package company
+       :ensure t
+       :config
+       (add-hook 'prog-mode-hook 'company-mode))
+   #+END_SRC
+
 ** Org mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
