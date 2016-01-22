@@ -248,7 +248,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package py-isort
        :ensure t
        :config
-       (add-hook 'before-save-hook 'py-isort-before-save))
+       ;; (add-hook 'before-save-hook 'py-isort-before-save))
    #+END_SRC
 
 ** Magit
