@@ -425,6 +425,16 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (global-smartscan-mode t))
    #+END_SRC
 
+** Git messenger
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package git-messenger
+       :ensure t
+       :defer t
+       :bind
+       ("C-x v m" . git-messenger:popup-message))
+   #+END_SRC
+
 ** Org mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
