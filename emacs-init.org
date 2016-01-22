@@ -564,7 +564,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package undo-tree
        :ensure t
        :config
-       (global-undo-tree-mode 1)
+       (global-undo-tree-mode t)
        (setq undo-tree-visualizer-diff t
              undo-tree-visualizer-timestamps t))
    #+END_SRC
