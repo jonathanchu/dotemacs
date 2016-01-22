@@ -598,9 +598,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package fullframe
        :ensure t
        :config
-       (fullframe magit-status magit-mode-quit-window)
-       (fullframe ibuffer ibuffer-quit)
-       (fullframe paradox-list-packages paradox-quit-and-close))
+       (progn
+         (fullframe magit-status magit-mode-quit-window)
+         (fullframe ibuffer ibuffer-quit)
+         (fullframe paradox-list-packages paradox-quit-and-close)))
    #+END_SRC
 
 ** Recentf
