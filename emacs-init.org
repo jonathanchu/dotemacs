@@ -246,9 +246,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package py-isort
-       :ensure t)
-       ;;:config
-       ;; (add-hook 'before-save-hook 'py-isort-before-save))
+       :ensure t
+       :load-path "vendor/"
+       :config
+       (add-hook 'before-save-hook 'py-isort-before-save))
    #+END_SRC
 
 ** Magit
