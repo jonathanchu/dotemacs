@@ -296,6 +296,48 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
    #+END_SRC
 
+** Org mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package org
+       :defer t
+       :bind
+       (("C-c a" . org-agenda)
+       ("C-c c" . org-capture)
+       ("C-c l" . org-store-link))
+       :config
+       (setq org-directory "~/Dropbox/org")
+       (setq org-log-done t)
+       (setq org-todo-keywords
+             '((sequence "TODO(t)" "|" "DONE(d)")
+               (sequence "WAITING(w)" "|" "CANCELED(c)")
+               (sequence "NEXT(n)" "|" "HOLD(h)")
+               ))
+       (setq org-todo-keyword-faces
+             '(("TODO" :foreground "green" :weight bold)
+               ("NEXT" :foreground "blue" :weight bold)
+               ("WAITING" :foreground "orange" :weight bold)
+               ("HOLD" :foreground "magenta" :weight bold)
+               ("CANCELED" :foreground "red" :weight bold)))
+       (setq org-completion-use-ido t)
+       (setq org-startup-folded nil)
+       (setq org-ellipsis "⤵")
+       (setq org-agenda-files '("~/Dropbox/org"))
+       (setq org-agenda-window-setup (quote current-window))
+       (setq org-deadline-warning-days 7)
+       (setq org-agenda-span (quote fortnight))
+       (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+       (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+       (setq org-agenda-todo-ignore-deadlines (quote all))
+       (setq org-agenda-todo-ignore-scheduled (quote all))
+       (setq org-agenda-sorting-strategy
+         (quote
+          ((agenda deadline-up priority-down)
+           (todo priority-down category-keep)
+           (tags priority-down category-keep)
+           (search category-keep)))))
+   #+END_SRC
+
 * Utilities
 
 ** Yasnippet
@@ -442,48 +484,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :ensure t
        :config
        (add-hook 'prog-mode-hook 'company-mode))
-   #+END_SRC
-
-** Org mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package org
-       :defer t
-       :bind
-       (("C-c a" . org-agenda)
-       ("C-c c" . org-capture)
-       ("C-c l" . org-store-link))
-       :config
-       (setq org-directory "~/Dropbox/org")
-       (setq org-log-done t)
-       (setq org-todo-keywords
-             '((sequence "TODO(t)" "|" "DONE(d)")
-               (sequence "WAITING(w)" "|" "CANCELED(c)")
-               (sequence "NEXT(n)" "|" "HOLD(h)")
-               ))
-       (setq org-todo-keyword-faces
-             '(("TODO" :foreground "green" :weight bold)
-               ("NEXT" :foreground "blue" :weight bold)
-               ("WAITING" :foreground "orange" :weight bold)
-               ("HOLD" :foreground "magenta" :weight bold)
-               ("CANCELED" :foreground "red" :weight bold)))
-       (setq org-completion-use-ido t)
-       (setq org-startup-folded nil)
-       (setq org-ellipsis "⤵")
-       (setq org-agenda-files '("~/Dropbox/org"))
-       (setq org-agenda-window-setup (quote current-window))
-       (setq org-deadline-warning-days 7)
-       (setq org-agenda-span (quote fortnight))
-       (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-       (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
-       (setq org-agenda-todo-ignore-deadlines (quote all))
-       (setq org-agenda-todo-ignore-scheduled (quote all))
-       (setq org-agenda-sorting-strategy
-         (quote
-          ((agenda deadline-up priority-down)
-           (todo priority-down category-keep)
-           (tags priority-down category-keep)
-           (search category-keep)))))
    #+END_SRC
 
 ** Whitespace mode
