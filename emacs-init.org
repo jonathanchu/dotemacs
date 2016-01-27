@@ -22,56 +22,17 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
       (load-theme 'atom-one-dark t))
   #+END_SRC
 
-** Spaceline
+** Smart mode line
 
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package spaceline
-       :ensure t
-       :config
-       (progn
-         (require 'spaceline-config)
-         (spaceline-spacemacs-theme)
-         (setq spaceline-workspace-numbers-unicode t)
-         (setq spaceline-window-numbers-unicode t)))
-   #+END_SRC
-
-** Powerline
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package powerline
-       :ensure t
-       :init
-       (setq powerline-default-separator 'wave)
-       :config
-       (setq powerline-height 23))
-   #+END_SRC
-
-** Eyebrowse
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package eyebrowse
-       :ensure t
-       :config
-       (eyebrowse-mode t))
-   #+END_SRC
-
-** Persp-mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package persp-mode
-       :ensure t
-       :config
-       (persp-mode t))
-   #+END_SRC
-
-** Window numbering
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package window-numbering
-       :ensure t
-       :config
-       (window-numbering-mode t))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (progn
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'respectful)
+    (add-hook 'after-init-hook 'sml/setup)))
+#+END_SRC
 
 * Global Configuration
 
