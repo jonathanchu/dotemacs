@@ -29,3 +29,4 @@ smex-items
 /.python-environments
 emacs-init.el
 flycheck_*.el
+/persp-confs
