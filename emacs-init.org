@@ -33,6 +33,40 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
          (spaceline-spacemacs-theme)))
    #+END_SRC
 
+** Powerline
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package powerline
+       :ensure t
+       :init
+       (setq powerline-default-separator 'wave))
+   #+END_SRC
+
+** Eyebrowse
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package eyebrowse
+       :ensure t
+       :config
+       (eyebrowse-mode t))
+   #+END_SRC
+
+** Persp-mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package persp-mode
+       :ensure t
+       :config
+       (persp-mode t))
+   #+END_SRC
+
+** Window numbering
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package window-numbering
+       :ensure t
+       :config
+       (window-numbering-mode t))
    #+END_SRC
 
 * Global Configuration
