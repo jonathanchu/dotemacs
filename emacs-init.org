@@ -982,6 +982,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :ensure t)
    #+END_SRC
 
+** Popwin
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package popwin
+       :ensure t
+       :config
+       (popwin-mode t))
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
