@@ -18,7 +18,7 @@
    This configuration aims to provide you with a bare-bones
    configuration with sane defaults, built upon =package.el=.
 
-   Although emacs has support for many programming languages, this
+   Although Emacs has support for many programming languages, this
    config is geared towards the following languages and workflows:
 
 - Python
@@ -44,7 +44,7 @@
    make setup
    #+END_SRC
 
-   My current emacs distro of choice is:
+   My current Emacs distro of choice is:
 
    #+BEGIN_SRC
    brew install emacs --with-cocoa
