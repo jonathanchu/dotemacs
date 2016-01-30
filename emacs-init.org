@@ -811,9 +811,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package org-bullets
-       :load-path "vendor/"
+       :ensure t
        :config
-       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+       (setq org-bullets-bullet-list '("●"
+                                       "○"
+                                       "◉"
+                                       "◆")))
    #+END_SRC
 
 ** Aggressive indent mode
