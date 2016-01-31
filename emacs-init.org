@@ -644,7 +644,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
                                    ".*-autoloads\\.el\\'"
                                    "[/\\]\\.elpa/"
                                    "/\\.git/.*\\'"
-                                   "ido.last"))
+                                   "ido.last"
+                                   ".emacs.d"))
        (recentf-mode))
    #+END_SRC
 
