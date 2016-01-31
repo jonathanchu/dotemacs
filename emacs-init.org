@@ -402,16 +402,14 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (smex-initialize))
    #+END_SRC
 
-** Idomenu
+** Imenu anywhere
 
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package idomenu
-       :ensure t
-       :config
-       (setq imenu-auto-rescan t)
-       :bind
-       ("C-c i" . idomenu))
-   #+END_SRC
+  #+BEGIN_SRC emacs-lisp :tangle yes
+    (use-package imenu-anywhere
+      :ensure t
+      :bind
+      ("C-c i" . imenu-anywhere))
+  #+END_SRC
 
 ** Uniquify
 
