@@ -808,7 +808,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
         ("C-M-%" . anzu-query-replace-regexp)))
    #+END_SRC
 
-** Org bullets (custom)
+** Org bullets
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package org-bullets
