@@ -176,6 +176,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     ;; Suppress warnings for functions redefined with defadvice
     (setq ad-redefinition-action 'accept)
+
+    (setq tab-always-indent 'complete)
   #+END_SRC
 
 * Major Modes
