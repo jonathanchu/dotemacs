@@ -125,6 +125,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
     (setq scroll-step 1) ;; keyboard scroll one line at a time
     (setq scroll-conservatively 10000)
+    (setq scroll-margin 0)
 
     ;; open with in original frame, not new window
     (setq ns-pop-up-frames nil)
