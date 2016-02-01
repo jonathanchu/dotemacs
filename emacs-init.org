@@ -112,12 +112,12 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (define-coding-system-alias 'utf8 'utf-8)
 
     ;; make sure looking at most recent changes
-    (global-auto-revert-mode 1)
+    (global-auto-revert-mode t)
 
     (setq window-combination-resize t)
 
     ;;keep cursor at same position when scrolling
-    (setq scroll-preserve-screen-position 1)
+    (setq scroll-preserve-screen-position t)
 
     ;; scroll one line at a time
     (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -133,10 +133,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (setq sentence-end-double-space nil)
 
     ;; useful for camelCase
-    (subword-mode 1)
+    (subword-mode t)
 
     ;; delete selection, insert text
-    (delete-selection-mode 1)
+    (delete-selection-mode t)
 
     ;; javascript
     (setq js-indent-level 4)
