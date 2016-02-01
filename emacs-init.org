@@ -996,6 +996,18 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (popwin-mode t))
    #+END_SRC
 
+** Super save mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package super-save
+       :ensure t
+       :pin melpa-stable
+       :config
+       (progn
+         (super-save-mode t)
+         (setq super-save-auto-save-when-idle t)))
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
