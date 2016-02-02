@@ -43,6 +43,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; Always load newest byte code
     (setq load-prefer-newer t)
 
+    ;; Warn when opening files bigger than 100MB
+    (setq large-file-warning-threshold 100000000)
+
     ;; set paths from shell
     (use-package exec-path-from-shell
       :ensure t
