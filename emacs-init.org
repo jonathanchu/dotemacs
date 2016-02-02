@@ -46,6 +46,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; Warn when opening files bigger than 100MB
     (setq large-file-warning-threshold 100000000)
 
+    ;; Reduce the frequency of garbage collection by making it happen on
+    ;; each 25MB of allocated data (the default is on every 0.76MB)
+    (setq gc-cons-threshold 25000000)
+
     ;; set paths from shell
     (use-package exec-path-from-shell
       :ensure t
