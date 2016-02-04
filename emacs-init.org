@@ -672,9 +672,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package beacon
        :ensure t
        :config
-       (beacon-mode 1)
-       (setq beacon-push-mark 35)
-       (setq beacon-color "#61AFEF"))
+       (progn
+         (beacon-mode 1)
+         (setq beacon-push-mark 35)
+         (setq beacon-color "#61AFEF")))
    #+END_SRC
 
 ** Expand region
