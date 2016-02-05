@@ -362,7 +362,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (progn
          (yas-global-mode 1)
          (setq yas-snippet-dirs (append yas-snippet-dirs
-                                        '("~/.emacs.d/snippets")))))
+                                        '("~/.emacs.d/snippets"))))
+       :bind
+       ("<backtab>" . yas-expand))
    #+END_SRC
 
 ** Flycheck
