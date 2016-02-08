@@ -827,8 +827,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package anzu
        :ensure t
        :config
-       (global-anzu-mode t)
-       (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold)
+       (progn
+         (global-anzu-mode t)
+         (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
        :bind
        (("M-%" . anzu-query-replace)
         ("C-M-%" . anzu-query-replace-regexp)))
