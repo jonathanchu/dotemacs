@@ -310,9 +310,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package org
        :defer t
        :bind
-       (("C-c a" . org-agenda)
-        ("C-c c" . org-capture)
-        ("C-c l" . org-store-link))
+       ("C-c c" . org-capture)
+       ("C-c a" . org-agenda)
+       ("C-c l" . org-store-link)
        :config
        (setq org-directory "~/Dropbox/org")
        (setq org-log-done t)
