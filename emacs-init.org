@@ -785,7 +785,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :init
        (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
        :bind
-       (("C-x C-o" . ace-window)))
+       ("C-x C-o" . ace-window))
    #+END_SRC
 
 ** Avy
