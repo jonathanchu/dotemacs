@@ -929,10 +929,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (global-origami-mode t)
        :bind
-       (("s-[" . origami-close-node-recursively)
-        ("s-]" . origami-open-node-recursively)
-        ("M-[" . origami-close-all-nodes)
-        ("M-]" . origami-open-all-nodes)))
+       ("s-[" . origami-close-node-recursively)
+       ("s-]" . origami-open-node-recursively)
+       ("M-[" . origami-close-all-nodes)
+       ("M-]" . origami-open-all-nodes))
    #+END_SRC
 
 ** Shell script mode
