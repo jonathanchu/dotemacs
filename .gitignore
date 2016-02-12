@@ -8,11 +8,37 @@
 auto-save-list
 tramp
 .\#*
+
+# Org-mode
 .org-id-locations
 *_archive
+
+# flymake-mode
 *_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
 /elpa/
-/eshell/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+
+# Flycheck
+flycheck_*.el
+
+# server auth directory
+/server/
+
+# misc
 helm-adaptive-history
 session*
 ac-comphist.dat
@@ -28,5 +54,4 @@ smex-items
 *.log
 /.python-environments
 emacs-init.el
-flycheck_*.el
 /persp-confs
