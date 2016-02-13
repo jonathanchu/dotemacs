@@ -990,8 +990,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package highlight-tail
        :ensure t
        :config
-       (setq highlight-tail-steps 8
-             highlight-tail-timer 0.05))
+       (progn
+         (setq highlight-tail-steps 8)
+         (setq highlight-tail-timer 0.05)))
    #+END_SRC
 
 ** Deft
