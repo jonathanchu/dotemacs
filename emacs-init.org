@@ -50,13 +50,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; each 25MB of allocated data (the default is on every 0.76MB)
     (setq gc-cons-threshold 25000000)
 
-    ;; set paths from shell
-    (use-package exec-path-from-shell
-      :ensure t
-      :if (memq window-system '(mac ns))
-      :config
-      (exec-path-from-shell-initialize))
-
     ;; only type 'y' or 'n' instead of 'yes' or 'no'
     (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -193,6 +186,16 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     (setq tab-always-indent 'complete)
   #+END_SRC
+
+** Exec path from shell
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     ;; set paths from shell
+     (use-package exec-path-from-shell
+       :ensure t
+       :if (memq window-system '(mac ns))
+       :config
+       (exec-path-from-shell-initialize))
+   #+END_SRC
 
 * Major Modes
 
