@@ -523,7 +523,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package paren
        :config
-       (show-paren-mode 1))
+       (show-paren-mode t))
    #+END_SRC
 
 ** Save place
