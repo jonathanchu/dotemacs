@@ -82,7 +82,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (setq mac-allow-anti-aliasing t)
 
     ;; no word wrap
-    (setq-default truncate-lines 1)
+    (setq-default truncate-lines t)
 
     (setq-default line-spacing 4)
 
