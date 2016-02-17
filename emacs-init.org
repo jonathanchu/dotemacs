@@ -513,7 +513,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package whitespace
        :config
        (progn
-         (global-whitespace-mode 1)
+         (global-whitespace-mode t)
          (setq whitespace-action '(auto-cleanup))
          (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
    #+END_SRC
