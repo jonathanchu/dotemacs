@@ -479,15 +479,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (bind-key "s-t" 'projectile-find-file))
    #+END_SRC
 
-** Smartscan mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package smartscan
-       :ensure t
-       :config
-       (global-smartscan-mode t))
-   #+END_SRC
-
 ** Git messenger
 
    #+BEGIN_SRC emacs-lisp :tangle yes
