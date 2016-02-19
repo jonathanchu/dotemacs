@@ -31,7 +31,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
   (progn
     (setq sml/no-confirm-load-theme t)
     (setq sml/theme 'respectful)
-    (add-hook 'after-init-hook 'sml/setup)))
+    (add-hook 'after-init-hook #'sml/setup)))
 #+END_SRC
 
 * Global Configuration
