@@ -90,7 +90,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (setq-default indent-tabs-mode nil)
 
     ;; delete trailing whitespace in all modes
-    (add-hook 'before-save-hook 'delete-trailing-whitespace)
+    (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
     ;; show line number in mode line
     (line-number-mode 1)
