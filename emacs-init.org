@@ -226,7 +226,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
          (clj-refactor-mode 1)
          (yas-minor-mode 1) ; for adding require/use/import
          (cljr-add-keybindings-with-prefix "C-c C-m"))
-       (add-hook 'clojure-mode-hook 'my-clojure-mode-hook))
+       (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
    #+END_SRC
 
 ** Cider
