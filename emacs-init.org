@@ -270,7 +270,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (progn
          (setq magit-push-always-verify nil)
-         (setq magit-completing-read-function 'ivy-completing-read)
+         (setq magit-completing-read-function #'ivy-completing-read)
          (setq magit-last-seen-setup-instructions "1.4.0"))
        :bind
        ("C-x g" . magit-status)
