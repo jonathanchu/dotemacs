@@ -408,7 +408,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (progn
          (ido-vertical-mode 1)
-         (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
+         (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
    #+END_SRC
 
 ** Ido ubiquitous
