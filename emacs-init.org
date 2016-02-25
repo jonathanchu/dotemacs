@@ -462,7 +462,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
          (setq ag-highlight-search t)
          (add-hook 'ag-mode-hook
                    (lambda ()
-                     (copy-face 'lazy-highlight 'ag-match-face))))
+                     (copy-face 'lazy-highlight #'ag-match-face))))
        :bind
        ("s-F" . ag-project))
    #+END_SRC
