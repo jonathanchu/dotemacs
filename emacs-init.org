@@ -457,7 +457,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :ensure t
        :config
        (progn
-         (setq ag-highlight-search t)
          (setq ag-reuse-buffers t)
          (setq ag-highlight-search t)
          (add-hook 'ag-mode-hook
