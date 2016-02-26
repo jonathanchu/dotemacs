@@ -475,7 +475,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (projectile-global-mode 1)
        :init
-       (bind-key "s-t" 'projectile-find-file))
+       (bind-key "s-t" #'projectile-find-file))
    #+END_SRC
 
 ** Git messenger
