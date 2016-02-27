@@ -494,7 +494,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package company
        :ensure t
        :config
-       (add-hook 'prog-mode-hook 'company-mode))
+       (add-hook 'prog-mode-hook #'company-mode))
    #+END_SRC
 
 ** Whitespace mode
