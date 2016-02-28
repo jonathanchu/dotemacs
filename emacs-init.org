@@ -703,7 +703,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package rainbow-delimiters
        :ensure t
        :config
-       (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
    #+END_SRC
 
 ** Smartparens mode
