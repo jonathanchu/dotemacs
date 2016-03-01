@@ -1018,6 +1018,14 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (popwin-mode t))
    #+END_SRC
 
+** Gnus
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package gnus
+       :config
+       (setq gnus-select-method '(nntp "ger.gmane.org")))
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
