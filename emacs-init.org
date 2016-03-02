@@ -764,7 +764,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (progn
          (setq ivy-use-virtual-buffers t)
-         (setq ivy-format-function 'ivy-format-function-arrow)
+         (setq ivy-format-function #'ivy-format-function-arrow)
          (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
          (setq ivy-initial-inputs-alist nil)
          (advice-add 'swiper :after 'recenter)))
