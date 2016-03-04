@@ -717,8 +717,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (progn
          (sp-local-pair 'web-mode "{%" "%}")
          (use-package smartparens-config)
-         (setq sp-autoskip-closing-pair 'always
-         (setq sp-hybrid-kill-entire-symbol nil))))
+         (setq sp-autoskip-closing-pair 'always)
+         (setq sp-hybrid-kill-entire-symbol nil)))
    #+END_SRC
 
 ** Paredit mode
