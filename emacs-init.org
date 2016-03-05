@@ -810,7 +810,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package flyspell
        :config
-       (add-hook 'text-mode-hook 'flyspell-mode))
+       (add-hook 'text-mode-hook #'flyspell-mode))
    #+END_SRC
 
 ** Anzu
