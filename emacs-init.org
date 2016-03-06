@@ -846,8 +846,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package aggressive-indent
        :ensure t
        :init
-       (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
-       (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+       (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+       (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
    #+END_SRC
 
 ** Paradox
