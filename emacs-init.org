@@ -945,7 +945,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :config
        (diff-hl-margin-mode t)
        ;; (setq diff-hl-side 'right)
-       (add-hook 'vc-checkin-hook 'diff-hl-update))
+       (add-hook 'vc-checkin-hook #'diff-hl-update))
    #+END_SRC
 
 ** Goto chg mode
