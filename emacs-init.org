@@ -964,7 +964,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package rainbow-mode
        :ensure t
        :config
-       (add-hook 'css-mode-hook 'rainbow-mode))
+       (add-hook 'css-mode-hook #'rainbow-mode))
    #+END_SRC
 
 ** Fringe mode
