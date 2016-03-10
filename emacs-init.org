@@ -1236,7 +1236,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
   #+BEGIN_SRC emacs-lisp :tangle yes
     ;; remap C-a to `smarter-move-beginning-of-line'
-    (global-set-key [remap move-beginning-of-line] 'smarter-move-beginning-of-line)
+    (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
     ;; duplicate the current line
     (global-set-key (kbd "C-c d") 'duplicate-line)
