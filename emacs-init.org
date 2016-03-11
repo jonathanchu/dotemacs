@@ -1239,7 +1239,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
     ;; duplicate the current line
-    (global-set-key (kbd "C-c d") 'duplicate-line)
+    (global-set-key (kbd "C-c d") #'duplicate-line)
 
     ;; recentf with ido selection
     ;; bind to infrequently used find-file-read-only.
