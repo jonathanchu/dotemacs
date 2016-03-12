@@ -1243,7 +1243,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     ;; recentf with ido selection
     ;; bind to infrequently used find-file-read-only.
-    (global-set-key (kbd "C-x C-r") 'ido-choose-from-recentf)
+    (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
 
     ;; transpose the last two words when at end of line
     (defadvice transpose-words
