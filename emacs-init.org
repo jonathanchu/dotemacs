@@ -1230,6 +1230,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        "Kills the current buffer"
        (interactive)
        (kill-buffer (buffer-name)))
+
+     ;; transpose the last two words when at end of line
+     (defadvice transpose-words
+         (before my/transpose-words)
+       "Transpose the last two words when at the end of line."
+       (if (looking-at "$")
+           (backward-word 1)))
    #+END_SRC
 
 * Key Bindings
@@ -1244,13 +1251,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; recentf with ido selection
     ;; bind to infrequently used find-file-read-only.
     (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
-
-    ;; transpose the last two words when at end of line
-    (defadvice transpose-words
-        (before my/transpose-words)
-      "Transpose the last two words when at the end of line."
-      (if (looking-at "$")
-          (backward-word 1)))
 
      ;; comment/uncomment current line or region
      (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
