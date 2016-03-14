@@ -1253,7 +1253,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
 
      ;; comment/uncomment current line or region
-     (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
+     (global-set-key (kbd "s-/") #'comment-or-uncomment-region-or-line)
 
      ;; switch to previous buffer
      (global-set-key (kbd "C-`") 'switch-to-previous-buffer)
