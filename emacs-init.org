@@ -1259,7 +1259,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
 
      ;; toggle window split
-     (global-set-key (kbd "C-x |") 'toggle-window-split)
+     (global-set-key (kbd "C-x |") #'toggle-window-split)
 
      ;; sorting
      (global-set-key (kbd "M-`") 'sort-lines)
