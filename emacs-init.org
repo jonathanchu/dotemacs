@@ -30,7 +30,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
   :config
   (progn
     (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
+    (setq sml/theme 'light)
     (add-hook 'after-init-hook #'sml/setup)))
 #+END_SRC
 
