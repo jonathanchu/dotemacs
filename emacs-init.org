@@ -1268,8 +1268,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (global-set-key (kbd "M-`") #'sort-lines)
 
      ;; font-size
-     (define-key global-map (kbd "s-=") 'text-scale-increase)
-     (define-key global-map (kbd "s--") 'text-scale-decrease)
+     (define-key global-map (kbd "s-=") #'text-scale-increase)
+     (define-key global-map (kbd "s--") #'text-scale-decrease)
 
      ;; scroll window up/down by one line
      (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
