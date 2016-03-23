@@ -1264,32 +1264,32 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; bind to infrequently used find-file-read-only.
     (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
 
-     ;; comment/uncomment current line or region
-     ;;(global-set-key (kbd "s-/") #'comment-or-uncomment-region-or-line)
+    ;; comment/uncomment current line or region
+    ;;(global-set-key (kbd "s-/") #'comment-or-uncomment-region-or-line)
 
-     ;; switch to previous buffer
-     (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
+    ;; switch to previous buffer
+    (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
 
-     ;; toggle window split
-     (global-set-key (kbd "C-x |") #'toggle-window-split)
+    ;; toggle window split
+    (global-set-key (kbd "C-x |") #'toggle-window-split)
 
-     ;; sorting
-     (global-set-key (kbd "M-`") #'sort-lines)
+    ;; sorting
+    (global-set-key (kbd "M-`") #'sort-lines)
 
-     ;; font-size
-     (define-key global-map (kbd "s-=") #'text-scale-increase)
-     (define-key global-map (kbd "s--") #'text-scale-decrease)
+    ;; font-size
+    (define-key global-map (kbd "s-=") #'text-scale-increase)
+    (define-key global-map (kbd "s--") #'text-scale-decrease)
 
-     ;; scroll window up/down by one line
-     (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
-     (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
+    ;; scroll window up/down by one line
+    (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+    (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
-     ;; fullscreen toggle
-     (global-set-key [(s return)] #'toggle-frame-fullscreen)
+    ;; fullscreen toggle
+    (global-set-key [(s return)] #'toggle-frame-fullscreen)
 
-     ;; fixup whitespace
-     (global-set-key (kbd "C-c w") #'fixup-whitespace)
+    ;; fixup whitespace
+    (global-set-key (kbd "C-c w") #'fixup-whitespace)
 
-     ;; kill the current buffer
-     (global-set-key (kbd "C-x C-k") 'kill-current-buffer)
+    ;; kill the current buffer
+    (global-set-key (kbd "C-x C-k") 'kill-current-buffer)
   #+END_SRC
