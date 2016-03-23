@@ -1279,7 +1279,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (global-set-key [(s return)] #'toggle-frame-fullscreen)
 
      ;; fixup whitespace
-     (global-set-key (kbd "C-c w") 'fixup-whitespace)
+     (global-set-key (kbd "C-c w") #'fixup-whitespace)
 
      ;; kill the current buffer
      (global-set-key (kbd "C-x C-k") 'kill-current-buffer)
