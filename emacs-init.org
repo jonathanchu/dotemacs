@@ -1291,5 +1291,5 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (global-set-key (kbd "C-c w") #'fixup-whitespace)
 
     ;; kill the current buffer
-    (global-set-key (kbd "C-x C-k") 'kill-current-buffer)
+    (global-set-key (kbd "C-x C-k") #'kill-current-buffer)
   #+END_SRC
