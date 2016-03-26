@@ -1204,7 +1204,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      ;; Also, if the last command was a copy - skip past all the expand-region cruft.
      (defadvice pop-to-mark-command (around ensure-new-position activate)
        (let ((p (point)))
-         (when (eq last-command 'kill-ring-save)
+         (when (eq last-command #'kill-ring-save)
            ad-do-it
            ad-do-it
            ad-do-it)
