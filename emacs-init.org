@@ -1130,7 +1130,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
                      (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
                    (capitalize-word 1)))))
 
-     (add-hook 'post-self-insert-hook 'dcaps-to-scaps)
+     (add-hook 'post-self-insert-hook #'dcaps-to-scaps)
 
      ;; timestamps in *Messages*
      ;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
