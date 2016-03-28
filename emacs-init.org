@@ -1036,6 +1036,25 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        ("s-/" . smart-comment))
    #+END_SRC
 
+** Key chord
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (defun my/insert-underscore ()
+       "Insert an underscore."
+       (interactive)
+       (insert "_"))
+
+     (use-package key-chord
+       :ensure t
+       :init
+       (progn
+         ;;(setq key-chord-one-key-delay 0.16)
+         (key-chord-mode 1)
+         (key-chord-define-global "hj" 'undo)
+         (key-chord-define-global ",." "<>\C-b")
+         (key-chord-define-global "--" 'my/insert-underscore)))
+   #+END_SRC
+
 * Defuns
 
 ** Zap-to-char
