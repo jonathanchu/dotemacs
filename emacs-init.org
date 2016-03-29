@@ -1039,11 +1039,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Key chord
 
    #+BEGIN_SRC emacs-lisp :tangle yes
-     (defun my/insert-underscore ()
-       "Insert an underscore."
-       (interactive)
-       (insert "_"))
-
      (use-package key-chord
        :ensure t
        :init
@@ -1056,6 +1051,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
    #+END_SRC
 
 * Defuns
+
+** Insert underscore
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (defun my/insert-underscore ()
+       "Insert an underscore."
+       (interactive)
+       (insert "_"))
+   #+END_SRC
 
 ** Zap-to-char
 
