@@ -1048,7 +1048,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
          (key-chord-mode 1)
          (key-chord-define-global "hj" 'undo)
          (key-chord-define-global ",." "<>\C-b")
-         (key-chord-define-global "--" 'my/insert-underscore)))
+         (key-chord-define-global "--" 'my/insert-underscore)
+         (key-chord-define-global "cc" 'duplicate-line)))
    #+END_SRC
 
 * Defuns
