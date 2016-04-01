@@ -18,6 +18,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
   #+BEGIN_SRC emacs-lisp :tangle yes
     (use-package atom-one-dark-theme
       ;;:load-path "themes/"
+      :ensure t
       :config
       (load-theme 'atom-one-dark t))
   #+END_SRC
