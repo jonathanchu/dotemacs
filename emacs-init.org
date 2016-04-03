@@ -1045,7 +1045,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :ensure t
        :init
        (progn
-         ;;(setq key-chord-one-key-delay 0.16)
          (key-chord-mode 1)
          (key-chord-define-global "hj" 'undo)
          (key-chord-define-global ",." "<>\C-b")
