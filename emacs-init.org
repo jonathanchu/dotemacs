@@ -367,17 +367,12 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package yasnippet
-       :init
-       (unbind-key "<tab>" yas-minor-mode-map)
-       (unbind-key "TAB" yas-minor-mode-map)
        :ensure t
        :config
        (progn
          (yas-global-mode 1)
          (setq yas-snippet-dirs (append yas-snippet-dirs
-                                        '("~/.emacs.d/snippets"))))
-       :bind
-       ("<backtab>" . yas-expand))
+                                        '("~/.emacs.d/snippets")))))
    #+END_SRC
 
 ** Flycheck
