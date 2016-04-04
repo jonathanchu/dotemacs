@@ -352,7 +352,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
                (tags priority-down category-keep)
                (search category-keep))))
        (setq org-src-fontify-natively t)
-       (setq org-src-tab-acts-natively t))
+       (setq org-src-tab-acts-natively t)
+       (add-hook 'org-mode-hook
+          (let ((original-command (lookup-key org-mode-map [tab])))
+            `(lambda ()
+               (setq yas-fallback-behavior
+                     '(apply ,original-command))
+               (local-set-key [tab] 'yas-expand)))))
    #+END_SRC
 
 * Utilities
