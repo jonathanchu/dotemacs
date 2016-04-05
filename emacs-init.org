@@ -314,9 +314,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Org mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
-     (defun yas/org-very-safe-expand ()
-       (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
      (use-package org
        :defer t
        :bind
@@ -1064,6 +1061,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        "Insert an underscore."
        (interactive)
        (insert "_"))
+   #+END_SRC
+
+** Org mode / yasnippet safe expand fix
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (defun yas/org-very-safe-expand ()
+       (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
    #+END_SRC
 
 ** Zap-to-char
