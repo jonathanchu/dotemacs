@@ -1271,6 +1271,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        "Transpose the last two words when at the end of line."
        (if (looking-at "$")
            (backward-word 1)))
+
+      (defun stop-using-minibuffer ()
+        "kill the minibuffer"
+        (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+          (abort-recursive-edit)))
+
+      (add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
    #+END_SRC
 
 * Key Bindings
