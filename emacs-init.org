@@ -1272,6 +1272,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (if (looking-at "$")
            (backward-word 1)))
 
+      ;; Kill the minibuffer when you use the mouse in another window
+      ;; http://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
       (defun stop-using-minibuffer ()
         "kill the minibuffer"
         (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
