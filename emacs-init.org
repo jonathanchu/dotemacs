@@ -24,15 +24,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
 ** Smart mode line
 
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package smart-mode-line
-  :ensure t
-  :config
-  (progn
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
-    (add-hook 'after-init-hook #'sml/setup)))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package smart-mode-line
+       :ensure t
+       :config
+       (progn
+         (setq sml/no-confirm-load-theme t)
+         (setq sml/theme 'respectful)
+         (add-hook 'after-init-hook #'sml/setup)))
+   #+END_SRC
 
 * Global Configuration
 
