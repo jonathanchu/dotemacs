@@ -1059,6 +1059,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
    #+BEGIN_SRC emacs-lisp :tangle yes
      (defun ora-swiper ()
+       "Uses swiper to search if buffer size is not large."
        (interactive)
        (if (and (buffer-file-name)
                 (not (ignore-errors
