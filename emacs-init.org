@@ -1056,6 +1056,13 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
          (key-chord-define-global "uu" 'undo-tree-visualize)))
    #+END_SRC
 
+** Emacs startup profiler (esup)
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package esup
+       :ensure t)
+   #+END_SRC
+
 * Defuns
 
 ** Use different search methods depending on number of lines
