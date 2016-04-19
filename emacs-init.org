@@ -1065,27 +1065,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
 * Defuns
 
-** Use different search methods depending on number of lines
-   Source - https://github.com/abo-abo/swiper/issues/416#issuecomment-207770727
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     ;; (defun ora-swiper ()
-     ;;   "Uses swiper to search if buffer size is not large."
-     ;;   (interactive)
-     ;;   (if (and (buffer-file-name)
-     ;;            (not (ignore-errors
-     ;;                   (file-remote-p (buffer-file-name))))
-     ;;            (if (eq major-mode 'org-mode)
-     ;;                (> (buffer-size) 60000)
-     ;;              (> (buffer-size) 300000)))
-     ;;       (progn
-     ;;         (save-buffer)
-     ;;         (counsel-grep))
-     ;;     (swiper--ivy (swiper--candidates))))
-     ;;
-     ;; (global-set-key "\C-s" 'ora-swiper)
-   #+END_SRC
-
 ** Insert underscore
 
    #+BEGIN_SRC emacs-lisp :tangle yes
