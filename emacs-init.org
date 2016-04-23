@@ -796,10 +796,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (progn
          (avy-setup-default)
          (setq avy-background t)
-         (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin))))
-       :bind
-       ("C-c j" . avy-goto-word-or-subword-1)
-       ("s-." . avy-goto-char))
+         (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))))
    #+END_SRC
 
 ** Scratch
