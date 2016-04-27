@@ -763,7 +763,8 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (ivy-mode 1)
        :ensure t
        :bind
-       ("C-s" . swiper)
+       ;; ("C-s" . swiper)
+       ("C-s" . counsel-grep-or-swiper)
        ("C-r" . swiper)
        ("C-c C-r" . ivy-resume)
        :config
