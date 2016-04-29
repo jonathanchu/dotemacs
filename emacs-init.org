@@ -16,10 +16,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
 ** Color theme
   #+BEGIN_SRC emacs-lisp :tangle yes
-    (use-package atom-one-dark-theme
+    (use-package spacemacs-theme
       :ensure t
       :config
-      (load-theme 'atom-one-dark t))
+      (load-theme 'spacemacs-dark t))
   #+END_SRC
 
 ** Smart mode line
