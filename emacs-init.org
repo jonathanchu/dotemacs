@@ -919,6 +919,32 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      ;;   (add-hook 'js3-mode-hook #'jscs-fix-run-before-save))
    #+END_SRC
 
+** JS2 mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package js2-mode
+       :ensure t
+       :mode
+       ("\\.js$" . js2-mode)
+       :commands js2-mode
+       :config (setq-default
+                js2-auto-indent-flag nil
+                js2-basic-offset 4
+                js2-electric-keys nil
+                js2-enter-indents-newline nil
+                js2-mirror-mode nil
+                js2-mode-show-parse-errors nil
+                js2-mode-show-strict-warnings nil
+                js2-mode-squeeze-spaces t
+                js2-strict-missing-semi-warning nil
+                js2-strict-trailing-comma-warning nil
+                js2-bounce-indent-p t
+                js2-global-externs (list "$" "ko" "_")
+                js2-highlight-external-variables t
+                js2-mode-show-parse-errors t
+                js2-mode-show-strict-warnings t))
+   #+END_SRC
+
 ** Origami mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
