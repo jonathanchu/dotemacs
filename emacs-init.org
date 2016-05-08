@@ -910,6 +910,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :ensure t
        :mode
        ("\\.js$" . js2-mode)
+       ("\\.jsx$" . js2-mode)
        :commands js2-mode
        :config (setq-default
                 js2-auto-indent-flag nil
