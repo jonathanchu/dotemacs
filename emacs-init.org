@@ -1083,6 +1083,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (volatile-highlights-mode t))
    #+END_SRC
 
+** Dired-quick-sort
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package dired-quick-sort
+       :ensure t
+       :config
+       (dired-quick-sort-setup))
+   #+END_SRC
+
 * Defuns
 
 ** Insert underscore
