@@ -188,6 +188,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     ;; highlight current line
     (global-hl-line-mode +1)
+
+    ;; try to improve handling of long lines
+    (setq bidi-display-reordering nil)
   #+END_SRC
 
 ** Exec path from shell
