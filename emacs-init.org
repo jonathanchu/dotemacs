@@ -162,9 +162,9 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     ;; cua mode
     (cua-mode t)
-    (setq cua-enable-cua-keys nil)
-    (setq cua-highlight-region-shift-only t)
-    (setq cua-toggle-set-mark nil)
+    ;;(setq cua-enable-cua-keys nil)
+    ;(setq cua-highlight-region-shift-only t)
+    ;;(setq cua-toggle-set-mark nil)
 
     ;; debugging
     (setq debug-on-error t)
@@ -461,30 +461,30 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Ag
 
    #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package ag
-       :ensure t
-       :config
-       (progn
-         (setq ag-reuse-buffers t)
-         (setq ag-highlight-search t)
-         (add-hook 'ag-mode-hook
-                   (lambda ()
-                     (copy-face 'lazy-highlight #'ag-match-face))))
-       :bind
-       ("s-F" . ag-project))
+     ;; (use-package ag
+     ;;   :ensure t
+     ;;   :config
+     ;;   (progn
+     ;;     (setq ag-reuse-buffers t)
+     ;;     (setq ag-highlight-search t)
+     ;;     (add-hook 'ag-mode-hook
+     ;;               (lambda ()
+     ;;                 (copy-face 'lazy-highlight #'ag-match-face))))
+     ;;   :bind
+     ;;   ("s-F" . ag-project))
    #+END_SRC
 
 ** Projectile
 
     #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package projectile
-       :ensure t
-       :diminish ""
-       :config
-       (projectile-global-mode 1)
-       :init
-       (bind-key "s-t" #'projectile-find-file)
-       (setq projectile-keymap-prefix (kbd "C-x p")))
+     ;; (use-package projectile
+     ;;   :ensure t
+     ;;   :diminish ""
+     ;;   :config
+     ;;   (projectile-global-mode 1)
+     ;;   :init
+     ;;   (bind-key "s-t" #'projectile-find-file)
+     ;;   (setq projectile-keymap-prefix (kbd "C-x p")))
    #+END_SRC
 
 ** Git messenger
@@ -906,6 +906,37 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      (use-package evil :ensure t)
    #+END_SRC
 
+** Helm mode
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package helm
+       :ensure t
+       :diminish helm-mode
+       :bind (("M-x" . helm-M-x)
+              ("C-x C-f" . helm-find-files)
+              ("C-x C-r" . helm-recentf)
+              ("C-x b" . helm-buffers-list))
+       :config
+       (helm-mode 1)
+       (helm-autoresize-mode 1)
+     ;;(add-to-list 'helm-completing-read-handlers-alist '(find-file . helm-completing-read-symbols))
+     ;; helm-recentf-fuzzy-match var is broken: redeclare it manually
+       (setq helm-source-recentf
+         (helm-make-source "Recentf" 'helm-recentf-source
+           :fuzzy-match t))
+       (setq helm-M-x-fuzzy-match t
+             helm-buffers-fuzzy-matching t
+             helm-display-header-line nil))
+   #+END_SRC
+
+** Helm ag
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package helm-ag
+       :ensure t
+       :bind ("s-F" . helm-do-ag-project-root))
+   #+END_SRC
+
 ** JS2 mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
@@ -1207,20 +1238,20 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
      ;; timestamps in *Messages*
      ;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
-     (defun current-time-microseconds ()
-       (let* ((nowtime (current-time))
-              (now-ms (nth 2 nowtime)))
-         (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
-
-     (defadvice message (before test-symbol activate)
-       (if (not (string-equal (ad-get-arg 0) "%s%s"))
-           (let ((inhibit-read-only t)
-                 (deactivate-mark nil))
-             (with-current-buffer "*Messages*"
-               (goto-char (point-max))
-               (if (not (bolp))
-                   (newline))
-               (insert (current-time-microseconds))))))
+;;     (defun current-time-microseconds ()
+;;       (let* ((nowtime (current-time))
+;;              (now-ms (nth 2 nowtime)))
+;;         (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
+;;
+;;     (defadvice message (before test-symbol activate)
+;;       (if (not (string-equal (ad-get-arg 0) "%s%s"))
+;;           (let ((inhibit-read-only t)
+;;                 (deactivate-mark nil))
+;;             (with-current-buffer "*Messages*"
+;;               (goto-char (point-max))
+;;               (if (not (bolp))
+;;                   (newline))
+;;               (insert (current-time-microseconds))))))
 
      ;; Copy the buffer filename to the kill ring
      (defun copy-buffer-file-name-as-kill (choice)
@@ -1334,7 +1365,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 
     ;; recentf with ido selection
     ;; bind to infrequently used find-file-read-only.
-    (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
+    ;; (global-set-key (kbd "C-x C-r") #'ido-choose-from-recentf)
 
     ;; switch to previous buffer
     (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
