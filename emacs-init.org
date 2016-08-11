@@ -937,6 +937,16 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        :bind ("s-F" . helm-do-ag-project-root))
    #+END_SRC
 
+** Helm projectile
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package helm-projectile
+       :ensure t
+       :init
+       (helm-projectile-on)
+       (bind-key "s-t" #'helm-projectile-find-file))
+   #+END_SRC
+
 ** JS2 mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
