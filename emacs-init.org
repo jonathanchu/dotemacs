@@ -1054,7 +1054,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
      :ensure t
      :config
      (progn
-       (setq deft-directory "~/Dropbox/Simplenote")
+       (setq deft-directory "~/Dropbox (Personal)/Simplenote")
        (setq deft-extension "org")
        (setq deft-text-mode 'org-mode)
        (setq deft-use-filename-as-title t)
