@@ -1,3 +1,135 @@
+(defmacro add-hook! (hook &rest func-or-forms)
+  "A convenience macro for `add-hook'.
+
+HOOK can be one hook or a list of hooks. If the hook(s) are not quoted, -hook is
+appended to them automatically. If they are quoted, they are used verbatim.
+
+FUNC-OR-FORMS can be a quoted symbol, a list of quoted symbols, or forms. Forms will be
+wrapped in a lambda. A list of symbols will expand into a series of add-hook calls.
+
+Examples:
+    (add-hook! 'some-mode-hook 'enable-something)
+    (add-hook! some-mode '(enable-something and-another))
+    (add-hook! '(one-mode-hook second-mode-hook) 'enable-something)
+    (add-hook! (one-mode second-mode) 'enable-something)
+    (add-hook! (one-mode second-mode) (setq v 5) (setq a 2))"
+  (declare (indent defun) (debug t))
+  (unless func-or-forms
+    (error "add-hook!: FUNC-OR-FORMS is empty"))
+  (let* ((val (car func-or-forms))
+         (quoted (eq (car-safe hook) 'quote))
+         (hook (if quoted (cadr hook) hook))
+         (funcs (if (eq (car-safe val) 'quote)
+                    (if (cdr-safe (cadr val))
+                        (cadr val)
+                      (list (cadr val)))
+                  (list func-or-forms)))
+         (forms '()))
+    (mapc
+     (lambda (f)
+       (let ((func (cond ((symbolp f) `(quote ,f))
+                         (t `(lambda (&rest _) ,@func-or-forms)))))
+         (mapc
+          (lambda (h)
+            (push `(add-hook ',(if quoted h (intern (format "%s-hook" h))) ,func) forms))
+          (-list hook)))) funcs)
+    `(progn ,@forms)))
+
+    (defmacro after! (feature &rest forms)
+      "A smart wrapper around `with-eval-after-load', that supresses warnings
+    during compilation."
+      (declare (indent defun) (debug t))
+      `(,(if (or (not (boundp 'byte-compile-current-file))
+                 (not byte-compile-current-file)
+                 (if (symbolp feature)
+                     (require feature nil :no-error)
+                   (load feature :no-message :no-error)))
+             'progn
+           (message "after: cannot find %s" feature)
+           'with-no-warnings)
+        (with-eval-after-load ',feature ,@forms)))
+
+(defun doom/nlinum-toggle ()
+  (interactive)
+  (if (bound-and-true-p nlinum-mode)
+      (doom|nlinum-disable)
+    (doom|nlinum-enable)))
+
+(defun doom|nlinum-enable (&rest _)
+  (nlinum-mode +1)
+  (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
+  (doom--nlinum-unhl-line))
+
+;;;###autoload
+(defun doom|nlinum-disable (&rest _)
+  (nlinum-mode -1)
+  (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)
+  (doom--nlinum-unhl-line))
+
+(defun doom--nlinum-unhl-line ()
+  "Unhighlight line number"
+  (when doom--hl-nlinum-overlay
+    (let* ((disp (get-text-property
+                  0 'display (overlay-get doom--hl-nlinum-overlay 'before-string)))
+           (str (nth 1 disp)))
+      (put-text-property 0 (length str) 'face 'linum str)
+      (setq doom--hl-nlinum-overlay nil)
+      disp)))
+
+(defun doom|nlinum-hl-line (&rest _)
+  "Highlight line number"
+  (let* ((pbol (line-beginning-position))
+         (peol (1+ pbol))
+         (max (point-max)))
+    ;; Handle EOF case
+    (when (>= peol max)
+      (setq peol max))
+    (jit-lock-fontify-now pbol peol)
+    (let ((ov (--first (overlay-get it 'nlinum) (overlays-in pbol peol))))
+      (doom--nlinum-unhl-line)
+      (when ov
+        (let ((str (nth 1 (get-text-property 0 'display (overlay-get ov 'before-string)))))
+          (put-text-property 0 (length str) 'face 'doom-nlinum-highlight str)
+          (setq doom--hl-nlinum-overlay ov))))))
+
+(use-package hl-line
+  :init (add-hook 'prog-mode-hook 'hl-line-mode)
+  :config
+  ;; Doesn't seem to play nice in emacs 25+
+  (setq hl-line-sticky-flag nil
+        global-hl-line-sticky-flag nil)
+
+  (defvar-local doom--hl-line-mode nil)
+  (defun doom|hl-line-on ()  (if doom--hl-line-mode (hl-line-mode +1)))
+  (defun doom|hl-line-off () (if doom--hl-line-mode (hl-line-mode -1)))
+  (add-hook! hl-line-mode (if hl-line-mode (setq doom--hl-line-mode t)))
+  ;; Disable line highlight in visual mode
+  (add-hook 'evil-visual-state-entry-hook 'doom|hl-line-off)
+  (add-hook 'evil-visual-state-exit-hook  'doom|hl-line-on))
+
+(use-package highlight-indentation
+  :ensure t
+  :commands (highlight-indentation-mode
+             highlight-indentation-current-column-mode)
+  :init
+  (after! editorconfig
+          (advice-add 'highlight-indentation-guess-offset
+                      :override 'doom*hl-indent-guess-offset))
+  ;; A long-winded method for ensuring whitespace is maintained (so that
+  ;; highlight-indentation-mode can display them consistently)
+  (add-hook! highlight-indentation-mode
+    (if highlight-indentation-mode
+        (progn
+          (doom/add-whitespace)
+          (add-hook 'after-save-hook 'doom/add-whitespace nil t))
+      (remove-hook 'after-save-hook 'doom/add-whitespace t)
+      (delete-trailing-whitespace))))
+
+(use-package highlight-numbers
+  :ensure t
+  :commands (highlight-numbers-mode)
+  )
+
 (set-default-font "-*-DejaVu Sans Mono for Powerline-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 (defvar doom-unicode-font
@@ -9,8 +141,40 @@
 (use-package f
   :ensure t)
 
+(use-package fringe-helper
+  :ensure t)
+
 (use-package git-gutter-fringe
   :ensure t)
+
+;; (use-package git-gutter
+;;   :commands (git-gutter-mode doom/vcs-next-hunk doom/vcs-prev-hunk
+;;                              doom/vcs-show-hunk doom/vcs-stage-hunk doom/vcs-revert-hunk)
+;;   :init
+;;   (add-hook! (text-mode prog-mode conf-mode) 'git-gutter-mode)
+;;   :config
+;;   (require 'git-gutter-fringe)
+;;                                         ; (def-popup! "^\\*git-gutter.+\\*$" :align below :size 15 :noselect t :regexp t)
+
+;;   (define-fringe-bitmap 'git-gutter-fr:added
+;;     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+;;     nil nil 'center)
+;;   (define-fringe-bitmap 'git-gutter-fr:modified
+;;     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+;;     nil nil 'center)
+;;   (define-fringe-bitmap 'git-gutter-fr:deleted
+;;     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+;;     nil nil 'center)
+
+;;   (advice-add 'evil-force-normal-state :after 'git-gutter)
+;;   (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+
+;;   (defalias 'doom/vcs-next-hunk    'git-gutter:next-hunk)
+;;   (defalias 'doom/vcs-prev-hunk    'git-gutter:previous-hunk)
+;;   (defalias 'doom/vcs-show-hunk    'git-gutter:popup-hunk)
+;;   (defalias 'doom/vcs-stage-hunk   'git-gutter:stage-hunk)
+;;   (defalias 'doom/vcs-revert-hunk  'git-gutter:revert-hunk))
+
 
 (use-package git-gutter
   :ensure t
@@ -29,32 +193,61 @@
 
   (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
 
+(use-package nlinum
+  :ensure t
+  :commands nlinum-mode
+  :preface
+  (setq linum-format "%3d ")
+  (defvar nlinum-format "%4d ")
+  (defvar doom--hl-nlinum-overlay nil)
+  (defvar doom--hl-nlinum-line nil)
+  :init
+  (add-hook!
+    (markdown-mode prog-mode scss-mode web-mode conf-mode groovy-mode
+                   nxml-mode snippet-mode php-mode python-mode)
+    'nlinum-mode)
+  ;; FIXME This only works if hl-line is active!
+  (add-hook! nlinum-mode
+    (if nlinum-mode-hook
+        (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
+      (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)))
+  :config
+  ;; Calculate line number column width
+  (add-hook! nlinum-mode
+    (setq nlinum--width (length (save-excursion (goto-char (point-max))
+                                                (format-mode-line "%l")))))
+
+  ;; Disable nlinum when making frames, otherwise we get linum face error
+  ;; messages that prevent frame creation.
+  (add-hook 'before-make-frame-hook 'doom|nlinum-disable)
+  (add-hook 'after-make-frame-functions 'doom|nlinum-enable))
+
 (use-package powerline)
 
-(setq fringes-outside-margins t
-      highlight-nonselected-windows nil)
+(setq-default fringes-outside-margins t
+              highlight-nonselected-windows nil)
 
 (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
   [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
 
 ;; Custom line number stuff
 (set-face-attribute 'fringe nil)
-;;(set-face-foreground 'linum-highlight-face "#00B3EF")
-;;(set-face-background 'linum-highlight-face "#1f252b")
+;; (set-face-foreground 'linum-highlight-face "#00B3EF")
+;; (set-face-background 'linum-highlight-face "#1f252b")
 
 (defun doom-fix-unicode (font &rest chars)
   "Display certain unicode characters in a specific font.
 e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
   (declare (indent 1))
   (mapc (lambda (x) (set-fontset-font
-                t (cons x x)
-                (cond ((fontp font)
-                       font)
-                      ((listp font)
-                       (font-spec :family (car font) :size (nth 1 font)))
-                      ((stringp font)
-                       (font-spec :family font))
-                      (t (error "FONT is an invalid type: %s" font)))))
+                     t (cons x x)
+                     (cond ((fontp font)
+                            font)
+                           ((listp font)
+                            (font-spec :family (car font) :size (nth 1 font)))
+                           ((stringp font)
+                            (font-spec :family font))
+                           (t (error "FONT is an invalid type: %s" font)))))
         chars))
 
 (defun doom/project-root (&optional strict-p)

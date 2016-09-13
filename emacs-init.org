@@ -1053,10 +1053,10 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
 ** Fringe mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package fringe
-       :defer t
-       :config
-       (fringe-mode '(20 . 8)))
+     ;;(use-package fringe
+     ;;  :defer t
+     ;;  :config
+     ;;  (fringe-mode '(20 . 8)))
    #+END_SRC
 
 ** Highlight tail
