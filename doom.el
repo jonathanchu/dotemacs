@@ -107,24 +107,6 @@ Examples:
   (add-hook 'evil-visual-state-entry-hook 'doom|hl-line-off)
   (add-hook 'evil-visual-state-exit-hook  'doom|hl-line-on))
 
-(use-package highlight-indentation
-  :ensure t
-  :commands (highlight-indentation-mode
-             highlight-indentation-current-column-mode)
-  :init
-  (after! editorconfig
-          (advice-add 'highlight-indentation-guess-offset
-                      :override 'doom*hl-indent-guess-offset))
-  ;; A long-winded method for ensuring whitespace is maintained (so that
-  ;; highlight-indentation-mode can display them consistently)
-  (add-hook! highlight-indentation-mode
-    (if highlight-indentation-mode
-        (progn
-          (doom/add-whitespace)
-          (add-hook 'after-save-hook 'doom/add-whitespace nil t))
-      (remove-hook 'after-save-hook 'doom/add-whitespace t)
-      (delete-trailing-whitespace))))
-
 (use-package highlight-numbers
   :ensure t
   :commands (highlight-numbers-mode)
