@@ -393,12 +393,48 @@ e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
                                                    'doom-flycheck-warning
                                                  'mode-line))))))))))
 
+(defun *selection-info ()
+  "Information about the current selection, such as how many characters and
+lines are selected, or the NxM dimensions of a block selection."
+  (when (and active (evil-visual-state-p))
+    (propertize
+     (let ((reg-beg (region-beginning))
+           (reg-end (region-end))
+           (evil (eq 'visual evil-state)))
+       (let ((lines (count-lines reg-beg (min (1+ reg-end) (point-max))))
+             (chars (- (1+ reg-end) reg-beg))
+             (cols (1+ (abs (- (evil-column reg-end)
+                               (evil-column reg-beg))))))
+         (cond
+          ;; rectangle selection
+          ((or (bound-and-true-p rectangle-mark-mode)
+               (and evil (eq 'block evil-visual-selection)))
+           (format " %dx%dB " lines (if evil cols (1- cols))))
+          ;; line selection
+          ((or (> lines 1) (eq 'line evil-visual-selection))
+           (if (and (eq evil-state 'visual) (eq evil-this-type 'line))
+               (format " %dL " lines)
+             (format " %dC %dL " chars lines)))
+          (t (format " %dC " (if evil chars (1- chars)))))))
+     'face 'mode-line-highlight)))
+
 (defun *macro-recording ()
   "Show when recording macro."
   (when (and active defining-kbd-macro)
     (propertize
      (format " %s ▶ " (char-to-string evil-this-macro))
      'face 'mode-line-highlight)))
+
+(make-variable-buffer-local 'anzu--state)
+(defun *anzu ()
+  "Show the current match number and the total number of matches. Requires anzu
+to be enabled."
+  (when (and (featurep 'evil-anzu) (evil-ex-hl-active-p 'evil-ex-search))
+    (propertize
+     (format " %s/%d%s "
+             anzu--current-position anzu--total-matched
+             (if anzu--overflow-p "+" ""))
+     'face (if active 'mode-line-count-face))))
 
 (defun *buffer-position ()
   "A more vim-like buffer position."
@@ -430,6 +466,8 @@ e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
            (lhs (list (propertize " " 'display (if active mode-line-bar mode-line-inactive-bar))
                       (*flycheck)
                       (*macro-recording)
+                      (*selection-info)
+                      (*anzu)
                       " "
                       (*buffer-path)
                       (*buffer-name)
