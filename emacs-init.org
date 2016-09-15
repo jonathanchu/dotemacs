@@ -401,6 +401,15 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
                                         '("~/.emacs.d/snippets")))))
    #+END_SRC
 
+** Flycheck-pos-tip
+
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package flycheck-pos-tip
+       :ensure t
+       :config
+       (flycheck-pos-tip-mode +1))
+   #+END_SRC
+
 ** Flycheck
 
    #+BEGIN_SRC emacs-lisp :tangle yes
