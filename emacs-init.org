@@ -1019,18 +1019,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
    #+END_SRC
 
-** Diff hl mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     (use-package diff-hl
-       :ensure t
-       :init
-       (global-diff-hl-mode t)
-       :config
-       (diff-hl-margin-mode t)
-       (add-hook 'vc-checkin-hook #'diff-hl-update))
-   #+END_SRC
-
 ** Goto chg mode
 
    #+BEGIN_SRC emacs-lisp :tangle yes
