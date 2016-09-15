@@ -1,3 +1,14 @@
+(defconst doom-fringe-size '3 "Default fringe width")
+
+;;; Setting up the fringe
+;; switches order of fringe and margin
+(setq-default fringes-outside-margins t)
+
+;; standardize fringe width
+(fringe-mode doom-fringe-size)
+(push `(left-fringe  . ,doom-fringe-size) default-frame-alist)
+(push `(right-fringe . ,doom-fringe-size) default-frame-alist)
+
 (defmacro add-hook! (hook &rest func-or-forms)
   "A convenience macro for `add-hook'.
 
@@ -213,9 +224,9 @@ Examples:
   [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
 
 ;; Custom line number stuff
-(set-face-attribute 'fringe nil)
-;; (set-face-foreground 'linum-highlight-face "#00B3EF")
-;; (set-face-background 'linum-highlight-face "#1f252b")
+;;(set-face-attribute 'fringe nil)
+;;(set-face-foreground 'linum-highlight-face "#00B3EF")
+;;(set-face-background 'linum-highlight-face "#1f252b")
 
 (defun doom-fix-unicode (font &rest chars)
   "Display certain unicode characters in a specific font.
