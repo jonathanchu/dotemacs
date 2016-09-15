@@ -415,8 +415,20 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
    #+BEGIN_SRC emacs-lisp :tangle yes
      (use-package flycheck
        :ensure t
+       :commands
+       (flycheck-mode flycheck-list-errors flycheck-buffer)
        :defer 2
+       :init
+       (progn
+         (setq flycheck-indication-mode 'right-fringe)
+         (setq flycheck-check-syntax-automatically '(save mode-enabled))
+         (setq flycheck-highlighting-mode 'symbols)
+         (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make))
+         (setq flycheck-pos-tip-timeout 10)
+         (setq flycheck-display-errors-delay 0.5))
        :config
+       (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+         [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
        (global-flycheck-mode 1))
    #+END_SRC
 
