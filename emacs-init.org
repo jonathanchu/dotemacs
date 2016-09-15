@@ -1038,15 +1038,6 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
        (add-hook 'css-mode-hook #'rainbow-mode))
    #+END_SRC
 
-** Fringe mode
-
-   #+BEGIN_SRC emacs-lisp :tangle yes
-     ;;(use-package fringe
-     ;;  :defer t
-     ;;  :config
-     ;;  (fringe-mode '(20 . 8)))
-   #+END_SRC
-
 ** Highlight tail
 
    #+BEGIN_SRC emacs-lisp :tangle yes
