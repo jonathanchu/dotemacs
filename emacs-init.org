@@ -174,7 +174,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     ;; prevent active process query on quit
     (require 'cl)
     (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-      (flet ((process-list ())) ad-do-it))
+      (cl-flet ((process-list ())) ad-do-it))
 
     ;; instantly display current key sequence in mini buffer
     (setq echo-keystrokes 0.02)
