@@ -34,6 +34,7 @@ generates an =emacs-init.el= from the =emacs-lisp= source blocks.
     (add-hook 'minibuffer-setup-hook 'doom-buffer-mode)
     ;; Custom neotree theme
     (require 'doom-neotree)
+    (setq doom-neotree-enable-file-icons t)
   #+END_SRC
 
 ** Powerline
