@@ -53,5 +53,4 @@ smex-items
 /url
 *.log
 /.python-environments
-emacs-init.el
 /persp-confs

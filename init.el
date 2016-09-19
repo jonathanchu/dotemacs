@@ -88,21 +88,9 @@
  ;; If there is more than one, they won't work right.
  )
 
-;;----------------------------------------------------------------------------
-;; Literate Config Test
-;;----------------------------------------------------------------------------
-
 (defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
-  "Test configurations stored in this file.")
+  "All configurations stored in this file.")
 
-(defvar my-org-file (expand-file-name "emacs-init.org" user-emacs-directory)
-  "All configurations tangled from this file.")
-
-(if (file-exists-p my-init-file)
-    (load-file my-init-file)
-  (progn
-    (org-babel-load-file
-     (expand-file-name "emacs-init.org" user-emacs-directory))))
-
+(load-file my-init-file)
 (load-file "~/.emacs.d/doom.el")
 ;;; init.el ends here
