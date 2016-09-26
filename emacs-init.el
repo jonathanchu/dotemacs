@@ -678,6 +678,7 @@
     (helm-make-source "Recentf" 'helm-recentf-source
       :fuzzy-match t))
   (setq helm-M-x-fuzzy-match t
+        helm-M-x-always-save-history t
         helm-buffers-fuzzy-matching t
         helm-display-header-line nil))
 
