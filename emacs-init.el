@@ -800,6 +800,13 @@
 
 (use-package all-the-icons)
 
+(use-package paperless
+  :ensure t
+  :config
+  (progn
+    (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
+    (setq paperless-root-directory "~/Dropbox (Personal)/Documents/Personal")))
+
 (defun my/insert-underscore ()
   "Insert an underscore."
   (interactive)
