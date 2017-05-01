@@ -259,6 +259,9 @@
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+    (setq-default web-mode-comment-formats (remove '("javascript" . "/*") web-mode-comment-formats))
+    (add-to-list 'web-mode-comment-formats '("javascript" . "//"))))
+
 
 (use-package less-css-mode
   :ensure t
