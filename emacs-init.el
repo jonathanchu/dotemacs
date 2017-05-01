@@ -249,7 +249,6 @@
   (progn
     (setq web-mode-markup-indent-offset 2)
     (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
     (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -258,7 +257,8 @@
     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))))
+    (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 (use-package less-css-mode
   :ensure t
@@ -334,13 +334,16 @@
     (setq flycheck-indication-mode 'right-fringe)
     (setq flycheck-check-syntax-automatically '(save mode-enabled))
     (setq flycheck-highlighting-mode 'symbols)
-    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make))
+    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint))
     (setq flycheck-pos-tip-timeout 10)
     (setq flycheck-display-errors-delay 0.5))
   :config
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
-  (global-flycheck-mode 1))
+  (global-flycheck-mode 1)
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+
+(flycheck-add-mode 'javascript-eslint 'web-mode)
 
 (use-package flx-ido
   :ensure t)
@@ -694,9 +697,6 @@
 
 (use-package js2-mode
   :ensure t
-  :mode
-  ("\\.js$" . js2-mode)
-  ("\\.jsx$" . js2-mode)
   :commands js2-mode
   :config (setq-default
            js2-auto-indent-flag nil
@@ -806,6 +806,19 @@
   (progn
     (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
     (setq paperless-root-directory "~/Dropbox (Personal)/Documents/Personal")))
+
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-eslint-from-node-modules ()
+  "Use local eslint from node_modeules."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
 
 (defun my/insert-underscore ()
   "Insert an underscore."
