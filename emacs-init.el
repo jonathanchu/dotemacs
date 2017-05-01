@@ -308,11 +308,11 @@
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (add-hook 'org-mode-hook
-    (lambda ()
-      (make-variable-buffer-local 'yas/trigger-key)
-      (setq yas/trigger-key [tab])
-      (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-      (define-key yas/keymap [tab] 'yas/next-field))))
+            (lambda ()
+              (make-variable-buffer-local 'yas/trigger-key)
+              (setq yas/trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+              (define-key yas/keymap [tab] 'yas/next-field))))
 
 (use-package yasnippet
   :ensure t
