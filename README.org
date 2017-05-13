@@ -58,6 +58,7 @@
    All of these prerequisites can be installed via =homebrew= and =npm=.
 
    #+BEGIN_SRC
+   brew install gpg
    brew install ag
    brew install node
    npm install jshint
