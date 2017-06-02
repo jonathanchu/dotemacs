@@ -703,6 +703,9 @@
 
 (use-package js2-mode
   :ensure t
+  :mode
+  "\\.js$"
+  "\\.jsx$"
   :commands js2-mode
   :config (setq-default
            js2-auto-indent-flag nil
