@@ -156,7 +156,7 @@
 ;;(setq cua-toggle-set-mark nil)
 
 ;; debugging
-(setq debug-on-error t)
+;; (setq debug-on-error t)
 
 ;; desktop save mode
 (desktop-save-mode t)
