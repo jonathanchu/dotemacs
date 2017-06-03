@@ -344,6 +344,15 @@
 
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
 
+(add-to-list 'load-path "~/.emacs.d/vendor")
+(require 'prettier-js)
+(setq prettier-js-args '("--print-width" "120"
+                         "--tab-width" "4"
+                         "--parser" "babylon"
+                         "--single-quote" "true"
+                         "--trailing-comma" "es5"
+                         "--jsx-bracket-same-line" "true"))
+
 
 (use-package flx-ido
   :ensure t)
