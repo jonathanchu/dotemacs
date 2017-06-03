@@ -729,6 +729,28 @@
            js2-highlight-external-variables t
            js2-mode-show-parse-errors t
            js2-mode-show-strict-warnings t))
+(defun flow-save-hook ()
+  "Invoke flow-status after save when in js2-mode."
+  (when (eq major-mode 'js2-mode)
+    (flow-status)))
+
+;; TODO: This is specifically for flow, but let's just modify the flow package instead of messing with the compilation buffer on a global level.
+;;
+;; (defun bury-compile-buffer-if-successful (buffer string)
+;;   "Bury a compilation buffer if succeeded without warnings."
+;;   (if (and
+;;        (string-match "compilation" (buffer-name buffer))
+;;        (string-match "No errors!" (with-current-buffer buffer
+;;          (buffer-string)))
+;;       )
+;;       (run-with-timer 1 nil
+;;                             (lambda (buf)
+;;                               (bury-buffer buf)
+;;                               (switch-to-prev-buffer (get-buffer-window buf) 'kill))
+;;                             buffer)))
+;; (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+
+
 
 (use-package origami
   :ensure t
@@ -833,6 +855,10 @@
                                         root))))
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
+
+
+(load-file "~/.emacs.d/vendor/flow.el")
+(load-file "~/.emacs.d/vendor/flycheck-flow.el")
 
 
 (defun my/insert-underscore ()
