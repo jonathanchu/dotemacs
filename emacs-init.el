@@ -353,7 +353,6 @@
                          "--trailing-comma" "es5"
                          "--jsx-bracket-same-line" "true"))
 
-
 (use-package flx-ido
   :ensure t)
 
@@ -713,22 +712,23 @@
   "\\.js$"
   "\\.jsx$"
   :commands js2-mode
-  :config (setq-default
-           js2-auto-indent-flag nil
-           js2-basic-offset 4
-           js2-electric-keys nil
-           js2-enter-indents-newline nil
-           js2-mirror-mode nil
-           js2-mode-show-parse-errors nil
-           js2-mode-show-strict-warnings nil
-           js2-mode-squeeze-spaces t
-           js2-strict-missing-semi-warning nil
-           js2-strict-trailing-comma-warning nil
-           js2-bounce-indent-p t
-           js2-global-externs (list "$" "ko" "_")
-           js2-highlight-external-variables t
-           js2-mode-show-parse-errors t
-           js2-mode-show-strict-warnings t))
+  :config
+  (progn
+    (setq-default
+     js2-auto-indent-flag nil
+     js2-basic-offset 4
+     js2-electric-keys nil
+     js2-mirror-mode nil
+     js2-mode-show-parse-errors nil
+     js2-mode-show-strict-warnings nil
+     js2-strict-missing-semi-warning nil
+     js2-strict-trailing-comma-warning nil
+     js2-highlight-external-variables nil)
+    (add-hook 'js2-mode-hook 'prettier-js-mode)
+    (add-hook 'js2-mode-hook 'flycheck-mode)
+    (add-hook 'after-save-hook 'flow-save-hook)))
+
+
 (defun flow-save-hook ()
   "Invoke flow-status after save when in js2-mode."
   (when (eq major-mode 'js2-mode)
