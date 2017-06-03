@@ -342,7 +342,8 @@
   (global-flycheck-mode 1)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+
 
 (use-package flx-ido
   :ensure t)
