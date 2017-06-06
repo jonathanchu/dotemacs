@@ -87,6 +87,9 @@
 ;; show column number in the mode line
 (column-number-mode 1)
 
+;;
+(setq ring-bell-function 'ignore)
+
 ;; show file size
 (size-indication-mode t)
 
