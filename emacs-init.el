@@ -345,8 +345,6 @@
   (global-flycheck-mode 1)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (require 'prettier-js)
 (setq prettier-js-args '("--print-width" "120"
@@ -728,9 +726,10 @@
      js2-strict-trailing-comma-warning nil
      js2-highlight-external-variables nil)
     (add-hook 'js2-mode-hook 'prettier-js-mode)
-    (add-hook 'js2-mode-hook 'flycheck-mode)
+    (add-hook 'js2-mode-hook
+              (defun my-js2-mode-setup ()
+                (flycheck-select-checker 'javascript-eslint)))
     (add-hook 'after-save-hook 'flow-save-hook)))
-
 
 (defun flow-save-hook ()
   "Invoke flow-status after save when in js2-mode."
