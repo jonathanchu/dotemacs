@@ -373,11 +373,6 @@
     (ido-vertical-mode 1)
     (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
 
-(use-package ido-ubiquitous
-  :ensure t
-  :config
-  (ido-ubiquitous-mode 1))
-
 (use-package smex
   :ensure t
   :init
