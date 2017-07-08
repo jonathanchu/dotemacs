@@ -414,6 +414,13 @@
 ;;   (bind-key "s-t" #'projectile-find-file)
 ;;   (setq projectile-keymap-prefix (kbd "C-x p")))
 
+(use-package fish-mode
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'fish-mode-hook (lambda ()
+                              (add-hook 'before-save-hook 'fish_indent-before-save))))
+
 (use-package git-messenger
   :ensure t
   :defer t
