@@ -91,16 +91,11 @@
  ;; If there is more than one, they won't work right.
  )
 
- ;; (require 'core (concat user-emacs-directory "core/core"))
-
-
 (defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
   "All configurations stored in this file.")
 
 (load-file my-init-file)
 (load-file "~/.emacs.d/doom.el")
-
-;; (require 'core (concat user-emacs-directory "core/core"))
 
 (when (display-graphic-p)
   (require 'server)

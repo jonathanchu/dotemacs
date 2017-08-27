@@ -39,7 +39,7 @@
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 ;; core-ui
-(fset 'yes-or-no-p 'y-or-n-p)
+;; (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; no splash screen
 ;; (setq inhibit-splash-screen t)
@@ -49,32 +49,32 @@
 
 ;; no menu bar
 ;; core-ui
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 
 ;; M-q
 ;; (setq fill-column 80)
 
 ;; no toolbar
 ;; core-ui
-(when (functionp 'tool-bar-mode)
-  (tool-bar-mode -1))  ;; no toolbar
+;; (when (functionp 'tool-bar-mode)
+;;   (tool-bar-mode -1))  ;; no toolbar
 
 ;; disable scroll bars
 ;; core-ui
-(if window-system
-    (progn
-      (scroll-bar-mode -1)
-      ;;(set-frame-font "Inconsolata 15"))) ;; set font
-      ))
+;; (if window-system
+;;     (progn
+;;       (scroll-bar-mode -1)
+;;       ;;(set-frame-font "Inconsolata 15"))) ;; set font
+;;       ))
 ;; make the font more visually pleasing
 ;; (set-face-attribute 'default nil :height 160)
 
 ;; core-ui
-(setq-default cursor-type 'bar)
+;; (setq-default cursor-type 'bar)
 
 ;; nice fonts in OS X
 ;; core-ui
-(setq mac-allow-anti-aliasing t)
+;; (setq mac-allow-anti-aliasing t)
 
 ;; no word wrap
 ;; (setq-default truncate-lines t)
@@ -89,11 +89,11 @@
 
 ;; show line number in mode line
 ;; core-ui
-(line-number-mode 1)
+;; (line-number-mode 1)
 
 ;; show column number in the mode line
 ;; core-ui
-(column-number-mode 1)
+;; (column-number-mode 1)
 
 ;;
 ;; (setq ring-bell-function 'ignore)
@@ -190,7 +190,7 @@
 
 ;; highlight current line
 ;; core-ui
-(global-hl-line-mode +1)
+;; (global-hl-line-mode +1)
 
 ;; try to improve handling of long lines
 ;; (setq bidi-display-reordering nil)
