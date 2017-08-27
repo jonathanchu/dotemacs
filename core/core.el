@@ -23,10 +23,9 @@
 ;; no message on startup
 (setq initial-scratch-message nil)
 
-
-;;;
 ;; Bootstrap
 (require 'cl-lib)
+(require 'core-packages (concat core-dir "core-packages"))
 
 ;; Reduce the frequency of garbage collection by making it happen on
 ;; each 25MB of allocated data (the default is on every 0.76MB)
