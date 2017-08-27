@@ -41,5 +41,48 @@
 (setq scroll-conservatively 10000)
 (setq scroll-margin 3)
 
+;; open with in original frame, not new window
+(setq ns-pop-up-frames nil)
+
+;; sentences end with single space
+(setq sentence-end-double-space nil)
+
+;; useful for camelCase
+(subword-mode t)
+
+;; delete selection, insert text
+(delete-selection-mode t)
+
+;; prevent active process query on quit
+(require 'cl)
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  (cl-flet ((process-list ())) ad-do-it))
+
+;; instantly display current key sequence in mini buffer
+(setq echo-keystrokes 0.02)
+
+;; desktop save mode
+(desktop-save-mode t)
+(setq desktop-restore-eager 5)
+(setq desktop-save t)
+
+(setq initial-major-mode 'emacs-lisp-mode)
+
+;; improve filename completion
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+(mapc (lambda (x)
+        (add-to-list 'completion-ignored-extensions x))
+      '(".gz" ".pyc" ".elc" ".exe"))
+
+;; Suppress warnings for functions redefined with defadvice
+(setq ad-redefinition-action 'accept)
+
+(setq tab-always-indent 'complete)
+
+;; try to improve handling of long lines
+(setq bidi-display-reordering nil)
+
+
 (provide 'core-editor)
 ;;; core-editor.el ends here
