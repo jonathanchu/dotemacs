@@ -85,7 +85,7 @@
 ;; (setq-default indent-tabs-mode nil)
 
 ;; delete trailing whitespace in all modes
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
+;; (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 ;; show line number in mode line
 ;; core-ui
