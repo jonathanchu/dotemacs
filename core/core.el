@@ -26,6 +26,7 @@
 ;; Bootstrap
 (require 'cl-lib)
 (require 'core-packages (concat core-dir "core-packages"))
+(require 'core-os (concat core-dir "core-os"))
 (require 'core-editor (concat core-dir "core-editor"))
 (require 'core-ui (concat core-dir "core-ui"))
 
