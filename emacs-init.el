@@ -704,6 +704,7 @@
   ;;         :fuzzy-match t))
   (setq helm-M-x-fuzzy-match t
         helm-M-x-always-save-history t
+        helm-recentf-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-display-header-line nil))
 
