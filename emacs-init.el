@@ -865,7 +865,7 @@
   :config
   (progn
     (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
-    (setq paperless-root-directory "~/Dropbox (Personal)/Documents/Personal")))
+    (setq paperless-root-directory "~/Dropbox (Personal)/Documents")))
 
 (use-package parinfer
   :ensure t
