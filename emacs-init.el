@@ -811,7 +811,7 @@
   :ensure t
   :config
   (progn
-    (setq deft-directory "~/Dropbox (Personal)/Simplenote")
+    (setq deft-directory "~/Dropbox (Personal)/org")
     (setq deft-extension "org")
     (setq deft-text-mode 'org-mode)
     (setq deft-use-filename-as-title t)
