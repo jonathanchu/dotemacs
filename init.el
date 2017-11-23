@@ -45,27 +45,27 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-;; (require 'package)
-;; (setq package-enable-at-startup nil)
-;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-;;                          ("melpa" . "https://melpa.org/packages/")
-;;                          ("melpa-stable" . "https://stable.melpa.org/packages/")))
-;;
-;;
-;; (package-initialize)
-;;
-;; ;; Bootstrap `use-package'
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;;
-;; ;; use-package
-;; (setq use-package-enable-imenu-support t)
-;; (eval-when-compile
-;;   (require 'use-package))
-;; (setq use-package-verbose t)
-;; (require 'diminish)
-;; (require 'bind-key)
+(require 'package)
+(setq package-enable-at-startup nil)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
+
+(package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; use-package
+(setq use-package-enable-imenu-support t)
+(eval-when-compile
+  (require 'use-package))
+(setq use-package-verbose t)
+(require 'diminish)
+(require 'bind-key)
 
 (require 'core (concat user-emacs-directory "core/core"))
 
