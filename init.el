@@ -69,6 +69,8 @@
 
 (require 'core (concat user-emacs-directory "core/core"))
 
+;; this should require a `modules` directory and load in all packages that pertain to those that directory
+
 ;;----------------------------------------------------------------------------
 ;; Global Config
 ;;----------------------------------------------------------------------------
