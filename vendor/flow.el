@@ -46,6 +46,11 @@
 (defun flow-status ()
   "Initialize flow"
   (interactive)
+  ;; (let (buffer (current-buffer))
+  ;;   (when (string-match "// @flow" (with-current-buffer buffer (buffer-string)))
+  ;;     (flow-start)
+  ;;     (compile (format "%s status --from emacs; exit 0" flow_binary))
+  ;;     ))
   (flow-start)
   (compile (format "%s status --from emacs; exit 0" flow_binary))
   )
