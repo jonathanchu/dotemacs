@@ -59,8 +59,8 @@
 ;; (doom-themes-org-config)
 
 
-(use-package powerline
-  :ensure t)
+;; (use-package powerline
+;;   :ensure t)
 
 ;;(use-package smart-mode-line
 ;;  :ensure t
