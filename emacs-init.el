@@ -901,7 +901,8 @@
 (use-package blank-mode
   :ensure t)
 
-(use-package all-the-icons)
+(use-package all-the-icons
+  :ensure t)
 
 (use-package paperless
   :ensure t
