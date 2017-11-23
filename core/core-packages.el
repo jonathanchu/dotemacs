@@ -28,6 +28,8 @@
 (use-package powerline
   :ensure t)
 
+(use-package dash
+  :ensure t)
 
 (provide 'core-packages)
 ;;; core-packages.el ends here
