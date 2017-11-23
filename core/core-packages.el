@@ -34,5 +34,9 @@
 (use-package all-the-icons
   :ensure t)
 
+(use-package popup
+  :ensure t)
+
+
 (provide 'core-packages)
 ;;; core-packages.el ends here
