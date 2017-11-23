@@ -24,5 +24,10 @@
 (require 'diminish)
 (require 'bind-key)
 
+;; FIXME: installing powerline early :-/
+(use-package powerline
+  :ensure t)
+
+
 (provide 'core-packages)
 ;;; core-packages.el ends here
