@@ -932,6 +932,12 @@
 ;; (use-package dash
 ;;   :ensure t)
 
+(use-package add-node-modules-path
+  :ensure t)
+
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook #'add-node-modules-path))
+
 ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
 (defun my/use-eslint-from-node-modules ()
   "Use local eslint from node_modeules."
