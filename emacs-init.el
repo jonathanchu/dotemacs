@@ -186,7 +186,7 @@
 ;; (delete-selection-mode t)
 
 ;; javascript
-(setq js-indent-level 4)
+(setq js-indent-level 2)
 
 ;; css
 (setq css-indent-offset 2)
