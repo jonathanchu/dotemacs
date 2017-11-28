@@ -854,7 +854,7 @@
   :ensure t
   :config
   (progn
-    (setq deft-directory "~/Dropbox (Personal)/org")
+    (setq deft-directory "~/Dropbox/org")
     (setq deft-extension "org")
     (setq deft-text-mode 'org-mode)
     (setq deft-use-filename-as-title t)
@@ -909,7 +909,7 @@
   :config
   (progn
     (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
-    (setq paperless-root-directory "~/Dropbox (Personal)/Documents")))
+    (setq paperless-root-directory "~/Dropbox/Documents")))
 
 (use-package parinfer
   :ensure t
