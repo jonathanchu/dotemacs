@@ -401,12 +401,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (require 'prettier-js)
-(setq prettier-js-args '("--print-width" "120"
-                         "--tab-width" "4"
-                         "--parser" "babylon"
+(setq prettier-js-args '("--print-width" "80"
+                         "--tab-width" "2"
                          "--single-quote" "true"
-                         "--trailing-comma" "es5"
-                         "--jsx-bracket-same-line" "true"))
+                         "--trailing-comma" "all"
+                         "--jsx-bracket-same-line" "false"))
 
 (use-package flx-ido
   :ensure t)
