@@ -2,5 +2,5 @@
 ;;; core/packages.el
 
 ;; core packages
-(use-package f
-  :ensure t)
+;; (use-package f
+;;   :ensure t)
