@@ -360,11 +360,11 @@
 (use-package f
   :ensure t)
 
-(load-file "~/.emacs.d/doom.el")
-
 ;;----------------------------------------------------------------------------
 ;; Doom Stuff
 ;;----------------------------------------------------------------------------
+
+(load-file "~/.emacs.d/doom.el")
 
 (add-to-list 'load-path "~/.emacs.d/themes")
 (require 'doom-themes)
