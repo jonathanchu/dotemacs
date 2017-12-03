@@ -399,6 +399,12 @@
   :bind
   ("C-x C-o" . ace-window))
 
+(use-package add-node-modules-path
+  :ensure t)
+
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook #'add-node-modules-path))
+
 (use-package aggressive-indent
   :ensure t
   :init
@@ -434,6 +440,9 @@
     (beacon-mode 1)
     (setq beacon-push-mark 35)
     (setq beacon-color "#61AFEF")))
+
+(use-package blank-mode
+  :ensure t)
 
 (use-package cider
   :ensure t
@@ -481,6 +490,16 @@
   ("C-c g" . counsel-git-grep)
   ("C-c k" . counsel-ag))
 
+(use-package deft
+  :ensure t
+  :config
+  (progn
+    (setq deft-directory "~/Dropbox/org")
+    (setq deft-extension "org")
+    (setq deft-text-mode 'org-mode)
+    (setq deft-use-filename-as-title t)
+    (setq deft-auto-save-interval 0)))
+
 (use-package dired+
   :ensure t)
 
@@ -497,6 +516,9 @@
   :config
   (elpy-enable))
 
+(use-package esup
+  :ensure t)
+
 (use-package evil :ensure t)
 
 (use-package exec-path-from-shell
@@ -509,6 +531,9 @@
   :ensure t
   :bind
   ("C-=" . er/expand-region))
+
+(use-package fireplace
+  :ensure t)
 
 (use-package fish-mode
   :ensure t
@@ -523,6 +548,8 @@
   ("M-u" . fix-word-upcase)
   ("M-l" . fix-word-downcase)
   ("M-c" . fix-word-capitalize))
+
+(load-file "~/.emacs.d/vendor/flow.el")
 
 (use-package flx-ido
   :ensure t)
@@ -550,6 +577,20 @@
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode 1)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-eslint-from-node-modules ()
+  "Use local eslint from node_modeules."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(load-file "~/.emacs.d/vendor/flycheck-flow.el")
 
 (use-package flyspell
   :config
@@ -580,6 +621,16 @@
 
 (use-package gitignore-mode
   :ensure t)
+
+(use-package gnus
+  :config
+  (setq gnus-select-method '(nntp "ger.gmane.org")))
+
+(use-package goto-chg
+  :ensure t
+  :bind
+  ("C-c b ," . goto-last-change)
+  ("C-c b ." . goto-last-change-reverse))
 
 (use-package helm
   :ensure t
@@ -614,6 +665,13 @@
   :init
   (helm-projectile-on)
   (bind-key "s-t" #'helm-projectile-find-file))
+
+(use-package highlight-tail
+  :ensure t
+  :config
+  (progn
+    (setq highlight-tail-steps 8)
+    (setq highlight-tail-timer 0.05)))
 
 (use-package ibuffer
   :bind
@@ -680,6 +738,19 @@
   (when (and (eq major-mode 'js2-mode)
              (executable-find "flow"))
     (flow-status)))
+
+(use-package key-chord
+  :ensure t
+  :init
+  (progn
+    (key-chord-mode 1)
+    (key-chord-define-global "hj" 'undo)
+    (key-chord-define-global ",." "<>\C-b")
+    (key-chord-define-global "--" 'my/insert-underscore)
+    (key-chord-define-global "jj" 'avy-goto-word-1)
+    (key-chord-define-global "jl" 'avy-goto-line)
+    (key-chord-define-global "jk" 'avy-goto-char)
+    (key-chord-define-global "uu" 'undo-tree-visualize)))
 
 (use-package latex-preview-pane
   :ensure t
@@ -771,6 +842,23 @@
                                   "◉"
                                   "◆")))
 
+(use-package origami
+  :ensure t
+  :config
+  (global-origami-mode t)
+  :bind
+  ("s-[" . origami-close-node-recursively)
+  ("s-]" . origami-open-node-recursively)
+  ("M-[" . origami-close-all-nodes)
+  ("M-]" . origami-open-all-nodes))
+
+(use-package paperless
+  :ensure t
+  :config
+  (progn
+    (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
+    (setq paperless-root-directory "~/Dropbox/Documents")))
+
 (use-package paradox
   :ensure t
   :config
@@ -795,6 +883,29 @@
   :config
   (show-paren-mode t))
 
+(use-package parinfer
+  :ensure t
+  :bind
+  (("C-," . parinfer-toggle-mode))
+  :init
+  (progn
+    (setq parinfer-extensions
+          '(defaults       ; should be included.
+             pretty-parens  ; different paren styles for different modes.
+             paredit        ; Introduce some paredit commands.
+             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+             smart-yank))   ; Yank behavior depend on mode.
+    (add-hook 'clojure-mode-hook #'parinfer-mode)
+    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+    (add-hook 'scheme-mode-hook #'parinfer-mode)
+    (add-hook 'lisp-mode-hook #'parinfer-mode)))
+
+(use-package popwin
+  :ensure t
+  :config
+  (popwin-mode t))
+
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (require 'prettier-js)
 (setq prettier-js-args '("--print-width" "80"
@@ -808,7 +919,6 @@
   (when (executable-find "prettier")
     (prettier-js-mode)))
 
-
 (use-package python-mode
   :ensure t
   :config
@@ -821,6 +931,11 @@
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (add-hook 'css-mode-hook #'rainbow-mode))
 
 (use-package recentf
   :config
@@ -852,6 +967,15 @@
   :ensure t
   :config
   (autoload 'scratch "scratch" nil t))
+
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+
+(use-package smart-comment
+  :ensure t
+  :bind
+  ("s-/" . smart-comment))
 
 (use-package smartparens
   :ensure t
@@ -901,6 +1025,11 @@
     (setq uniquify-after-kill-buffer-p t)
     (setq uniquify-ignore-buffers-re "^\\*")))
 
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode t))
+
 (use-package web-mode
   :ensure t
   :config
@@ -931,185 +1060,9 @@
     (setq yas-snippet-dirs (append yas-snippet-dirs
                                    '("~/.emacs.d/snippets")))))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-(use-package origami
-  :ensure t
-  :config
-  (global-origami-mode t)
-  :bind
-  ("s-[" . origami-close-node-recursively)
-  ("s-]" . origami-open-node-recursively)
-  ("M-[" . origami-close-all-nodes)
-  ("M-]" . origami-open-all-nodes))
-
-(use-package sh-script
-  :config
-  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
-
-(use-package goto-chg
-  :ensure t
-  :bind
-  ("C-c b ," . goto-last-change)
-  ("C-c b ." . goto-last-change-reverse))
-
-(use-package rainbow-mode
-  :ensure t
-  :config
-  (add-hook 'css-mode-hook #'rainbow-mode))
-
-(use-package highlight-tail
-  :ensure t
-  :config
-  (progn
-    (setq highlight-tail-steps 8)
-    (setq highlight-tail-timer 0.05)))
-
-(use-package deft
-  :ensure t
-  :config
-  (progn
-    (setq deft-directory "~/Dropbox/org")
-    (setq deft-extension "org")
-    (setq deft-text-mode 'org-mode)
-    (setq deft-use-filename-as-title t)
-    (setq deft-auto-save-interval 0)))
-
-(use-package fireplace
-  :ensure t)
-
-(use-package popwin
-  :ensure t
-  :config
-  (popwin-mode t))
-
-(use-package gnus
-  :config
-  (setq gnus-select-method '(nntp "ger.gmane.org")))
-
-(use-package smart-comment
-  :ensure t
-  :bind
-  ("s-/" . smart-comment))
-
-(use-package key-chord
-  :ensure t
-  :init
-  (progn
-    (key-chord-mode 1)
-    (key-chord-define-global "hj" 'undo)
-    (key-chord-define-global ",." "<>\C-b")
-    (key-chord-define-global "--" 'my/insert-underscore)
-    (key-chord-define-global "jj" 'avy-goto-word-1)
-    (key-chord-define-global "jl" 'avy-goto-line)
-    (key-chord-define-global "jk" 'avy-goto-char)
-    (key-chord-define-global "uu" 'undo-tree-visualize)))
-
-(use-package esup
-  :ensure t)
-
-(use-package volatile-highlights
-  :ensure t
-  :config
-  (volatile-highlights-mode t))
-
-(use-package blank-mode
-  :ensure t)
-
-;; (use-package all-the-icons
-;;   :ensure t)
-
-(use-package paperless
-  :ensure t
-  :config
-  (progn
-    (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
-    (setq paperless-root-directory "~/Dropbox/Documents")))
-
-(use-package parinfer
-  :ensure t
-  :bind
-  (("C-," . parinfer-toggle-mode))
-  :init
-  (progn
-    (setq parinfer-extensions
-          '(defaults       ; should be included.
-             pretty-parens  ; different paren styles for different modes.
-             paredit        ; Introduce some paredit commands.
-             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-             smart-yank))   ; Yank behavior depend on mode.
-    (add-hook 'clojure-mode-hook #'parinfer-mode)
-    (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-    (add-hook 'scheme-mode-hook #'parinfer-mode)
-    (add-hook 'lisp-mode-hook #'parinfer-mode)))
-
-;; (use-package dash
-;;   :ensure t)
-
-(use-package add-node-modules-path
-  :ensure t)
-
-(eval-after-load 'js2-mode
-  '(add-hook 'js2-mode-hook #'add-node-modules-path))
-
-;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
-(defun my/use-eslint-from-node-modules ()
-  "Use local eslint from node_modeules."
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-
-
-(load-file "~/.emacs.d/vendor/flow.el")
-(load-file "~/.emacs.d/vendor/flycheck-flow.el")
-
+;;----------------------------------------------------------------------------
+;; Functions
+;;----------------------------------------------------------------------------
 
 (defun my/insert-underscore ()
   "Insert an underscore."
@@ -1205,23 +1158,6 @@ The CHAR is replaced and the point is put before CHAR."
               (capitalize-word 1)))))
 
 (add-hook 'post-self-insert-hook #'dcaps-to-scaps)
-
-;; timestamps in *Messages*
-;; via http://www.reddit.com/r/emacs/comments/1auqgm/speeding_up_your_emacs_startup/
-;;     (defun current-time-microseconds ()
-;;       (let* ((nowtime (current-time))
-;;              (now-ms (nth 2 nowtime)))
-;;         (concat (format-time-string "[%Y-%m-%dT%T" nowtime) (format ".%d] " now-ms))))
-;;
-;;     (defadvice message (before test-symbol activate)
-;;       (if (not (string-equal (ad-get-arg 0) "%s%s"))
-;;           (let ((inhibit-read-only t)
-;;                 (deactivate-mark nil))
-;;             (with-current-buffer "*Messages*"
-;;               (goto-char (point-max))
-;;               (if (not (bolp))
-;;                   (newline))
-;;               (insert (current-time-microseconds))))))
 
 ;; Copy the buffer filename to the kill ring
 (defun copy-buffer-file-name-as-kill (choice)
@@ -1322,6 +1258,10 @@ The CHAR is replaced and the point is put before CHAR."
     (abort-recursive-edit)))
 
 (add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
+
+;;----------------------------------------------------------------------------
+;; Key bindinds
+;;----------------------------------------------------------------------------
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
