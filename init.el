@@ -143,6 +143,13 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; set paths from shell
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
 (defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
   "All configurations stored in this file.")
 
