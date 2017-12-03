@@ -367,6 +367,24 @@
 (load-file "~/.emacs.d/doom.el")
 
 ;;----------------------------------------------------------------------------
+;; Doom Stuff
+;;----------------------------------------------------------------------------
+
+(add-to-list 'load-path "~/.emacs.d/themes")
+(require 'doom-themes)
+(load-theme 'doom-one t) ;; or doom-dark, etc.
+
+;;; OPTIONAL
+;; brighter source buffers
+(add-hook 'find-file-hook 'doom-buffer-mode)
+;; brighter minibuffer when active
+(add-hook 'minibuffer-setup-hook 'doom-buffer-mode)
+;; Custom neotree theme
+(require 'doom-neotree)
+(setq doom-neotree-enable-file-icons t)
+
+
+;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
 
