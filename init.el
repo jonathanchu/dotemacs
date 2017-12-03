@@ -81,11 +81,6 @@
 ;;----------------------------------------------------------------------------
 
 (require 'package)
-;; (setq package-enable-at-startup nil)
-;; (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-;;                          ("melpa" . "https://melpa.org/packages/")
-;;                          ("melpa-stable" . "https://stable.melpa.org/packages/")))
-
 (setq load-prefer-newer t
       package-enable-at-startup nil
       package-user-dir (concat user-emacs-directory "elpa")
