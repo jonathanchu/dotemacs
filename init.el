@@ -106,7 +106,7 @@
 (require 'diminish)
 (require 'bind-key)
 
-(require 'core (concat user-emacs-directory "core/core"))
+;; (require 'core (concat user-emacs-directory "core/core"))
 
 ;; FIXME: installing powerline early :-/
 (use-package powerline
