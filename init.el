@@ -1,6 +1,6 @@
 ;; init.el --- My personal Emacs configuration.
 ;;
-;; Copyright (c) 2015, 2016
+;; Copyright (c) 2015, 2016, 2017
 ;;
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
