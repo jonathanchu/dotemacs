@@ -30,6 +30,10 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
+
+;;; Initialization
+(defconst emacs-start-time (current-time))
+
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 
@@ -104,5 +108,20 @@
   (message "Starting up server...")
   (unless (server-running-p)
     (server-start)))
+
+;;; Finalization
+
+(when window-system
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed
+                      (float-time
+                       (time-subtract (current-time) emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed))) t))
 
 ;;; init.el ends here
