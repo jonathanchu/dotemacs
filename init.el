@@ -231,6 +231,16 @@
 ;; delete trailing whitespace in all modes
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
+;; javascript
+(setq js-indent-level 2)
+
+;; css
+(setq css-indent-offset 2)
+
+;; cua mode
+(cua-mode t)
+(setq cua-enable-cua-keys nil)
+
 ;;----------------------------------------------------------------------------
 ;; UI
 ;;----------------------------------------------------------------------------
@@ -379,68 +389,68 @@
 (setq doom-neotree-enable-file-icons t)
 
 ;;----------------------------------------------------------------------------
-;; UNSORTED MESS
+;; Packages
 ;;----------------------------------------------------------------------------
 
-;; javascript
-(setq js-indent-level 2)
-
-;; css
-(setq css-indent-offset 2)
-
-;; prevent active process query on quit
-;; (require 'cl)
-;; (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-;;   (cl-flet ((process-list ())) ad-do-it))
-
-;; instantly display current key sequence in mini buffer
-;; (setq echo-keystrokes 0.02)
-
-;; server mode
-;; (if (not server-mode)
-;;     (server-start nil t))
-
-;; (setq initial-major-mode 'emacs-lisp-mode)
-
-;; cua mode
-(cua-mode t)
-(setq cua-enable-cua-keys nil)
-;;(setq cua-highlight-region-shift-only t)
-;;(setq cua-toggle-set-mark nil)
-
-;; debugging
-;; (setq debug-on-error t)
-
-;; desktop save mode
-;; (desktop-save-mode t)
-;; (setq desktop-restore-eager 5)
-;; (setq desktop-save t)
-
-;; improve filename completion
-;; (setq read-file-name-completion-ignore-case t)
-;; (setq read-buffer-completion-ignore-case t)
-;; (mapc (lambda (x)
-;;         (add-to-list 'completion-ignored-extensions x))
-;;       '(".gz" ".pyc" ".elc" ".exe"))
-
-;; Suppress warnings for functions redefined with defadvice
-;; (setq ad-redefinition-action 'accept)
-
-;; (setq tab-always-indent 'complete)
-
-;; highlight current line
-;; core-ui
-;; (global-hl-line-mode +1)
-
-;; try to improve handling of long lines
-;; (setq bidi-display-reordering nil)
-
-;; set paths from shell
-(use-package exec-path-from-shell
+(use-package ace-window
   :ensure t
-  :if (memq window-system '(mac ns))
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+  :bind
+  ("C-x C-o" . ace-window))
+
+(use-package aggressive-indent
+  :ensure t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
+
+(use-package anzu
+  :ensure t
   :config
-  (exec-path-from-shell-initialize))
+  (progn
+    (global-anzu-mode t)
+    (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
+  :bind
+  ("M-%" . anzu-query-replace)
+  ("C-M-%" . anzu-query-replace-regexp))
+
+(use-package avy
+  :ensure t
+  :init
+  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
+  :config
+  (progn
+    (avy-setup-default)
+    (setq avy-background t)
+    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
+    (setq avy-styles-alist '((avy-got-char-2 . post)))
+    (setq avy-all-windows nil)))
+
+(use-package beacon
+  :ensure t
+  :config
+  (progn
+    (beacon-mode 1)
+    (setq beacon-push-mark 35)
+    (setq beacon-color "#61AFEF")))
+
+(use-package cider
+  :ensure t
+  :config
+  (progn
+    (setq nrepl-log-messages t)
+    (setq nrepl-hide-special-buffers t)
+    (add-hook 'cider-mode-hook #'eldoc-mode)))
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
 
 (use-package clojure-mode
   :ensure t
@@ -455,35 +465,231 @@
     (ANY 2)
     (context 2)))
 
-(use-package clj-refactor
-  :ensure t
-  :config
-  (defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+(use-package command-log-mode
+  :ensure t)
 
-(use-package cider
+(use-package company
   :ensure t
   :config
-  (progn
-    (setq nrepl-log-messages t)
-    (setq nrepl-hide-special-buffers t)
-    (add-hook 'cider-mode-hook #'eldoc-mode)))
+  (add-hook 'prog-mode-hook #'company-mode))
 
-(use-package python-mode
+(use-package counsel
+  :ensure t
+  :bind
+  ("M-x" . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  ("C-c g" . counsel-git-grep)
+  ("C-c k" . counsel-ag))
+
+(use-package dired+
+  :ensure t)
+
+(use-package dired-single
+  :ensure t)
+
+(use-package easy-kill
   :ensure t
   :config
-  (add-hook 'python-mode-hook
-            '(lambda ()
-               (setq fill-column 80)))
-  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+  (global-set-key [remap kill-ring-save] 'easy-kill))
 
 (use-package elpy
   :ensure t
   :config
   (elpy-enable))
+
+(use-package evil :ensure t)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package expand-region
+  :ensure t
+  :bind
+  ("C-=" . er/expand-region))
+
+(use-package fish-mode
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'fish-mode-hook (lambda ()
+                              (add-hook 'before-save-hook 'fish_indent-before-save))))
+
+(use-package fix-word
+  :ensure t
+  :bind
+  ("M-u" . fix-word-upcase)
+  ("M-l" . fix-word-downcase)
+  ("M-c" . fix-word-capitalize))
+
+(use-package flx-ido
+  :ensure t)
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  (setq flycheck-pos-tip-timeout 10)
+  (setq flycheck-display-errors-delay 0.5)
+  (flycheck-pos-tip-mode +1))
+
+(use-package flycheck
+  :ensure t
+  :commands
+  (flycheck-mode flycheck-list-errors flycheck-buffer)
+  :defer 2
+  :init
+  (progn
+    (setq flycheck-indication-mode 'right-fringe)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (setq flycheck-highlighting-mode 'symbols)
+    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint)))
+  :config
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+  (global-flycheck-mode 1)
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+
+(use-package flyspell
+  :config
+  (add-hook 'text-mode-hook #'flyspell-mode))
+
+(use-package fullframe
+  :ensure t
+  :config
+  (progn
+    (fullframe magit-status magit-mode-quit-window)
+    (fullframe ibuffer ibuffer-quit)
+    (fullframe paradox-list-packages paradox-quit-and-close)))
+
+(use-package git-messenger
+  :ensure t
+  :defer t
+  :bind
+  ("C-x v m" . git-messenger:popup-message))
+
+(use-package git-timemachine
+  :ensure t)
+
+(use-package gitconfig-mode
+  :ensure t)
+
+(use-package github-browse-file
+  :ensure t)
+
+(use-package gitignore-mode
+  :ensure t)
+
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-r" . helm-recentf)
+         ("C-x b" . helm-buffers-list))
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  ;;(add-to-list 'helm-completing-read-handlers-alist '(find-file . helm-completing-read-symbols))
+  ;; helm-recentf-fuzzy-match var is broken: redeclare it manually
+  ;; (setq helm-source-recentf
+  ;;       (helm-make-source "Recentf" 'helm-recentf-source
+  ;;         :fuzzy-match t))
+  (setq helm-M-x-fuzzy-match t
+        helm-M-x-always-save-history t
+        helm-recentf-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-display-header-line nil))
+
+(use-package helm-ag
+  :ensure t
+  :bind ("s-F" . helm-do-ag-project-root)
+  :config
+  ;; (helm-ag-use-agignore t)
+  )
+
+(use-package helm-projectile
+  :ensure t
+  :init
+  (helm-projectile-on)
+  (bind-key "s-t" #'helm-projectile-find-file))
+
+(use-package ibuffer
+  :bind
+  ("C-x C-b" . ibuffer))
+
+(use-package ibuffer-vc
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic)))))
+
+(use-package ido
+  :config
+  (progn
+    (ido-mode t)
+    (ido-everywhere t)
+    (flx-ido-mode t)
+    (setq ido-enable-flex-matching t)
+    (setq ido-use-faces nil)))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :config
+  (progn
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
+
+(use-package imenu-anywhere
+  :ensure t
+  :bind
+  ("C-c i" . imenu-anywhere))
+
+(use-package js2-mode
+  :ensure t
+  :mode
+  "\\.js$"
+  "\\.jsx$"
+  :commands js2-mode
+  :config
+  (progn
+    (setq-default
+     js2-auto-indent-flag nil
+     js2-basic-offset 4
+     js2-electric-keys nil
+     js2-mirror-mode nil
+     js2-mode-show-parse-errors nil
+     js2-mode-show-strict-warnings nil
+     js2-strict-missing-semi-warning nil
+     js2-strict-trailing-comma-warning nil
+     js2-highlight-external-variables nil)
+    ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
+    (add-hook 'js2-mode-hook 'prettier-js-save-hook)
+    (add-hook 'js2-mode-hook
+              (defun my-js2-mode-setup ()
+                (flycheck-select-checker 'javascript-eslint)))
+    (add-hook 'after-save-hook 'flow-save-hook)))
+
+(defun flow-save-hook ()
+  "Invoke flow-status after save when in js2-mode."
+  (when (and (eq major-mode 'js2-mode)
+             (executable-find "flow"))
+    (flow-status)))
+
+(use-package latex-preview-pane
+  :ensure t
+  :config
+  (latex-preview-pane-enable))
+
+(use-package less-css-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 (use-package magit
   :ensure t
@@ -497,26 +703,18 @@
   ("C-x g" . magit-status)
   ("C-c C-a" . magit-commit-amend))
 
-(use-package web-mode
-  :ensure t
+(use-package make-mode
   :config
-  (progn
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
-
-(use-package less-css-mode
+(use-package markdown-mode
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+  :mode "\\.md\\'")
+
+(use-package neotree
+  :ensure t
+  :bind
+  ("C-c n" . neotree-toggle))
 
 (use-package org
   :defer t
@@ -564,37 +762,38 @@
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field))))
 
-(use-package yasnippet
+(use-package org-bullets
   :ensure t
   :config
-  (progn
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs (append yas-snippet-dirs
-                                   '("~/.emacs.d/snippets")))))
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-bullets-bullet-list '("●"
+                                  "○"
+                                  "◉"
+                                  "◆")))
 
-(use-package flycheck-pos-tip
+(use-package paradox
   :ensure t
   :config
-  (setq flycheck-pos-tip-timeout 10)
-  (setq flycheck-display-errors-delay 0.5)
-  (flycheck-pos-tip-mode +1))
+  (setq paradox-execute-asynchronously t))
 
-(use-package flycheck
+(use-package paredit
   :ensure t
-  :commands
-  (flycheck-mode flycheck-list-errors flycheck-buffer)
-  :defer 2
-  :init
-  (progn
-    (setq flycheck-indication-mode 'right-fringe)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (setq flycheck-highlighting-mode 'symbols)
-    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint)))
   :config
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
-  (global-flycheck-mode 1)
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+  (autoload 'enable-paredit-mode "paredit" t)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook #'enable-paredit-mode)
+  (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+  (add-hook 'org-mode-hook #'enable-paredit-mode)
+  (add-hook 'python-mode-hook
+            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
+
+(use-package paren
+  :config
+  (show-paren-mode t))
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (require 'prettier-js)
@@ -604,161 +803,24 @@
                          "--trailing-comma" "all"
                          "--jsx-bracket-same-line" "false"))
 
-(use-package flx-ido
-  :ensure t)
+(defun prettier-js-save-hook ()
+  "Invoke prettier-js hook if prettier executable is found."
+  (when (executable-find "prettier")
+    (prettier-js-mode)))
 
-(use-package ido
-  :config
-  (progn
-    (ido-mode t)
-    (ido-everywhere t)
-    (flx-ido-mode t)
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil)))
 
-(use-package ido-vertical-mode
+(use-package python-mode
   :ensure t
   :config
-  (progn
-    (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
+  (add-hook 'python-mode-hook
+            '(lambda ()
+               (setq fill-column 80)))
+  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
-(use-package smex
-  :ensure t
-  :init
-  (smex-initialize))
-
-(use-package imenu-anywhere
-  :ensure t
-  :bind
-  ("C-c i" . imenu-anywhere))
-
-(use-package uniquify
-  :config
-  (progn
-    (setq uniquify-buffer-name-style 'reverse)
-    (setq uniquify-separator " • ")
-    (setq uniquify-after-kill-buffer-p t)
-    (setq uniquify-ignore-buffers-re "^\\*")))
-
-;; (use-package ag
-;;   :ensure t
-;;   :config
-;;   (progn
-;;     (setq ag-reuse-buffers t)
-;;     (setq ag-highlight-search t)
-;;     (add-hook 'ag-mode-hook
-;;               (lambda ()
-;;                 (copy-face 'lazy-highlight #'ag-match-face))))
-;;   :bind
-;;   ("s-F" . ag-project))
-
-;; (use-package projectile
-;;   :ensure t
-;;   :diminish ""
-;;   :config
-;;   (projectile-global-mode 1)
-;;   :init
-;;   (bind-key "s-t" #'projectile-find-file)
-;;   (setq projectile-keymap-prefix (kbd "C-x p")))
-
-(use-package fish-mode
-  :ensure t
-  :defer t
-  :config
-  (add-hook 'fish-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'fish_indent-before-save))))
-
-(use-package git-messenger
-  :ensure t
-  :defer t
-  :bind
-  ("C-x v m" . git-messenger:popup-message))
-
-(use-package company
+(use-package rainbow-delimiters
   :ensure t
   :config
-  (add-hook 'prog-mode-hook #'company-mode))
-
-(use-package whitespace
-  :config
-  (progn
-    (global-whitespace-mode t)
-    (setq whitespace-action '(auto-cleanup))
-    (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
-
-(use-package paren
-  :config
-  (show-paren-mode t))
-
-(use-package saveplace
-  :config
-  (progn
-    (setq-default save-place t)
-    (setq save-place-file "~/.emacs.d/saved-places")))
-
-(use-package command-log-mode
-  :ensure t)
-
-(use-package gitconfig-mode
-  :ensure t)
-
-(use-package gitignore-mode
-  :ensure t)
-
-(use-package git-timemachine
-  :ensure t)
-
-(use-package github-browse-file
-  :ensure t)
-
-(use-package restclient
-  :ensure t)
-
-(use-package make-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
-
-(use-package neotree
-  :ensure t
-  :bind
-  ("C-c n" . neotree-toggle))
-
-(use-package dired+
-  :ensure t)
-
-(use-package dired-single
-  :ensure t)
-
-(use-package undo-tree
-  :ensure t
-  :config
-  (progn
-    (global-undo-tree-mode t)
-    (setq undo-tree-visualizer-diff t)
-    (setq undo-tree-visualizer-timestamps t)))
-
-(use-package ibuffer
-  :bind
-  ("C-x C-b" . ibuffer))
-
-(use-package ibuffer-vc
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-vc-set-filter-groups-by-vc-root)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic)))))
-
-(use-package fullframe
-  :ensure t
-  :config
-  (progn
-    (fullframe magit-status magit-mode-quit-window)
-    (fullframe ibuffer ibuffer-quit)
-    (fullframe paradox-list-packages paradox-quit-and-close)))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package recentf
   :config
@@ -777,27 +839,19 @@
                               ".emacs.d"))
   (recentf-mode))
 
-(use-package beacon
-  :ensure t
+(use-package restclient
+  :ensure t)
+
+(use-package saveplace
   :config
   (progn
-    (beacon-mode 1)
-    (setq beacon-push-mark 35)
-    (setq beacon-color "#61AFEF")))
+    (setq-default save-place t)
+    (setq save-place-file "~/.emacs.d/saved-places")))
 
-(use-package expand-region
-  :ensure t
-  :bind
-  ("C-=" . er/expand-region))
-
-(use-package markdown-mode
-  :ensure t
-  :mode "\\.md\\'")
-
-(use-package rainbow-delimiters
+(use-package scratch
   :ensure t
   :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  (autoload 'scratch "scratch" nil t))
 
 (use-package smartparens
   :ensure t
@@ -810,25 +864,10 @@
     (setq sp-autoskip-closing-pair 'always)
     (setq sp-hybrid-kill-entire-symbol nil)))
 
-(use-package paredit
+(use-package smex
   :ensure t
-  :config
-  (autoload 'enable-paredit-mode "paredit" t)
-  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook #'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook #'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook #'enable-paredit-mode)
-  (add-hook 'clojure-mode-hook #'enable-paredit-mode)
-  (add-hook 'org-mode-hook #'enable-paredit-mode)
-  (add-hook 'python-mode-hook
-            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
-
-(use-package latex-preview-pane
-  :ensure t
-  :config
-  (latex-preview-pane-enable))
+  :init
+  (smex-initialize))
 
 (use-package swiper
   :init
@@ -846,171 +885,92 @@
     (setq ivy-initial-inputs-alist nil)
     (advice-add 'swiper :after 'recenter)))
 
-(use-package ace-window
-  :ensure t
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
-  :bind
-  ("C-x C-o" . ace-window))
-
-(use-package avy
-  :ensure t
-  :init
-  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
-  :config
-  (progn
-    (avy-setup-default)
-    (setq avy-background t)
-    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
-    (setq avy-styles-alist '((avy-got-char-2 . post)))
-    (setq avy-all-windows nil)))
-
-(use-package scratch
-  :ensure t
-  :config
-  (autoload 'scratch "scratch" nil t))
-
-(use-package flyspell
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode))
-
-(use-package anzu
+(use-package undo-tree
   :ensure t
   :config
   (progn
-    (global-anzu-mode t)
-    (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
-  :bind
-  ("M-%" . anzu-query-replace)
-  ("C-M-%" . anzu-query-replace-regexp))
+    (global-undo-tree-mode t)
+    (setq undo-tree-visualizer-diff t)
+    (setq undo-tree-visualizer-timestamps t)))
 
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("●"
-                                  "○"
-                                  "◉"
-                                  "◆")))
-
-(use-package aggressive-indent
-  :ensure t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-  (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
-
-(use-package paradox
-  :ensure t
-  :config
-  (setq paradox-execute-asynchronously t))
-
-(use-package counsel
-  :ensure t
-  :bind
-  ("M-x" . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
-  ("C-c g" . counsel-git-grep)
-  ("C-c k" . counsel-ag))
-
-(use-package easy-kill
-  :ensure t
-  :config
-  (global-set-key [remap kill-ring-save] 'easy-kill))
-
-(use-package fix-word
-  :ensure t
-  :bind
-  ("M-u" . fix-word-upcase)
-  ("M-l" . fix-word-downcase)
-  ("M-c" . fix-word-capitalize))
-
-(use-package evil :ensure t)
-
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :bind (("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-r" . helm-recentf)
-         ("C-x b" . helm-buffers-list))
-  :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  ;;(add-to-list 'helm-completing-read-handlers-alist '(find-file . helm-completing-read-symbols))
-  ;; helm-recentf-fuzzy-match var is broken: redeclare it manually
-  ;; (setq helm-source-recentf
-  ;;       (helm-make-source "Recentf" 'helm-recentf-source
-  ;;         :fuzzy-match t))
-  (setq helm-M-x-fuzzy-match t
-        helm-M-x-always-save-history t
-        helm-recentf-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-display-header-line nil))
-
-(use-package helm-ag
-  :ensure t
-  :bind ("s-F" . helm-do-ag-project-root)
-  :config
-  ;; (helm-ag-use-agignore t)
-  )
-
-(use-package helm-projectile
-  :ensure t
-  :init
-  (helm-projectile-on)
-  (bind-key "s-t" #'helm-projectile-find-file))
-
-(use-package js2-mode
-  :ensure t
-  :mode
-  "\\.js$"
-  "\\.jsx$"
-  :commands js2-mode
+(use-package uniquify
   :config
   (progn
-    (setq-default
-     js2-auto-indent-flag nil
-     js2-basic-offset 4
-     js2-electric-keys nil
-     js2-mirror-mode nil
-     js2-mode-show-parse-errors nil
-     js2-mode-show-strict-warnings nil
-     js2-strict-missing-semi-warning nil
-     js2-strict-trailing-comma-warning nil
-     js2-highlight-external-variables nil)
-    ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
-    (add-hook 'js2-mode-hook 'prettier-js-save-hook)
-    (add-hook 'js2-mode-hook
-              (defun my-js2-mode-setup ()
-                (flycheck-select-checker 'javascript-eslint)))
-    (add-hook 'after-save-hook 'flow-save-hook)))
+    (setq uniquify-buffer-name-style 'reverse)
+    (setq uniquify-separator " • ")
+    (setq uniquify-after-kill-buffer-p t)
+    (setq uniquify-ignore-buffers-re "^\\*")))
 
-(defun prettier-js-save-hook ()
-  "Invoke prettier-js hook if prettier executable is found."
-  (when (executable-find "prettier")
-    (prettier-js-mode)))
+(use-package web-mode
+  :ensure t
+  :config
+  (progn
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 
-(defun flow-save-hook ()
-  "Invoke flow-status after save when in js2-mode."
-  (when (and (eq major-mode 'js2-mode)
-             (executable-find "flow"))
-    (flow-status)))
+(use-package whitespace
+  :config
+  (progn
+    (global-whitespace-mode t)
+    (setq whitespace-action '(auto-cleanup))
+    (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
 
-;; TODO: This is specifically for flow, but let's just modify the flow package instead of messing with the compilation buffer on a global level.
-;;
-;; (defun bury-compile-buffer-if-successful (buffer string)
-;;   "Bury a compilation buffer if succeeded without warnings."
-;;   (if (and
-;;        (string-match "compilation" (buffer-name buffer))
-;;        (string-match "No errors!" (with-current-buffer buffer
-;;          (buffer-string)))
-;;       )
-;;       (run-with-timer 1 nil
-;;                             (lambda (buf)
-;;                               (bury-buffer buf)
-;;                               (switch-to-prev-buffer (get-buffer-window buf) 'kill))
-;;                             buffer)))
-;; (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+(use-package yasnippet
+  :ensure t
+  :config
+  (progn
+    (yas-global-mode 1)
+    (setq yas-snippet-dirs (append yas-snippet-dirs
+                                   '("~/.emacs.d/snippets")))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
