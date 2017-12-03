@@ -31,7 +31,10 @@
 
 ;;; Code:
 
-;;; Initialization
+;;----------------------------------------------------------------------------
+;; Initialization
+;;----------------------------------------------------------------------------
+
 (defconst emacs-start-time (current-time))
 
 (setq user-full-name "Jonathan Chu"
@@ -363,7 +366,9 @@
 (load-file my-init-file)
 (load-file "~/.emacs.d/doom.el")
 
-;;; Finalization
+;;----------------------------------------------------------------------------
+;; Finalization
+;;----------------------------------------------------------------------------
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
