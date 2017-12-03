@@ -102,10 +102,10 @@
   (package-install 'use-package))
 
 ;; use-package
-(setq use-package-enable-imenu-support t)
 (eval-when-compile
   (require 'use-package))
-(setq use-package-verbose t)
+(setq use-package-verbose t
+      use-package-enable-imenu-support t)
 (require 'diminish)
 (require 'bind-key)
 
