@@ -150,11 +150,6 @@
   :config
   (exec-path-from-shell-initialize))
 
-(defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
-  "All configurations stored in this file.")
-
-(load-file my-init-file)
-(load-file "~/.emacs.d/doom.el")
 
 (when (display-graphic-p)
   (require 'server)
@@ -358,6 +353,12 @@
           (and (featurep 'face-remap)
                (/= text-scale-mode-amount 0)
                (format " (%+d)" text-scale-mode-amount))))
+
+(defvar my-init-file (expand-file-name "emacs-init.el" user-emacs-directory)
+  "All configurations stored in this file.")
+
+(load-file my-init-file)
+(load-file "~/.emacs.d/doom.el")
 
 ;;; Finalization
 
