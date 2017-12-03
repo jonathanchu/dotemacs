@@ -104,20 +104,6 @@
 (require 'diminish)
 (require 'bind-key)
 
-;; (require 'core (concat user-emacs-directory "core/core"))
-
-;; FIXME: installing powerline early :-/
-(use-package powerline
-  :ensure t)
-
-(use-package dash
-  :ensure t)
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package popup
-  :ensure t)
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -358,6 +344,19 @@
 ;;----------------------------------------------------------------------------
 ;; Doom Stuff
 ;;----------------------------------------------------------------------------
+
+;; FIXME: installing powerline early :-/
+(use-package powerline
+  :ensure t)
+
+(use-package dash
+  :ensure t)
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package popup
+  :ensure t)
 
 (load-file "~/.emacs.d/doom.el")
 
