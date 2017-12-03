@@ -28,7 +28,7 @@
 ;; (require 'core-packages (concat core-dir "core-packages"))
 ;; (require 'core-os (concat core-dir "core-os"))
 ;; (require 'core-editor (concat core-dir "core-editor"))
-(require 'core-ui (concat core-dir "core-ui"))
+;; (require 'core-ui (concat core-dir "core-ui"))
 
 ;; ;; Reduce the frequency of garbage collection by making it happen on
 ;; ;; each 25MB of allocated data (the default is on every 0.76MB)
