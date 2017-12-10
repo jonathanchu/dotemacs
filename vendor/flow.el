@@ -40,20 +40,14 @@
   )
 
 (defun flow-stop ()
-  (shell-command (format "%s stop" flow_binary))
-  )
+  (shell-command (format "%s stop" flow_binary)))
 
 (defun flow-status ()
   "Initialize flow"
   (interactive)
-  ;; (let (buffer (current-buffer))
-  ;;   (when (string-match "// @flow" (with-current-buffer buffer (buffer-string)))
-  ;;     (flow-start)
-  ;;     (compile (format "%s status --from emacs; exit 0" flow_binary))
-  ;;     ))
-  (flow-start)
-  (compile (format "%s status --from emacs; exit 0" flow_binary))
-  )
+  (when (string-match "@flow" (buffer-substring 1 10))
+    (flow-start)
+    (compile (format "%s status; exit 0;" flow_binary))))
 
 (global-set-key (kbd "C-x C-m") 'flow-status)
 
