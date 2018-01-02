@@ -551,6 +551,11 @@
 
 (load-file "~/.emacs.d/vendor/flow.el")
 
+(use-package flow-minor-mode
+  :ensure t
+  :config
+  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically))
+
 (use-package flx-ido
   :ensure t)
 
