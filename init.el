@@ -1014,6 +1014,9 @@
     (setq ivy-initial-inputs-alist nil)
     (advice-add 'swiper :after 'recenter)))
 
+(use-package tide
+  :ensure t)
+
 (use-package undo-tree
   :ensure t
   :config
