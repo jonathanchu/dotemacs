@@ -620,7 +620,8 @@
   :ensure t)
 
 (use-package git-undo
-  :load-path "vendor/git-undo-el")
+  :load-path "vendor/git-undo-el"
+  :bind ("C-. C-/" . git-undo))
 
 (use-package gitconfig-mode
   :ensure t)
