@@ -514,7 +514,8 @@
 (use-package elpy
   :ensure t
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (setq elpy-rpc-python-command "python3"))
 
 (use-package esup
   :ensure t)
