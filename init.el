@@ -744,6 +744,11 @@
              (executable-find "flow"))
     (flow-status)))
 
+(use-package js2-refactor
+  :ensure t
+  :init
+  (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
 (use-package key-chord
   :ensure t
   :init
