@@ -792,6 +792,9 @@
   :bind
   ("C-c n" . neotree-toggle))
 
+(use-package noflet
+  :ensure t)
+
 (use-package org
   :defer t
   :bind
