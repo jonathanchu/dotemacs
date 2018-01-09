@@ -619,6 +619,9 @@
 (use-package git-timemachine
   :ensure t)
 
+(use-package git-undo
+  :load-path "vendor/git-undo-el")
+
 (use-package gitconfig-mode
   :ensure t)
 
