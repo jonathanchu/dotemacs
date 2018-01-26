@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (tide js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode add-node-modules-path git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless flycheck-pos-tip fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flycheck flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (prettier-js tide js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode add-node-modules-path git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless flycheck-pos-tip fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flycheck flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -401,6 +401,10 @@
 
 (use-package add-node-modules-path
   :ensure t)
+  :ensure t
+  :config
+  (add-hook 'js2-mode-hook #'add-node-modules-path)
+  (add-hook 'js-mode-hook #'add-node-modules-path))
 
 (eval-after-load 'js2-mode
   '(add-hook 'js2-mode-hook #'add-node-modules-path))
@@ -736,12 +740,13 @@
      js2-strict-missing-semi-warning nil
      js2-strict-trailing-comma-warning nil
      js2-highlight-external-variables nil)
-    ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
-    (add-hook 'js2-mode-hook 'prettier-js-save-hook)
+    (add-hook 'js2-mode-hook 'prettier-js-mode)
+    ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
     (add-hook 'js2-mode-hook
               (defun my-js2-mode-setup ()
                 (flycheck-select-checker 'javascript-eslint)))
-    (add-hook 'after-save-hook 'flow-save-hook)))
+    ;; (add-hook 'after-save-hook 'flow-save-hook)
+    ))
 
 (defun flow-save-hook ()
   "Invoke flow-status after save when in js2-mode."
@@ -925,12 +930,12 @@
   (popwin-mode t))
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
-(require 'prettier-js)
-(setq prettier-js-args '("--print-width" "80"
-                         "--tab-width" "2"
-                         "--single-quote" "true"
-                         "--trailing-comma" "all"
-                         "--jsx-bracket-same-line" "false"))
+;; (require 'prettier-js)
+;; (setq prettier-js-args '("--print-width" "120"
+;;                          "--tab-width" "2"
+;;                          "--single-quote" "true"
+;;                          "--trailing-comma" "all"
+;;                          "--jsx-bracket-same-line" "false"))
 
 (defun prettier-js-save-hook ()
   "Invoke prettier-js hook if prettier executable is found."
