@@ -448,6 +448,7 @@
   :ensure t)
 
 (use-package cider
+  :disabled
   :ensure t
   :config
   (progn
@@ -456,6 +457,7 @@
     (add-hook 'cider-mode-hook #'eldoc-mode)))
 
 (use-package clj-refactor
+  :disabled
   :ensure t
   :config
   (defun my-clojure-mode-hook ()
