@@ -400,7 +400,6 @@
   ("C-x C-o" . ace-window))
 
 (use-package add-node-modules-path
-  :ensure t)
   :ensure t
   :config
   (add-hook 'js2-mode-hook #'add-node-modules-path)
