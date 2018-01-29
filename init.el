@@ -879,7 +879,7 @@
   :ensure t
   :config
   (progn
-    (setq paperless-capture-directory "~/Documents/ScanSnap Inbox")
+    (setq paperless-capture-directory "~/Dropbox/ScanSnap Inbox")
     (setq paperless-root-directory "~/Dropbox/Documents")))
 
 (use-package paradox
