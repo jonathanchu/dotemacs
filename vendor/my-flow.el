@@ -1,4 +1,4 @@
-;;; my-flow.el --- Atom One Dark color theme
+;;; my-flow.el --- An Emacs plugin for Flow, a static typechecker in JavaScript
 
 ;; Copyright 2017 Jonathan Chu
 
@@ -40,11 +40,45 @@
   "Start the Flow server."
   (shell-command (format "%s start" flow-executable)))
 
-(defun flow-status ()
-  "Run flow status."
+;; (defun my-flow-status ()
+;;   "Run flow status."
+;;   (interactive)
+;;   (flow-start)
+;;   (compile (format "%s status; exit 0;" flow-executable)))
+
+;; (defun brian-compile-finish (buffer outstr)
+;;   (unless (string-match "finished" outstr)
+;;     (switch-to-buffer-other-window buffer))
+;;   t)
+
+;; (setq compilation-finish-functions 'brian-compile-finish)
+
+;; (require 'cl)
+
+;; (defadvice compilation-start
+;;     (around inhibit-display
+;;             (command &optional mode name-function highlight-regexp))
+;;   (if (not (string-match "^\\(find\\|grep\\)" command))
+;;       (noflet ((display-buffer)
+;;                (set-window-point)
+;;                (goto-char))
+;;         (fset 'display-buffer 'ignore)
+;;         (fset 'goto-char 'ignore)
+;;         (fset 'set-window-point 'ignore)
+;;         (save-window-excursion
+;;           ad-do-it))
+;;     ad-do-it))
+
+;; (ad-activate 'compilation-start)
+
+(defun my-new-flow-status ()
+  "Start something."
   (interactive)
   (flow-start)
-  (compile (format "%s status; exit 0;" flow-executable)))
+  (compilation-start
+   (format "%s status --from emacs; exit 0;" flow-executable)
+   nil
+   (lambda (mode-name) "*HAHAHA*")))
 
 (define-compilation-mode flow-mode "Flow"
   "Flow results compilation mode.")
