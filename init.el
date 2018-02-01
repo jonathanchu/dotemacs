@@ -844,7 +844,25 @@
   (setq org-completion-use-ido t)
   (setq org-startup-folded nil)
   (setq org-ellipsis "⤵")
-  (setq org-agenda-files '("~/Dropbox/org"))
+  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
+                           "~/Dropbox/org/gtd.org"
+                           "~/Dropbox/org/tickler.org"))
+  (setq org-default-notes-file "~/Dropbox/org/inbox.org")
+  (setq org-capture-templates '(("t" "Todo [inbox]" entry
+                                 (file+headline "~/Dropbox/org/inbox.org" "Tasks") "* TODO %i%?")
+                                ("T" "Tickler" entry
+                                 (file+headline "~/Dropbox/org/tickler.org" "Tickler")
+                                 "* %i%? \n %U")))
+  (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
+                             ("~/Dropbox/org/someday.org" :level . 1)
+                             ("~/Dropbox/org/tickler.org" :maxlevel . 2)))
+  (setq org-tag-alist '((:startgroup . nil)
+                        ("@home" . ?h) ("@work" . ?w)
+                        ("@phone" . ?p)
+                        (:endgroup . nil)
+                        ("email" . ?e) ("errand" . ?x)))
+  (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+  (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
   (setq org-agenda-window-setup (quote current-window))
   (setq org-deadline-warning-days 7)
   (setq org-agenda-span (quote fortnight))
