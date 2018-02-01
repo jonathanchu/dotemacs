@@ -972,18 +972,19 @@
     (prettier-js-mode)))
 
 (use-package pyenv-mode
+  :disabled
   :ensure t
   :config
   (pyenv-mode))
 
-(defun projectile-pyenv-mode-set ()
-  "Set pyenv version matching project name."
-  (let ((project (projectile-project-name)))
-    (if (member project (pyenv-mode-versions))
-        (pyenv-mode-set project)
-      (pyenv-mode-unset))))
+;; (defun projectile-pyenv-mode-set ()
+;;   "Set pyenv version matching project name."
+;;   (let ((project (projectile-project-name)))
+;;     (if (member project (pyenv-mode-versions))
+;;         (pyenv-mode-set project)
+;;       (pyenv-mode-unset))))
 
-(add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
+;; (add-hook 'projectile-switch-project-hook 'projectile-pyenv-mode-set)
 
 (use-package python-mode
   :ensure t
