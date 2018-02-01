@@ -565,7 +565,9 @@
   ("M-l" . fix-word-downcase)
   ("M-c" . fix-word-capitalize))
 
-(load-file "~/.emacs.d/vendor/flow.el")
+;; BIG FAT TODO!
+;; (load-file "~/.emacs.d/vendor/flow.el")
+;; (load-file "~/.emacs.d/vendor/my-flow.el")
 
 (use-package flow-minor-mode
   :ensure t
