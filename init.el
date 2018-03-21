@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode add-node-modules-path git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless flycheck-pos-tip fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flycheck flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -400,7 +400,7 @@
   ("C-x C-o" . ace-window))
 
 (use-package add-node-modules-path
-  :ensure t
+  :load-path "vendor/"
   :config
   (add-hook 'js2-mode-hook #'add-node-modules-path)
   (add-hook 'js-mode-hook #'add-node-modules-path))
@@ -599,19 +599,7 @@
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode 1)
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
-
-;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
-(defun my/use-eslint-from-node-modules ()
-  "Use local eslint from node_modeules."
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
+  )
 
 (load-file "~/.emacs.d/vendor/flycheck-flow.el")
 
