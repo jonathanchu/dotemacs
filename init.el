@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (rjsx-mode flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (move-text rjsx-mode flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -811,10 +811,18 @@
   :ensure t
   :mode "\\.md\\'")
 
+(use-package move-text
+  :ensure t
+  :bind
+  (("M-p" . move-text-up)
+   ("M-n" . move-text-down))
+  )
+
 (use-package neotree
   :ensure t
   :bind
-  ("C-c n" . neotree-toggle))
+  ("C-c n" . neotree-toggle)
+  )
 
 (use-package noflet
   :ensure t)
@@ -1372,8 +1380,8 @@ The CHAR is replaced and the point is put before CHAR."
 (define-key global-map (kbd "s--") #'text-scale-decrease)
 
 ;; scroll window up/down by one line
-(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
-(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
+;; (global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+;; (global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
 ;; fullscreen toggle
 (global-set-key [(s return)] #'toggle-frame-fullscreen)
