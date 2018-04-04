@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (rjsx-mode flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -403,7 +403,9 @@
   :load-path "vendor/"
   :config
   (add-hook 'js2-mode-hook #'add-node-modules-path)
-  (add-hook 'js-mode-hook #'add-node-modules-path))
+  (add-hook 'js-mode-hook #'add-node-modules-path)
+  (add-hook 'rjsx-mode-hook #'add-node-modules-path)
+  )
 
 (use-package aggressive-indent
   :ensure t
@@ -572,7 +574,9 @@
 (use-package flow-minor-mode
   :ensure t
   :config
-  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically))
+  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
+  (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically)
+  )
 
 (use-package flx-ido
   :ensure t)
@@ -1017,6 +1021,20 @@
 
 (use-package restclient
   :ensure t)
+
+(use-package rjsx-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+    (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+    ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
+    (add-hook 'rjsx-mode-hook
+              (defun my-rjsx-mode-setup ()
+                (flycheck-select-checker 'javascript-eslint)))
+
+    )
+  )
 
 (use-package saveplace
   :config
