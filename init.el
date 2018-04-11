@@ -1035,7 +1035,7 @@
   :ensure t
   :config
   (progn
-    (add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+    (add-to-list 'auto-mode-alist '("\\/components\\/.*\\.js\\'" . rjsx-mode))
     (add-hook 'rjsx-mode-hook 'prettier-js-mode)
     ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
     (add-hook 'rjsx-mode-hook
