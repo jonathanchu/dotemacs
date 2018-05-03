@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (json-mode move-text rjsx-mode flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (doom-themes rjsx-mode json-mode move-text flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode magit less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -375,18 +375,24 @@
 
 (load-file "~/.emacs.d/doom.el")
 
-(add-to-list 'load-path "~/.emacs.d/themes")
 (require 'doom-themes)
-(load-theme 'doom-one t) ;; or doom-dark, etc.
 
-;;; OPTIONAL
-;; brighter source buffers
-(add-hook 'find-file-hook 'doom-buffer-mode)
-;; brighter minibuffer when active
-(add-hook 'minibuffer-setup-hook 'doom-buffer-mode)
-;; Custom neotree theme
-(require 'doom-neotree)
-(setq doom-neotree-enable-file-icons t)
+;; Global settings (defaults)
+(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
+;; may have their own settings.
+(load-theme 'doom-one t)
+
+;; Enable flashing mode-line on errors
+(doom-themes-visual-bell-config)
+
+;; Enable custom neotree theme
+(doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
+
+;; Corrects (and improves) org-mode's native fontification.
+(doom-themes-org-config)
 
 ;;----------------------------------------------------------------------------
 ;; Packages
@@ -480,6 +486,7 @@
 
 (use-package command-log-mode
   :ensure t)
+
 
 (use-package company
   :ensure t
