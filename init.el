@@ -809,6 +809,7 @@
 
 (use-package magit
   :ensure t
+  :pin melpa-stable
   :config
   (progn
     (setq magit-push-always-verify nil)
