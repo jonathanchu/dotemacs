@@ -118,7 +118,7 @@
  '(magit-branch-arguments nil)
  '(package-selected-packages
    (quote
-    (magit elm-mode doom-themes rjsx-mode json-mode move-text flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
+    (add-node-modules-path magit elm-mode doom-themes rjsx-mode json-mode move-text flycheck-pos-tip dumb-jump prettier-js js2-refactor flow-minor-mode noflet yaml-mode pyenv-mode git-gutter-fringe+ helm shackle-mode fish-mode helm-ag paperless fringe-helper nlinum highlight-numbers xterm-color web-mode volatile-highlights use-package smex smartparens smart-comment scratch rich-minority restclient rainbow-mode rainbow-delimiters python-mode powerline popwin paradox origami org-bullets neotree markdown-mode less-css-mode latex-preview-pane key-chord js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc highlight-tail helm-projectile gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger git-gutter-fringe fullframe frame-fns flx-ido fix-word fireplace f expand-region exec-path-from-shell evil esup elpy easy-kill dired-single dired-quick-sort dired+ diff-hl deft counsel command-log-mode clj-refactor blank-mode beacon atom-one-dark-theme anzu all-the-icons aggressive-indent ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -406,7 +406,8 @@
   ("C-x C-o" . ace-window))
 
 (use-package add-node-modules-path
-  :load-path "vendor/"
+  ;; :load-path "vendor/"
+  :ensure t
   :config
   (add-hook 'js2-mode-hook #'add-node-modules-path)
   (add-hook 'js-mode-hook #'add-node-modules-path)
