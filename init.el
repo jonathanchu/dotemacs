@@ -816,9 +816,9 @@
     (setq magit-completing-read-function #'ivy-completing-read)
     (setq magit-last-seen-setup-instructions "1.4.0")
     (setq magit-diff-refine-hunk t))
-  (defun prevent-whitespace-mode-for-magit ()
-    (not (derived-mode-p 'magit-mode)))
-  (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
+  ;; (defun prevent-whitespace-mode-for-magit ()
+  ;;   (not (derived-mode-p 'magit-mode)))
+  ;; (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
   :bind
   ("C-x g" . magit-status)
   ("C-c C-a" . magit-commit-amend))
