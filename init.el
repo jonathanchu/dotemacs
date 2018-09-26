@@ -513,7 +513,8 @@
     (setq deft-auto-save-interval 0)))
 
 (use-package dired+
-  :ensure t)
+  :load-path "vendor/"
+  )
 
 (use-package dired-single
   :ensure t)
