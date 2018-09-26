@@ -451,9 +451,6 @@
     (setq beacon-push-mark 35)
     (setq beacon-color "#61AFEF")))
 
-(use-package blank-mode
-  :ensure t)
-
 (use-package cider
   :disabled
   :ensure t
