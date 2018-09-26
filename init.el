@@ -703,7 +703,8 @@
   (bind-key "s-t" #'helm-projectile-find-file))
 
 (use-package highlight-tail
-  :ensure t
+  :load-path "vendor/"
+  ;; :ensure t
   :config
   (progn
     (setq highlight-tail-steps 8)
