@@ -101,7 +101,7 @@
   (require 'use-package))
 (setq use-package-verbose t
       use-package-enable-imenu-support t)
-(require 'diminish)
+
 (require 'bind-key)
 
 
@@ -511,6 +511,9 @@
     (setq deft-text-mode 'org-mode)
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
+
+(use-package diminish
+  :ensure t)
 
 (use-package dired+
   :load-path "vendor/"
