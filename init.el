@@ -104,6 +104,10 @@
 
 (require 'bind-key)
 
+;; Install Powerline early for doom
+(use-package powerline
+  :ensure t)
+
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -359,10 +363,6 @@
 ;;----------------------------------------------------------------------------
 ;; Doom Stuff
 ;;----------------------------------------------------------------------------
-
-;; FIXME: installing powerline early :-/
-(use-package powerline
-  :ensure t)
 
 (use-package dash
   :ensure t)
