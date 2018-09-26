@@ -375,7 +375,8 @@
 
 (load-file "~/.emacs.d/doom.el")
 
-(require 'doom-themes)
+(use-package doom-themes
+  :ensure t)
 
 ;; Global settings (defaults)
 (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
