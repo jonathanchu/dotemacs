@@ -139,43 +139,15 @@ Examples:
     (setq-default fringes-outside-margins t)
     ;; thin fringe bitmaps
     (fringe-helper-define 'git-gutter-fr:added '(center repeated)
-                          "XXX.....")
+      "XXX.....")
     (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
-                          "XXX.....")
+      "XXX.....")
     (fringe-helper-define 'git-gutter-fr:deleted 'bottom
-                          "X......."
-                          "XX......"
-                          "XXX....."
-                          "XXXX....")
+      "X......."
+      "XX......"
+      "XXX....."
+      "XXXX....")
     ))
-;; (use-package git-gutter
-;;   :commands (git-gutter-mode doom/vcs-next-hunk doom/vcs-prev-hunk
-;;                              doom/vcs-show-hunk doom/vcs-stage-hunk doom/vcs-revert-hunk)
-;;   :init
-;;   (add-hook! (text-mode prog-mode conf-mode) 'git-gutter-mode)
-;;   :config
-;;   (require 'git-gutter-fringe)
-;;                                         ; (def-popup! "^\\*git-gutter.+\\*$" :align below :size 15 :noselect t :regexp t)
-
-;;   (define-fringe-bitmap 'git-gutter-fr:added
-;;     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-;;     nil nil 'center)
-;;   (define-fringe-bitmap 'git-gutter-fr:modified
-;;     [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-;;     nil nil 'center)
-;;   (define-fringe-bitmap 'git-gutter-fr:deleted
-;;     [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-;;     nil nil 'center)
-
-;;   (advice-add 'evil-force-normal-state :after 'git-gutter)
-;;   (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
-
-;;   (defalias 'doom/vcs-next-hunk    'git-gutter:next-hunk)
-;;   (defalias 'doom/vcs-prev-hunk    'git-gutter:previous-hunk)
-;;   (defalias 'doom/vcs-show-hunk    'git-gutter:popup-hunk)
-;;   (defalias 'doom/vcs-stage-hunk   'git-gutter:stage-hunk)
-;;   (defalias 'doom/vcs-revert-hunk  'git-gutter:revert-hunk))
-
 
 (use-package git-gutter
   :ensure t
@@ -263,20 +235,6 @@ e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
         "?"
       (cdr-safe (assq state (flycheck-count-errors flycheck-current-errors))))))
 
-;; (defvar mode-line-height 30)
-;; (defvar-local doom--env-version nil)
-;; (defvar-local doom--env-command nil)
-
-;; (eval-when-compile (require 'powerline))
-;; (defvar mode-line-bar          (pl/percent-xpm mode-line-height 100 0 100 0 3 "#00B3EF" nil))
-;; (defvar mode-line-eldoc-bar    (pl/percent-xpm mode-line-height 100 0 100 0 3 "#B3EF00" nil))
-;; (defvar mode-line-inactive-bar (pl/percent-xpm mode-line-height 100 0 100 0 3 nil nil))
-
-;; (defface mode-line-is-modified nil "Face for mode-line modified symbol")
-;; (defface mode-line-buffer-path nil "Face for mode-line buffer file path")
-;; (defface mode-line-highlight nil "")
-;; (defface mode-line-2 nil "")
-
 ;; Make certain unicode glyphs bigger for UI purposes
 (doom-fix-unicode '("DejaVu Sans Mono" 15) ?✱)
 (let ((font "DejaVu Sans Mono for Powerline"))
@@ -294,62 +252,6 @@ e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
 
 (advice-add 'select-window :after 'doom|set-selected-window)
 (advice-add 'select-frame  :after 'doom|set-selected-window)
-
-
-;;
-;; Mode-line segments
-;;
-
-;; (defun *buffer-path ()
-;;   (when buffer-file-name
-;;     (propertize
-;;      (f-dirname
-;;       (let ((buffer-path (file-relative-name buffer-file-name (doom/project-root)))
-;;             (max-length (truncate (/ (window-body-width) 1.75))))
-;;         (concat (projectile-project-name) "/"
-;;                 (if (> (length buffer-path) max-length)
-;;                     (let ((path (reverse (split-string buffer-path "/" t)))
-;;                           (output ""))
-;;                       (when (and path (equal "" (car path)))
-;;                         (setq path (cdr path)))
-;;                       (while (and path (<= (length output) (- max-length 4)))
-;;                         (setq output (concat (car path) "/" output))
-;;                         (setq path (cdr path)))
-;;                       (when path
-;;                         (setq output (concat "../" output)))
-;;                       (when (string-suffix-p "/" output)
-;;                         (setq output (substring output 0 -1)))
-;;                       output)
-;;                   buffer-path))))
-;;      'face (if active 'mode-line-buffer-path))))
-
-;; (defun *buffer-state ()
-;;   (when buffer-file-name
-;;     (propertize
-;;      (concat (if (not (file-exists-p buffer-file-name))
-;;                  "∄"
-;;                (if (buffer-modified-p) "✱"))
-;;              (if buffer-read-only ""))
-;;      'face 'mode-line-is-modified)))
-
-;; (defun *buffer-name ()
-;;   "The buffer's name."
-;;   (s-trim-left (format-mode-line "%b")))
-
-;; (defun *buffer-pwd ()
-;;   "Displays `default-directory'."
-;;   (propertize
-;;    (concat "[" (abbreviate-file-name default-directory) "]")
-;;    'face 'mode-line-2))
-
-;; (defun *major-mode ()
-;;   "The major mode, including process, environment and text-scale info."
-;;   (concat (format-mode-line mode-name)
-;;           (if (stringp mode-line-process) mode-line-process)
-;;           (if doom--env-version (concat " " doom--env-version))
-;;           (and (featurep 'face-remap)
-;;                (/= text-scale-mode-amount 0)
-;;                (format " (%+d)" text-scale-mode-amount))))
 
 (defun *buffer-encoding-abbrev ()
   "The line ending convention used in the buffer."
