@@ -574,7 +574,7 @@
   :ensure t
   :config
   (progn
-    (setq elm-format-on-save t)
+    (setq elm-format-on-save t)  ;; elm-format needs to be installed
     (add-to-list 'company-backends 'company-elm)))
 
 (use-package elpy
