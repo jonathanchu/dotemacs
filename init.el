@@ -130,7 +130,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -518,6 +518,12 @@
 (use-package command-log-mode
   :ensure t)
 
+(use-package company-lsp
+  :disabled
+  :ensure t
+  :config
+  (push 'company-lsp company-backends)
+  )
 
 (use-package company
   :ensure t
@@ -844,12 +850,33 @@
   (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 (use-package lsp-mode
+  :disabled
   :ensure t
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
+  :config
+  (require 'lsp-imenu)
+  (use-package lsp-ui
+    :ensure t
+    :init
+    (add-hook 'lsp-mode-hook 'flycheck-mode)
+    :config
+    (progn
+      (add-hook 'js-mode-hook #'flycheck-mode)
+      (add-hook 'js2-mode-hook #'flycheck-mode) ;; for js2-mode support
+      (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
+      (setq lsp-ui-sideline-ignore-duplicate t)
+      (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+      )
+    :after flycheck
+    )
+  (use-package company-lsp
+    :config
+    (push 'company-lsp company-backends))
   )
 
 (use-package lsp-javascript-flow
+  :disabled
   :ensure t
   :after lsp-mode
   :config
@@ -858,21 +885,6 @@
     (add-hook 'js2-mode-hook #'lsp-javascript-flow-enable) ;; for js2-mode support
     (add-hook 'rjsx-mode #'lsp-javascript-flow-enable) ;; for rjsx-mode support
     )
-  )
-
-(use-package lsp-ui
-  :ensure t
-  :init
-  (add-hook 'lsp-mode-hook 'flycheck-mode)
-  (progn
-    )
-  :config
-  (progn
-    (add-hook 'js-mode-hook #'flycheck-mode)
-    (add-hook 'js2-mode-hook #'flycheck-mode) ;; for js2-mode support
-    (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
-    )
-  :after flycheck
   )
 
 (use-package magit
