@@ -44,11 +44,23 @@
 ;;; Popups
 
 (magit-define-popup magit-git-toolbelt-popup
-                    "Popup console for git-toolbelt commands."
-                    'magit-popups
-                    :actions '((?c "Cleanup")))
+  "Popup console for git-toolbelt commands."
+  'magit-popups
+  :actions '((?c "Cleanup" magit-git-toolbelt-cleanup)))
 
 (defun magit-git-toolbelt-cleanup ()
-  "Runs git cleanup"
+  "Delete all branches that have already been merged into master or develop.
+\('git cleanup')"
   (interactive)
   (magit-run-git "cleanup"))
+
+;;;###autoload
+(eval-after-load 'magit
+  '(progn
+     (define-key magit-mode-map "@" 'magit-git-toolbelt-popup)
+     (magit-define-popup-action 'magit-dispatch-popup
+       ?@ "Git Toolbelt" 'magit-git-toolbelt-popup ?!)))
+
+(provide 'magit-git-toolbelt)
+
+;;; magit-git-toolbelt.el ends here

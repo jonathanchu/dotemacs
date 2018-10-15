@@ -943,6 +943,9 @@
   ("C-x g" . magit-status)
   ("C-c C-a" . magit-commit-amend))
 
+(use-package magit-git-toolbelt
+  :load-path "vendor/")
+
 (use-package make-mode
   :config
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
