@@ -130,7 +130,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -416,7 +416,7 @@
 
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
-(load-theme 'doom-city-lights t)
+(load-theme 'doom-one t)
 
 ;; Enable flashing mode-line on errors
 (doom-themes-visual-bell-config)
@@ -537,14 +537,14 @@
 
 (use-package counsel
   :ensure t
-  :bind
-  ("M-x" . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
-  ("C-c g" . counsel-git-grep)
-  ("C-c k" . counsel-ag)
-  ("C-x C-r" . counsel-recentf))
+  :bind (("M-x" . counsel-M-x)
+         ;; ("C-x C-f" . counsel-find-file)
+         ("C-c g" . counsel-git-grep)
+         ("C-c k" . counsel-ag)
+         ("C-x C-r" . counsel-recentf)))
 
 (use-package counsel-projectile
+  :disabled
   :ensure t
   :init
   (bind-key "s-F" #'counsel-projectile-ag)
@@ -721,7 +721,6 @@
   ("C-c b ." . goto-last-change-reverse))
 
 (use-package helm
-  :disabled
   :ensure t
   :diminish helm-mode
   :bind (("M-x" . helm-M-x)
@@ -743,7 +742,6 @@
         helm-display-header-line nil))
 
 (use-package helm-ag
-  :disabled
   :ensure t
   :bind ("s-F" . helm-do-ag-project-root)
   :config
@@ -751,7 +749,6 @@
   )
 
 (use-package helm-projectile
-  :disabled
   :ensure t
   :init
   (helm-projectile-on)
@@ -1142,7 +1139,8 @@
   (add-hook 'python-mode-hook
             '(lambda ()
                (setq fill-column 80)))
-  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+  (add-to-list 'auto-mode-alist '("\\.py" . python-mode))
+  )
 
 (use-package rainbow-delimiters
   :ensure t
@@ -1267,6 +1265,11 @@
     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 (use-package whitespace
   :config
