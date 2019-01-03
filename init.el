@@ -1281,6 +1281,10 @@
   :config
   (which-key-mode))
 
+(use-package white-christmas
+  :load-path "vendor/"
+  )
+
 (use-package whitespace
   :config
   (progn
