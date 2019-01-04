@@ -1057,9 +1057,8 @@
 (use-package ox-hugo
   :ensure t
   :config
+  (ox-hugo-auto-export-mode t)
   :after ox)
-
-(use-package ox-hugo-auto-export)
 
 (use-package paperless
   :ensure t
