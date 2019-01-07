@@ -130,7 +130,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (green-phosphor-theme ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-projectile helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -173,7 +173,12 @@
   (require 'server)
   (message "Starting up server...")
   (unless (server-running-p)
-    (server-start)))
+    (server-start))
+  (if (server-running-p)
+      (load-theme 'green-phosphor t)
+    (setq confirm-kill-emacs #'yes-or-no-p)
+    (server-start)
+    (global-set-key (kbd "C-x C-3") 'server-edit)))
 
 ;;----------------------------------------------------------------------------
 ;; Editor Config
@@ -722,6 +727,9 @@
   :bind
   ("C-c b ," . goto-last-change)
   ("C-c b ." . goto-last-change-reverse))
+
+(use-package green-phosphor-theme
+  :ensure t)
 
 (use-package helm
   :ensure t
