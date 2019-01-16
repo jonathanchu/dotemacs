@@ -808,6 +808,9 @@
   :bind
   ("C-c i" . imenu-anywhere))
 
+(use-package indium
+  :ensure t)
+
 (use-package ivy
   :ensure t
   :config
