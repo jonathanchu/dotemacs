@@ -1054,14 +1054,17 @@
               (define-key yas/keymap [tab] 'yas/next-field))))
 
 (use-package org-bullets
-  :disabled
+  ;; :disabled
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("●"
-                                  "○"
-                                  "◉"
-                                  "◆")))
+    (setq org-bullets-bullet-list
+        '("◉" "○"))
+  ;; (setq org-bullets-bullet-list '("●"
+  ;;                                 "○"
+  ;;                                 "◉"
+  ;;                                 "◆"))
+  )
 
 (use-package origami
   :ensure t
