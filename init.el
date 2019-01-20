@@ -280,6 +280,11 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
+;; variable pitch mode
+(add-hook 'text-mode-hook
+          (lambda ()
+            (variable-pitch-mode 1)))
+
 ;;----------------------------------------------------------------------------
 ;; UI
 ;;----------------------------------------------------------------------------
