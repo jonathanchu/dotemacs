@@ -986,6 +986,9 @@
 (use-package noflet
   :ensure t)
 
+(use-package olivetti
+  :ensure t)
+
 (use-package org
   :defer t
   :bind
