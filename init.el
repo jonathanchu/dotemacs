@@ -905,7 +905,8 @@
   (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
 (use-package lsp-mode
-  :disabled
+  ;; :disabled
+  :commands lsp
   :ensure t
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
@@ -913,6 +914,7 @@
   (require 'lsp-imenu)
   (use-package lsp-ui
     :ensure t
+    :commands lsp-ui-mode
     :init
     (add-hook 'lsp-mode-hook 'flycheck-mode)
     :config
@@ -926,6 +928,8 @@
     :after flycheck
     )
   (use-package company-lsp
+    :ensure t
+    :commands company-lsp
     :config
     (push 'company-lsp company-backends))
   )
