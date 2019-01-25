@@ -1054,13 +1054,14 @@
               (make-variable-buffer-local 'yas/trigger-key)
               (setq yas/trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-              (define-key yas/keymap [tab] 'yas/next-field))
+              (define-key yas/keymap [tab] 'yas/next-field)
               (olivetti-mode 1)        ;; Centers text in the buffer
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
               (linum-mode 0)           ;; No line numbers for prose
               )
+            )
   )
 
 (use-package org-bullets
