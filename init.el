@@ -906,7 +906,7 @@
 
 (use-package lsp-mode
   ;; :disabled
-  :commands lsp
+  :commands lsp-mode
   :ensure t
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
