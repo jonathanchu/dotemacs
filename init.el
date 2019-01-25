@@ -911,7 +911,7 @@
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
   :config
-  (require 'lsp-imenu)
+  ;; (require 'lsp-imenu)
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
