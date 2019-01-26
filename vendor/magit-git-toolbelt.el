@@ -46,13 +46,21 @@
 (magit-define-popup magit-git-toolbelt-popup
   "Popup console for git-toolbelt commands."
   'magit-popups
-  :actions '((?c "Cleanup" magit-git-toolbelt-cleanup)))
+  :actions '((?c "Cleanup" magit-git-toolbelt-cleanup)
+             (?i "Initial commit" magit-git-toolbelt-initial-commit))
+  :max-action-columns 3)
 
 (defun magit-git-toolbelt-cleanup ()
   "Delete all branches that have already been merged into master or develop.
 \('git cleanup')"
   (interactive)
   (magit-run-git "cleanup"))
+
+(defun magit-git-toolbelt-initial-commit ()
+  "Prints the initial commit for the repo.
+\('git initial-commit')"
+  (interactive)
+  (message "%s" (magit-run-git "initial-commit")))
 
 ;;;###autoload
 (eval-after-load 'magit
