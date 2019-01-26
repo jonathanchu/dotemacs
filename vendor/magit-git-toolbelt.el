@@ -60,7 +60,7 @@
   "Prints the initial commit for the repo.
 \('git initial-commit')"
   (interactive)
-  (message "%s" (magit-run-git "initial-commit")))
+  (print (magit-run-git "initial-commit")))
 
 ;;;###autoload
 (eval-after-load 'magit
