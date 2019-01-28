@@ -69,6 +69,13 @@
      (magit-define-popup-action 'magit-dispatch-popup
        ?@ "Git Toolbelt" 'magit-git-toolbelt-popup ?!)))
 
+;;; Process calls
+
+(defun magit-git-toolbelt-run (&rest args)
+  "Call git synchronously in a separate process with ARGS."
+  (magit-run-git args)
+  )
+
 (provide 'magit-git-toolbelt)
 
 ;;; magit-git-toolbelt.el ends here
