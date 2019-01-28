@@ -56,11 +56,19 @@
   (interactive)
   (magit-run-git "cleanup"))
 
+;; (defun magit-git-toolbelt-initial-commit ()
+;;   "Prints the initial commit for the repo.
+;; \('git initial-commit')"
+;;   (interactive)
+;;   (message (shell-command-to-string "git initial-commit")))
+
 (defun magit-git-toolbelt-initial-commit ()
   "Prints the initial commit for the repo.
 \('git initial-commit')"
   (interactive)
-  (message (shell-command-to-string "git initial-commit")))
+  (message (magit-git-toolbelt-run "initial-commit"))
+  )
+
 
 ;;;###autoload
 (eval-after-load 'magit
