@@ -1805,10 +1805,11 @@ candidates is updated after each input by calling COLLECTION.
 CALLER is a symbol to uniquely identify the caller to `ivy-read'.
 It is used, along with COLLECTION, to determine which
 customizations apply to the current completion session."
-  (let ((extra-actions (delete-dups
+  (let ((extra-actions (cl-delete-duplicates
                         (append (plist-get ivy--actions-list t)
                                 (plist-get ivy--actions-list this-command)
-                                (plist-get ivy--actions-list caller)))))
+                                (plist-get ivy--actions-list caller))
+                        :key #'car :test #'equal)))
     (when extra-actions
       (setq action
             (cond ((functionp action)
@@ -2558,7 +2559,7 @@ Insert .* between each char."
                     (apply #'concat
                            (cl-mapcar
                             #'concat
-                            (cons "" (cdr (mapcar (lambda (c) (format "[^%c]*" c))
+                            (cons "" (cdr (mapcar (lambda (c) (format "[^%c\n]*" c))
                                                   lst)))
                             (mapcar (lambda (x) (format "\\(%s\\)" (regexp-quote (char-to-string x))))
                                     lst))))
