@@ -1,10 +1,10 @@
 ;;; web-mode.el --- major mode for editing web templates
 ;;; -*- coding: utf-8; lexical-binding: t; -*-
 
-;; Copyright 2011-2018 François-Xavier Bois
+;; Copyright 2011-2019 François-Xavier Bois
 
-;; Version: 16.0.17
-;; Package-Version: 20181214.658
+;; Version: 16.0.19
+;; Package-Version: 20190128.2119
 ;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
 ;; Maintainer: François-Xavier Bois
 ;; Package-Requires: ((emacs "23.1"))
@@ -25,7 +25,7 @@
 
 ;;---- CONSTS ------------------------------------------------------------------
 
-(defconst web-mode-version "16.0.17"
+(defconst web-mode-version "16.0.19"
   "Web Mode version.")
 
 ;;---- GROUPS ------------------------------------------------------------------
@@ -1095,6 +1095,7 @@ Must be used in conjunction with web-mode-enable-block-face."
                            ("{~{" . " | }}")
                            ("{{~" . "{ | }}}")
                            ("{{!" . "-- | --}}")
+                           ("{{^" . "}}")
                            ("{{/" . "}}")
                            ("{{#" . "}}")))
     ("django"           . (("{{ " . " }}")
@@ -1681,6 +1682,15 @@ shouldn't be moved back.)")
 (defvar web-mode-django-types
   (eval-when-compile
     (regexp-opt '("null" "false" "true"))))
+
+(defvar web-mode-blade-control-blocks
+  (append
+   (cdr (assoc "blade" web-mode-extra-control-blocks))
+   '("component" "foreach" "forelse" "for" "if" "section" "slot" "unless" "while")
+   ))
+
+(defvar web-mode-blade-control-blocks-regexp
+  (regexp-opt web-mode-blade-control-blocks t))
 
 (defvar web-mode-directives
   (eval-when-compile
@@ -4234,7 +4244,7 @@ another auto-completion with different ac-sources (e.g. ac-php)")
            "section\(\s*\\(['\"]\\).*\\1\s*,\s*\\(['\"]\\).*\\2\s*\)" reg-beg)
           )
          ((web-mode-block-starts-with
-           "\\(?:end\\)?\\(component\\|foreach\\|forelse\\|for\\|if\\|section\\|slot\\|unless\\|while\\)"
+           (concat "\\(?:end\\)?\\(" web-mode-blade-control-blocks-regexp "\\)")
            reg-beg)
           (setq control (match-string-no-properties 1)
                 type (if (eq (aref (match-string-no-properties 0) 0) ?e) 'close 'open))
@@ -7180,9 +7190,9 @@ another auto-completion with different ac-sources (e.g. ac-php)")
             (cond
              ((and (not (looking-at-p "[ ]*$"))
                    (looking-back "^[[:space:]]*{" (point-min)))
-              (setq reg-col (+ (current-indentation) 1
+              (setq reg-col (+ (current-indentation) ;; #1027
                                (cond
-                                ((looking-at "[ ]+") (length (match-string-no-properties 0)))
+                                ((looking-at "[ ]+") (1+ (length (match-string-no-properties 0))))
                                 (t 0))
                                ))
               )
