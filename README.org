@@ -47,7 +47,7 @@
    My current Emacs distro of choice is:
 
    #+BEGIN_SRC
-   brew install emacs --with-cocoa
+   brew install emacs --with-cocoa --with-imagemagick@6 --with-gnutls --with-librsvg --with-mailutils --with-modules --devel
    #+END_SRC
 
    Please note, this requires [[http://brew.sh][homebrew]] to be installed.
