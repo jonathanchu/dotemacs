@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190126.2035
+;; Package-Version: 20190129.1544
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -749,22 +749,30 @@ With prefix arg MODE a query for the symbol help mode is offered."
   "Face used by `counsel-M-x' for key bindings."
   :group 'ivy-faces)
 
+(defcustom counsel-alias-expand t
+  "When non-nil, show the expansion of aliases in `counsel-M-x'."
+  :type 'boolean
+  :group 'ivy)
+
 (defun counsel-M-x-transformer (cmd)
   "Return CMD annotated with its active key binding, if any."
-  (let ((key (where-is-internal (intern cmd) nil t)))
-    (if (not key)
-        cmd
-      ;; Prefer `<f2>' over `C-x 6' where applicable
-      (let ((i (cl-search [?\C-x ?6] key)))
-        (when i
-          (let ((dup (vconcat (substring key 0 i) [f2] (substring key (+ i 2))))
-                (map (current-global-map)))
-            (when (equal (lookup-key map key)
-                         (lookup-key map dup))
-              (setq key dup)))))
-      (setq key (key-description key))
-      (put-text-property 0 (length key) 'face 'counsel-key-binding key)
-      (format "%s (%s)" cmd key))))
+  (let ((alias (symbol-function (intern cmd)))
+        (key (where-is-internal (intern cmd) nil t)))
+    (concat cmd
+            (when (and (symbolp alias) counsel-alias-expand)
+              (format " (%s)" alias))
+            (when key
+              ;; Prefer `<f2>' over `C-x 6' where applicable
+              (let ((i (cl-search [?\C-x ?6] key)))
+                (when i
+                  (let ((dup (vconcat (substring key 0 i) [f2] (substring key (+ i 2))))
+                        (map (current-global-map)))
+                    (when (equal (lookup-key map key)
+                                 (lookup-key map dup))
+                      (setq key dup)))))
+              (setq key (key-description key))
+              (put-text-property 0 (length key) 'face 'counsel-key-binding key)
+              (format " (%s)" key)))))
 
 (defvar amx-initialized)
 (defvar amx-cache)
@@ -1687,7 +1695,9 @@ The command is passed a single argument comprising all characters
 in BRANCH up to, but not including, the first space
 character (#x20), or the string's end if it lacks a space."
   (shell-command
-   (format "git checkout %s" (substring branch 0 (string-match-p " " branch)))))
+   (format "git checkout %s"
+           (shell-quote-argument
+            (substring branch 0 (string-match-p " " branch))))))
 
 (defun counsel-git-branch-list ()
   "Return list of branches in the current git repository.
@@ -2819,6 +2829,19 @@ When the number of characters in a buffer exceeds this threshold,
 `counsel-grep' will be used instead of `swiper'."
   :type 'integer)
 
+(defcustom counsel-grep-use-swiper-p #'counsel-grep-use-swiper-p-default
+  "When this function returns non-nil, call `swiper', else `counsel-grep'."
+  :type '(choice
+          (const :tag "Rely on `counsel-grep-swiper-limit'."
+           counsel-grep-use-swiper-p-default)
+          (const :tag "Always use `counsel-grep'." ignore)
+          (function :tag "Custom")))
+
+(defun counsel-grep-use-swiper-p-default ()
+  (<= (buffer-size)
+      (/ counsel-grep-swiper-limit
+         (if (eq major-mode 'org-mode) 4 1))))
+
 ;;;###autoload
 (defun counsel-grep-or-swiper (&optional initial-input)
   "Call `swiper' for small buffers and `counsel-grep' for large ones.
@@ -2829,9 +2852,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
           (ignore-errors
             (file-remote-p buffer-file-name))
           (jka-compr-get-compression-info buffer-file-name)
-          (<= (buffer-size)
-              (/ counsel-grep-swiper-limit
-                 (if (eq major-mode 'org-mode) 4 1))))
+          (funcall counsel-grep-use-swiper-p))
       (swiper initial-input)
     (when (file-writable-p buffer-file-name)
       (save-buffer))
