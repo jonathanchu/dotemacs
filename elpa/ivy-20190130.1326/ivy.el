@@ -3156,37 +3156,39 @@ RE-STR is the regexp, CANDS are the current candidates."
         (empty (string= name "")))
     (unless (eq this-command 'ivy-resume)
       (ivy-set-index
-       (or
-        (cl-position (ivy--remove-prefix "^" name)
-                     cands
-                     :test #'ivy--case-fold-string=)
-        (and ivy--directory
-             (cl-position (concat re-str "/")
-                          cands
-                          :test #'ivy--case-fold-string=))
-        (and (eq caller 'ivy-switch-buffer)
-             (not empty)
-             0)
-        (and (not empty)
-             (not (eq caller 'swiper))
-             (not (and ivy--flx-featurep
-                       (eq ivy--regex-function 'ivy--regex-fuzzy)
-                       ;; Limit to 200 candidates
-                       (null (nthcdr 200 cands))))
-             ;; If there was a preselected candidate, don't try to
-             ;; keep it selected even if the regexp still matches it.
-             ;; See issue #1563.  See also `ivy--preselect-index',
-             ;; which this logic roughly mirrors.
-             (not (or
-                   (and (integerp preselect)
-                        (= ivy--index preselect))
-                   (equal current preselect)
-                   (and (stringp preselect)
-                        (stringp current)
-                        (string-match-p preselect current))))
-             ivy--old-cands
-             (cl-position current cands :test #'equal))
-        (funcall func re-str cands))))
+       (if (string= name "")
+           0
+         (or
+          (cl-position (ivy--remove-prefix "^" name)
+                       cands
+                       :test #'ivy--case-fold-string=)
+          (and ivy--directory
+               (cl-position (concat re-str "/")
+                            cands
+                            :test #'ivy--case-fold-string=))
+          (and (eq caller 'ivy-switch-buffer)
+               (not empty)
+               0)
+          (and (not empty)
+               (not (eq caller 'swiper))
+               (not (and ivy--flx-featurep
+                         (eq ivy--regex-function 'ivy--regex-fuzzy)
+                         ;; Limit to 200 candidates
+                         (null (nthcdr 200 cands))))
+               ;; If there was a preselected candidate, don't try to
+               ;; keep it selected even if the regexp still matches it.
+               ;; See issue #1563.  See also `ivy--preselect-index',
+               ;; which this logic roughly mirrors.
+               (not (or
+                     (and (integerp preselect)
+                          (= ivy--index preselect))
+                     (equal current preselect)
+                     (and (stringp preselect)
+                          (stringp current)
+                          (string-match-p preselect current))))
+               ivy--old-cands
+               (cl-position current cands :test #'equal))
+          (funcall func re-str cands)))))
     (when (or empty (string= name "^"))
       (ivy-set-index
        (or (ivy--preselect-index preselect cands)
@@ -3829,9 +3831,12 @@ BUFFER may be a string or nil."
   "Kill BUFFER."
   (ivy--kill-buffer-or-virtual buffer)
   (unless (buffer-live-p (ivy-state-buffer ivy-last))
-    (setf (ivy-state-buffer ivy-last) (current-buffer)))
-  (setq ivy--index 0)
-  (ivy--reset-state ivy-last))
+    (setf (ivy-state-buffer ivy-last)
+          (with-ivy-window (current-buffer))))
+  (setf (ivy-state-preselect ivy-last) ivy--index)
+  (setq ivy--old-re nil)
+  (setq ivy--all-candidates (delete buffer ivy--all-candidates))
+  (ivy--exhibit))
 
 (defvar ivy-switch-buffer-map
   (let ((map (make-sparse-keymap)))
@@ -3842,14 +3847,7 @@ BUFFER may be a string or nil."
   "Kill the current buffer in `ivy-switch-buffer'."
   (interactive)
   (let ((bn (ivy-state-current ivy-last)))
-    (ivy--kill-buffer-or-virtual bn)
-    (unless (buffer-live-p (ivy-state-buffer ivy-last))
-      (setf (ivy-state-buffer ivy-last)
-            (with-ivy-window (current-buffer))))
-    (setf (ivy-state-preselect ivy-last) ivy--index)
-    (setq ivy--old-re nil)
-    (setq ivy--all-candidates (delete bn ivy--all-candidates))
-    (ivy--exhibit)))
+    (ivy--kill-buffer-action bn)))
 
 (ivy-set-actions
  'ivy-switch-buffer
