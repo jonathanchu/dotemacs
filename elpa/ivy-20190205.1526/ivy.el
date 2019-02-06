@@ -474,20 +474,25 @@ the restoring themselves.")
   "Return a string that corresponds to the current thing at point."
   (substring-no-properties
    (cond
-    ((thing-at-point 'url))
-    ((and (eq (ivy-state-collection ivy-last) #'read-file-name-internal)
-          (let ((inhibit-message t))
-            (ignore-errors
-              (ffap-file-at-point)))))
-    ((let ((s (thing-at-point 'symbol)))
-       (and (stringp s)
-            (if (string-match "\\`[`']?\\(.*?\\)'?\\'" s)
-                (match-string 1 s)
-              s))))
-    ((looking-at "(+\\(\\(?:\\sw\\|\\s_\\)+\\)\\_>")
-     (match-string-no-properties 1))
-    (t
-     ""))))
+     ((use-region-p)
+      (let* ((beg (region-beginning))
+             (end (region-end))
+             (eol (save-excursion (goto-char beg) (line-end-position))))
+        (buffer-substring-no-properties beg (min end eol))))
+     ((thing-at-point 'url))
+     ((and (eq (ivy-state-collection ivy-last) #'read-file-name-internal)
+           (let ((inhibit-message t))
+             (ignore-errors
+               (ffap-file-at-point)))))
+     ((let ((s (thing-at-point 'symbol)))
+        (and (stringp s)
+             (if (string-match "\\`[`']?\\(.*?\\)'?\\'" s)
+                 (match-string 1 s)
+               s))))
+     ((looking-at "(+\\(\\(?:\\sw\\|\\s_\\)+\\)\\_>")
+      (match-string-no-properties 1))
+     (t
+      ""))))
 
 (defvar ivy-history nil
   "History list of candidates entered in the minibuffer.
@@ -926,7 +931,6 @@ contains a single candidate.")
              (user (match-string 2 ivy-text))
              (rest (match-string 3 ivy-text))
              res)
-         (require 'tramp)
          (dolist (x (tramp-get-completion-function method))
            (setq res (append res (funcall (car x) (cadr x)))))
          (setq res (delq nil res))
@@ -1669,7 +1673,7 @@ like.")
     (ivy--regex-plus . ivy--highlight-default))
   "An alist of highlighting functions for each regex buidler function.")
 
-(defvar ivy-initial-inputs-alist
+(defcustom ivy-initial-inputs-alist
   '((org-refile . "^")
     (org-agenda-refile . "^")
     (org-capture-refile . "^")
@@ -1682,7 +1686,9 @@ like.")
   "An alist associating commands with their initial input.
 
 Each cdr is either a string or a function called in the context
-of a call to `ivy-read'.")
+of a call to `ivy-read'."
+  :type '(alist :key-type (symbol)
+                :value-type (choice (string) (function))))
 
 (defcustom ivy-hooks-alist nil
   "An alist associating commands to setup functions.
@@ -1979,6 +1985,7 @@ This is useful for recursive `ivy-read'."
                                 (all-completions "(" collection predicate)))
                      (all-completions "" collection predicate))))
             ((eq collection #'read-file-name-internal)
+             (require 'tramp)
              (when (and (equal def initial-input)
                         (member "./" ivy-extra-directories))
                (setf (ivy-state-def state) (setq def nil)))
