@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190204.1237
+;; Package-Version: 20190205.1428
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -418,7 +418,10 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
   (interactive)
   (swiper--ivy (swiper--candidates) initial-input))
 
-(defvar swiper--current-window-start nil)
+(defvar swiper--current-window-start nil
+  "Store `window-start' to restore it later.
+This prevents a \"jumping\" behavior which occurs when variables
+such as `scroll-conservatively' are set to a high value.")
 
 (defun swiper--extract-matches (regex cands)
   "Extract captured REGEX groups from CANDS."
@@ -803,7 +806,7 @@ the face, window and priority of the overlay."
         (swiper--ensure-visible)
         (cond (swiper-action-recenter
                (recenter))
-              (swiper--current-window-start
+              ((and swiper--current-window-start (display-graphic-p))
                (set-window-start (selected-window) swiper--current-window-start)))
         (when (/= (point) swiper--opoint)
           (unless (and transient-mark-mode mark-active)
