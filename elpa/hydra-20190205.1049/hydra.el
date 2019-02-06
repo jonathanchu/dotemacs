@@ -441,6 +441,21 @@ Return DEFAULT if PROP is not in H."
        ((blue teal) t)
        (t nil)))))
 
+(defun hydra--normalize-body (body)
+  "Put BODY in a normalized format.
+Add :exit and :foreign-keys if they are not there.
+Remove :color key. And sort the plist alphabetically."
+  (let ((plist (cddr body)))
+    (plist-put plist :exit (hydra--body-exit body))
+    (plist-put plist :foreign-keys (hydra--body-foreign-keys body))
+    (let* ((alist0 (cl-loop for (k v) on plist
+                      by #'cddr collect (cons k v)))
+           (alist1 (assq-delete-all :color alist0))
+           (alist2 (cl-sort alist1 #'string<
+                            :key (lambda (x) (symbol-name (car x))))))
+      (append (list (car body) (cadr body))
+              (cl-mapcan (lambda (x) (list (car x) (cdr x))) alist2)))))
+
 (defalias 'hydra--imf #'list)
 
 (defun hydra-default-pre ()
@@ -1167,7 +1182,7 @@ nil.  If you don't even want the KEY to be printed, set HINT
 explicitly to nil.
 
 The heads inherit their PLIST from BODY-PLIST and are allowed to
-override some keys.  The keys recognized are :exit and :bind.
+override some keys.  The keys recognized are :exit, :bind, and :column.
 :exit can be:
 
 - nil (default): this head will continue the Hydra state.
@@ -1176,6 +1191,8 @@ override some keys.  The keys recognized are :exit and :bind.
 :bind can be:
 - nil: this head will not be bound in BODY-MAP.
 - a lambda taking KEY and CMD used to bind a head.
+
+:column is a string that sets the column for all subsequent heads.
 
 It is possible to omit both BODY-MAP and BODY-KEY if you don't
 want to bind anything.  In that case, typically you will bind the
@@ -1192,6 +1209,7 @@ result of `defhydra'."
          (setq docstring "")))
   (when (keywordp (car body))
     (setq body (cons nil (cons nil body))))
+  (setq body (hydra--normalize-body body))
   (condition-case-unless-debug err
       (let* ((keymap-name (intern (format "%S/keymap" name)))
              (body-name (intern (format "%S/body" name)))
@@ -1274,12 +1292,14 @@ result of `defhydra'."
                "An %S Hydra must have at least one blue head in order to exit"
                body-foreign-keys)))
           `(progn
-             ;; create keymap
-             (set (defvar ,keymap-name
+             (set (defvar ,(intern (format "%S/params" name))
                     nil
-                    ,(format "Keymap for %S." name))
-                  ',keymap)
-             ;; declare heads
+                    ,(format "Params of %S." name))
+                  ',body)
+             (set (defvar ,(intern (format "%S/docstring" name))
+                    nil
+                    ,(format "Docstring of %S." name))
+                  ,docstring)
              (set (defvar ,(intern (format "%S/heads" name))
                     nil
                     ,(format "Heads for %S." name))
@@ -1288,6 +1308,12 @@ result of `defhydra'."
                                 (cl-remf (cl-cdddr j) :cmd-name)
                                 j))
                             heads))
+             ;; create keymap
+             (set (defvar ,keymap-name
+                    nil
+                    ,(format "Keymap for %S." name))
+                  ',keymap)
+             ;; declare heads
              (set
               (defvar ,(intern (format "%S/hint" name)) nil
                 ,(format "Dynamic hint for %S." name))
@@ -1337,6 +1363,24 @@ result of `defhydra'."
     (error
      (hydra--complain "Error in defhydra %S: %s" name (cdr err))
      nil)))
+
+(defmacro defhydra+ (name body &optional docstring &rest heads)
+  "Redefine an existing hydra by adding new heads.
+Arguments are same as of `defhydra'."
+  (declare (indent 1))
+  (unless (stringp docstring)
+    (setq heads
+          (cons docstring heads))
+    (setq docstring nil))
+  `(defhydra ,name ,(or body (hydra--prop name "/params"))
+     ,(or docstring (hydra--prop name "/docstring"))
+     ,@(cl-delete-duplicates
+        (append (hydra--prop name "/heads") heads)
+        :key #'car
+        :test #'equal)))
+
+(defun hydra--prop (name prop-name)
+  (symbol-value (intern (concat (symbol-name name) prop-name))))
 
 (defmacro defhydradio (name _body &rest heads)
   "Create radios with prefix NAME.
