@@ -9,7 +9,7 @@
 ;;       Bozhidar Batsov <bozhidar@batsov.com>
 ;;       Artur Malabarba <bruce.connor.am@gmail.com>
 ;; URL: http://github.com/clojure-emacs/clojure-mode
-;; Package-Version: 20190105.1043
+;; Package-Version: 20190217.226
 ;; Keywords: languages clojure clojurescript lisp
 ;; Version: 5.10.0
 ;; Package-Requires: ((emacs "25.1"))
@@ -848,7 +848,8 @@ any number of matches of `clojure--sym-forbidden-rest-chars'."))
          "\\>")
        0 font-lock-builtin-face)
       ;; Dynamic variables - *something* or @*something*
-      ("\\(?:\\<\\|/\\)@?\\(\\*[a-z-]*\\*\\)\\>" 1 font-lock-variable-name-face)
+      (,(concat "\\(?:\\<\\|/\\)@?\\(\\*" clojure--sym-regexp "\\*\\)\\>")
+       1 font-lock-variable-name-face)
       ;; Global constants - nil, true, false
       (,(concat
          "\\<"
