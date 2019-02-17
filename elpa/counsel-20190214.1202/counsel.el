@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190130.1632
+;; Package-Version: 20190214.1202
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1749,6 +1749,7 @@ currently checked out."
     (define-key map (kbd "C-DEL") 'counsel-up-directory)
     (define-key map (kbd "C-<backspace>") 'counsel-up-directory)
     (define-key map (kbd "C-M-y") 'counsel-yank-directory)
+    (define-key map "$" 'counsel-read-env)
     map))
 
 (defun counsel-yank-directory ()
@@ -1892,6 +1893,27 @@ Skip some dotfiles unless `ivy-text' requires them."
 
 (defvar counsel-find-file-speedup-remote t
   "Speed up opening remote files by disabling `find-file-hook' for them.")
+
+(defun counsel-read-env ()
+  "Read a file path environment variable and insert it into the
+minibuffer."
+  (interactive)
+  (if (equal ivy-text "")
+      (let* ((cands (cl-loop for pair in process-environment
+                       for (var val) = (split-string pair "=" t)
+                       if (and val (not (equal "" val)))
+                       if (file-exists-p
+                           (if (file-name-absolute-p val)
+                               val
+                             (setq val
+                                   (expand-file-name val ivy--directory))))
+                       collect (cons var val)))
+             (enable-recursive-minibuffers t)
+             (x (ivy-read "Env: " cands))
+             (path (cdr (assoc x cands))))
+        (insert path)
+        (ivy--cd-maybe))
+    (insert last-input-event)))
 
 (defun counsel-find-file-action (x)
   "Find file X."
@@ -2437,7 +2459,7 @@ FZF-PROMPT, if non-nil, is passed as `ivy-read' prompt argument."
                         (message (cdr x)))
               :caller 'counsel-rpm)))
 
-(defcustom counsel-file-jump-args "* -type f -not -path '*\/.git*'"
+(defcustom counsel-file-jump-args "* -type f -not -path '*/.git*'"
   "Arguments for the `find-command' when using `counsel-file-jump'."
   :type 'string)
 
@@ -2470,7 +2492,7 @@ INITIAL-DIRECTORY, if non-nil, is used as the root directory for search."
               :keymap counsel-find-file-map
               :caller 'counsel-file-jump)))
 
-(defcustom counsel-dired-jump-args "* -type f -not -path '*\/.git*'"
+(defcustom counsel-dired-jump-args "* -type f -not -path '*/.git*'"
   "Arguments for the `find-command' when using `counsel-dired-jump'."
   :type 'string)
 
@@ -2786,6 +2808,9 @@ substituted by the search regexp and file, respectively.  Neither
 (ivy-set-occur 'counsel-grep 'counsel-grep-occur)
 (counsel-set-async-exit-code 'counsel-grep 1 "")
 
+(defvar counsel-grep-history nil
+  "History for `counsel-grep'.")
+
 ;;;###autoload
 (defun counsel-grep (&optional initial-input)
   "Grep for a string in the file visited by the current buffer.
@@ -2814,7 +2839,7 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
                                          (line-end-position)))))
 
                              :keymap counsel-grep-map
-                             :history 'counsel-git-grep-history
+                             :history 'counsel-grep-history
                              :update-fn (lambda ()
                                           (counsel-grep-action (ivy-state-current ivy-last)))
                              :re-builder #'ivy--regex
@@ -5013,6 +5038,43 @@ When ARG is non-nil, ignore NoDisplay property in *.desktop files."
     (ivy-read "window: " cands2
               :action #'counsel-wmctrl-action
               :caller 'counsel-wmctrl)))
+
+(defvar counsel--switch-buffer-temporary-buffers nil
+  "Internal.")
+
+(defun counsel--switch-buffer-unwind ()
+  "Clear temporary file buffers.
+The buffers are those opened during a session of `counsel-switch-buffer'."
+  (while counsel--switch-buffer-temporary-buffers
+    (let ((buf (pop counsel--switch-buffer-temporary-buffers)))
+      (kill-buffer buf))))
+
+(defun counsel--switch-buffer-update-fn ()
+  (let ((current (ivy-state-current ivy-last)))
+    ;; This check is necessary, otherwise typing into the completion
+    ;; would create empty buffers.
+    (if (get-buffer current)
+        (ivy-call)
+      (if (and ivy-use-virtual-buffers (file-exists-p current))
+          (let ((buf (find-file-noselect current)))
+            (push buf counsel--switch-buffer-temporary-buffers)
+            (ivy-call))
+        (with-ivy-window
+          (switch-to-buffer (ivy-state-buffer ivy-last)))))))
+
+;;;###autoload
+(defun counsel-switch-buffer ()
+  "Switch to another buffer.
+Display a preview of the selected ivy completion candidate buffer
+in the current window."
+  (interactive)
+  (ivy-read "Switch to buffer: " 'internal-complete-buffer
+            :preselect (buffer-name (other-buffer (current-buffer)))
+            :action #'ivy--switch-buffer-action
+            :matcher #'ivy--switch-buffer-matcher
+            :caller 'counsel-switch-buffer
+            :unwind #'counsel--switch-buffer-unwind
+            :update-fn 'counsel--switch-buffer-update-fn))
 
 ;;* `counsel-mode'
 (defvar counsel-mode-map

@@ -406,6 +406,13 @@ When ARG is non-nil, ignore NoDisplay property in *.desktop files.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'counsel-switch-buffer "counsel" "\
+Switch to another buffer.
+Display a preview of the selected ivy completion candidate buffer
+in the current window.
+
+\(fn)" t nil)
+
 (defvar counsel-mode nil "\
 Non-nil if Counsel mode is enabled.
 See the `counsel-mode' command
