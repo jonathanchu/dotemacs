@@ -3,8 +3,8 @@
 ;; Copyright (C) 2006-2009, 2011-2012, 2015-2018
 ;;   Phil Hagelberg, Doug Alcorn, Will Farrington, Chen Bin
 ;;
-;; Version: 5.7.2
-;; Package-Version: 20181217.246
+;; Version: 5.7.3
+;; Package-Version: 20190215.44
 ;; Author: Phil Hagelberg, Doug Alcorn, and Will Farrington
 ;; Maintainer: Chen Bin <chenbin.sh@gmail.com>
 ;; URL: https://github.com/technomancy/find-file-in-project
@@ -626,12 +626,13 @@ BSD/GNU Find use glob pattern."
   (let* (cmd fmt tgt)
     (cond
      (ffip-use-rust-fd
+      ;; `-H` => search hidden files
       ;; `-E` => exclude pattern
       ;; `-c` => color
       ;; `-i` => case insensitive
       ;; `-t` => directory (d) or file (f)
-      ;; `-p' => match full path
-      (setq fmt (concat "%s %s -c never -i -t %s %s %s %s"
+      ;; `-p` => match full path
+      (setq fmt (concat "%s %s -c never -H -i -t %s %s %s %s"
                         (if ffip-rust-fd-respect-ignore-files "" " -I")
                         (if ffip-match-path-instead-of-filename " -p" "")
                         " "
