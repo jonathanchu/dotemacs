@@ -2,7 +2,7 @@
 ;; Copyright (C) 2015-2018 jack angers
 ;; Author: jack angers
 ;; Version: 0.5.2
-;; Package-Version: 20190204.331
+;; Package-Version: 20190213.607
 ;; Package-Requires: ((emacs "24.3") (f "0.20.0") (s "1.11.0") (dash "2.9.0") (popup "0.5.3"))
 ;; Keywords: programming
 
@@ -80,7 +80,8 @@ If nil then the most optimal searcher will be chosen at runtime."
                  (const :tag "ag" ag)
                  (const :tag "rg" rg)
                  (const :tag "grep" gnu-grep)
-                 (const :tag "git grep" git-grep)))
+                 (const :tag "git grep" git-grep)
+                 (const :tag "git grep + ag" git-grep-plus-ag)))
 
 
 (defcustom dumb-jump-force-searcher
@@ -93,7 +94,8 @@ or most optimal searcher."
                  (const :tag "ag" ag)
                  (const :tag "rg" rg)
                  (const :tag "grep" gnu-grep)
-                 (const :tag "git grep" git-grep)))
+                 (const :tag "git grep" git-grep)
+                 (const :tag "git grep + ag" git-grep-plus-ag)))
 
 (defcustom dumb-jump-grep-prefix
   "LANG=C"
@@ -303,7 +305,7 @@ or most optimal searcher."
     ;;        :regex "(\\b\\w+|[,>])([*&]|\\s)+JJJ\\s*(\\[([0-9]|\\s)*\\])*\\s*([=,){;]|:\\s*[0-9])|#define\\s+JJJ\\b"
     ;;        :tests ("int test=2;" "char *test;" "int x = 1, test = 2" "int test[20];" "#define test" "unsigned int test:2;"))
 
-    (:type "variable" :supports ("ag") :language "c++"
+    (:type "variable" :supports ("ag" "rg") :language "c++"
            :regex "\\b(?!(class\\b|struct\\b|return\\b|else\\b|delete\\b))(\\w+|[,>])([*&]|\\s)+JJJ\\s*(\\[(\\d|\\s)*\\])*\\s*([=,(){;]|:\\s*\\d)|#define\\s+JJJ\\b"
            :tests ("int test=2;" "char *test;" "int x = 1, test = 2" "int test[20];" "#define test" "typedef int test;" "unsigned int test:2")
            :not ("return test;" "#define NOT test" "else test=2;"))
@@ -800,11 +802,11 @@ or most optimal searcher."
            :regex "const\\s+JJJ\\b"
            :tests ("const test = "))
 
-    (:type "type" :supports ("ag","rg") :language "julia"
+    (:type "type" :supports ("ag" "rg") :language "julia"
            :regex "(mutable)?\\s*struct\\s*JJJ"
            :tests ("struct test"))
 
-    (:type "type" :supports ("ag","rg") :language "julia"
+    (:type "type" :supports ("ag" "rg") :language "julia"
            :regex "(type|immutable|abstract)\\s*JJJ"
            :tests ("type test" "immutable test" "abstract test <:Testable" ))
 
@@ -1452,12 +1454,27 @@ If `nil` always show list of more than 1 match."
             (s-contains? "ag version" (shell-command-to-string (concat dumb-jump-ag-cmd " --version"))))
     dumb-jump--ag-installed?))
 
+(defvar dumb-jump--git-grep-plus-ag-installed? 'unset)
+(defun dumb-jump-git-grep-plus-ag-installed? ()
+  "Return t if git grep and ag is installed."
+  (if (eq dumb-jump--git-grep-plus-ag-installed? 'unset)
+      (setq dumb-jump--git-grep-plus-ag-installed?
+            (and (dumb-jump-git-grep-installed?) (dumb-jump-ag-installed?)))
+    dumb-jump--git-grep-plus-ag-installed?))
+
 (defvar dumb-jump--rg-installed? 'unset)
 (defun dumb-jump-rg-installed? ()
   "Return t if rg is installed."
   (if (eq dumb-jump--rg-installed? 'unset)
       (setq dumb-jump--rg-installed?
-            (s-contains? "ripgrep" (shell-command-to-string (concat dumb-jump-rg-cmd " --version"))))
+            (let ((result (s-match "ripgrep \\([0-9]+\\)\\.\\([0-9]+\\).*"
+                                   (shell-command-to-string (concat dumb-jump-rg-cmd " --version")))))
+              (when (equal (length result) 3)
+                (let ((major (string-to-number (nth 1 result)))
+                      (minor (string-to-number (nth 2 result))))
+                  (or
+                   (and (= major 0) (>= minor 10))
+                   (>= major 1))))))
     dumb-jump--rg-installed?))
 
 (defvar dumb-jump--git-grep-installed? 'unset)
@@ -1568,7 +1585,7 @@ Optionally pass t for RUN-NOT-TESTS to see a list of all failed rules"
       (lambda (rule)
         (-mapcat
           (lambda (test)
-            (let* ((cmd (concat "rg --color never --no-heading "
+            (let* ((cmd (concat "rg --color never --no-heading -U --pcre2 "
                                 (shell-quote-argument (dumb-jump-populate-regex (plist-get rule :regex) "test" 'rg))))
                    (resp (dumb-jump-run-test test cmd)))
               (when (or
@@ -1655,9 +1672,7 @@ Ignore PROJ"
 (defun dumb-jump-prompt-user-for-choice (proj results)
   "Put a PROJ's list of RESULTS in a 'popup-menu' (or helm/ivy)
 for user to select.  Filters PROJ path from files for display."
-  (let* ((choices (-map (lambda (result)
-                          (dumb-jump--format-result proj result))
-                        results)))
+  (let ((choices (--map (dumb-jump--format-result proj it) results)))
     (cond
      ((and (eq dumb-jump-selector 'ivy) (fboundp 'ivy-read))
       (funcall dumb-jump-ivy-jump-to-selected-function results choices proj))
@@ -2073,9 +2088,13 @@ PREFER-EXTERNAL will sort current file last."
       (dumb-jump-message
        "-----\nDUMB JUMP DEBUG `dumb-jump-handle-results` START\n----- \n\nlook for: \n\t%s\n\ntype: \n\t%s \n\njump? \n\t%s \n\nmatches: \n\t%s \n\nresults: \n\t%s \n\nprefer external: \n\t%s\n\nmatch-cur-file-front: \n\t%s\n\nproj-root: \n\t%s\n\ncur-file: \n\t%s\n\nreal-cur-file: \n\t%s \n\n-----\nDUMB JUMP DEBUG `dumb-jump-handle-results` END\n-----\n"
        look-for ctx-type var-to-jump (pp-to-string match-cur-file-front) (pp-to-string results) prefer-external match-cur-file-front proj-root cur-file rel-cur-file))
-    (if do-var-jump
-        (dumb-jump-result-follow var-to-jump use-tooltip proj-root)
-      (dumb-jump-prompt-user-for-choice proj-root match-cur-file-front))))
+    (cond
+     (use-tooltip ;; quick-look mode
+      (popup-menu* (--map (dumb-jump--format-result proj-root it) results)))
+     (do-var-jump
+        (dumb-jump-result-follow var-to-jump use-tooltip proj-root))
+     (t
+      (dumb-jump-prompt-user-for-choice proj-root match-cur-file-front)))))
 
 (defun dumb-jump-read-config (root config-file)
   "Load and return options (exclusions, inclusions, etc).
@@ -2194,6 +2213,11 @@ searcher symbol."
          `(:parse ,'dumb-jump-parse-ag-response
                   :generate ,'dumb-jump-generate-ag-command
                   :installed ,'dumb-jump-ag-installed?
+                  :searcher ,searcher))
+        ((equal 'git-grep-plus-ag searcher)
+         `(:parse ,'dumb-jump-parse-ag-response
+                  :generate ,'dumb-jump-generate-git-grep-plus-ag-command
+                  :installed ,'dumb-jump-git-grep-plus-ag-installed?
                   :searcher ,searcher))
         ((equal 'rg searcher)
          `(:parse ,'dumb-jump-parse-rg-response
@@ -2395,6 +2419,7 @@ searcher symbol."
   "Populate IT regex template with LOOK-FOR."
   (let ((boundary (cond ((eq variant 'rg) dumb-jump-rg-word-boundary)
                         ((eq variant 'ag) dumb-jump-ag-word-boundary)
+                        ((eq variant 'git-grep-plus-ag) dumb-jump-ag-word-boundary)
                         ((eq variant 'git-grep) dumb-jump-git-grep-word-boundary)
                         (t dumb-jump-grep-word-boundary))))
     (let ((text it))
@@ -2429,13 +2454,52 @@ searcher symbol."
         ""
         (dumb-jump-concat-command cmd exclude-args regex-args proj))))
 
+(defun dumb-jump-get-git-grep-files-matching-symbol (symbol proj-root)
+  "Search for the literal SYMBOL in the PROJ-ROOT via git grep for a list of file matches."
+  (let* ((cmd (format "git grep --full-name -F -c %s %s" (shell-quote-argument symbol) proj-root))
+         (result (s-trim (shell-command-to-string cmd)))
+         (matched-files (--map (first (s-split ":" it))
+                        (s-split "\n" result))))
+    matched-files))
+
+(defun dumb-jump-format-files-as-ag-arg (files proj-root)
+  "Take a list of FILES and their PROJ-ROOT and return a `ag -G` argument."
+  (format "'(%s)'" (s-join "|" (--map (f-join proj-root it) files))))
+
+(defun dumb-jump-get-git-grep-files-matching-symbol-as-ag-arg (symbol proj-root)
+  "Get the files matching the SYMBOL via `git grep` in the PROJ-ROOT and return them formatted for `ag -G`."
+  (dumb-jump-format-files-as-ag-arg
+   (dumb-jump-get-git-grep-files-matching-symbol symbol proj-root)
+   proj-root))
+
+;; git-grep plus ag only recommended for huge repos like the linux kernel
+(defun dumb-jump-generate-git-grep-plus-ag-command (look-for cur-file proj regexes lang exclude-paths)
+  "Generate the ag response based on the needle LOOK-FOR in the directory PROJ.
+Using ag to search only the files found via git-grep literal symbol search."
+  (let* ((filled-regexes (dumb-jump-populate-regexes look-for regexes 'ag))
+         (proj-dir (file-name-as-directory proj))
+         (ag-files-arg (dumb-jump-get-git-grep-files-matching-symbol-as-ag-arg look-for proj-dir))
+         (cmd (concat dumb-jump-ag-cmd
+                      " --nocolor --nogroup"
+                      (if (s-ends-with? ".gz" cur-file)
+                          " --search-zip"
+                        "")
+                      " -G " ag-files-arg
+                      " "))
+         (exclude-args (dumb-jump-arg-joiner
+                        "--ignore-dir" (--map (shell-quote-argument (s-replace proj-dir "" it)) exclude-paths)))
+         (regex-args (shell-quote-argument (s-join "|" filled-regexes))))
+    (if (= (length regexes) 0)
+        ""
+        (dumb-jump-concat-command cmd exclude-args regex-args proj))))
+
 (defun dumb-jump-generate-rg-command (look-for cur-file proj regexes lang exclude-paths)
   "Generate the rg response based on the needle LOOK-FOR in the directory PROJ."
   (let* ((filled-regexes (dumb-jump-populate-regexes look-for regexes 'rg))
          (rgtypes (dumb-jump-get-rg-type-by-language lang))
          (proj-dir (file-name-as-directory proj))
          (cmd (concat dumb-jump-rg-cmd
-                      " --color never --no-heading --line-number"
+                      " --color never --no-heading --line-number -U --pcre2"
                       (s-join "" (--map (format " --type %s" it) rgtypes))))
          (exclude-args (dumb-jump-arg-joiner
                         "-g" (--map (shell-quote-argument (concat "!" (s-replace proj-dir "" it))) exclude-paths)))
@@ -2533,6 +2597,7 @@ searcher symbol."
   (let* ((searcher-str (cond ((eq 'git-grep searcher) "git-grep")
                              ((eq 'rg searcher) "rg")
                              ((eq 'ag searcher) "ag")
+                             ((eq 'git-grep-plus-ag searcher) "ag")
                              (t "grep")))
          (results (--filter (and
                              (string= (plist-get it ':language) language)
