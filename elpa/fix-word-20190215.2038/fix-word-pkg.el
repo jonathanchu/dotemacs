@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "fix-word" "20190215.2038" "Convenient word transformation" '((emacs "24.1") (cl-lib "0.5")) :stars '(#("23" 0 2 (font-lock-face paradox-star-face))) :commit "b3b3a3c8e33e425f9a8d0ec653adb6897c8efc03" :keywords '("word" "convenience") :authors '(("Mark Karpov" . "markkarpov92@gmail.com")) :maintainer '("Mark Karpov" . "markkarpov92@gmail.com") :url "https://github.com/mrkkrp/fix-word")

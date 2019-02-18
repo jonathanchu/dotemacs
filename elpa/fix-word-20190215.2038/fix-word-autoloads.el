@@ -65,7 +65,7 @@ FNC is the processing function and DOC is documentation string.
 
 (fix-word-define-command fix-word-capitalize #'capitalize "Capitalize word intelligently.")
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fix-word" '("fix-word--")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "fix-word" '("fix-word-")))
 
 ;;;***
 
