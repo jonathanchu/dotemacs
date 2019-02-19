@@ -82,6 +82,28 @@ Preconfigured `helm' for color.
 
 ;;;***
 
+;;;### (autoloads nil "helm-comint" "helm-comint.el" (0 0 0 0))
+;;; Generated autoloads from helm-comint.el
+
+(autoload 'helm-comint-prompts "helm-comint" "\
+Pre-configured `helm' to browse the prompts of the current comint buffer.
+
+\(fn)" t nil)
+
+(autoload 'helm-comint-prompts-all "helm-comint" "\
+Pre-configured `helm' to browse the prompts of all comint sessions.
+
+\(fn)" t nil)
+
+(autoload 'helm-comint-input-ring "helm-comint" "\
+Preconfigured `helm' that provide completion of `comint' history.
+
+\(fn)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-comint" '("helm-")))
+
+;;;***
+
 ;;;### (autoloads nil "helm-command" "helm-command.el" (0 0 0 0))
 ;;; Generated autoloads from helm-command.el
 
@@ -575,11 +597,6 @@ Preconfigured `helm' for `minibuffer-history'.
 
 \(fn)" t nil)
 
-(autoload 'helm-comint-input-ring "helm-misc" "\
-Preconfigured `helm' that provide completion of `comint' history.
-
-\(fn)" t nil)
-
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-misc" '("helm-")))
 
 ;;;***
@@ -992,6 +1009,15 @@ Fill in the symbol at point by default.
 \(fn ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "helm-semantic" '("helm-s")))
+
+;;;***
+
+;;;### (autoloads nil "helm-shell" "helm-shell.el" (0 0 0 0))
+;;; Generated autoloads from helm-shell.el
+
+(defalias 'helm-shell-prompts 'helm-comint-prompts)
+
+(defalias 'helm-shell-prompts-all 'helm-comint-prompts-all)
 
 ;;;***
 

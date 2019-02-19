@@ -866,15 +866,19 @@ will be moved to trash instead of beeing deleted.
 You can reverse at any time the behavior of `delete-by-moving-to-trash' by using
 a prefix arg with any of the delete files command.
 
-On GNULinux distribution, when navigating to a Trash directory you
+On GNULinux distributions, when navigating to a Trash directory you
 can restore any file in ..Trash/files directory with the 'Restore
 from trash' action you will find in action menu (needs the
-trash-cli package installed).
+trash-cli package installed for remote files, see [[Trashing remote files with tramp][Here]]).
 You can as well delete files from Trash directories with the 'delete files from trash'
 action.
+If you want to know where a file will be restored, hit `M-i', you will find a trash info.
 
 Tip: Navigate to your Trash/files directories with `helm-find-files' and set a bookmark
 there with \\<helm-find-files-map>\\[helm-ff-bookmark-set] for fast access to Trash.
+
+NOTE: Restoring files from trash is working only on system using
+the [[http://freedesktop.org/wiki/Specifications/trash-spec][freedesktop trash specifications]].
 
 _WARNING:_
 
@@ -952,6 +956,22 @@ with trash-list until you log in as root.
 \\[helm-ff-sort-alpha]\t\tSort alphabetically
 \\[helm-ff-sort-by-newest]\t\tSort by newest
 \\[helm-ff-sort-by-size]\t\tSort by size")
+
+;;; Help for file-name-history
+;;
+;;
+(defvar helm-file-name-history-help-message
+  "* Helm file name history
+
+** Tips
+You can open directly the selected file and exit helm or preselect the file in helm-find-files,
+see actions in action menu.
+
+You can toggle the view of deleted files, see commands below.
+
+** Commands
+\\<helm-file-name-history-map>
+\\[helm-file-name-history-show-or-hide-deleted]\t\tToggle deleted files view.")
 
 ;;; Help for `helm-read-file-name'
 ;;
