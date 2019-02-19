@@ -6,7 +6,7 @@
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/purcell/reformatter.el
 ;; Package-Requires: ((emacs "24.3"))
-;; Package-Version: 20190114.255
+;; Package-Version: 20190210.401
 ;; Package-X-Original-Version: 0
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -108,7 +108,8 @@ The macro accepts the following keyword arguments:
 :group
 
   If provided, this is the custom group used for any generated
-  modes or custom variables.
+  modes or custom variables.  Don't forget to declare this group
+  using a `defgroup' form.
 
 :lighter
 
@@ -165,7 +166,7 @@ DISPLAY-ERRORS, shows a buffer if the formatting fails."
          (interactive "rp")
          (let* ((err-file (make-temp-file ,(symbol-name name)))
                 (out-file (make-temp-file ,(symbol-name name)))
-                ;; Setting this coding sysmte might not universally be
+                ;; Setting this coding system might not universally be
                 ;; the best default, but was apparently necessary for
                 ;; some hand-rolled reformatter functions that this
                 ;; library was written to replace.
