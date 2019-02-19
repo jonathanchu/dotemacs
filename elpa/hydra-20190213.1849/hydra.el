@@ -1,6 +1,6 @@
 ;;; hydra.el --- Make bindings that stick around. -*- lexical-binding: t -*-
 
-;; Copyright (C) 2015  Free Software Foundation, Inc.
+;; Copyright (C) 2015-2019  Free Software Foundation, Inc.
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; Maintainer: Oleh Krehel <ohwoeowho@gmail.com>
@@ -498,15 +498,24 @@ Remove :color key. And sort the plist alphabetically."
   "The function for formatting key-doc pairs.")
 
 (defun hydra-key-doc-function-default (key key-width doc doc-width)
-  "Doc"
   (cond
     ((equal key " ") (format (format "%%-%ds" (+ 3 key-width doc-width)) doc))
+    ((listp doc)
+     `(format ,(format "%%%ds: %%%ds" key-width (- -1 doc-width)) ,key ,doc))
     (t (format (format "%%%ds: %%%ds" key-width (- -1 doc-width)) key doc))))
 
 (defun hydra--to-string (x)
   (if (stringp x)
       x
     (eval x)))
+
+(defun hydra--eval-and-format (x)
+  (let ((str (hydra--to-string (cdr x))))
+    (format
+     (if (> (length str) 0)
+         (concat hydra-head-format str)
+       "%s")
+     (car x))))
 
 (defun hydra--hint-heads-wocol (body heads)
   "Generate a hint for the echo area.
@@ -516,14 +525,13 @@ Works for heads without a property :column."
     (dolist (h heads)
       (let ((val (assoc (cadr h) alist))
             (pstr (hydra-fontify-head h body)))
-        (unless (not (stringp (cl-caddr h)))
-          (if val
-              (setf (cadr val)
-                    (concat (cadr val) " " pstr))
-            (push
-             (cons (cadr h)
-                   (cons pstr (cl-caddr h)))
-             alist)))))
+        (if val
+            (setf (cadr val)
+                  (concat (cadr val) " " pstr))
+          (push
+           (cons (cadr h)
+                 (cons pstr (cl-caddr h)))
+           alist))))
     (let ((keys (nreverse (mapcar #'cdr alist)))
           (n-cols (plist-get (cddr body) :columns))
           res)
@@ -552,13 +560,7 @@ Works for heads without a property :column."
 
               `(concat
                 (mapconcat
-                 (lambda (x)
-                   (let ((str (hydra--to-string (cdr x))))
-                     (format
-                      (if (> (length str) 0)
-                          (concat hydra-head-format str)
-                        "%s")
-                      (car x))))
+                 #'hydra--eval-and-format
                  ',keys
                  ", ")
                 ,(if keys "." ""))))
@@ -572,11 +574,16 @@ Works for heads without a property :column."
 BODY, and HEADS are parameters to `defhydra'."
   (let* ((sorted-heads (hydra--sort-heads (hydra--normalize-heads heads)))
          (heads-w-col (cl-remove-if-not (lambda (heads) (hydra--head-property (nth 0 heads) :column)) sorted-heads))
-         (heads-wo-col (cl-remove-if (lambda (heads) (hydra--head-property (nth 0 heads) :column)) sorted-heads)))
-    (concat (when heads-w-col
-              (hydra--hint-from-matrix body (hydra--generate-matrix heads-w-col)))
-            (when heads-wo-col
-              (hydra--hint-heads-wocol body (car heads-wo-col))))))
+         (heads-wo-col (cl-remove-if (lambda (heads) (hydra--head-property (nth 0 heads) :column)) sorted-heads))
+         (hint-w-col (when heads-w-col
+                       (hydra--hint-from-matrix body (hydra--generate-matrix heads-w-col))))
+         (hint-wo-col (when heads-wo-col
+                        (hydra--hint-heads-wocol body (car heads-wo-col)))))
+    (if (null hint-w-col)
+        hint-wo-col
+      (if (stringp hint-wo-col)
+          `(concat ,@hint-w-col ,hint-wo-col)
+        `(concat ,@hint-w-col ,@(cdr hint-wo-col))))))
 
 (defvar hydra-fontify-head-function nil
   "Possible replacement for `hydra-fontify-head-default'.")
@@ -730,27 +737,37 @@ The expressions can be auto-expanded according to NAME."
                         (substring docstring 0 start)
                         "%" spec
                         (substring docstring (+ start offset 1 lspec varp))))))))
-      (cond
-        ((string= docstring "")
-         rest)
-        ((eq ?\n (aref docstring 0))
-         `(concat (format ,(substring docstring 1) ,@(nreverse varlist))
-                  ,rest))
-        (t
-         (let ((r `(replace-regexp-in-string
-                    " +$" ""
-                    (concat ,docstring
-                            ,(cond ((string-match-p "\\`\n" rest)
-                                    ":")
-                                   ((string-match-p "\n" rest)
-                                    ":\n")
-                                   (t
-                                    ": "))
-                            (replace-regexp-in-string
-                             "\\(%\\)" "\\1\\1" ,rest)))))
-           (if (stringp rest)
-               `(format ,(eval r))
-             `(format ,r))))))))
+      (hydra--format-1 docstring rest varlist))))
+
+(defun hydra--format-1 (docstring rest varlist)
+  (cond
+    ((string= docstring "")
+     rest)
+    ((listp rest)
+     (unless (string-match-p "[:\n]" docstring)
+       (setq docstring (concat docstring ":\n")))
+     (unless (or (string-match-p "\n\\'" docstring)
+                 (equal (cadr rest) "\n"))
+       (setq docstring (concat docstring "\n")))
+     `(concat (format ,(replace-regexp-in-string "\\`\n" "" docstring) ,@(nreverse varlist))
+              ,@(cdr rest)))
+    ((eq ?\n (aref docstring 0))
+     `(format ,(concat (substring docstring 1) rest) ,@(nreverse varlist)))
+    (t
+     (let ((r `(replace-regexp-in-string
+                " +$" ""
+                (concat ,docstring
+                        ,(cond ((string-match-p "\\`\n" rest)
+                                ":")
+                               ((string-match-p "\n" rest)
+                                ":\n")
+                               (t
+                                ": "))
+                        (replace-regexp-in-string
+                         "\\(%\\)" "\\1\\1" ,rest)))))
+       (if (stringp rest)
+           `(format ,(eval r))
+         `(format ,r))))))
 
 (defun hydra--complain (format-string &rest args)
   "Forward to (`message' FORMAT-STRING ARGS) unless `hydra-verbose' is nil."
@@ -1089,33 +1106,54 @@ representing the maximum dimension of their owning group.
                         decorated-heads) res)))
       (nreverse res))))
 
+(defun hydra-interpose (x lst)
+  "Insert X in between each element of LST."
+  (let (res y)
+    (while (setq y (pop lst))
+      (push y res)
+      (push x res))
+    (nreverse (cdr res))))
+
+(defun hydra--hint-row (heads body)
+  (let ((lst (hydra-interpose
+              "| "
+              (mapcar (lambda (head)
+                        (funcall hydra-key-doc-function
+                                 (hydra-fontify-head head body)
+                                 (let ((n (hydra--head-property head :max-key-len)))
+                                   (+ n (cl-count ?% (car head))))
+                                 (nth 2 head) ;; doc
+                                 (hydra--head-property head :max-doc-len)))
+                      heads))))
+    (when (stringp (car (last lst)))
+      (let ((len (length lst))
+            (new-last (replace-regexp-in-string "\s+$" "" (car (last lst)))))
+        (when (= 0 (length (setf (nth (- len 1) lst) new-last)))
+          (setf (nth (- len 2) lst) "|"))))
+    lst))
+
+
 (defun hydra--hint-from-matrix (body heads-matrix)
   "Generate a formated table-style docstring according to BODY and HEADS-MATRIX.
 HEADS-MATRIX is expected to be a list of heads with following features:
 Each heads must have the same length
 Each head must have a property max-key-len and max-doc-len."
   (when heads-matrix
-    (let* ((first-heads-col (nth 0 heads-matrix))
-           (last-row-index (- (length first-heads-col) 1))
-           (lines nil))
-      (dolist (row-index (number-sequence 0 last-row-index))
-        (let ((heads-in-row (mapcar
-                             (lambda (heads) (nth row-index heads))
-                             heads-matrix)))
-          (push (replace-regexp-in-string
-                 "\s+$" ""
-                 (mapconcat (lambda (head)
-                              (funcall hydra-key-doc-function
-                                       (hydra-fontify-head head body) ;; key
-                                       (let ((n (hydra--head-property head :max-key-len)))
-                                         (+ n (cl-count ?% (car head))))
-                                       (nth 2 head) ;; doc
-                                       (hydra--head-property head :max-doc-len)))
-                            heads-in-row "| "))
-                lines)))
-      (concat (mapconcat #'identity (nreverse lines) "\n") "\n"))))
+    (let ((lines (hydra--hint-from-matrix-1 body heads-matrix)))
+      `(,@(apply #'append (hydra-interpose '("\n") lines))
+          "\n"))))
 
-;; previous functions dealt with automatic docstring table generation from :column head property
+(defun hydra--hint-from-matrix-1 (body heads-matrix)
+  (let* ((first-heads-col (nth 0 heads-matrix))
+         (last-row-index (- (length first-heads-col) 1))
+         (lines nil))
+    (dolist (row-index (number-sequence 0 last-row-index))
+      (let ((heads-in-row (mapcar
+                           (lambda (heads) (nth row-index heads))
+                           heads-matrix)))
+        (push (hydra--hint-row heads-in-row body)
+              lines)))
+    (nreverse lines)))
 
 (defun hydra-idle-message (secs hint name)
   "In SECS seconds display HINT."
@@ -1367,7 +1405,7 @@ result of `defhydra'."
 (defmacro defhydra+ (name body &optional docstring &rest heads)
   "Redefine an existing hydra by adding new heads.
 Arguments are same as of `defhydra'."
-  (declare (indent 1))
+  (declare (indent defun) (doc-string 3))
   (unless (stringp docstring)
     (setq heads
           (cons docstring heads))
