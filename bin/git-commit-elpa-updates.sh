@@ -11,14 +11,9 @@ ls_files1 () {
     git ls-files $root -d
 }
 
-NUMBER_OF_PACKAGES=$(ls_files | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
-NOT_TRACKED=$(ls_files | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u)
-DELETED=$(ls_files1 | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u)
+PACKAGES=$(ls_files | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
 
-for i in $NUMBER_OF_PACKAGES; do
-    # Get the first package off the list
-    # echo $i
-
+for i in $PACKAGES; do
     UNTRACKED_PACKAGE_SHORT=$(ls_files | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u | head -n 1 | sed 's/\(.*\)-.*/\1/')
     UNTRACKED_PACKAGE_LONG=$(ls_files | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u | head -n 1)
     UNTRACKED_PACKAGE_DIRECTORY=$(ls_files | grep -Ee "$i")
@@ -28,20 +23,18 @@ for i in $NUMBER_OF_PACKAGES; do
     DELETED_PACKAGE_DIRECTORY=$(ls_files1 | grep -Ee "$i")
 
     if [ "$UNTRACKED_PACKAGE_SHORT" = "$DELETED_PACKAGE_SHORT" ]; then
-        # echo "YAY"
-        # git add ...
         for x in $UNTRACKED_PACKAGE_DIRECTORY; do
-            echo "git add "$x""
+            # echo "git add "$x""
             git add "$x"
         done
 
         echo '--------------------------------------------'
         for y in $DELETED_PACKAGE_DIRECTORY; do
-            echo "git add "$y""
+            # echo "git add "$y""
             git add "$y"
         done
 
-        echo "git commit -m 'Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG"'"
+        # echo "git commit -m 'Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG"'"
         git commit -m "Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG""
     else
         echo "No action taken"
