@@ -377,7 +377,9 @@ than the second parameter.")
 (defcustom lsp-prefer-flymake t
   "Auto-configure to prefer `flymake' over `lsp-ui' if both are present.
 If set to `:none' neither of two will be enabled."
-  :type 'boolean
+  :type '(choice (const :tag "Prefer flymake" t)
+                 (const :tag "Prefer lsp-ui" nil)
+                 (const :tag "Use neither flymake nor lsp-ui" :none))
   :group 'lsp-mode)
 
 (defvar-local lsp--flymake-report-fn nil)
@@ -912,6 +914,7 @@ PARAMS - the data sent from _WORKSPACE."
                (1 'lsp--error)
                (2 'lsp--warn)
                (t 'lsp--info))
+             "%s"
              message)))
 
 (defun lsp--window-log-message (workspace params)
@@ -922,7 +925,7 @@ PARAMS - the data sent from WORKSPACE."
     (when (or (not client)
               (cl-notany (lambda (r) (string-match-p r message))
                          (lsp--client-ignore-messages client)))
-      (lsp-log (lsp--propertize message (gethash "type" params))))))
+      (lsp-log "%s" (lsp--propertize message (gethash "type" params))))))
 
 (defun lsp--window-log-message-request (params)
   "Display a message request to the user and send the user's selection back to the server."
@@ -1721,7 +1724,7 @@ disappearing, unset all the variables related to it."
                                                 :hierarchicalDocumentSymbolSupport t)
                    :formatting (:dynamicRegistration t)
                    :codeAction (:dynamicRegistration t)
-                   :completion (:completionItem (:snippetSupport ,lsp-enable-snippet))
+                   :completion (:completionItem (:snippetSupport ,(if lsp-enable-snippet t :json-false)))
                    :signatureHelp (:signatureInformation (:parameterInformation (:labelOffsetSupport t)))
                    :documentLink (:dynamicRegistration t))))
 
