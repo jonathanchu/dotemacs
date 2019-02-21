@@ -320,6 +320,20 @@
 	    "Dired with recursive directory sizes" tar
 	    ((:keywords "files" "unix" "convenience")
 	     (:url . "http://elpa.gnu.org/packages/dired-du.html"))])
+ (dired-git-info .
+		 [(0 1)
+		  ((emacs
+		    (25)))
+		  "Show git info in dired" single
+		  ((:url . "https://github.com/clemera/dired-git-info")
+		   (:keywords "dired" "files"))])
+ (disk-usage .
+	     [(1 1 0)
+	      ((emacs
+		(25 1)))
+	      "Sort and browse disk usage listings" single
+	      ((:url . "https://gitlab.com/Ambrevar/emacs-disk-usage")
+	       (:keywords "files" "convenience" "tools"))])
  (dismal .
 	 [(1 5)
 	  ((cl-lib
@@ -653,7 +667,7 @@
 	       ((:url . "http://elpa.gnu.org/packages/jgraph-mode.html")
 		(:keywords "tex" "wp"))])
  (js2-mode .
-	   [(20180301)
+	   [(20190219)
 	    ((emacs
 	      (24 1))
 	     (cl-lib
@@ -1364,7 +1378,7 @@
        ((:keywords "multimedia" "xpm")
 	(:url . "http://www.gnuvola.org/software/xpm/"))])
  (xr .
-     [(1 1)
+     [(1 2)
       nil "Convert string regexp to rx notation" tar
       ((:keywords "lisp" "maint" "regexps")
        (:url . "http://elpa.gnu.org/packages/xr.html"))])
