@@ -28,14 +28,14 @@ for i in $PACKAGES; do
             git add "$x"
         done
 
-        echo '--------------------------------------------'
+        echo '--------------------------------------------------------------------------'
         for y in $DELETED_PACKAGE_DIRECTORY; do
             # echo "git add "$y""
             git add "$y"
         done
 
         # echo "git commit -m 'Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG"'"
-        git commit -m "Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG""
+        git commit -m "Update "$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG""
     else
         echo "No action taken"
     fi
