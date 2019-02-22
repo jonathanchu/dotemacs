@@ -2,7 +2,7 @@
 ;; Copyright (C) 2015-2018 jack angers
 ;; Author: jack angers
 ;; Version: 0.5.2
-;; Package-Version: 20190213.607
+;; Package-Version: 20190221.1723
 ;; Package-Requires: ((emacs "24.3") (f "0.20.0") (s "1.11.0") (dash "2.9.0") (popup "0.5.3"))
 ;; Keywords: programming
 
@@ -523,6 +523,12 @@ or most optimal searcher."
            :regex "type\\s*JJJ\\b\\s*(\\{[^}]+\\})?\\s*=\\s*\\w+"
            :tests ("type test = object" "type test {.pure.} = enum")
            :not ("type testnot = object"))
+
+    ;; nix
+    (:type "variable" :supports ("ag" "grep" "rg" "git-grep") :language "nix"
+           :regex "\\b\\s*JJJ\\s*=[^=;]+"
+           :tests ("test = 1234;" "test = 123;" "test=123")
+           :not ("testNot = 1234;" "Nottest = 1234;" "AtestNot = 1234;"))
 
     ;; ruby
     (:type "variable" :supports ("ag" "rg" "git-grep") :language "ruby"
@@ -1308,6 +1314,7 @@ or most optimal searcher."
     (:language "javascript" :ext "css" :agtype "css" :rgtype "css")
     (:language "lua" :ext "lua" :agtype "lua" :rgtype "lua")
     (:language "nim" :ext "nim" :agtype "nim" :rgtype "nim")
+    (:language "nix" :ext "nix" :agtype "nix" :rgtype "nix")
     (:language "org" :ext "org" :agtype nil :rgtype "org")
     (:language "perl" :ext "pl" :agtype "perl" :rgtype "perl")
     (:language "perl" :ext "pm" :agtype "perl" :rgtype "perl")
@@ -1965,6 +1972,7 @@ current file."
     (:comment "#" :language "ruby")
     (:comment "#" :language "crystal")
     (:comment "#" :language "nim")
+    (:comment "#" :language "nix")
     (:comment "//" :language "scala")
     (:comment ";" :language "scheme")
     (:comment "#" :language "shell")
