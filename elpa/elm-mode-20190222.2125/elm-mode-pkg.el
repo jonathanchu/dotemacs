@@ -1,4 +1,4 @@
-(define-package "elm-mode" "20190114.0" "Major mode for Elm"
+(define-package "elm-mode" "20190222.2125" "Major mode for Elm"
   '((f "0.17")
     (let-alist "1.0.4")
     (seq "2.2")

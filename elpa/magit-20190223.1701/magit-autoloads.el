@@ -1475,6 +1475,14 @@ Abort the current merge operation.
 
 ;;;***
 
+;;;### (autoloads nil "magit-obsolete" "magit-obsolete.el" (0 0 0
+;;;;;;  0))
+;;; Generated autoloads from magit-obsolete.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "magit-obsolete" '("magit--magit-popup-warning")))
+
+;;;***
+
 ;;;### (autoloads nil "magit-patch" "magit-patch.el" (0 0 0 0))
 ;;; Generated autoloads from magit-patch.el
  (autoload 'magit-patch "magit-patch" nil t)
@@ -2445,8 +2453,8 @@ Create a new BRANCH and check it out in a new worktree at PATH.
 
 ;;;***
 
-;;;### (autoloads nil nil ("magit-core.el" "magit-obsolete.el" "magit-pkg.el")
-;;;;;;  (0 0 0 0))
+;;;### (autoloads nil nil ("magit-core.el" "magit-pkg.el") (0 0 0
+;;;;;;  0))
 
 ;;;***
 

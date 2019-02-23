@@ -9,7 +9,7 @@
 ;;;### (autoloads nil "lsp-clients" "lsp-clients.el" (0 0 0 0))
 ;;; Generated autoloads from lsp-clients.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-clients" '("fortls--suggest-project-root" "lsp-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-clients" '("lsp-")))
 
 ;;;***
 
