@@ -4,7 +4,36 @@ set -e
 usage () {
     echo "usage: sh ./bin/git-commit-elpa-updates.sh" >&2
     echo >&2
+    echo "Given the assumption that third-party packages from ELPA are updated locally, "
+    echo "commit all changes and write the appropriate commit message."
+    echo >&2
+    echo "This will create an individual commit per package with a commit message like:"
+    echo "git commit -m 'Update evil-20190104.1026 => evil-20190222.1212'"
+    echo >&2
+    echo "If the batch (-b) option is passed in, it will create a single commit for ALL "
+    echo "packages and explicitly write each package upgrade in the long commit message."
+    echo >&2
+    echo "Options:" >&2
+    echo "-b    Batch all the commits" >&2
+    echo "-h    Show this help" >&2
 }
+
+batch=0
+while getopts bh flag; do
+    case "$flag" in
+        b) batch=1;;
+        h) usage; exit 2;;
+    esac
+done
+shift $(($OPTIND -1))
+
+if [ $batch -eq 1 ]; then
+    echo "Yay batch is used!"
+else
+    echo "No batch option was passed in."
+fi
+
+exit 1
 
 ls_files_untracked () {
     root="$(git rev-parse --show-toplevel)"
