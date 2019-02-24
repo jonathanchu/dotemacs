@@ -27,14 +27,6 @@ while getopts bh flag; do
 done
 shift $(($OPTIND -1))
 
-if [ $batch -eq 1 ]; then
-    echo "Yay batch is used!"
-else
-    echo "No batch option was passed in."
-fi
-
-exit 1
-
 ls_files_untracked () {
     root="$(git rev-parse --show-toplevel)"
     git ls-files $root --exclude-standard --others
@@ -74,18 +66,19 @@ for i in $PACKAGES; do
             git add "$y"
         done
 
-        # echo "git commit -m 'Update "$DELETED_PACKAGE_LONG" -> "$UNTRACKED_PACKAGE_LONG"'"
-        # git commit -m "Update "$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG""
-        COMMIT_MSG="$COMMIT_MSG"$'\nUpdate '$""$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG""
-        # echo $COMMIT_MSG
+        if [ $batch -eq 1 ]; then
+            COMMIT_MSG="$COMMIT_MSG"$'\nUpdate '$""$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG""
+            # echo $COMMIT_MSG
+        else
+            # echo "git commit -m 'Update "$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG"'"
+            git commit -m "Update "$DELETED_PACKAGE_LONG" => "$UNTRACKED_PACKAGE_LONG""
+        fi
     else
         echo "No action taken."
     fi
 done
 
-git commit -m "$COMMIT_MSG"
-
-# Update the archive contents now
+# Update the archive contents too
 ELPA_ARCHIVES=$(ls_files_modified | grep -Ee 'elpa/archives/')
 
 if [ "$ELPA_ARCHIVES" ]; then
@@ -93,5 +86,14 @@ if [ "$ELPA_ARCHIVES" ]; then
         git add "$x"
     done
 
-    git commit -m "Update ELPA package archive contents."
+    if [ $batch -eq 1 ]; then
+        COMMIT_MSG="$COMMIT_MSG"$"\nUpdate ELPA package archive contents"
+    else
+        git commit -m "Update ELPA package archive contents."
+    fi
+fi
+
+# Finally, if the batch option (-b) is passed in, make one big finally commit at the end
+if [ $batch -eq 1 ]; then
+    git commit -m "$COMMIT_MSG"
 fi
