@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+usage () {
+    echo "usage: sh ./bin/git-commit-elpa-updates.sh" >&2
+    echo >&2
+}
+
 ls_files_untracked () {
     root="$(git rev-parse --show-toplevel)"
     git ls-files $root --exclude-standard --others
@@ -50,3 +55,14 @@ for i in $PACKAGES; do
 done
 
 git commit -m "$COMMIT_MSG"
+
+# Update the archive contents now
+ELPA_ARCHIVES=$(ls_files_modified | grep -Ee 'elpa/archives/')
+
+if [ "$ELPA_ARCHIVES" ]; then
+    for x in $ELPA_ARCHIVES; do
+        git add "$x"
+    done
+
+    git commit -m "Update ELPA package archive contents."
+fi
