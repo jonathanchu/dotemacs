@@ -59,6 +59,9 @@
 (declare-function info 'info)
 (declare-function Man-find-section 'man)
 (declare-function Man-next-section 'man)
+(declare-function Man-getpage-in-background 'man)
+
+(defvar Man-notify-method)
 
 ;;; Options
 
@@ -860,12 +863,25 @@ PROP has to be a keyword.  What keywords and values
                             (aset layout 3 (delq (car cons) list)))
                         cons))))
                  ((and (listp layout)
-                       (if (symbolp loc)
-                           (eq (plist-get (nth 2 layout) :command) loc)
-                         (equal (key (plist-get (nth 2 layout) :key)) loc)))
+                       (let* ((def (nth 2 layout))
+                              (cmd (plist-get def :command)))
+                         (if (symbolp loc)
+                             (eq cmd loc)
+                           (equal (key (or (plist-get def :key)
+                                           (transient--command-key cmd)))
+                                  loc))))
                   layout))))
         (mem layout (key loc)))
     (error "%s is not a transient command" prefix)))
+
+(defun transient--command-key (cmd)
+  (when-let ((obj (get cmd 'transient--suffix)))
+    (cond ((slot-boundp obj 'key)
+           (oref obj key))
+          ((slot-exists-p obj 'shortarg)
+           (if (slot-boundp obj 'shortarg)
+               (oref obj shortarg)
+             (transient--derive-shortarg (oref obj argument)))))))
 
 ;;; Variables
 
@@ -1030,6 +1046,7 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-g") 'transient-quit-one)
     (define-key map (kbd "C-q") 'transient-quit-all)
     (define-key map (kbd "C-z") 'transient-suspend)
+    (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
     map)
   "Base keymap used by all transients.")
 
@@ -1041,6 +1058,7 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-g")   'transient-quit-one)
     (define-key map (kbd "C-q")   'transient-quit-all)
     (define-key map (kbd "C-z")   'transient-suspend)
+    (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
     map)
   "Keymap that is active while a transient in is in \"edit mode\".")
 
@@ -1049,6 +1067,7 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-g") 'transient-quit-seq)
     (define-key map (kbd "C-q") 'transient-quit-all)
     (define-key map (kbd "C-z") 'transient-suspend)
+    (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
     map)
   "Keymap that is active while an incomplete key sequence is active.")
 
@@ -2179,6 +2198,7 @@ have a history of their own.")
             (insert ?\n))))
       (when (or transient--helpp transient--editp)
         (transient--insert-help))
+      (delete-trailing-whitespace)
       (let ((lv-force-update t)
             (lv-use-separator t))
         (lv-message "%s" (buffer-string))))))
@@ -2452,9 +2472,15 @@ location."
   (transient--describe-function cmd))
 
 (defun transient--show-manpage (manpage &optional argument)
-  (select-window (get-buffer-window (man manpage)))
-  (when argument
-    (transient--goto-argument-description argument)))
+  (require 'man)
+  (let* ((Man-notify-method 'meek)
+         (buf (Man-getpage-in-background manpage))
+         (proc (get-buffer-process buf)))
+    (while (and proc (eq (process-status proc) 'run))
+      (accept-process-output proc))
+    (switch-to-buffer buf)
+    (when argument
+      (transient--goto-argument-description argument))))
 
 (defun transient--describe-function (fn)
   (describe-function fn)
