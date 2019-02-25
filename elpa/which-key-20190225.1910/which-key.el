@@ -5,8 +5,8 @@
 ;; Author: Justin Burkett <justin@burkett.cc>
 ;; Maintainer: Justin Burkett <justin@burkett.cc>
 ;; URL: https://github.com/justbur/emacs-which-key
-;; Package-Version: 20181114.1432
-;; Version: 3.3.0
+;; Package-Version: 20190225.1910
+;; Version: 3.3.2
 ;; Keywords:
 ;; Package-Requires: ((emacs "24.4"))
 
@@ -1402,29 +1402,18 @@ local bindings coming first. Within these categories order using
 (defsubst which-key--butlast-string (str)
   (mapconcat #'identity (butlast (split-string str)) " "))
 
-(defun which-key--get-replacements (key-binding &optional use-major-mode)
-  (let ((alist (or (and use-major-mode
-                        (cdr-safe
-                         (assq major-mode which-key-replacement-alist)))
-                   which-key-replacement-alist))
-        res case-fold-search)
-    (catch 'res
-      (dolist (replacement alist)
-        ;; these are mode specific ones to ignore. The mode specific case is
-        ;; handled in the selection of alist
-        (unless (symbolp (car replacement))
-          (let ((key-regexp (caar replacement))
-                (binding-regexp (cdar replacement)))
-            (when (and (or (null key-regexp)
-                           (string-match-p key-regexp
-                                           (car key-binding)))
-                       (or (null binding-regexp)
-                           (string-match-p binding-regexp
-                                           (cdr key-binding))))
-              (push replacement res)
-              (when (not which-key-allow-multiple-replacements)
-                (throw 'res res)))))))
-    (nreverse res)))
+(defun which-key--match-replacement (key-binding replacement)
+  ;; these are mode specific ones to ignore. The mode specific case is
+  ;; handled in the selection of alist
+  (when (and (consp key-binding) (not (symbolp (car replacement))))
+    (let ((key-regexp (caar replacement))
+          (binding-regexp (cdar replacement)))
+      (and (or (null key-regexp)
+               (string-match-p key-regexp
+                               (car key-binding)))
+           (or (null binding-regexp)
+               (string-match-p binding-regexp
+                               (cdr key-binding)))))))
 
 (defun which-key--get-pseudo-binding (key-binding &optional prefix)
   (let* ((pseudo-binding
@@ -1445,30 +1434,35 @@ local bindings coming first. Within these categories order using
   "Use `which-key--replacement-alist' to maybe replace KEY-BINDING.
 KEY-BINDING is a cons cell of the form \(KEY . BINDING\) each of
 which are strings. KEY is of the form produced by `key-binding'."
-  (let* ((pseudo-binding (which-key--get-pseudo-binding key-binding prefix)))
+  (let* ((pseudo-binding (which-key--get-pseudo-binding key-binding prefix))
+         one-match)
     (if pseudo-binding
         pseudo-binding
-      (let* ((mode-res (which-key--get-replacements key-binding t))
-             (all-repls (or mode-res
-                            (which-key--get-replacements key-binding))))
+      (let* ((all-repls
+              (append (cdr-safe (assq major-mode which-key-replacement-alist))
+                      which-key-replacement-alist)))
         (dolist (repl all-repls key-binding)
-          (setq key-binding
-                (cond ((or (not (consp repl)) (null (cdr repl)))
-                       key-binding)
-                      ((functionp (cdr repl))
-                       (funcall (cdr repl) key-binding))
-                      ((consp (cdr repl))
-                       (cons
-                        (cond ((and (caar repl) (cadr repl))
-                               (replace-regexp-in-string
-                                (caar repl) (cadr repl) (car key-binding) t))
-                              ((cadr repl) (cadr repl))
-                              (t (car key-binding)))
-                        (cond ((and (cdar repl) (cddr repl))
-                               (replace-regexp-in-string
-                                (cdar repl) (cddr repl) (cdr key-binding) t))
-                              ((cddr repl) (cddr repl))
-                              (t (cdr key-binding))))))))))))
+          (when (and (or which-key-allow-multiple-replacements
+                         (not one-match))
+                     (which-key--match-replacement key-binding repl))
+            (setq one-match t)
+            (setq key-binding
+                  (cond ((or (not (consp repl)) (null (cdr repl)))
+                         key-binding)
+                        ((functionp (cdr repl))
+                         (funcall (cdr repl) key-binding))
+                        ((consp (cdr repl))
+                         (cons
+                          (cond ((and (caar repl) (cadr repl))
+                                 (replace-regexp-in-string
+                                  (caar repl) (cadr repl) (car key-binding) t))
+                                ((cadr repl) (cadr repl))
+                                (t (car key-binding)))
+                          (cond ((and (cdar repl) (cddr repl))
+                                 (replace-regexp-in-string
+                                  (cdar repl) (cddr repl) (cdr key-binding) t))
+                                ((cddr repl) (cddr repl))
+                                (t (cdr key-binding)))))))))))))
 
 (defsubst which-key--current-key-list (&optional key-str)
   (append (listify-key-sequence (which-key--current-prefix))
