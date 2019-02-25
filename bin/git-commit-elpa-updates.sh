@@ -37,11 +37,6 @@ ls_files_deleted () {
     git ls-files $root -d
 }
 
-ls_files_modified () {
-    root="$(git rev-parse --show-toplevel)"
-    git ls-files $root -m
-}
-
 PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
 COMMIT_MSG=$'Update packages\n'
 
@@ -77,21 +72,6 @@ for i in $PACKAGES; do
         echo "No action taken."
     fi
 done
-
-# Update the archive contents too
-ELPA_ARCHIVES=$(ls_files_modified | grep -Ee 'elpa/archives/')
-
-if [ "$ELPA_ARCHIVES" ]; then
-    for x in $ELPA_ARCHIVES; do
-        git add "$x"
-    done
-
-    if [ $batch -eq 1 ]; then
-        COMMIT_MSG="$COMMIT_MSG"$"\nUpdate ELPA package archive contents"
-    else
-        git commit -m "Update ELPA package archive contents."
-    fi
-fi
 
 # Finally, if the batch option (-b) is passed in, make one big finally commit at the end
 if [ $batch -eq 1 ]; then
