@@ -1738,7 +1738,7 @@ disappearing, unset all the variables related to it."
   `(
     :workspace (:workspaceEdit (
                                 :documentChanges t
-                                :resourceOperations ("create" "rename" "delete"))
+                                :resourceOperations ["create" "rename" "delete"])
                                :applyEdit t
                                :symbol (:symbolKind (:valueSet ,(apply 'vector (number-sequence 1 26))))
                                :executeCommand (:dynamicRegistration :json-false)
@@ -1756,7 +1756,8 @@ disappearing, unset all the variables related to it."
                    :codeAction (:dynamicRegistration t)
                    :completion (:completionItem (:snippetSupport ,(if lsp-enable-snippet t :json-false)))
                    :signatureHelp (:signatureInformation (:parameterInformation (:labelOffsetSupport t)))
-                   :documentLink (:dynamicRegistration t))))
+                   :documentLink (:dynamicRegistration t)
+                   :hover (:contentFormat ["plaintext" "markdown"]))))
 
 (defun lsp--server-register-capability (reg)
   "Register capability REG."
@@ -1995,7 +1996,7 @@ interface Range {
                    (filename (lsp--uri-to-path (gethash "uri" ident)))
                    (version (gethash "version" ident)))
               (with-current-buffer (find-file-noselect filename)
-                (or (null version) (zerop version) (equal version (lsp--cur-file-version))))))
+                (or (null version) (zerop version) (equal version lsp--cur-version)))))
            document-changes)
     (error "Document changes cannot be applied")))
 
@@ -2374,7 +2375,7 @@ if it's closing the last buffer in the workspace."
             `(:textDocument ,(lsp--versioned-text-document-identifier))))
          (when (and (not lsp-keep-workspace-alive)
                     (not keep-workspace-alive)
-                    (hash-table-empty-p old-buffers))
+                    (not (lsp--workspace-buffers lsp--cur-workspace)))
            (setf (lsp--workspace-shutdown-action lsp--cur-workspace) 'shutdown)
            (lsp--shutdown-workspace)))))))
 
