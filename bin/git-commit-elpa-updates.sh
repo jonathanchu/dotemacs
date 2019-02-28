@@ -37,13 +37,18 @@ ls_files_deleted () {
     git ls-files $root -d
 }
 
-PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
-NUM_PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/' | wc -l)
-COMMIT_MSG=$'Update'"$NUM_PACKAGES"' packages'
-echo $COMMIT_MSG
-echo $NUM_PACKAGES
+ALL_PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
+NUM_PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/' | wc -l | sed -e 's/^[ \t]*//')
 
-for i in $PACKAGES; do
+if [ $NUM_PACKAGES -eq 1 ]; then
+    PACKAGES="package"
+else
+    PACKAGES="packages"
+fi
+
+COMMIT_MSG="Update $NUM_PACKAGES $PACKAGES"$'\n'
+
+for i in $ALL_PACKAGES; do
     UNTRACKED_PACKAGE_SHORT=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u | head -n 1 | sed 's/\(.*\)-.*/\1/')
     UNTRACKED_PACKAGE_LONG=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u | head -n 1)
     UNTRACKED_PACKAGE_DIRECTORY=$(ls_files_untracked | grep -Ee "$i")
