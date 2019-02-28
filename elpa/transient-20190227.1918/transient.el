@@ -70,7 +70,7 @@
   :group 'bindings)
 
 (defcustom transient-show-popup t
-  "Whether to show the current transient in the echo area.
+  "Whether to show the current transient in a popup buffer.
 
 If t, then show the popup as soon as a transient command is
 invoked.  If nil, then do not show the popup unless the user
@@ -84,7 +84,7 @@ or when the user explicitly requests it."
                  (number :tag "after delay" 1)))
 
 (defcustom transient-show-common-commands nil
-  "Whether to show common transient commands in the echo area.
+  "Whether to show common transient suffixes in the popup buffer.
 
 These commands are always shown after typing the prefix key
 \"C-x\" when a transient command is active.  To toggle the value
@@ -279,6 +279,14 @@ See info node `(transient)Enabling and Disabling Suffixes'."
            (insert-file-contents file)
            (read (current-buffer))))))
 
+(defun transient--pp-to-file (object file)
+  (make-directory (file-name-directory file) t)
+  (setq object (cl-sort object #'string< :key #'car))
+  (with-temp-file file
+    (let ((print-level nil)
+          (print-length nil))
+      (pp object (current-buffer)))))
+
 (defvar transient-values
   (transient--read-file-contents transient-values-file)
   "Values of transient commands.
@@ -286,10 +294,7 @@ The value of this variable persists between Emacs sessions
 and you usually should not change it manually.")
 
 (defun transient-save-values ()
-  (make-directory (file-name-directory transient-values-file) t)
-  (setq transient-values (cl-sort transient-values #'string< :key #'car))
-  (with-temp-file transient-values-file
-    (insert (pp-to-string transient-values))))
+  (transient--pp-to-file transient-values transient-values-file))
 
 (defvar transient-levels
   (transient--read-file-contents transient-levels-file)
@@ -298,10 +303,7 @@ The value of this variable persists between Emacs sessions
 and you usually should not change it manually.")
 
 (defun transient-save-levels ()
-  (make-directory (file-name-directory transient-levels-file) t)
-  (setq transient-levels (cl-sort transient-levels #'string< :key #'car))
-  (with-temp-file transient-levels-file
-    (insert (pp-to-string transient-levels))))
+  (transient--pp-to-file transient-levels transient-levels-file))
 
 (defvar transient-history
   (transient--read-file-contents transient-history-file)
@@ -311,15 +313,13 @@ The value of this variable persists between Emacs sessions
 should not change it manually.")
 
 (defun transient-save-history ()
-  (make-directory (file-name-directory transient-history-file) t)
   (setq transient-history
         (cl-sort (mapcar (pcase-lambda (`(,key . ,val))
                            (cons key (-take transient-history-limit
                                             (delete-dups val))))
                          transient-history)
                  #'string< :key #'car))
-  (with-temp-file transient-history-file
-    (insert (pp-to-string transient-history))))
+  (transient--pp-to-file transient-history transient-history-file))
 
 (defun transient-maybe-save-history ()
   "Save the value of `transient-history'.
@@ -494,8 +494,8 @@ argument supported by the constructor of that class.  The
 explicitly.
 
 GROUPs add key bindings for infix and suffix commands and specify
-how these bindings are presented in the echo area.  At least one
-GROUP has to be specified.  See info node `(transient)Binding
+how these bindings are presented in the popup buffer.  At least
+one GROUP has to be specified.  See info node `(transient)Binding
 Suffix and Infix Commands'.
 
 The BODY is optional.  If it is omitted, then ARGLIST is also
@@ -752,8 +752,12 @@ example, sets a variable use `define-infix-command' instead.
   (let ((cmd (oref obj command)))
     (unless (or (commandp cmd)
                 (get cmd 'transient--infix-command))
-      (put cmd 'transient--infix-command
-           (transient--default-infix-command)))))
+      (if (or (cl-typep obj 'transient-switch)
+              (cl-typep obj 'transient-option))
+          (put cmd 'transient--infix-command
+               (transient--default-infix-command))
+        ;; This is not an anonymous infix argument.
+        (error "Suffix %s is not defined or autoloaded as a command" cmd)))))
 
 (defun transient--derive-shortarg (arg)
   (save-match-data
@@ -767,11 +771,7 @@ example, sets a variable use `define-infix-command' instead.
          (mem (transient--layout-member prefix loc)))
     (if mem
         (progn
-          (when-let ((old (transient--layout-member
-                           prefix (plist-get (nth 2 suf) :command))))
-            (setcar old (cadr old))
-            (setcdr old (cddr old))
-            (setq mem (transient--layout-member prefix loc)))
+          (transient-remove-suffix prefix (plist-get (nth 2 suf) :command))
           (cl-ecase action
             (insert  (setcdr mem (cons (car mem) (cdr mem)))
                      (setcar mem suf))
@@ -913,7 +913,7 @@ variable instead.")
 (defconst transient--exit nil "Do exit the transient.")
 
 (defvar transient--exitp nil "Whether to exit the transient.")
-(defvar transient--showp nil "Whether the transient is show in echo area.")
+(defvar transient--showp nil "Whether the transient is show in a popup buffer.")
 (defvar transient--helpp nil "Whether help-mode is active.")
 (defvar transient--editp nil "Whether edit-mode is active.")
 
@@ -1673,11 +1673,11 @@ transient is active."
   (interactive))
 
 (defun transient-update ()
-  "Redraw the transient's state in the echo area."
+  "Redraw the transient's state in the popup buffer."
   (interactive))
 
 (defun transient-show ()
-  "Show the transient's state in the echo area."
+  "Show the transient's state in the popup buffer."
   (interactive)
   (setq transient--showp t))
 
