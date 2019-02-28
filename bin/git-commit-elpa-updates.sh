@@ -38,7 +38,10 @@ ls_files_deleted () {
 }
 
 PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/')
-COMMIT_MSG=$'Update packages\n'
+NUM_PACKAGES=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | sort -u | sed 's/\(.*\)-.*/\1/' | wc -l)
+COMMIT_MSG=$'Update'"$NUM_PACKAGES"' packages'
+echo $COMMIT_MSG
+echo $NUM_PACKAGES
 
 for i in $PACKAGES; do
     UNTRACKED_PACKAGE_SHORT=$(ls_files_untracked | grep -Eo 'elpa/[^/]+/' | cut -c 6- | rev | cut -c 2- | rev | sort -u | head -n 1 | sed 's/\(.*\)-.*/\1/')
