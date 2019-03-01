@@ -44,7 +44,7 @@ reading a new value in the minibuffer.
    Calling a suffix command usually causes the transient to be exited
 but suffix commands can also be configured to not exit the transient.
 
-This manual is for Transient version 0.1.0 (v0.1.0-23-g6467626+1).
+This manual is for Transient version 0.1.0 (v0.1.0-30-g2033ac1+1).
 
      Copyright (C) 2018-2019 Jonas Bernoulli <jonas@bernoul.li>
 
@@ -83,6 +83,7 @@ Usage
 * Using History::
 * Getting Help for Suffix Commands::
 * Enabling and Disabling Suffixes::
+* Other Commands::
 
 Defining New Commands
 
@@ -250,6 +251,7 @@ File: transient.info,  Node: Usage,  Next: Other Options,  Prev: Introduction,  
 * Using History::
 * Getting Help for Suffix Commands::
 * Enabling and Disabling Suffixes::
+* Other Commands::
 
 
 File: transient.info,  Node: Invoking Transients,  Next: Aborting and Resuming Transients,  Up: Usage
@@ -522,7 +524,7 @@ supported.  The fallback is to show the commands doc-string, for
 non-infix suffixes this is usually appropriate.
 
 
-File: transient.info,  Node: Enabling and Disabling Suffixes,  Prev: Getting Help for Suffix Commands,  Up: Usage
+File: transient.info,  Node: Enabling and Disabling Suffixes,  Next: Other Commands,  Prev: Getting Help for Suffix Commands,  Up: Usage
 
 2.7 Enabling and Disabling Suffixes
 ===================================
@@ -597,6 +599,30 @@ many additional suffixes as you hoped.)
      state, you have to make sure that that state is currently active.
 
 
+File: transient.info,  Node: Other Commands,  Prev: Enabling and Disabling Suffixes,  Up: Usage
+
+2.8 Other Commands
+==================
+
+When invoking a transient in a small frame, the transient window may not
+show the complete buffer, making it necessary to scroll, using the
+following commands.  These commands are never shown in the transient
+window, and the key bindings are the same as for ‘scroll-up-command’ and
+‘scroll-down-command’ in other buffers.
+
+ -- Command: transient-scroll-up arg
+
+     This command scrolls text of transient popup window upward ARG
+     lines.  If ARG is ‘nil’, then it scrolls near full screen.  This is
+     a wrapper around ‘scroll-up-command’ (which see).
+
+ -- Command: transient-scroll-down arg
+
+     This command scrolls text of transient popup window down ARG lines.
+     If ARG is ‘nil’, then it scrolls near full screen.  This is a
+     wrapper around ‘scroll-down-command’ (which see).
+
+
 File: transient.info,  Node: Other Options,  Next: Modifying Existing Transients,  Prev: Usage,  Up: Top
 
 3 Other Options
@@ -612,6 +638,47 @@ File: transient.info,  Node: Other Options,  Next: Modifying Existing Transients
      summary is shown until the user presses a key that forms an
      incomplete key sequence.  If a number, behave as for ‘nil’ but also
      show the commands after that many seconds of inactivity.
+
+ -- User Option: transient-display-buffer-action
+
+     This option specifies the action used to display the transient
+     popup buffer.  The transient popup buffer is displayed in a window
+     using ‘(display-buffer buf transient-display-buffer-action)’.
+
+     The value of this option has the form ‘(FUNCTION . ALIST)’, where
+     FUNCTION is a function or a list of functions.  Each such function
+     should accept two arguments: a buffer to display and an alist of
+     the same form as ALIST.  See *note (elisp)Choosing Window::.
+
+     The default is ‘(display-buffer-in-side-window (side . bottom))’.
+     This displays the window at the bottom of the selected frame.
+     Another useful value is ‘(display-buffer-below-selected)’.  This is
+     what ‘magit-popup’ used by default.  For more alternatives see
+     *note (elisp)Display Action Functions::.
+
+     It may be possible to display the window in another frame, but
+     whether that works in practice depends on the window-manager.  If
+     the window manager selects the new window (Emacs frame), then it
+     doesn’t work.
+
+     If you change the value of this option, then you might also want to
+     change the value of ‘transient-mode-line-format’.
+
+ -- User Option: transient-mode-line-format
+
+     This option controls whether the transient popup buffer has a
+     mode-line, separator line, or neither.
+
+     If ‘nil’, then the buffer has no mode-line.  If the buffer is not
+     displayed right above the echo area, then this probably is not a
+     good value.
+
+     If ‘line’ (the default), then the buffer also has no mode-line, but
+     a thin line is drawn instead, using the background color of the
+     face ‘transient-separator’.
+
+     Otherwise this can be any mode-line format.  See ~*note (elisp)Mode
+     Line Format:: for details.
 
  -- User Option: transient-highlight-mismatched-keys
 
@@ -1963,10 +2030,7 @@ Hydra (see <https://github.com/abo-abo/hydra>) is another package that
 provides features similar to those of Transient.
 
    Both packages use transient keymaps to make a set of commands
-temporarily available and the ‘lv’ library to show these commands in a
-popup buffer, which looks like it is using the echo area (but without
-actually using the echo area).  The author of Hydra is also the author
-of ‘lv’, which is maintained in the same repository.
+temporarily available and show the available commands in a popup buffer.
 
    A Hydra "body" is equivalent to a Transient "prefix" and a Hydra
 "head" is equivalent to a Transient "suffix".  Hydra has no equivalent
@@ -2081,6 +2145,8 @@ Appendix B Command Index
 * transient-resume:                      Aborting and Resuming Transients.
                                                                (line 51)
 * transient-save:                        Saving Values.        (line 25)
+* transient-scroll-down arg:             Other Commands.       (line 18)
+* transient-scroll-up arg:               Other Commands.       (line 12)
 * transient-set:                         Saving Values.        (line 20)
 * transient-set-level:                   Enabling and Disabling Suffixes.
                                                                (line 49)
@@ -2148,6 +2214,8 @@ Appendix C Function Index
                                                               (line  40)
 * transient-replace-suffix:              Modifying Existing Transients.
                                                               (line  36)
+* transient-scroll-down:                 Other Commands.      (line  18)
+* transient-scroll-up:                   Other Commands.      (line  12)
 * transient-show-help:                   Suffix Format Methods.
                                                               (line  30)
 * transient-suffix-put:                  Modifying Existing Transients.
@@ -2170,60 +2238,63 @@ Appendix D Variable Index
                                                                (line 51)
 * transient-default-level:               Enabling and Disabling Suffixes.
                                                                (line 38)
-* transient-detect-key-conflicts:        Other Options.        (line 58)
-* transient-highlight-mismatched-keys:   Other Options.        (line 17)
+* transient-detect-key-conflicts:        Other Options.        (line 99)
+* transient-display-buffer-action:       Other Options.        (line 17)
+* transient-highlight-mismatched-keys:   Other Options.        (line 58)
 * transient-history-file:                Using History.        (line 33)
 * transient-history-limit:               Using History.        (line 38)
 * transient-levels-file:                 Enabling and Disabling Suffixes.
                                                                (line 44)
+* transient-mode-line-format:            Other Options.        (line 42)
 * transient-show-common-commands:        Common Suffix Commands.
                                                                (line 23)
 * transient-show-popup:                  Other Options.        (line  6)
-* transient-substitute-key-function:     Other Options.        (line 36)
+* transient-substitute-key-function:     Other Options.        (line 77)
 * transient-values-file:                 Saving Values.        (line 30)
 
 
 
 Tag Table:
 Node: Top751
-Node: Introduction3647
-Node: Usage9434
-Node: Invoking Transients9749
-Node: Aborting and Resuming Transients10782
-Node: Common Suffix Commands13265
-Node: Saving Values17149
-Ref: Saving Values-Footnote-118407
-Node: Using History18677
-Node: Getting Help for Suffix Commands20217
-Node: Enabling and Disabling Suffixes21607
-Node: Other Options24883
-Node: Modifying Existing Transients28117
-Node: Defining New Commands30660
-Node: Defining Transients30996
-Node: Binding Suffix and Infix Commands33431
-Node: Group Specifications34286
-Node: Suffix Specifications37619
-Node: Defining Suffix and Infix Commands41177
-Node: Using Infix Arguments44626
-Node: Transient State47910
-Node: Classes and Methods53782
-Node: Group Classes55996
-Node: Group Methods57913
-Node: Prefix Classes58558
-Node: Suffix Classes59650
-Node: Suffix Methods61894
-Node: Suffix Value Methods62215
-Node: Suffix Format Methods64975
-Node: Prefix Slots66424
-Node: Suffix Slots66588
-Node: Predicate Slots69439
-Node: Related Abstractions and Packages70688
-Node: Comparison With Prefix Keys and Prefix Arguments70987
-Node: Comparison With Other Packages81299
-Node: Keystroke Index85686
-Node: Command Index87350
-Node: Function Index88991
-Node: Variable Index93002
+Node: Introduction3666
+Node: Usage9453
+Node: Invoking Transients9787
+Node: Aborting and Resuming Transients10820
+Node: Common Suffix Commands13303
+Node: Saving Values17187
+Ref: Saving Values-Footnote-118445
+Node: Using History18715
+Node: Getting Help for Suffix Commands20255
+Node: Enabling and Disabling Suffixes21645
+Node: Other Commands24944
+Node: Other Options25900
+Node: Modifying Existing Transients30992
+Node: Defining New Commands33535
+Node: Defining Transients33871
+Node: Binding Suffix and Infix Commands36306
+Node: Group Specifications37161
+Node: Suffix Specifications40494
+Node: Defining Suffix and Infix Commands44052
+Node: Using Infix Arguments47501
+Node: Transient State50785
+Node: Classes and Methods56657
+Node: Group Classes58871
+Node: Group Methods60788
+Node: Prefix Classes61433
+Node: Suffix Classes62525
+Node: Suffix Methods64769
+Node: Suffix Value Methods65090
+Node: Suffix Format Methods67850
+Node: Prefix Slots69299
+Node: Suffix Slots69463
+Node: Predicate Slots72314
+Node: Related Abstractions and Packages73563
+Node: Comparison With Prefix Keys and Prefix Arguments73862
+Node: Comparison With Other Packages84174
+Node: Keystroke Index88361
+Node: Command Index90025
+Node: Function Index91812
+Node: Variable Index95969
 
 End Tag Table
 

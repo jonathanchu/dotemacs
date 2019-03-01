@@ -4,7 +4,7 @@
 
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Homepage: https://github.com/magit/transient
-;; Package-Requires: ((emacs "25.1") (dash "2.15.0") (lv "0.14.0"))
+;; Package-Requires: ((emacs "25.1") (dash "2.15.0"))
 ;; Keywords: bindings
 
 ;; This file is not part of GNU Emacs.
@@ -51,7 +51,6 @@
 (require 'dash)
 (require 'eieio)
 (require 'format-spec)
-(require 'lv)
 
 (eval-when-compile
   (require 'subr-x))
@@ -83,6 +82,60 @@ or when the user explicitly requests it."
                  (const  :tag "on demand" nil)
                  (number :tag "after delay" 1)))
 
+(defcustom transient-display-buffer-action
+  '(display-buffer-in-side-window (side . bottom))
+  "The action used to display the transient popup buffer.
+
+The transient popup buffer is displayed in a window using
+
+  \(display-buffer buf transient-display-buffer-action)
+
+The value of this option has the form (FUNCTION . ALIST),
+where FUNCTION is a function or a list of functions.  Each such
+function should accept two arguments: a buffer to display and
+an alist of the same form as ALIST.  See `display-buffer' for
+details.
+
+The default is (display-buffer-in-side-window (side . bottom)).
+This displays the window at the bottom of the selected frame.
+Another useful value is (display-buffer-below-selected).  This
+is what `magit-popup' used by default.  For more alternatives
+see info node `(elisp)Display Action Functions'.
+
+It may be possible to display the window in another frame, but
+whether that works in practice depends on the window-manager.
+If the window manager selects the new window (Emacs frame),
+then it doesn't work.
+
+If you change the value of this option, then you might also
+want to change the value of `transient-mode-line-format'."
+  :package-version '(transient . "0.2.0")
+  :group 'transient
+  :type '(cons (choice function (repeat :tag "Functions" function))
+               alist))
+
+(defcustom transient-mode-line-format 'line
+  "The mode-line format for the transient popup buffer.
+
+If nil, then the buffer has no mode-line.  If the buffer is not
+displayed right above the echo area, then this probably is not
+a good value.
+
+If `line' (the default), then the buffer also has no mode-line,
+but a thin line is drawn instead, using the background color of
+the face `transient-separator'.
+
+Otherwise this can be any mode-line format.
+See `mode-line-format' for details."
+  :package-version '(transient . "0.2.0")
+  :group 'transient
+  :type '(choice (const :tag "hide mode-line" nil)
+                 (const :tag "substitute thin line" line)
+                 (const :tag "name of prefix command"
+                        ("%e" mode-line-front-space
+                         mode-line-buffer-identification))
+                 (sexp  :tag "custom mode-line format")))
+
 (defcustom transient-show-common-commands nil
   "Whether to show common transient suffixes in the popup buffer.
 
@@ -99,7 +152,7 @@ of this variable use \"C-x t\" when a transient is active."
 This only affects infix arguments that represent command-line
 arguments.  When this option is non-nil, then the key binding
 for infix argument are highlighted when only a long argument
-(e.g. \"--verbose\") is specified but no shor-thand (e.g \"-v\").
+\(e.g. \"--verbose\") is specified but no shor-thand (e.g \"-v\").
 In the rare case that a short-hand is specified but does not
 match the key binding, then it is highlighed differently.
 
@@ -268,6 +321,14 @@ See info node `(transient)Enabling and Disabling Suffixes'."
   '((t :background "red" :foreground "black" :weight bold))
   "Face used for disables levels while editing suffix levels.
 See info node `(transient)Enabling and Disabling Suffixes'."
+  :group 'transient-faces)
+
+(defface transient-separator
+  '((((class color) (background light)) :background "grey80")
+    (((class color) (background  dark)) :background "grey30"))
+  "Face used to draw line below transient popup window.
+This is only used if `transient-mode-line-format' is `line'.
+Only the background color is significant."
   :group 'transient-faces)
 
 ;;; Persistence
@@ -921,6 +982,8 @@ variable instead.")
 
 (defvar transient--stack nil)
 
+(defvar transient--window nil)
+
 (defvar transient--debug nil "Whether put debug information into *Messages*.")
 
 (defvar transient--history nil)
@@ -1047,6 +1110,8 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-q") 'transient-quit-all)
     (define-key map (kbd "C-z") 'transient-suspend)
     (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
+    (define-key map [remap scroll-up-command] 'transient-scroll-up)
+    (define-key map [remap scroll-down-command]'transient-scroll-down)
     map)
   "Base keymap used by all transients.")
 
@@ -1059,6 +1124,8 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-q")   'transient-quit-all)
     (define-key map (kbd "C-z")   'transient-suspend)
     (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
+    (define-key map [remap scroll-up-command] 'transient-scroll-up)
+    (define-key map [remap scroll-down-command]'transient-scroll-down)
     map)
   "Keymap that is active while a transient in is in \"edit mode\".")
 
@@ -1068,6 +1135,8 @@ but unfortunately that does not exist (yet?)."
     (define-key map (kbd "C-q") 'transient-quit-all)
     (define-key map (kbd "C-z") 'transient-suspend)
     (define-key map (kbd "ESC ESC ESC") 'transient-quit-all)
+    (define-key map [remap scroll-up-command] 'transient-scroll-up)
+    (define-key map [remap scroll-down-command]'transient-scroll-down)
     map)
   "Keymap that is active while an incomplete key sequence is active.")
 
@@ -1123,6 +1192,9 @@ but unfortunately that does not exist (yet?)."
     (define-key map [transient-save]          'transient--do-call)
     (define-key map [describe-key-briefly]    'transient--do-stay)
     (define-key map [describe-key]            'transient--do-stay)
+    (define-key map [transient-scroll-up]     'transient--do-stay)
+    (define-key map [transient-scroll-down]   'transient--do-stay)
+    (define-key map [mwheel-scroll]           'transient--do-stay)
     map)
   "Base keymap used to map common commands to their transient behavior.
 
@@ -1438,9 +1510,7 @@ EDIT may be non-nil."
 
 (defun transient--pre-exit ()
   (transient--debug 'pre-exit)
-  (let ((window (selected-window)))
-    (lv-delete-window)
-    (select-window window))
+  (transient--delete-window)
   (transient--timer-cancel)
   (transient--pop-keymap 'transient--transient-map)
   (transient--pop-keymap 'transient--redisplay-map)
@@ -1457,6 +1527,12 @@ EDIT may be non-nil."
   (setq transient--prefix nil)
   (setq transient--layout nil)
   (setq transient--suffixes nil))
+
+(defun transient--delete-window ()
+  (when (window-live-p transient--window)
+    (let ((buf (window-buffer transient--window)))
+      (delete-window transient--window)
+      (kill-buffer buf))))
 
 (defun transient--export ()
   (setq current-transient-prefix transient--prefix)
@@ -1532,7 +1608,10 @@ EDIT may be non-nil."
 (defun transient--redisplay ()
   (if (or (eq transient-show-popup t)
           transient--showp)
-      (transient--show)
+      (unless (memq this-command '(transient-scroll-up
+                                   transient-scroll-down
+                                   mwheel-scroll))
+        (transient--show))
     (when (and (numberp transient-show-popup)
                (not transient--timer))
       (transient--timer-start))
@@ -1776,6 +1855,22 @@ transient is active."
       (oset obj history-pos pos)
       (oset obj value (nth pos hst))
       (mapc #'transient-init-value transient--suffixes))))
+
+(defun transient-scroll-up (&optional arg)
+  "Scroll text of transient popup window upward ARG lines.
+If ARG is nil scroll near full screen.  This is a wrapper
+around `scroll-up-command' (which see)."
+  (interactive "^P")
+  (with-selected-window transient--window
+    (scroll-up-command arg)))
+
+(defun transient-scroll-down (&optional arg)
+  "Scroll text of transient popup window down ARG lines.
+If ARG is nil scroll near full screen.  This is a wrapper
+around `scroll-down-command' (which see)."
+  (interactive "^P")
+  (with-selected-window transient--window
+    (scroll-up-command arg)))
 
 (defun transient-resume ()
   "Resume a previously suspended stack of transients."
@@ -2183,25 +2278,49 @@ have a history of their own.")
 (defun transient--show ()
   (transient--timer-cancel)
   (setq transient--showp t)
-  (let ((transient--source-buffer (current-buffer)))
-    (with-temp-buffer
-      (let ((groups (cl-mapcan (lambda (group)
-                                 (let ((hide (oref group hide)))
-                                   (and (not (and (functionp hide)
-                                                  (funcall   hide)))
-                                        (list group))))
-                               transient--layout))
-            group)
-        (while (setq group (pop groups))
-          (transient--insert-group group)
-          (when groups
-            (insert ?\n))))
+  (let ((transient--source-buffer (current-buffer))
+        (buf (get-buffer-create " *transient*")))
+    (unless (window-live-p transient--window)
+      (setq transient--window
+            (display-buffer buf transient-display-buffer-action)))
+    (with-selected-window transient--window
+      (erase-buffer)
+      (set-window-hscroll transient--window 0)
+      (set-window-dedicated-p transient--window t)
+      (set-window-parameter transient--window 'no-other-window t)
+      (setq window-size-fixed t)
+      (setq mode-line-format (if (eq transient-mode-line-format 'line)
+                                 nil
+                               transient-mode-line-format))
+      (setq mode-line-buffer-identification
+            (symbol-name (oref transient--prefix command)))
+      (setq cursor-type nil)
+      (setq display-line-numbers nil)
+      (setq show-trailing-whitespace nil)
+      (transient--insert-groups)
       (when (or transient--helpp transient--editp)
         (transient--insert-help))
-      (delete-trailing-whitespace)
-      (let ((lv-force-update t)
-            (lv-use-separator t))
-        (lv-message "%s" (buffer-string))))))
+      (when (eq transient-mode-line-format 'line)
+        (insert (propertize "__" 'face 'transient-separator
+                            'display '(space :height (1))))
+        (insert (propertize "\n" 'face 'transient-separator 'line-height t)))
+      (let ((window-resize-pixelwise t)
+            (window-size-fixed nil))
+        (fit-window-to-buffer nil nil 1))
+      (goto-char (point-min)))))
+
+(defun transient--insert-groups ()
+  (let ((groups (cl-mapcan (lambda (group)
+                             (let ((hide (oref group hide)))
+                               (and (not (and (functionp hide)
+                                              (funcall   hide)))
+                                    (list group))))
+                           transient--layout))
+        group)
+    (while (setq group (pop groups))
+      (transient--insert-group group)
+      (when groups
+        (insert ?\n)))))
 
 (cl-defgeneric transient--insert-group (group)
   "Format GROUP and its elements and insert the result.")
