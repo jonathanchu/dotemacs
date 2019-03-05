@@ -44,7 +44,7 @@ reading a new value in the minibuffer.
    Calling a suffix command usually causes the transient to be exited
 but suffix commands can also be configured to not exit the transient.
 
-This manual is for Transient version 0.1.0 (v0.1.0-32-g08b4778+1).
+This manual is for Transient version 0.1.0 (v0.1.0-39-gb1da0ca+1).
 
      Copyright (C) 2018-2019 Jonas Bernoulli <jonas@bernoul.li>
 
@@ -1064,11 +1064,10 @@ Note that an infix is a special kind of suffix.  Depending on context
 
      The function definitions is always:
 
-          (lambda (obj value)
-            (interactive
-             (let ((obj (transient-suffix-object)))
-               (list obj (transient-infix-read obj))))
-            (transient-infix-set obj value)
+          (lambda ()
+            (interactive)
+            (let ((obj (transient-suffix-object)))
+              (transient-infix-set obj (transient-infix-read obj)))
             (transient--show))
 
      ‘transient-infix-read’ and ‘transient-infix-set’ are generic
@@ -2207,7 +2206,7 @@ Appendix D Function Index
 * Menu:
 
 * define-infix-argument:                 Defining Suffix and Infix Commands.
-                                                              (line  67)
+                                                              (line  66)
 * define-infix-command:                  Defining Suffix and Infix Commands.
                                                               (line  30)
 * define-suffix-command:                 Defining Suffix and Infix Commands.
@@ -2317,27 +2316,27 @@ Node: Binding Suffix and Infix Commands34359
 Node: Group Specifications35214
 Node: Suffix Specifications38547
 Node: Defining Suffix and Infix Commands42105
-Node: Using Infix Arguments45554
-Node: Transient State48838
-Node: Classes and Methods54710
-Node: Group Classes56924
-Node: Group Methods58841
-Node: Prefix Classes59486
-Node: Suffix Classes60578
-Node: Suffix Methods62822
-Node: Suffix Value Methods63143
-Node: Suffix Format Methods65903
-Node: Prefix Slots67352
-Node: Suffix Slots67516
-Node: Predicate Slots70367
-Node: Related Abstractions and Packages71616
-Node: Comparison With Prefix Keys and Prefix Arguments71903
-Node: Comparison With Other Packages82215
-Node: FAQ86402
-Node: Keystroke Index90133
-Node: Command Index91767
-Node: Function Index93554
-Node: Variable Index97711
+Node: Using Infix Arguments45514
+Node: Transient State48798
+Node: Classes and Methods54670
+Node: Group Classes56884
+Node: Group Methods58801
+Node: Prefix Classes59446
+Node: Suffix Classes60538
+Node: Suffix Methods62782
+Node: Suffix Value Methods63103
+Node: Suffix Format Methods65863
+Node: Prefix Slots67312
+Node: Suffix Slots67476
+Node: Predicate Slots70327
+Node: Related Abstractions and Packages71576
+Node: Comparison With Prefix Keys and Prefix Arguments71863
+Node: Comparison With Other Packages82175
+Node: FAQ86362
+Node: Keystroke Index90093
+Node: Command Index91727
+Node: Function Index93514
+Node: Variable Index97671
 
 End Tag Table
 

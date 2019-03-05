@@ -596,6 +596,7 @@ to the setup function:
             `(lambda ()
                (interactive)
                (transient-setup ',name))))
+       (put ',name 'interactive-only t)
        (put ',name 'function-documentation ,docstr)
        (put ',name 'transient--prefix
             (,(or class 'transient-prefix) :command ',name ,@slots))
@@ -632,6 +633,7 @@ just like for `prefix-arg' and `current-prefix-arg'.
                (transient--expand-define-args args)))
     `(progn
        (defalias ',name (lambda ,arglist ,@body))
+       (put ',name 'interactive-only t)
        (put ',name 'function-documentation ,docstr)
        (put ',name 'transient--suffix
             (,(or class 'transient-suffix) :command ',name ,@slots)))))
@@ -655,11 +657,10 @@ explicitly.
 
 The function definitions is always:
 
-   (lambda (obj value)
-     (interactive
-      (let ((obj (transient-suffix-object)))
-        (list obj (transient-infix-read obj))))
-     (transient-infix-set obj value)
+   (lambda ()
+     (interactive)
+     (let ((obj (transient-suffix-object)))
+       (transient-infix-set obj (transient-infix-read obj)))
      (transient--show))
 
 `transient-infix-read' and `transient-infix-set' are generic
@@ -679,6 +680,7 @@ keyword.
                (transient--expand-define-args args)))
     `(progn
        (defalias ',name ,(transient--default-infix-command))
+       (put ',name 'interactive-only t)
        (put ',name 'function-documentation ,docstr)
        (put ',name 'transient--suffix
             (,(or class 'transient-switch) :command ',name ,@slots)))))
@@ -802,11 +804,10 @@ example, sets a variable use `define-infix-command' instead.
           args)))
 
 (defun transient--default-infix-command ()
-  (cons 'lambda '((obj value)
-             (interactive
-              (let ((obj (transient-suffix-object)))
-                (list obj (transient-infix-read obj))))
-             (transient-infix-set obj value)
+  (cons 'lambda '(()
+             (interactive)
+             (let ((obj (transient-suffix-object)))
+               (transient-infix-set obj (transient-infix-read obj)))
              (transient--show))))
 
 (defun transient--ensure-infix-command (obj)
@@ -997,16 +998,18 @@ Each suffix commands is associated with an object, which holds
 additional information about the suffix, such as its value (in
 the case of an infix command, which is a kind of suffix command).
 
-This function is intended to be called in the interactive form of
-infix commands, whose command definition usually (at least when
-defined using `define-infix-command') is this:
+This function is intended to be called by infix commands, whose
+command definition usually (at least when defined using
+`define-infix-command') is this:
 
-   (lambda (obj value)
-     (interactive
-      (let ((obj (transient-suffix-object)))
-        (list obj (transient-infix-read obj))))
-     (transient-infix-set obj value)
+   (lambda ()
+     (interactive)
+     (let ((obj (transient-suffix-object)))
+       (transient-infix-set obj (transient-infix-read obj)))
      (transient--show))
+
+\(User input is read outside of `interactive' to prevent the
+command from being added to `command-history'.  See #23.)
 
 Such commands need to be able to access their associated object
 to guide how `transient-infix-read' reads the new value and to

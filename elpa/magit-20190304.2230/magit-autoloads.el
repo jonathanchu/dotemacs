@@ -1161,6 +1161,16 @@ Rules that are defined in that file affect all local repositories.
 
 \(fn RULE)" t nil)
 
+(autoload 'magit-skip-worktree "magit-gitignore" "\
+Call \"git update-index --skip-worktree FILE\".
+
+\(fn FILE)" t nil)
+
+(autoload 'magit-no-skip-worktree "magit-gitignore" "\
+Call \"git update-index --no-skip-worktree FILE\".
+
+\(fn FILE)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "magit-gitignore" '("magit-")))
 
 ;;;***
