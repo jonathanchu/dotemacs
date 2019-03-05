@@ -59,13 +59,13 @@ for i in $ALL_PACKAGES; do
 
     if [ "$UNTRACKED_PACKAGE_SHORT" = "$DELETED_PACKAGE_SHORT" ]; then
         for x in $UNTRACKED_PACKAGE_DIRECTORY; do
-            # echo "git add "$x""
+            echo "git add "$x""
             git add "$x"
         done
 
         echo '--------------------------------------------------------------------------'
         for y in $DELETED_PACKAGE_DIRECTORY; do
-            # echo "git add "$y""
+            echo "git add "$y""
             git add "$y"
         done
 
