@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190306.1018
+;; Package-Version: 20190308.1042
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -55,7 +55,7 @@
 
 (define-obsolete-function-alias 'counsel-more-chars 'ivy-more-chars "0.10.0")
 
-(defun counsel--elisp-to-pcre (regex)
+(defun counsel--elisp-to-pcre (regex &optional look-around)
   "Convert REGEX from Elisp format to PCRE format, on best-effort basis.
 REGEX may be of any format returned by an Ivy regex function,
 namely a string or a list.  The return value is always a string.
@@ -63,14 +63,23 @@ namely a string or a list.  The return value is always a string.
 Note that incorrect results may be returned for sufficiently
 complex regexes."
   (if (consp regex)
-      (mapconcat
-       (lambda (pair)
-         (let ((subexp (counsel--elisp-to-pcre (car pair))))
-           (if (string-match-p "|" subexp)
-               (format "(?:%s)" subexp)
-             subexp)))
-       (cl-remove-if-not #'cdr regex)
-       ".*")
+      (if look-around
+          (mapconcat
+           (lambda (pair)
+             (let ((subexp (counsel--elisp-to-pcre (car pair))))
+               (format "(?%c.*%s)"
+                       (if (cdr pair) ?= ?!)
+                       subexp)))
+           regex
+           "")
+        (mapconcat
+         (lambda (pair)
+           (let ((subexp (counsel--elisp-to-pcre (car pair))))
+             (if (string-match-p "|" subexp)
+                 (format "(?:%s)" subexp)
+               subexp)))
+         (cl-remove-if-not #'cdr regex)
+         ".*"))
     (replace-regexp-in-string
      "\\\\[(){}|]\\|[()]"
      (lambda (s)
@@ -1749,7 +1758,7 @@ currently checked out."
     (define-key map (kbd "C-DEL") 'counsel-up-directory)
     (define-key map (kbd "C-<backspace>") 'counsel-up-directory)
     (define-key map (kbd "C-M-y") 'counsel-yank-directory)
-    (define-key map (kbd "`") (ivy-make-magic-action "b"))
+    (define-key map (kbd "`") (ivy-make-magic-action 'counsel-find-file "b"))
     map))
 
 (defun counsel-yank-directory ()
@@ -1807,6 +1816,14 @@ choose between `yes-or-no-p' and `y-or-n-p'; otherwise default to
              #'yes-or-no-p)
            (apply #'format fmt args)))
 
+(defun counsel-find-file-copy (x)
+  "Copy file X."
+  (let ((ivy-inhibit-action
+         (lambda (new-name)
+           (require 'dired-aux)
+           (dired-copy-file x new-name 1))))
+    (counsel-find-file)))
+
 (defun counsel-find-file-delete (x)
   "Delete file X."
   (when (or delete-by-moving-to-trash
@@ -1838,6 +1855,7 @@ choose between `yes-or-no-p' and `y-or-n-p'; otherwise default to
    ("x" counsel-find-file-extern "open externally")
    ("r" counsel-find-file-as-root "open as root")
    ("k" counsel-find-file-delete "delete")
+   ("c" counsel-find-file-copy "copy file")
    ("m" counsel-find-file-move "move or rename")
    ("d" counsel-find-file-mkdir-action "mkdir")))
 
@@ -2535,6 +2553,10 @@ regex string."
 
 (defvar counsel-ag-command nil)
 
+(defvar counsel--grep-tool-look-around t)
+
+(defvar counsel--regex-look-around nil)
+
 (counsel-set-async-exit-code 'counsel-ag 1 "No matches found")
 (ivy-set-occur 'counsel-ag 'counsel-ag-occur)
 (ivy-set-display-transformer 'counsel-ag 'counsel-git-grep-transformer)
@@ -2566,7 +2588,8 @@ NEEDLE is the search string."
 (defun counsel--grep-regex (str)
   (counsel--elisp-to-pcre
    (setq ivy--old-re
-         (funcall ivy--regex-function str))))
+         (funcall ivy--regex-function str))
+   counsel--regex-look-around))
 
 (defun counsel-ag-function (string)
   "Grep in the current directory for STRING."
@@ -2578,6 +2601,9 @@ NEEDLE is the search string."
          (ivy-more-chars))
        (let ((default-directory (ivy-state-directory ivy-last))
              (regex (counsel--grep-regex search-term)))
+         (if (and (stringp counsel--regex-look-around)
+                  (string-match-p "\\`(\\?[=!]" regex)) ;; using look-arounds
+             (setq switches (concat switches " " counsel--regex-look-around)))
          (counsel--async-command (counsel--format-ag-command
                                   switches
                                   (shell-quote-argument regex)))
@@ -2592,6 +2618,7 @@ EXTRA-AG-ARGS string, if non-nil, is appended to `counsel-ag-base-command'.
 AG-PROMPT, if non-nil, is passed as `ivy-read' prompt argument."
   (interactive)
   (setq counsel-ag-command counsel-ag-base-command)
+  (setq counsel--regex-look-around counsel--grep-tool-look-around)
   (counsel-require-program counsel-ag-command)
   (when current-prefix-arg
     (setq initial-directory
@@ -2664,7 +2691,8 @@ INITIAL-INPUT can be given as the initial minibuffer input.
 This uses `counsel-ag' with `counsel-pt-base-command' instead of
 `counsel-ag-base-command'."
   (interactive)
-  (let ((counsel-ag-base-command counsel-pt-base-command))
+  (let ((counsel-ag-base-command counsel-pt-base-command)
+        (counsel--grep-tool-look-around nil))
     (counsel-ag initial-input)))
 (cl-pushnew 'counsel-pt ivy-highlight-grep-commands)
 
@@ -2684,7 +2712,8 @@ INITIAL-INPUT can be given as the initial minibuffer input.
 This uses `counsel-ag' with `counsel-ack-base-command' replacing
 `counsel-ag-base-command'."
   (interactive)
-  (let ((counsel-ag-base-command counsel-ack-base-command))
+  (let ((counsel-ag-base-command counsel-ack-base-command)
+        (counsel--grep-tool-look-around t))
     (counsel-ag initial-input)))
 
 
@@ -2707,7 +2736,12 @@ INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 EXTRA-RG-ARGS string, if non-nil, is appended to `counsel-rg-base-command'.
 RG-PROMPT, if non-nil, is passed as `ivy-read' prompt argument."
   (interactive)
-  (let ((counsel-ag-base-command counsel-rg-base-command))
+  (let ((counsel-ag-base-command counsel-rg-base-command)
+        (counsel--grep-tool-look-around
+         (let ((rg (car (split-string counsel-rg-base-command)))
+               (switch "--pcre2"))
+           (and (eq 0 (call-process rg nil nil nil switch "--version"))
+                switch))))
     (counsel-ag initial-input initial-directory extra-rg-args rg-prompt)))
 (cl-pushnew 'counsel-rg ivy-highlight-grep-commands)
 
@@ -5019,14 +5053,20 @@ When ARG is non-nil, ignore NoDisplay property in *.desktop files."
 (defvar counsel--switch-buffer-temporary-buffers nil
   "Internal.")
 
+(defvar counsel--switch-buffer-previous-buffers nil
+  "Internal.")
+
 (defun counsel--switch-buffer-unwind ()
-  "Clear temporary file buffers.
+  "Clear temporary file buffers and restore `buffer-list'.
 The buffers are those opened during a session of `counsel-switch-buffer'."
-  (while counsel--switch-buffer-temporary-buffers
-    (let ((buf (pop counsel--switch-buffer-temporary-buffers)))
-      (kill-buffer buf))))
+  (mapc 'kill-buffer counsel--switch-buffer-temporary-buffers)
+  (mapc 'bury-buffer counsel--switch-buffer-previous-buffers)
+  (setq counsel--switch-buffer-temporary-buffers nil
+        counsel--switch-buffer-previous-buffers nil))
 
 (defun counsel--switch-buffer-update-fn ()
+  (unless counsel--switch-buffer-previous-buffers
+    (setq counsel--switch-buffer-previous-buffers (buffer-list)))
   (let ((current (ivy-state-current ivy-last)))
     ;; This check is necessary, otherwise typing into the completion
     ;; would create empty buffers.
