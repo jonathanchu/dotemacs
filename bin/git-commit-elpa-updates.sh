@@ -85,5 +85,5 @@ done
 # Finally, if the batch option (-b) is passed in, make one big finally commit at the end
 if [ $batch -eq 1 ]; then
     git commit -m "$COMMIT_MSG"
-    echo "Updated $NUM_PACKAGES."
+    echo "Updated $NUM_PACKAGES $PACKAGES."
 fi
