@@ -4,7 +4,7 @@
 
 ;; Author: Felipe Ochoa <felipe@fov.space>
 ;; URL: https://github.com/felipeochoa/rjsx-mode/
-;; Package-Version: 20181207.803
+;; Package-Version: 20190309.343
 ;; Package-Requires: ((emacs "24.4") (js2-mode "20170504"))
 ;; Version: 1.1
 ;; Keywords: languages
@@ -35,6 +35,7 @@
 (require 'js2-mode)
 (eval-when-compile (require 'subr-x))
 (require 'newcomment)
+(require 'sgml-mode)
 
 (defgroup rjsx-mode nil
   "Support for JSX."

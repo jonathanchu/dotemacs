@@ -31,7 +31,7 @@ to perform almost all of their daily version control tasks directly from
 within Emacs.  While many fine Git clients exist, only Magit and Git
 itself deserve to be called porcelains.
 
-This manual is for Magit version 2.90.1 (v2.90.1-301-g3cc12771+1).
+This manual is for Magit version 2.90.1 (v2.90.1-319-g4e4f6203+1).
 
      Copyright (C) 2015-2019 Jonas Bernoulli <jonas@bernoul.li>
 
@@ -578,7 +578,7 @@ into origin/master", "Unpushed to origin/master", and many others.
 
    Since we are starting from a safe state, which you can easily return
 to (by doing a ‘git reset --hard PRE-MAGIT-STATE’), there currently are
-not staged or unstaged changes.  Edit some files and save the changes.
+no staged or unstaged changes.  Edit some files and save the changes.
 Then go back to the status buffer, while at the same time refreshing it,
 by typing ‘C-x g’.  (When the status buffer, or any Magit buffer for
 that matter, is the current buffer, then you can also use just ‘g’ to
@@ -3749,8 +3749,8 @@ displayed from a log buffer, the revision buffer will share the same
 file restriction as that log buffer (also see the command
 ‘magit-diff-toggle-file-filter’).  Note, however, that the log’s file
 restriction will be ignored when ‘magit-log-arguments’ includes
-‘--follow’.  In this case, the ‘-u’ argument of the log transient can be
-used to show the file-restricted diffs inline.
+‘--follow’.  In this case, the ‘--patch’ argument of the log transient
+can be used to show the file-restricted diffs inline.
 
    If the revision buffer is not displayed from a log buffer, the file
 restriction is determined by the file restriction in the repository’s
