@@ -349,16 +349,12 @@ changes.
 (autoload 'magit-branch-create "magit-branch" "\
 Create BRANCH at branch or revision START-POINT.
 
-\(git branch [ARGS] BRANCH START-POINT).
-
-\(fn BRANCH START-POINT &optional ARGS)" t nil)
+\(fn BRANCH START-POINT)" t nil)
 
 (autoload 'magit-branch-and-checkout "magit-branch" "\
 Create and checkout BRANCH at branch or revision START-POINT.
 
-\(git checkout [ARGS] -b BRANCH START-POINT).
-
-\(fn BRANCH START-POINT &optional ARGS)" t nil)
+\(fn BRANCH START-POINT)" t nil)
 
 (autoload 'magit-branch-or-checkout "magit-branch" "\
 Hybrid between `magit-checkout' and `magit-branch-and-checkout'.
@@ -403,9 +399,7 @@ when using `magit-branch-and-checkout'.
 (autoload 'magit-branch-orphan "magit-branch" "\
 Create and checkout an orphan BRANCH with contents from revision START-POINT.
 
-\(git checkout --orphan [ARGS] BRANCH START-POINT).
-
-\(fn BRANCH START-POINT &optional ARGS)" t nil)
+\(fn BRANCH START-POINT)" t nil)
 
 (autoload 'magit-branch-spinoff "magit-branch" "\
 Create new branch from the unpushed commits.
@@ -437,7 +431,7 @@ matter, all commits between FROM and `HEAD' are moved to the new
 branch.  If FROM is not reachable from `HEAD' or is reachable
 from the source branch's upstream, then an error is raised.
 
-\(fn BRANCH &optional FROM &rest ARGS)" t nil)
+\(fn BRANCH &optional FROM)" t nil)
 
 (autoload 'magit-branch-reset "magit-branch" "\
 Reset a branch to the tip of another branch or any other commit.
@@ -453,7 +447,7 @@ When resetting to another branch and a prefix argument is used,
 then also set the target branch as the upstream of the branch
 that is being reset.
 
-\(fn BRANCH TO &optional ARGS SET-UPSTREAM)" t nil)
+\(fn BRANCH TO &optional SET-UPSTREAM)" t nil)
 
 (autoload 'magit-branch-delete "magit-branch" "\
 Delete one or multiple branches.
