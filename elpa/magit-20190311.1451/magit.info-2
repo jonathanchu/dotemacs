@@ -2962,6 +2962,7 @@ Appendix F Variable Index
                                                               (line  39)
 * magit-repolist-columns:                Repository List.     (line  14)
 * magit-repository-directories:          Status Buffer.       (line  58)
+* magit-revision-filter-files-on-follow: Revision Buffer.     (line  64)
 * magit-revision-insert-related-refs:    Revision Buffer.     (line   6)
 * magit-revision-show-gravatars:         Revision Buffer.     (line  19)
 * magit-revision-use-hash-sections:      Revision Buffer.     (line  36)

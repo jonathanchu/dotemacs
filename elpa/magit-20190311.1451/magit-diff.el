@@ -455,6 +455,24 @@ a good reason to include a long line in the body sometimes."
   :type '(choice (const   :tag "Don't fill" nil)
                  (integer :tag "Fill if longer than")))
 
+(defcustom magit-revision-filter-files-on-follow nil
+  "Whether to honor file filter if log arguments include --follow.
+
+When a commit is displayed from a log buffer, the resulting
+revision buffer usually shares the log's file arguments,
+restricting the diff to those files.  However, there's a
+complication when the log arguments include --follow: if the log
+follows a file across a rename event, keeping the file
+restriction would mean showing an empty diff in revision buffers
+for commits before the rename event.
+
+When this option is nil, the revision buffer ignores the log's
+filter if the log arguments include --follow.  If non-nil, the
+log's file filter is always honored."
+  :package-version '(magit . "2.91.0")
+  :group 'magit-revision
+  :type 'boolean)
+
 ;;;; Diff Sections
 
 (defcustom magit-diff-section-arguments '("--no-ext-diff")
@@ -686,7 +704,8 @@ and `:slant'."
    (magit-diff:-C)
    ("-x" "Disallow external diff drivers" "--no-ext-diff")
    ("-s" "Show stats"                     "--stat")
-   (5 magit-diff:--color-moved)]
+   (5 magit-diff:--color-moved)
+   (5 magit-diff:--color-moved-ws)]
   ["Actions"
    [("d" "Dwim"          magit-diff-dwim)
     ("r" "Diff range"    magit-diff-range)
@@ -717,7 +736,8 @@ and `:slant'."
    ("-x" "Disallow external diff drivers" "--no-ext-diff")
    ("-s" "Show stats"                     "--stat"
     :if-derived magit-diff-mode)
-   (5 magit-diff:--color-moved)]
+   (5 magit-diff:--color-moved)
+   (5 magit-diff:--color-moved-ws)]
   ["Actions"
    [("g" "Refresh"                magit-diff-do-refresh)
     ("s" "Set defaults"           magit-diff-set-default-arguments)
@@ -859,6 +879,21 @@ and `:slant'."
     (?b "[b]locks"  "blocks")
     (?z "[z]ebra"   "zebra")
     (?Z "[Z] dimmed-zebra" "dimmed-zebra")))
+
+(define-infix-argument magit-diff:--color-moved-ws ()
+  :description "Whitespace treatment for --color-moved"
+  :class 'transient-option
+  :key "=w"
+  :argument "--color-moved-ws="
+  :reader 'magit-diff-select-color-moved-ws-mode)
+
+(defun magit-diff-select-color-moved-ws-mode (&rest _ignore)
+  (magit-read-char-case "Ignore whitespace " t
+    (?i "[i]ndentation"  "allow-indentation-change")
+    (?e "[e]nd of line"  "ignore-space-at-eol")
+    (?s "[s]pace change" "ignore-space-change")
+    (?a "[a]ll space"    "ignore-all-space")
+    (?n "[n]o"           "no")))
 
 ;;;; Diff commands
 
@@ -1103,7 +1138,9 @@ be committed."
 (defun magit-show-commit--arguments ()
   (pcase-let ((`(,args ,diff-files) (magit-diff-arguments)))
     (list args (if (derived-mode-p 'magit-log-mode)
-                   (and (not (member "--follow" (nth 1 magit-refresh-args)))
+                   (and (or magit-revision-filter-files-on-follow
+                            (not (member "--follow"
+                                         (nth 1 magit-refresh-args))))
                         (nth 2 magit-refresh-args))
                  diff-files))))
 
@@ -1262,9 +1299,9 @@ instead."
   (magit-refresh))
 
 (defun magit-diff-context-p ()
-  (--if-let (--first (string-match "^-U\\([0-9]+\\)$" it)
-                     (car (magit-diff-arguments t)))
-      (not (equal "-U0" it))
+  (if-let ((arg (--first (string-match "^-U\\([0-9]+\\)$" it)
+                         (car (magit-diff-arguments t)))))
+      (not (equal arg "-U0"))
     t))
 
 (defun magit-diff-ignore-any-space-p ()

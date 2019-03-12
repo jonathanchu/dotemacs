@@ -316,16 +316,11 @@ Type \\[magit-reset] to reset `HEAD' to the commit at point.
 
 ;;; Commands
 
-(defcustom magit-show-refs-arguments nil
-  "The arguments used in `magit-refs-mode' buffers."
-  :group 'magit-git-arguments
-  :group 'magit-refs
-  :type '(repeat (string :tag "Argument")))
-
 ;;;###autoload (autoload 'magit-show-refs "magit-refs" nil t)
 (define-transient-command magit-show-refs (&optional transient)
   "List and compare references in a dedicated buffer."
   :man-page "git-branch"
+  :value 'magit-show-refs-arguments
   ["Arguments"
    (magit-for-each-ref:--contains)
    ("=m" "Merged"               "--merged=" magit-transient-read-revision)
@@ -343,7 +338,19 @@ Type \\[magit-reset] to reset `HEAD' to the commit at point.
                          current-prefix-arg)))
   (if transient
       (transient-setup 'magit-show-refs)
-    (call-interactively 'magit-show-refs-head)))
+    (magit-mode-setup #'magit-refs-mode nil (magit-show-refs-arguments))))
+
+(defun magit-show-refs-arguments ()
+  (cond ((eq current-transient-command 'magit-show-refs)
+         (transient-args 'magit-show-refs))
+        ((and magit-use-sticky-arguments
+              (derived-mode-p 'magit-refs-mode))
+         (cadr magit-refresh-args))
+        ((and (eq magit-use-sticky-arguments t)
+              (--when-let (magit-mode-get-buffer 'magit-refs-mode)
+                (cadr (buffer-local-value 'magit-refresh-args it)))))
+        (t
+         (alist-get 'magit-show-refs transient-values))))
 
 (define-infix-argument magit-for-each-ref:--contains ()
   :description "Contains"
@@ -364,20 +371,6 @@ Type \\[magit-reset] to reset `HEAD' to the commit at point.
                          '("-committerdate" "-authordate"
                            "committerdate" "authordate")
                          nil nil initial-input))
-
-(defun magit-show-refs-arguments ()
-  (cond ((eq current-transient-command 'magit-show-refs)
-         (transient-args 'magit-show-refs))
-        ;; TODO `transient-args' should cover this:
-        ((and magit-use-sticky-arguments
-              (derived-mode-p 'magit-refs-mode))
-         (cadr magit-refresh-args))
-        ((and (eq magit-use-sticky-arguments t)
-              (--when-let (magit-mode-get-buffer 'magit-refs-mode)
-                (with-current-buffer it
-                  (cadr magit-refresh-args)))))
-        (t
-         (default-value 'magit-show-refs-arguments))))
 
 ;;;###autoload
 (defun magit-show-refs-head (&optional args)

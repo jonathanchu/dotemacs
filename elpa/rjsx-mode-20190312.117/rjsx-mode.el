@@ -4,7 +4,7 @@
 
 ;; Author: Felipe Ochoa <felipe@fov.space>
 ;; URL: https://github.com/felipeochoa/rjsx-mode/
-;; Package-Version: 20190309.343
+;; Package-Version: 20190312.117
 ;; Package-Requires: ((emacs "24.4") (js2-mode "20170504"))
 ;; Version: 1.1
 ;; Keywords: languages
@@ -989,17 +989,14 @@ NEW-NAME is the name to give the tag."
 
 
 (defun rjsx-jump-opening-tag ()
-  "Goto opening tag of focused tab body"
+  "Go to opening tag of tag at point."
   (interactive)
-  (let* ((tag (rjsx--tag-at-point))
-         (closer (and tag (rjsx-node-closing-tag tag))))
-    (cond
-     ((null tag) (message "No JSX tag found at point"))
-     (t
-      (goto-char (+ 1 (js2-node-abs-pos tag)))))))
+  (let ((tag (rjsx--tag-at-point)))
+    (if (null tag) (message "No JSX tag found at point")
+      (goto-char (+ 1 (js2-node-abs-pos tag))))))
 
 (defun rjsx-jump-tag ()
-  "Switch between opening and closing tag of focused tab body"
+  "Switch between opening and closing tag of tag at point."
   (interactive)
   (let* ((tag (rjsx--tag-at-point))
          (closer (and tag (rjsx-node-closing-tag tag))))
