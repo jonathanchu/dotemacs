@@ -2,7 +2,7 @@
 ;; Copyright (C) 2015-2018 jack angers
 ;; Author: jack angers
 ;; Version: 0.5.2
-;; Package-Version: 20190309.806
+;; Package-Version: 20190315.532
 ;; Package-Requires: ((emacs "24.3") (f "0.20.0") (s "1.11.0") (dash "2.9.0") (popup "0.5.3"))
 ;; Keywords: programming
 
@@ -578,7 +578,7 @@ or most optimal searcher."
            :regex "(^|\\W)alias(_method)?\\W+JJJ(\\W|$)"
            :tests ("alias test some_method"
                    "alias_method :test, :some_method"
-                   "alias_method ’test’ ’some_method’"
+                   "alias_method 'test' 'some_method'"
                    "some_class.send(:alias_method, :test, :some_method)")
            :not ("alias some_method test"
                  "alias_method :some_method, :test"

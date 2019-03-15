@@ -5,7 +5,7 @@
 ;; Author: Justin Burkett <justin@burkett.cc>
 ;; Maintainer: Justin Burkett <justin@burkett.cc>
 ;; URL: https://github.com/justbur/emacs-which-key
-;; Package-Version: 20190306.1518
+;; Package-Version: 20190315.1248
 ;; Version: 3.3.2
 ;; Keywords:
 ;; Package-Requires: ((emacs "24.4"))
@@ -57,8 +57,11 @@
   :prefix "which-key-")
 
 (defcustom which-key-idle-delay 1.0
-  "Delay (in seconds) for which-key buffer to popup. A value of zero
-might lead to issues, so a non-zero value is recommended
+  "Delay (in seconds) for which-key buffer to popup. This
+ variable should be set before activating `which-key-mode'.
+
+A value of zero might lead to issues, so a non-zero value is
+recommended
 (see https://github.com/justbur/emacs-which-key/issues/134)."
   :group 'which-key
   :type 'float)
