@@ -54,3 +54,4 @@ smex-items
 bookmarks
 transient
 elpa/archives
+*__pycache__
