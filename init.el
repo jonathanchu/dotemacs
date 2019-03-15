@@ -573,8 +573,9 @@
   :config
   (progn
     (setq deft-directory "~/Dropbox/org")
-    (setq deft-extension "org")
-    (setq deft-text-mode 'org-mode)
+    (setq deft-extensions '("org" "txt"))
+    (setq deft-default-extension "org")
+    (setq deft-org-mode-title-prefix t)
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
 
