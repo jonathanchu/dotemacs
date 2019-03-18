@@ -985,6 +985,11 @@
    ("M-n" . move-text-down))
   )
 
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  ("C-c m c" . mc/edit-lines))
+
 (use-package neotree
   :ensure t
   :bind
