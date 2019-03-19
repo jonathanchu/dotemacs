@@ -800,7 +800,6 @@
   :config
   (progn
     (ido-mode t)
-    ;; (ido-everywhere t)
     (flx-ido-mode t)
     (setq ido-enable-flex-matching t)
     (setq ido-use-faces nil)))
@@ -896,7 +895,6 @@
     (key-chord-define-global "jj" 'avy-goto-word-1)
     (key-chord-define-global "jl" 'avy-goto-line)
     (key-chord-define-global "jk" 'avy-goto-char)
-    ;; (key-chord-define-global "uu" 'undo-tree-visualize)
     ))
 
 (use-package latex-preview-pane
@@ -916,7 +914,6 @@
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
   :config
-  ;; (require 'lsp-imenu)
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
@@ -953,16 +950,12 @@
 
 (use-package magit
   :ensure t
-  ;; :pin melpa-stable
   :config
   (progn
     (setq magit-push-always-verify nil)
     (setq magit-completing-read-function #'ivy-completing-read)
     (setq magit-last-seen-setup-instructions "1.4.0")
     (setq magit-diff-refine-hunk t))
-  ;; (defun prevent-whitespace-mode-for-magit ()
-  ;;   (not (derived-mode-p 'magit-mode)))
-  ;; (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
   :bind
   ("C-x g" . magit-status)
   ("C-c C-a" . magit-commit-amend))
@@ -1029,17 +1022,14 @@
   (setq org-goto-max-level 10)
   (setq org-ellipsis "⤵")
   (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                           "~/Dropbox/org/gtd.org"
-                           "~/Dropbox/org/tickler.org"))
+                           "~/Dropbox/org/gtd.org"))
   (setq org-default-notes-file "~/Dropbox/org/inbox.org")
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                  (file+headline "~/Dropbox/org/inbox.org" "Tasks") "* TODO %i%?")
-                                ("T" "Tickler" entry
-                                 (file+headline "~/Dropbox/org/tickler.org" "Tickler")
-                                 "* %i%? \n %U")))
+                                ))
   (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
                              ("~/Dropbox/org/someday.org" :level . 1)
-                             ("~/Dropbox/org/tickler.org" :maxlevel . 2)))
+                             ))
   (setq org-tag-alist '((:startgroup . nil)
                         ("@home" . ?h) ("@work" . ?w)
                         ("@phone" . ?p)
