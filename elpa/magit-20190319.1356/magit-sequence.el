@@ -164,7 +164,7 @@ This discards all changes made since the sequence started."
   :class 'transient-option
   :shortarg "-m"
   :argument "--mainline="
-  :reader 'transient-read-natural-number-N+)
+  :reader 'transient-read-number-N+)
 
 (defun magit-cherry-pick-read-args (prompt)
   (list (or (nreverse (magit-region-values 'commit))
@@ -541,7 +541,7 @@ This discards all changes made since the sequence started."
   (transient-args 'magit-rebase))
 
 (defun magit-git-rebase (target args)
-  (magit-run-git-sequencer "rebase" target args))
+  (magit-run-git-sequencer "rebase" args target))
 
 ;;;###autoload (autoload 'magit-rebase-onto-pushremote "magit-sequence" nil t)
 (define-suffix-command magit-rebase-onto-pushremote (args &optional set)

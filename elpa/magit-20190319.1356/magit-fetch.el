@@ -63,7 +63,7 @@ Ignored for Git versions before v2.8.0."
 
 (defun magit-git-fetch (remote args)
   (run-hooks 'magit-credential-hook)
-  (magit-run-git-async "fetch" remote args))
+  (magit-run-git-async "fetch" args remote))
 
 ;;;###autoload (autoload 'magit-fetch-from-pushremote "magit-fetch" nil t)
 (define-suffix-command magit-fetch-from-pushremote (args &optional set)
@@ -86,7 +86,7 @@ the push-remote can be changed before fetching from it."
   "Fetch from the upstream repository of the current branch.
 
 When `magit-remote-set-if-missing' is non-nil and
-the push-remote is not configured, then read the upstream from
+the upstream is not configured, then read the upstream from
 the user, set it, and then fetch from it.  With a prefix argument
 the upstream can be changed before fetching from it."
   :if 'magit--upstream-suffix-predicate

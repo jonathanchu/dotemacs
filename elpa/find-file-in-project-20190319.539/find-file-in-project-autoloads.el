@@ -133,10 +133,9 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window.
 \(fn &optional OPEN-ANOTHER-WINDOW)" t nil)
 
 (autoload 'find-file-in-current-directory "find-file-in-project" "\
-Like `find-file-in-project'.  But search only in current directory.
-IF OPEN-ANOTHER-WINDOW is t, results are displayed in new window.
+Search fil in current directory or LEVEL up parent directory.
 
-\(fn &optional OPEN-ANOTHER-WINDOW)" t nil)
+\(fn &optional LEVEL)" t nil)
 
 (autoload 'find-file-in-project-by-selected "find-file-in-project" "\
 Same as `find-file-in-project' but more powerful and faster.
