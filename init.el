@@ -750,11 +750,6 @@
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
-  ;;(add-to-list 'helm-completing-read-handlers-alist '(find-file . helm-completing-read-symbols))
-  ;; helm-recentf-fuzzy-match var is broken: redeclare it manually
-  ;; (setq helm-source-recentf
-  ;;       (helm-make-source "Recentf" 'helm-recentf-source
-  ;;         :fuzzy-match t))
   (setq helm-M-x-fuzzy-match t
         helm-M-x-always-save-history t
         helm-recentf-fuzzy-match t
