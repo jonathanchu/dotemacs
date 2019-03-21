@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190319.1757
+;; Package-Version: 20190321.959
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1410,6 +1410,11 @@ COMMAND fails.  Obey file handlers based on `default-directory'."
              (signal (car status) (cdr status))))
       (delete-file stderr))))
 
+(define-obsolete-variable-alias 'counsel--git-grep-count-func
+    'counsel-git-grep-count-function "0.11.0")
+(define-obsolete-function-alias 'counsel--git-grep-count-func-default
+    'counsel-git-grep-count-function-du "0.11.0")
+
 (defun counsel-git-grep-count-function-du ()
   "Default function to calculate `counsel--git-grep-count'."
   (or (unless (eq system-type 'windows-nt)
@@ -1419,19 +1424,15 @@ COMMAND fails.  Obey file handlers based on `default-directory'."
       0))
 
 (defcustom counsel-git-grep-count-function #'counsel-git-grep-count-function-du
-  "Defun to calculate `counsel--git-grep-count' for `counsel-git-grep'."
-  :type '(choice
-          (const :tag "Grep always does filtering."
+  "Function to calculate `counsel--git-grep-count' for `counsel-git-grep'."
+  :type '(radio
+          (function-item :doc "Always filter with Grep"
            (lambda () most-positive-fixnum))
-          (const :tag "Emacs always does filtering."
+          (function-item :doc "Always filter with Emacs"
            (lambda () 0))
-          (const :tag "Decide on Grep or Emacs based on .git directory size."
-           'counsel-git-grep-count-function-du)))
-
-(define-obsolete-variable-alias 'counsel--git-grep-count-func
-    'counsel-git-grep-count-function "0.11.0")
-(define-obsolete-function-alias 'counsel--git-grep-count-func-default
-    'counsel-git-grep-count-function-du "0.11.0")
+          (function-item
+           :doc "Choose between Grep or Emacs based on .git directory size"
+           counsel-git-grep-count-function-du)))
 
 ;;;###autoload
 (defun counsel-git-grep (&optional cmd initial-input)
@@ -5134,10 +5135,10 @@ This variable is suitable for addition to
 `savehist-additional-variables'.")
 
 (defvar counsel-compile-root-functions
-  (list 'counsel--project-current
-        (apply-partially #'counsel--dominating-file "configure")
-        'counsel--git-root
-        (apply-partially #'counsel--dominating-file dir-locals-file))
+  '(counsel--project-current
+    counsel--configure-root
+    counsel--git-root
+    counsel--dir-locals-root)
   "Special hook to find the project root for compile commands.
 Each function on this hook is called in turn with no arguments
 and should return either a directory, or nil if no root was
@@ -5155,10 +5156,20 @@ Use `project-current' to determine the root."
   (and (fboundp 'project-current)
        (cdr (project-current))))
 
+(defun counsel--configure-root ()
+  "Return root of current project or nil on failure.
+Use the presence of a \"configure\" file to determine the root."
+  (counsel--dominating-file "configure"))
+
 (defun counsel--git-root ()
   "Return root of current project or nil on failure.
 Use the presence of a \".git\" file to determine the root."
   (counsel--dominating-file ".git"))
+
+(defun counsel--dir-locals-root ()
+  "Return root of current project or nil on failure.
+Use the presence of a `dir-locals-file' to determine the root."
+  (counsel--dominating-file dir-locals-file))
 
 (defvar counsel-compile-local-builds
   '(counsel-compile-get-filtered-history
@@ -5187,32 +5198,48 @@ N in your system."
   "List of potential build subdirectory names to check for."
   :type '(repeat directory))
 
+(defvar counsel-compile-phony-pattern "^\\.PHONY:[\t ]+\\(.*+\\)$"
+  "Regexp for extracting phony targets from Makefiles.")
+
 ;; This is loosely based on the Bash Make completion code
+(defun counsel-compile--probe-make-targets (dir)
+  "Return a list of Make targets for DIR.
+
+Return an empty list is Make exits with an error.  This might
+happen because some sort of configuration needs to be done first
+or the source tree is pristine and being used for multiple build
+trees."
+  (let ((default-directory dir)
+        (targets nil))
+    (with-temp-buffer
+      ;; 0 = no-rebuild, -q & 1 needs rebuild, 2 error (for GNUMake at
+      ;; least)
+      (when (< (call-process "make" nil t nil "-nqp") 2)
+        (goto-char (point-min))
+        (while (re-search-forward counsel-compile-phony-pattern nil t)
+          (setq targets
+                (nconc targets (split-string
+                                (match-string-no-properties 1)))))))
+    (sort targets #'string-lessp)))
+
 (defun counsel--compile-get-make-targets (srcdir &optional blddir)
   "Return a list of Make targets for a given SRCDIR/BLDDIR combination.
 
 We search the Makefile for a list of phony targets which are
-generally the top-level targets a Make system provides.
+generally the top level targets a Make system provides.
 The resulting strings are tagged with properties that
 `counsel-compile-history' can use for filtering results."
-  (let* ((default-directory (or blddir srcdir))
-         (fmt (format (propertize "make %s %%s" 'cmd t)
-                      counsel-compile-make-args))
-         (suffix (and blddir
-                      (concat (propertize " in " 'face 'font-lock-warning-face)
-                              (propertize blddir 'face 'dired-directory))))
-         (props `(srcdir ,srcdir blddir ,default-directory)))
+  (let ((fmt (format (propertize "make %s %%s" 'cmd t)
+                     counsel-compile-make-args))
+        (suffix (and blddir
+                     (concat (propertize " in " 'face 'font-lock-warning-face)
+                             (propertize blddir 'face 'dired-directory))))
+        (props `(srcdir ,srcdir blddir ,default-directory)))
     (mapcar (lambda (target)
               (setq target (concat (format fmt target) suffix))
               (add-text-properties 0 (length target) props target)
               target)
-            (split-string (shell-command-to-string "\
-make -nqp |\
- grep -B 1 PHONY |\
- grep ':' |\
- cut -d ':' -f 1 |\
- sort")
-                          "\n"))))
+            (counsel-compile--probe-make-targets (or blddir srcdir)))))
 
 (defun counsel-compile-get-make-invocation (&optional blddir)
   "Have a look in the root directory for any build control files.
