@@ -1,4 +1,4 @@
-(define-package "all-the-icons" "20190313.1420" "A library for inserting Developer icons"
+(define-package "all-the-icons" "20190320.1809" "A library for inserting Developer icons"
   '((emacs "24.3")
     (memoize "1.0.1"))
   :keywords
