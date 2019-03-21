@@ -746,7 +746,8 @@
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x C-r" . helm-recentf)
-         ("C-x b" . helm-buffers-list))
+         ("C-x b" . helm-buffers-list)
+         ("C-c i" . helm-imenu))
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
@@ -754,6 +755,7 @@
         helm-M-x-always-save-history t
         helm-recentf-fuzzy-match t
         helm-buffers-fuzzy-matching t
+        helm-imenu-fuzzy-match t
         helm-display-header-line nil))
 
 (use-package helm-ag
@@ -809,8 +811,9 @@
 
 (use-package imenu-anywhere
   :ensure t
-  :bind
-  ("C-c i" . imenu-anywhere))
+  ;; :bind
+  ;; ("C-c i" . imenu-anywhere)
+  )
 
 (use-package indium
   :ensure t)
