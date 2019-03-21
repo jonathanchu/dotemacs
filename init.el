@@ -97,10 +97,11 @@
   (package-install 'use-package))
 
 ;; use-package
+(setq use-package-enable-imenu-support t)
 (eval-when-compile
   (require 'use-package))
-(setq use-package-verbose t
-      use-package-enable-imenu-support t)
+(setq use-package-verbose t)
+
 
 (require 'bind-key)
 
