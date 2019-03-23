@@ -991,6 +991,11 @@
 (use-package noflet
   :ensure t)
 
+(use-package nov
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\" . nov-mode)))
+
 (use-package olivetti
   :ensure t)
 
