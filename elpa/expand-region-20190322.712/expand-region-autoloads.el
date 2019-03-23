@@ -251,14 +251,6 @@ If set to nil, always place the cursor at the beginning of the region.")
 
 ;;;***
 
-;;;### (autoloads nil "subword-mode-expansions" "subword-mode-expansions.el"
-;;;;;;  (0 0 0 0))
-;;; Generated autoloads from subword-mode-expansions.el
-
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "subword-mode-expansions" '("er/")))
-
-;;;***
-
 ;;;### (autoloads nil "text-mode-expansions" "text-mode-expansions.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from text-mode-expansions.el

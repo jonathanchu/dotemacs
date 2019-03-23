@@ -266,8 +266,8 @@ the server has requested that."
   :group 'lsp-mode
   :type '(repeat string))
 
-(defcustom lsp-before-uninitialized-hook nil
-  "List of functions to be called before a Language Server has been uninitialized."
+(defcustom lsp-after-uninitialized-hook nil
+  "List of functions to be called after a Language Server has been uninitialized."
   :type 'hook
   :group 'lsp-mode)
 
@@ -1935,7 +1935,6 @@ If NO-MERGE is non-nil, don't merge the results but return alist workspace->resu
   "Cleanup buffer state.
 When a workspace is shut down, by request or from just
 disappearing, unset all the variables related to it."
-  (run-hooks 'lsp-workspace-uninitialized-hook)
 
   (let ((proc (lsp--workspace-cmd-proc lsp--cur-workspace)))
     (when (process-live-p proc)
@@ -4129,6 +4128,8 @@ returns the command to execute."
         ;; Leave it intact otherwise for debugging purposes.
         (when (and (eq status 'exit) (zerop (process-exit-status process)) (buffer-live-p stderr))
           (kill-buffer stderr)))
+
+      (run-hook-with-args 'lsp-after-uninitialized-hook workspace)
 
       (if (eq (lsp--workspace-shutdown-action workspace) 'shutdown)
           (lsp--info "Workspace %s shutdown." (lsp--workspace-print workspace))
