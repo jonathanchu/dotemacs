@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20190126.1117
+;; Package-Version: 20190323.904
 ;; Keywords: project, convenience
 ;; Version: 2.0.0
 ;; Package-Requires: ((emacs "25.1") (pkg-info "0.4"))
@@ -2313,7 +2313,7 @@ TEST-DIR which specifies the path to the tests relative to the project root."
 
 (defun projectile-cabal-project-p ()
   "Check if a project contains *.cabal files but no stack.yaml file."
-  (and (projectile-verify-file-wildcard "*.cabal")
+  (and (projectile-verify-file-wildcard "?*.cabal")
        (not (projectile-verify-file "stack.yaml"))))
 
 (defun projectile-go-project-p ()

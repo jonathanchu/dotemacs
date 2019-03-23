@@ -1,4 +1,4 @@
-(define-package "powerline" "20190225.2215" "Rewrite of Powerline"
+(define-package "powerline" "20190323.213" "Rewrite of Powerline"
   '((cl-lib "0.2"))
   :keywords
   '("mode-line")
