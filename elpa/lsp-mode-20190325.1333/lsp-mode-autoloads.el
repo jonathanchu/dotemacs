@@ -26,7 +26,7 @@ such.
 
 \(fn &optional IGNORE-MULTI-FOLDER)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-mode" '("log--notification-performance" "lsp-" "make-lsp-client" "with-lsp-workspace" "when-lsp-workspace" "seq-first")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-mode" '("log--notification-performance" "lsp-" "make-lsp-client" "with-lsp-workspace" "when-lsp-workspace" "seq-")))
 
 ;;;***
 

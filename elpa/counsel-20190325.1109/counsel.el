@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190321.959
+;; Package-Version: 20190325.1109
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -5198,7 +5198,7 @@ N in your system."
   "List of potential build subdirectory names to check for."
   :type '(repeat directory))
 
-(defvar counsel-compile-phony-pattern "^\\.PHONY:[\t ]+\\(.*+\\)$"
+(defvar counsel-compile-phony-pattern "^\\.PHONY:[\t ]+\\(.+\\)$"
   "Regexp for extracting phony targets from Makefiles.")
 
 ;; This is loosely based on the Bash Make completion code
