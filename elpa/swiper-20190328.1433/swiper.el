@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190307.1845
+;; Package-Version: 20190328.1433
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -456,6 +456,21 @@ such as `scroll-conservatively' are set to a high value.")
               res)))
     (nreverse res)))
 
+(defun swiper--occur-cands (fname cands)
+  (with-current-buffer (ivy-state-buffer ivy-last)
+    (let* ((pt-min (point-min))
+           (line-delta
+            (save-restriction
+              (widen)
+              (1- (line-number-at-pos pt-min)))))
+      (mapcar
+       (lambda (s)
+         (let* ((n (get-text-property 0 'swiper-line-number s))
+                (nn (number-to-string (+ (read n) line-delta))))
+           (put-text-property 0 (length nn) 'face 'ivy-grep-line-number nn)
+           (format "%s:%s:%s" fname nn (substring s 1))))
+       cands))))
+
 (defun swiper-occur (&optional revert)
   "Generate a custom occur buffer for `swiper'.
 When REVERT is non-nil, regenerate the current *ivy-occur* buffer.
@@ -473,13 +488,8 @@ When capture groups are present in the input, print them instead of lines."
                     (match-string 1 (buffer-name))))
          (re (mapconcat #'identity (ivy--split re) ".*?"))
          (cands
-          (mapcar
-           (lambda (s)
-             (let* ((n (get-text-property 0 'swiper-line-number s))
-                    (i (string-match-p "[ \t\n\r]+\\'" n)))
-               (when i (setq n (substring n 0 i)))
-               (put-text-property 0 (length n) 'face 'ivy-grep-line-number n)
-               (format "%s:%s:%s" fname n (substring s 1))))
+          (swiper--occur-cands
+           fname
            (if (not revert)
                ivy--old-cands
              (setq ivy--old-re nil)
@@ -823,7 +833,10 @@ the face, window and priority of the overlay."
         (unless (equal (current-buffer)
                        (ivy-state-buffer ivy-last))
           (switch-to-buffer (ivy-state-buffer ivy-last)))
-        (goto-char swiper--point-min)
+        (goto-char
+         (if (buffer-narrowed-p)
+             swiper--point-min
+           (point-min)))
         (funcall (if swiper-use-visual-line
                      #'line-move
                    #'forward-line)
