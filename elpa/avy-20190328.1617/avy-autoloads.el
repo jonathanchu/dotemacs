@@ -255,6 +255,10 @@ The window scope is determined by `avy-all-windows' (ARG negates it).
 
 ;;;***
 
+;;;### (autoloads nil nil ("avy-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

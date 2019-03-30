@@ -64,6 +64,10 @@ Minor mode for showing the ace window key in the mode line.
 
 ;;;***
 
+;;;### (autoloads nil nil ("ace-window-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

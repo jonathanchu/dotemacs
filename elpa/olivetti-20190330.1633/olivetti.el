@@ -4,7 +4,7 @@
 
 ;; Author: Paul Rankin <hello@paulwrankin.com>
 ;; Keywords: wp, text
-;; Package-Version: 20180531.737
+;; Package-Version: 20190330.1633
 ;; Version: 1.6.1
 ;; Package-Requires: ((emacs "24.4"))
 ;; URL: https://github.com/rnkn/olivetti
@@ -276,11 +276,15 @@ instead `olivetti-set-mode-line'."
 
 For compatibility with `text-scale-mode', if
 `face-remapping-alist' includes a :height property on the default
-face, scale N by that factor, otherwise scale by 1."
-  (* n (or (plist-get (cadr (assq 'default
-                                  face-remapping-alist))
-                      :height)
-           1)))
+face, scale N by that factor if it is a fraction, by (height/100)
+if it is an integer, and otherwise scale by 1."
+  (let
+      ((height (plist-get (cadr (assq 'default face-remapping-alist)) :height)))
+    (cond
+     ((integerp height) (* n (/ height 100.0)))
+     ((floatp height) (* n height))
+     (t n))))
+
 
 (defun olivetti-safe-width (width window)
   "Parse WIDTH to a safe value for `olivetti-body-width' for WINDOW.
