@@ -913,6 +913,7 @@
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
   :config
+  (add-hook 'js-mode-hook #'lsp)
   (use-package lsp-ui
     :ensure t
     :commands lsp-ui-mode
@@ -925,6 +926,7 @@
       (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
       (setq lsp-ui-sideline-ignore-duplicate t)
       (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+      ;; (add-hook 'js-mode-hook #'lsp)
       )
     :after flycheck
     )
