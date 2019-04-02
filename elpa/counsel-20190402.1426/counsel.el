@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190329.920
+;; Package-Version: 20190402.1426
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1204,10 +1204,11 @@ Like `locate-dominating-file', but DIR defaults to
 INITIAL-INPUT can be given as the initial minibuffer input."
   (interactive)
   (counsel-require-program counsel-git-cmd)
-  (ivy-read "Find file: " (counsel-git-cands)
-            :initial-input initial-input
-            :action #'counsel-git-action
-            :caller 'counsel-git))
+  (let ((default-directory (counsel-locate-git-root)))
+    (ivy-read "Find file: " (counsel-git-cands)
+              :initial-input initial-input
+              :action #'counsel-git-action
+              :caller 'counsel-git)))
 
 (defun counsel-git-action (x)
   "Find file X in current Git repository."
@@ -3723,9 +3724,12 @@ buffer position."
     (barf-if-buffer-read-only)
     (setq last-command 'yank)
     (setq yank-window-start (window-start))
-    ;; Avoid unexpected additions to `kill-ring'
-    (let (interprogram-paste-function)
-      (yank-pop (counsel--yank-pop-position s)))
+    (condition-case nil
+        ;; Avoid unexpected additions to `kill-ring'
+        (let (interprogram-paste-function)
+          (yank-pop (counsel--yank-pop-position s)))
+      (error
+       (insert s)))
     (when (funcall (if counsel-yank-pop-after-point #'> #'<)
                    (point) (mark t))
       (exchange-point-and-mark t))))
