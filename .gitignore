@@ -55,3 +55,4 @@ bookmarks
 transient
 elpa/archives
 *__pycache__
+.lsp-*
