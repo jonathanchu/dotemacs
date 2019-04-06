@@ -1,4 +1,4 @@
-(define-package "elpy" "20190405.1631" "Emacs Python Development Environment"
+(define-package "elpy" "20190406.1455" "Emacs Python Development Environment"
   '((company "0.9.2")
     (emacs "24.4")
     (find-file-in-project "3.3")
