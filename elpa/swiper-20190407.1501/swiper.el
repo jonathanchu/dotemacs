@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190405.1833
+;; Package-Version: 20190407.1501
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -1133,24 +1133,32 @@ See `ivy-format-function' for further information."
     res))
 
 ;;* `swiper-isearch'
-(defvar swiper--isearch-last-point nil)
+(defvar swiper--isearch-point-history nil
+  "Store the current input and point history for a single search.
+Each element is a cons cell of an input and a point position that
+corresponds to it.
+
+This ensures that if the user enters \"ab\", the point will
+come back to the same place as when \"a\" was initially entered.")
 
 (defun swiper-isearch-function (str)
   "Collect STR matches in the current buffer for `swiper-isearch'."
   (unless (string= str "")
-    (let ((re-full (funcall ivy--regex-function str))
-          re
-          cands
-          idx-found
-          (idx 0))
-      (setq re (ivy-re-to-str re-full))
+    (let* ((re-full (funcall ivy--regex-function str))
+           (re (ivy-re-to-str re-full))
+           (pt-hist (cdr (assoc str swiper--isearch-point-history)))
+           cands
+           idx-found
+           (idx 0))
       (with-ivy-window
         (save-excursion
           (goto-char (point-min))
           (while (re-search-forward re nil t)
             (unless idx-found
-              (when (>= (match-beginning 0) swiper--isearch-last-point)
-                (setq swiper--isearch-last-point (match-beginning 0))
+              (when (or
+                     (eq (match-beginning 0) pt-hist)
+                     (>= (match-beginning 0) (cdar swiper--isearch-point-history)))
+                (push (cons str (match-beginning 0)) swiper--isearch-point-history)
                 (setq idx-found idx)))
             (cl-incf idx)
             (let ((line (buffer-substring
@@ -1187,7 +1195,11 @@ See `ivy-format-function' for further information."
   "A `swiper' that's not line-based."
   (interactive)
   (swiper--init)
-  (setq swiper--isearch-last-point (line-beginning-position))
+  (setq swiper--isearch-point-history
+        (list
+         (cons "" (if executing-kbd-macro
+                      (point)
+                    (line-beginning-position)))))
   (let ((ivy-fixed-height-minibuffer t)
         (cursor-in-non-selected-windows nil)
         (swiper-min-highlight 1)

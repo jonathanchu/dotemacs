@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190404.1601
+;; Package-Version: 20190407.1115
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -3089,19 +3089,17 @@ otherwise continue prompting for tags."
                 :action #'counsel-org-tag-action
                 :caller 'counsel-org-tag))))
 
+(defvar org-version)
+
 ;;;###autoload
 (defun counsel-org-tag-agenda ()
   "Set tags for the current agenda item."
   (interactive)
-  (let* ((cmd-sym (if (version< (org-version) "9.2")
-                      'org-set-tags
-                    'org-set-tags-command))
-         (store (symbol-function cmd-sym)))
-    (unwind-protect
-         (progn
-           (fset cmd-sym (symbol-function 'counsel-org-tag))
-           (org-agenda-set-tags nil nil))
-      (fset cmd-sym store))))
+  (cl-letf (((symbol-function (if (version< org-version "9.2")
+                                  'org-set-tags
+                                'org-set-tags-command))
+             #'counsel-org-tag))
+    (org-agenda-set-tags)))
 
 (define-obsolete-variable-alias 'counsel-org-goto-display-tags
     'counsel-org-headline-display-tags "0.10.0")
@@ -3232,8 +3230,6 @@ recognized:
 (defun counsel-org-goto-action (x)
   "Go to headline in candidate X."
   (org-goto-marker-or-bmk (cdr x)))
-
-(defvar org-version)
 
 (defun counsel--org-get-heading-args ()
   "Return list of arguments for `org-get-heading'.
@@ -5083,9 +5079,16 @@ The buffers are those opened during a session of `counsel-switch-buffer'."
       ((get-buffer current)
        (ivy-call))
       ((and virtual (file-exists-p (cdr virtual)))
-       (let ((buf (find-file-noselect (cdr virtual))))
-         (push buf counsel--switch-buffer-temporary-buffers)
-         (ivy-call)))
+       (let ((buf (ignore-errors
+                    ;; may not open due to `large-file-warning-threshold' etc.
+                    (find-file-noselect (cdr virtual)))))
+         (if buf
+             (progn
+               (push buf counsel--switch-buffer-temporary-buffers)
+               (ivy-call))
+           ;; clean up the minibuffer so that there's no delay before
+           ;; the Ivy candidates are displayed once again
+           (message ""))))
       (t
        (with-ivy-window
          (switch-to-buffer (ivy-state-buffer ivy-last)))))))

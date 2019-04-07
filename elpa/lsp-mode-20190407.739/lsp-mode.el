@@ -461,7 +461,8 @@ If set to `:none' neither of two will be enabled."
 
 (defvar-local lsp--flymake-report-fn nil)
 
-(defvar lsp-language-id-configuration '((java-mode . "java")
+(defvar lsp-language-id-configuration '((".*.vue" . "vue")
+                                        (java-mode . "java")
                                         (python-mode . "python")
                                         (gfm-view-mode . "markdown")
                                         (rust-mode . "rust")
@@ -2346,7 +2347,7 @@ in that particular folder."
    "textDocument/didOpen"
    (list :textDocument
          (list :uri (lsp--buffer-uri)
-               :languageId (alist-get major-mode lsp-language-id-configuration "")
+               :languageId (lsp-buffer-language)
                :version lsp--cur-version
                :text (buffer-substring-no-properties (point-min) (point-max)))))
 
@@ -2356,6 +2357,9 @@ in that particular folder."
          (kind (if (hash-table-p sync) (gethash "change" sync) sync)))
     (setq lsp--server-sync-method (or lsp-document-sync-method
                                       (alist-get kind lsp--sync-methods))))
+  (when (and lsp-auto-configure (lsp--capability "documentSymbolProvider"))
+    (lsp-enable-imenu))
+
   (run-hooks 'lsp-after-open-hook)
   (lsp--set-document-link-timer))
 
@@ -2809,7 +2813,12 @@ Applies on type formatting."
 
 (defun lsp-buffer-language ()
   "Get language corresponding current buffer."
-  (alist-get major-mode lsp-language-id-configuration))
+  (->> lsp-language-id-configuration
+       (-first (-lambda ((mode-or-pattern . language))
+                 (cond
+                  ((stringp mode-or-pattern) language)
+                  ((eq mode-or-pattern major-mode) language))))
+       cl-rest))
 
 (defun lsp-workspace-root (&optional path)
   "Find the workspace root for the current file or PATH."
@@ -3060,26 +3069,30 @@ If INCLUDE-DECLARATION is non-nil, request the server to include declarations."
 (defvar-local lsp--highlight-timer nil)
 
 (defun lsp--highlight ()
-  (with-demoted-errors "Error in ‘lsp--highlight’: %S"
-    (when (and lsp-enable-symbol-highlighting
-               (lsp--capability "documentHighlightProvider"))
-      (let ((bounds (bounds-of-thing-at-point 'symbol))
-            (last lsp--highlight-bounds)
-            (point (point)))
-        (when (and last (or (< point (car last)) (> point (cdr last))))
-          (setq lsp--highlight-bounds nil)
-          (--each (lsp-workspaces)
-            (with-lsp-workspace it
-              (lsp--remove-cur-overlays))))
-        (when (and bounds (not (equal last bounds)))
-          (and lsp--highlight-timer (cancel-timer lsp--highlight-timer))
-          (setq lsp--highlight-timer
-                (run-with-idle-timer
-                 lsp-document-highlight-delay nil
-                 (lambda nil
-                   (setq lsp--highlight-bounds
-                         (bounds-of-thing-at-point 'symbol))
-                   (lsp--document-highlight)))))))))
+  (let ((buff (current-buffer)))
+    (with-demoted-errors "Error in ‘lsp--highlight’: %S"
+      (when (and lsp-enable-symbol-highlighting
+                 (lsp--capability "documentHighlightProvider"))
+        (let ((bounds (bounds-of-thing-at-point 'symbol))
+              (last lsp--highlight-bounds)
+              (point (point)))
+          (when (and last (or (< point (car last)) (> point (cdr last))))
+            (setq lsp--highlight-bounds nil)
+            (--each (lsp-workspaces)
+              (with-lsp-workspace it
+                (lsp--remove-cur-overlays))))
+          (when (and bounds (not (equal last bounds)))
+            (and lsp--highlight-timer (cancel-timer lsp--highlight-timer))
+            (setq lsp--highlight-timer
+                  (run-with-idle-timer
+                   lsp-document-highlight-delay nil
+                   (lambda nil
+                     (when (and (eq buff (current-buffer))
+                                lsp-enable-symbol-highlighting
+                                (lsp--capability "documentHighlightProvider"))
+                       (setq lsp--highlight-bounds
+                             (bounds-of-thing-at-point 'symbol))
+                       (lsp--document-highlight)))))))))))
 
 (defun lsp-describe-thing-at-point ()
   "Display the full documentation of the thing at point."
@@ -4240,8 +4253,6 @@ returns the command to execute."
       (lsp-ui-flycheck-enable t)
       (flycheck-mode 1)))
 
-    (lsp-enable-imenu)
-
     (when (functionp 'company-lsp)
       (company-mode 1)
       (add-to-list 'company-backends 'company-lsp)
@@ -4440,15 +4451,71 @@ session workspce folder configuration for the server."
          (initialization-options (if (functionp initialization-options-or-fn)
                                      (funcall initialization-options-or-fn)
                                    initialization-options-or-fn)))
-    (if (lsp--client-multi-root client)
-        (or (-some->> session
-                      (lsp-session-server-id->folders)
-                      (gethash (lsp--client-server-id client))
-                      (-map 'lsp--path-to-uri)
-                      (apply 'vector)
-                      (plist-put initialization-options :workspaceFolders))
-            initialization-options)
-      initialization-options)))
+    (or (when (lsp--client-multi-root client)
+          (when-let (workspace-folders (-some->> session
+                                                 lsp-session-server-id->folders
+                                                 (gethash (lsp--client-server-id client))
+                                                 (-map #'lsp--path-to-uri)
+                                                 (apply 'vector)))
+            (if (ht? initialization-options)
+                (prog1 initialization-options
+                  (puthash "workspaceFolders" workspace-folders initialization-options))
+              (plist-put initialization-options :workspaceFolders workspace-folders))))
+        initialization-options)))
+
+(defun lsp--plist-delete (prop plist)
+  "Delete by side effect the property PROP from PLIST.
+If PROP is the first property in PLIST, there is no way
+to remove it by side-effect; therefore, write
+\(setq foo (evil-plist-delete :prop foo)) to be sure of
+changing the value of `foo'."
+  (let ((tail plist) elt head)
+    (while tail
+      (setq elt (car tail))
+      (cond
+       ((eq elt prop)
+        (setq tail (cdr (cdr tail)))
+        (if head
+            (setcdr (cdr head) tail)
+          (setq plist tail)))
+       (t
+        (setq head tail
+              tail (cdr (cdr tail))))))
+    plist))
+
+(defvar lsp-client-settings nil)
+
+(defun lsp-register-custom-settings (props)
+  "Register PROPS.
+The PROPS is list of triple (path symbol boolean?) Where: path is
+the path to the property, symbol is the defcustom symbol which
+will be used to retrieve the value and boolean determines whether
+the type of the property is boolean?"
+  (setq lsp-client-settings (-uniq (append lsp-client-settings props))))
+
+(defun lsp-ht-set (tbl paths value)
+  "Set nested hashtable value.
+TBL - a hashtable, PATHS is the path to the nested VALUE."
+  (pcase paths
+    (`(,path) (ht-set! tbl path value))
+    (`(,path . ,rst) (let ((nested-tbl (or (gethash path tbl)
+                                           (let ((temp-tbl (ht)))
+                                             (ht-set! tbl path temp-tbl)
+                                             temp-tbl)) ))
+                       (lsp-ht-set nested-tbl rst value)))))
+
+(defun lsp-configuration-section (section)
+  "Get settings for SECTION."
+  (let ((ret (ht-create)))
+    (mapc (-lambda ((path variable boolean?))
+            (when (s-matches? (concat section "\\..*") path)
+              (let* ((symbol-value (symbol-value variable))
+                     (value (if (and boolean? (not symbol-value))
+                                :json-false
+                              symbol-value)))
+                (lsp-ht-set ret (s-split "\\." path) value))))
+          lsp-client-settings)
+    ret))
 
 (defun lsp--start-connection (session client project-root)
   "Initiates connection created from CLIENT for PROJECT-ROOT.
@@ -4696,7 +4763,7 @@ The library folders are defined by each client for each of the active workspace.
                                   :folders-blacklist (lsp-session-folders-blacklist session)
                                   :server-id->folders (lsp-session-server-id->folders session))))
 
-(defun lsp--try-project-root-workspaces (ignore-multi-folder)
+(defun lsp--try-project-root-workspaces (ask-for-client ignore-multi-folder)
   "Try create opening file as a project file.
 When IGNORE-MULTI-FOLDER is t the lsp mode will start new
 language server even if there is language server which can handle
@@ -4704,7 +4771,7 @@ current language. When IGNORE-MULTI-FOLDER is nil current file
 will be openned in multi folder language server if there is
 such."
   (-let ((session (lsp-session)))
-    (-if-let (clients (if current-prefix-arg
+    (-if-let (clients (if ask-for-client
                           (list (lsp--completing-read "Select server to start: "
                                                       (ht-values lsp-clients)
                                                       (-compose 'symbol-name 'lsp--client-server-id) nil t))
@@ -4750,21 +4817,23 @@ such."
     (with-lsp-workspace it (lsp--shutdown-workspace))))
 
 ;;;###autoload
-(defun lsp (&optional ignore-multi-folder)
+(defun lsp (&optional arg)
   "Entry point for the server startup.
-When IGNORE-MULTI-FOLDER is t the lsp mode will start new
-language server even if there is language server which can handle
-current language. When IGNORE-MULTI-FOLDER is nil current file
-will be openned in multi folder language server if there is
-such."
-  (interactive)
+When ARG is t the lsp mode will start new language server even if
+there is language server which can handle current language. When
+ARG is nil current file will be openned in multi folder language
+server if there is such. When `lsp' is called with prefix
+argument ask the user to select which language server to start. "
+  (interactive "P")
 
   (when (and lsp-auto-configure lsp-auto-require-clients)
     (require 'lsp-clients))
 
   (when (and (buffer-file-name)
-             (setq-local lsp--buffer-workspaces (or (lsp--try-open-in-library-workspace)
-                                                    (lsp--try-project-root-workspaces ignore-multi-folder))))
+             (setq-local lsp--buffer-workspaces
+                         (or (lsp--try-open-in-library-workspace)
+                             (lsp--try-project-root-workspaces (equal arg '(4))
+                                                               (and arg (not (equal arg 1)))))))
     (lsp-mode 1)
     (when lsp-auto-configure (lsp--auto-configure))
 
