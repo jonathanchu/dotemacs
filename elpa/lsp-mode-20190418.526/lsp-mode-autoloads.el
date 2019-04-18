@@ -20,6 +20,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "lsp-go" "lsp-go.el" (0 0 0 0))
+;;; Generated autoloads from lsp-go.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-go" '("lsp-")))
+
+;;;***
+
 ;;;### (autoloads nil "lsp-intelephense" "lsp-intelephense.el" (0
 ;;;;;;  0 0 0))
 ;;; Generated autoloads from lsp-intelephense.el
