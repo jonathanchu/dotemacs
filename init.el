@@ -997,6 +997,15 @@
 
 (use-package neotree
   :ensure t
+  :config
+  (setq neo-window-width 32
+        neo-create-file-auto-open t
+        neo-banner-message nil
+        neo-mode-line-type 'none
+        neo-smart-open t
+        neo-show-hidden-files t
+        neo-auto-indent-point t)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   :bind
   ("C-c n" . neotree-toggle)
   )
