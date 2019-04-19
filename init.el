@@ -770,7 +770,8 @@
   :init
   (helm-projectile-on)
   (bind-key "s-t" #'helm-projectile-find-file)
-  (bind-key "s-P" #'helm-projectile-switch-project))
+  ;; (bind-key "s-P" #'helm-projectile-switch-project)
+  )
 
 (use-package highlight-tail
   :load-path "vendor/"
@@ -959,7 +960,17 @@
     (setq magit-diff-refine-hunk t))
   :bind
   ("C-x g" . magit-status)
-  ("C-c C-a" . magit-commit-amend))
+  ("C-c C-a" . magit-commit-amend)
+  )
+
+(setq magit-repository-directories '(("\~/projects" . 3)))
+(defun magit-status-with-prefix-arg ()
+  "Call `magit-status` with a prefix."
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively #'magit-status)))
+(global-set-key (kbd "s-P") 'magit-status-with-prefix-arg)
+
 
 (use-package magit-git-toolbelt
   :load-path "vendor/")
