@@ -1023,8 +1023,9 @@
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
   :config
+  (setq org-startup-indented t)
   (setq org-directory "~/Dropbox/org")
-  (setq org-log-done t)
+  (setq org-log-done 'time)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "|" "DONE(d)")
           (sequence "WAITING(w)" "|" "CANCELED(c)")
@@ -1063,7 +1064,7 @@
   (setq org-agenda-span (quote fortnight))
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
-  (setq org-agenda-todo-ignore-deadlines (quote all))
+  ;; (setq org-agenda-todo-ignore-deadlines (quote all))
   (setq org-agenda-todo-ignore-scheduled (quote all))
   (setq org-agenda-sorting-strategy
         (quote
@@ -1073,6 +1074,7 @@
           (search category-keep))))
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation t)
   (add-hook 'org-mode-hook
             (lambda ()
               (make-variable-buffer-local 'yas/trigger-key)
