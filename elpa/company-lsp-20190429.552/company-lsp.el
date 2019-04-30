@@ -1,7 +1,7 @@
 ;;; company-lsp.el --- Company completion backend for lsp-mode.  -*- lexical-binding: t -*-
 
 ;; Version: 2.1.0
-;; Package-Version: 20190420.609
+;; Package-Version: 20190429.552
 ;; Package-Requires: ((emacs "25.1") (lsp-mode "6.0") (company "0.9.0") (s "1.2.0") (dash "2.11.0"))
 ;; URL: https://github.com/tigersoldier/company-lsp
 
@@ -126,6 +126,15 @@ the current point is before any completion trigger characters. If yes,
 it re-triggers another completion request.
 
 This is useful in cases such as 'std' is completed as 'std::' in C++."
+  :type 'boolean
+  :group 'company-lsp)
+
+(defcustom company-lsp-enable-additional-text-edit t
+  "Whether or not to apply additional text edit.
+
+If set to non-nil, company-lsp will apply additional text edits
+from the server. Otherwise, the additional text edits are
+ignored."
   :type 'boolean
   :group 'company-lsp)
 
@@ -323,7 +332,7 @@ CANDIDATE is a string returned by `company-lsp--make-candidate'."
       (insert insert-text)))
 
     (let ((start-marker (set-marker (make-marker) start)))
-      (when additional-text-edits
+      (when (and additional-text-edits company-lsp-enable-additional-text-edit)
         (lsp--apply-text-edits additional-text-edits))
       (when (and company-lsp-enable-snippet
                  (fboundp 'yas-expand-snippet))
