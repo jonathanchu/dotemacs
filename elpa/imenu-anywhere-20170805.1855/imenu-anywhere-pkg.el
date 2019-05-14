@@ -1,2 +1,0 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "imenu-anywhere" "20170805.1855" "ido/ivy/helm imenu across same mode/project/etc buffers" '((cl-lib "0.5")) :commit "fc7f0fd2f19e5ebee70156a99bf87393123893e3" :keywords '("ido" "imenu" "tags") :authors '(("Vitalie Spinu  <spinuvit.list[ aaattt ]gmail[ dot ]com>")) :maintainer '("Vitalie Spinu  <spinuvit.list[ aaattt ]gmail[ dot ]com>") :url "https://github.com/vitoshka/imenu-anywhere")
