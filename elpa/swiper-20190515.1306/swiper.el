@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190514.1357
+;; Package-Version: 20190515.1306
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -1397,6 +1397,25 @@ When not running `swiper-isearch' already, start it."
         (cl-pushnew ivy-text swiper-history)))))
 
 (ivy-set-occur 'swiper-isearch 'swiper-occur)
+
+(defun swiper-isearch-toggle ()
+  "Two-way toggle between `swiper-isearch' and isearch.
+Intended to be bound in `isearch-mode-map' and `swiper-map'."
+  (interactive)
+  (if isearch-mode
+      (let ((query (if isearch-regexp
+                       isearch-string
+                     (regexp-quote isearch-string))))
+        (isearch-exit)
+        (goto-char (match-beginning 0))
+        (swiper-isearch query))
+    (ivy-exit-with-action
+     (lambda (_)
+       (when (looking-back ivy--old-re (line-beginning-position))
+         (goto-char (match-beginning 0)))
+       (isearch-mode t)
+       (unless (string= ivy-text "")
+         (isearch-yank-string ivy-text))))))
 
 (provide 'swiper)
 

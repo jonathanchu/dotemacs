@@ -509,6 +509,7 @@ If set to `:none' neither of two will be enabled."
 
 (defvar lsp-language-id-configuration '((".*.vue" . "vue")
                                         (".*.tsx" . "typescriptreact")
+                                        (scala-mode . "scala")
                                         (julia-mode . "julia")
                                         (java-mode . "java")
                                         (python-mode . "python")
@@ -3634,9 +3635,9 @@ A reference is highlighted only if it is visible in a window."
                     (when (and (> (1+ (gethash "line" start)) start-window)
                                (< (1+ (gethash "line" end)) end-window)
                                (not (and lsp-symbol-highlighting-skip-current
-                                         (< (lsp--position-to-point start)
-                                            (point)
-                                            (lsp--position-to-point end)))))
+                                         (<= (lsp--position-to-point start)
+                                             (point)
+                                             (lsp--position-to-point end)))))
                       (setq overlay (make-overlay (lsp--position-to-point start)
                                                   (lsp--position-to-point end)))
                       (overlay-put overlay 'face
