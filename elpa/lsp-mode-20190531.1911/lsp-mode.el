@@ -1082,7 +1082,7 @@ DELETE when `lsp-mode.el' is deleted.")
 
 (defun lsp-watch-root-folder (dir callback &optional watch)
   "Create recursive file notificaton watch in DIR.
-CALLBACK is the will be called when there are changes in any of
+CALLBACK will be called when there are changes in any of
 the monitored files. WATCHES is a hash table directory->file
 notification handle which contains all of the watch that
 already have been created."
@@ -1095,24 +1095,7 @@ already have been created."
            (file-notify-add-watch
             dir
             '(change)
-            (lambda (event)
-              (let ((file-name (cl-caddr event))
-                    (event-type (cadr event)))
-                (cond
-                 ((and (file-directory-p file-name)
-                       (equal 'created event-type))
-
-                  (lsp-watch-root-folder file-name callback watch)
-
-                  ;; process the files that are already present in
-                  ;; the directory.
-                  (->> (directory-files-recursively file-name ".*" t)
-                       (seq-do (lambda (f)
-                                 (unless (file-directory-p f)
-                                   (funcall callback (list nil 'created f)))))))
-                 ((and (not (file-directory-p file-name))
-                       (memq event-type '(created deleted changed)))
-                  (funcall callback event))))))
+            (lambda (event) (funcall 'lsp--folder-watch-callback event callback watch)))
            (lsp-watch-descriptors watch))
           (seq-do
            (-rpartial #'lsp-watch-root-folder callback watch)
@@ -1125,6 +1108,26 @@ already have been created."
       (error (lsp-log "Failed to create a watch for %s: message" (error-message-string err)))
       (file-missing (lsp-log "Failed to create a watch for %s: message" (error-message-string err))))
     watch))
+
+(defun lsp--folder-watch-callback (event callback watch)
+  (let ((file-name (cl-caddr event))
+        (event-type (cadr event)))
+    (cond
+     ((and (file-directory-p file-name)
+           (equal 'created event-type)
+           (not (lsp--string-match-any lsp-file-watch-ignored file-name)))
+
+      (lsp-watch-root-folder file-name callback watch)
+
+      ;; process the files that are already present in
+      ;; the directory.
+      (->> (directory-files-recursively file-name ".*" t)
+           (seq-do (lambda (f)
+                     (unless (file-directory-p f)
+                       (funcall callback (list nil 'created f)))))))
+     ((and (not (file-directory-p file-name))
+           (memq event-type '(created deleted changed)))
+      (funcall callback event)))))
 
 (defun lsp-kill-watch (watch)
   "Delete WATCH."
@@ -3026,12 +3029,13 @@ Applies on type formatting."
 
 (defun lsp-buffer-language ()
   "Get language corresponding current buffer."
-  (->> lsp-language-id-configuration
-       (-first (-lambda ((mode-or-pattern . language))
-                 (cond
-                  ((and (stringp mode-or-pattern) (s-matches? mode-or-pattern buffer-file-name)) language)
-                  ((eq mode-or-pattern major-mode) language))))
-       cl-rest))
+  (or (->> lsp-language-id-configuration
+        (-first (-lambda ((mode-or-pattern . language))
+                  (cond
+                   ((and (stringp mode-or-pattern) (s-matches? mode-or-pattern buffer-file-name)) language)
+                   ((eq mode-or-pattern major-mode) language))))
+        cl-rest)
+      (lsp-warn "Unable to calculate the languageId for current buffer. Take a look at lsp-language-id-configuration.")))
 
 (defun lsp-workspace-root (&optional path)
   "Find the workspace root for the current file or PATH."
