@@ -592,6 +592,7 @@ copied to this sub-directory inside the Hugo static directory."
 
 (defcustom org-hugo-external-file-extensions-allowed-for-copying
   '("jpg" "jpeg" "tiff" "png" "svg" "gif"
+    "mp4"
     "pdf" "odt"
     "doc" "ppt" "xls"
     "docx" "pptx" "xlsx")
@@ -3531,7 +3532,8 @@ are \"toml\" and \"yaml\"."
                      "HUGO_SLUG" ;Useful for inheriting same slug to same posts in different languages
                      "HUGO_PANDOC_CITATIONS"
                      "BIBLIOGRAPHY"
-                     "HUGO_AUTO_SET_LASTMOD")))
+                     "HUGO_AUTO_SET_LASTMOD"
+                     "AUTHOR")))
     (mapcar (lambda (str)
               (concat "EXPORT_" str))
             prop-list)))

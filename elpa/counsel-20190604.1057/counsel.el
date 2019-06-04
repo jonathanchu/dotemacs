@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190527.1406
+;; Package-Version: 20190604.1057
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1145,17 +1145,20 @@ back to the face of the character after point, and finally the
    ("C" counsel-customize-face-other-window "customize other window")))
 
 ;;** `counsel-faces'
-(defun counsel--faces-format-function (format)
-  "Return an `ivy-format-function' for `counsel-faces'.
+(defvar counsel--faces-format "%-40s %s")
+
+(defun counsel--faces-format-function (names)
+  "Customize `ivy-format-functions-alist' for `counsel-faces'.
 Each candidate is formatted based on the given FORMAT string."
-  (let ((formatter (lambda (name)
-                     (format format name (propertize list-faces-sample-text
-                                                     'face (intern name))))))
-    (lambda (names)
-      (ivy--format-function-generic
-       (lambda (name)
-         (funcall formatter (ivy--add-face name 'ivy-current-match)))
-       formatter names "\n"))))
+  (let ((formatter
+         (lambda (name)
+           (format counsel--faces-format name
+                   (propertize list-faces-sample-text
+                               'face (intern name))))))
+    (ivy--format-function-generic
+     (lambda (name)
+       (funcall formatter (ivy--add-face name 'ivy-current-match)))
+     formatter names "\n")))
 
 ;;;###autoload
 (defun counsel-faces ()
@@ -1164,10 +1167,9 @@ Actions are provided by default for describing or customizing the
 selected face."
   (interactive)
   (let* ((names (mapcar #'symbol-name (face-list)))
-         (ivy-format-function
-          (counsel--faces-format-function
-           (format "%%-%ds %%s"
-                   (apply #'max 0 (mapcar #'string-width names))))))
+         (counsel--faces-format
+          (format "%%-%ds %%s"
+                  (apply #'max 0 (mapcar #'string-width names)))))
     (ivy-read "Face: " names
               :require-match t
               :history 'face-name-history
@@ -1175,6 +1177,8 @@ selected face."
               :sort t
               :action counsel-describe-face-function
               :caller 'counsel-faces)))
+
+(add-to-list 'ivy-format-functions-alist '(counsel-faces . counsel--faces-format-function))
 
 (ivy-set-actions
  'counsel-faces
@@ -1674,14 +1678,14 @@ currently checked out."
   (interactive)
   (let ((counsel-async-split-string-re counsel-git-log-split-string-re)
         (counsel-async-ignore-re "^[ \n]*$")
-        (counsel-yank-pop-truncate-radius 5)
-        (ivy-format-function #'counsel--yank-pop-format-function))
+        (counsel-yank-pop-truncate-radius 5))
     (ivy-read "Grep log: " #'counsel-git-log-function
               :dynamic-collection t
               :action #'counsel-git-log-action
               :unwind #'counsel-delete-process
               :caller 'counsel-git-log)))
 
+(add-to-list 'ivy-format-functions-alist '(counsel-git-log . counsel--yank-pop-format-function))
 (add-to-list 'ivy-height-alist '(counsel-git-log . 4))
 
 ;;* File
@@ -1981,11 +1985,24 @@ If USE-IGNORE is non-nil, try to generate a command that respects
                   (counsel--elisp-to-pcre ivy--old-re)
                 (counsel--file-name-filter t)))))))
 
+(defvar counsel-up-directory-level t
+  "Control whether `counsel-up-directory' goes up a level or always a directory.
+
+If non-nil, then `counsel-up-directory' will remove the final level of the path.
+For example: /a/long/path/file.jpg => /a/long/path/
+             /a/long/path/     =>     /a/long/
+
+If nil, then `counsel-up-directory' will go up a directory.
+For example: /a/long/path/file.jpg => /a/long/
+             /a/long/path/     =>     /a/long/")
+
 (defun counsel-up-directory ()
   "Go to the parent directory preselecting the current one.
 
 If the current directory is remote and it's not possible to go up any
-further, make the remote prefix editable"
+further, make the remote prefix editable.
+
+See variable `counsel-up-directory-level'."
   (interactive)
   (let* ((cur-dir (directory-file-name (expand-file-name ivy--directory)))
          (up-dir (file-name-directory cur-dir)))
@@ -2000,9 +2017,11 @@ further, make the remote prefix editable"
           (setq ivy-text "")
           (delete-minibuffer-contents)
           (insert up-dir))
-      (ivy--cd up-dir)
-      (setf (ivy-state-preselect ivy-last)
-            (file-name-as-directory (file-name-nondirectory cur-dir))))))
+      (if (and counsel-up-directory-level (not (string= ivy-text "")))
+          (delete-region (line-beginning-position) (line-end-position))
+        (ivy--cd up-dir)
+        (setf (ivy-state-preselect ivy-last)
+              (file-name-as-directory (file-name-nondirectory cur-dir)))))))
 
 (defun counsel-down-directory ()
   "Descend into the current directory."
@@ -3730,11 +3749,6 @@ Additional actions:\\<ivy-minibuffer-map>
           (const :tag "Dashes" "\n----\n")
           string))
 
-(make-obsolete-variable
- 'counsel-yank-pop-height
- 'ivy-height-alist
- "<2018-04-14 Fri>") ;; TODO: Add version tag
-
 (defcustom counsel-yank-pop-height 5
   "The `ivy-height' of `counsel-yank-pop'."
   :type 'integer)
@@ -3884,8 +3898,7 @@ Note: Duplicate elements of `kill-ring' are always deleted."
                                          (t 1))
                                    t)))
         (counsel-yank-pop-after-point
-         (xor (consp arg) counsel-yank-pop-after-point))
-        (ivy-format-function #'counsel--yank-pop-format-function))
+         (xor (consp arg) counsel-yank-pop-after-point)))
     (unless (eq last-command 'yank)
       (push-mark))
     (ivy-read "kill-ring: " kills
@@ -3893,7 +3906,7 @@ Note: Duplicate elements of `kill-ring' are always deleted."
               :preselect preselect
               :action #'counsel-yank-pop-action
               :caller 'counsel-yank-pop)))
-
+(add-to-list 'ivy-format-functions-alist '(counsel-yank-pop . counsel--yank-pop-format-function))
 (add-to-list 'ivy-height-alist '(counsel-yank-pop . 5))
 
 (ivy-set-actions
@@ -3954,11 +3967,6 @@ matching the register's value description against a regexp in
             :caller 'counsel-register))
 
 ;;** `counsel-evil-registers'
-(make-obsolete-variable
- 'counsel-evil-registers-height
- 'ivy-height-alist
- "<2018-04-14 Fri>") ;; TODO: Add version tag
-
 (defcustom counsel-evil-registers-height 5
   "The `ivy-height' of `counsel-evil-registers'."
   :type 'integer)
@@ -3967,15 +3975,14 @@ matching the register's value description against a regexp in
   "Ivy replacement for `evil-show-registers'."
   (interactive)
   (if (fboundp 'evil-register-list)
-      (let ((ivy-format-function #'counsel--yank-pop-format-function))
-        (ivy-read "evil-registers: "
-                  (cl-loop for (key . val) in (evil-register-list)
-                     collect (format "[%c]: %s" key (if (stringp val) val "")))
-                  :require-match t
-                  :action #'counsel-evil-registers-action
-                  :caller 'counsel-evil-registers))
+      (ivy-read "evil-registers: "
+                (cl-loop for (key . val) in (evil-register-list)
+                   collect (format "[%c]: %s" key (if (stringp val) val "")))
+                :require-match t
+                :action #'counsel-evil-registers-action
+                :caller 'counsel-evil-registers)
     (user-error "Required feature `evil' not installed.")))
-
+(add-to-list 'ivy-format-functions-alist '(counsel-evil-registers . counsel--yank-pop-format-function))
 (add-to-list 'ivy-height-alist '(counsel-evil-registers . 5))
 
 (defun counsel-evil-registers-action (s)
@@ -4661,12 +4668,41 @@ Return nil if NAME does not designate a valid color."
 
 (defvar shr-color-visible-luminance-min)
 (declare-function shr-color-visible "shr-color")
+(defvar counsel--colors-format "%-20s %s %s%s")
 
-(defun counsel-colors--formatter (formatter)
-  "Turn FORMATTER into format function for `counsel-colors-*'.
-Return closure suitable for `ivy-format-function'."
+(defun counsel--colors-emacs-format-function (colors)
+  "Format function for `counsel-colors-emacs'."
   (require 'shr-color)
-  (lambda (colors)
+  (let* ((blank (make-string 10 ?\s))
+         (formatter
+          (lambda (color)
+            (let ((fg (list :foreground color)))
+              (format counsel--colors-format color
+                      (propertize (get-text-property 0 'hex color) 'face fg)
+                      (propertize blank 'face (list :background color))
+                      (propertize (mapconcat (lambda (dup)
+                                               (concat " " dup))
+                                             (get-text-property 0 'dups color)
+                                             ",")
+                                  'face fg))))))
+    (ivy--format-function-generic
+     (lambda (color)
+       (let* ((hex (get-text-property 0 'hex color))
+              (shr-color-visible-luminance-min 100)
+              (fg (cadr (shr-color-visible hex "black" t))))
+         (propertize (funcall formatter color)
+                     'face (list :foreground fg :background hex))))
+     formatter colors "\n")))
+
+(defun counsel--colors-web-format-function (colors)
+  "Format function for `counsel-colors-web'."
+  (require 'shr-color)
+  (let* ((blank (make-string 10 ?\s))
+         (formatter (lambda (color)
+                      (let ((hex (get-text-property 0 'hex color)))
+                        (format counsel--colors-format color
+                                (propertize hex 'face (list :foreground hex))
+                                (propertize blank 'face (list :background hex)))))))
     (ivy--format-function-generic
      (lambda (color)
        (let* ((hex (get-text-property 0 'hex color))
@@ -4692,26 +4728,15 @@ selected color."
                               (when hex
                                 (propertize name 'hex hex 'dups dups))))
                           (list-colors-duplicates))))
-         (fmt (format "%%-%ds %%s %%s%%s"
-                      (apply #'max 0 (mapcar #'string-width colors))))
-         (blank (make-string 10 ?\s))
-         (ivy-format-function
-          (counsel-colors--formatter
-           (lambda (color)
-             (let ((fg (list :foreground color)))
-               (format fmt color
-                       (propertize (get-text-property 0 'hex color) 'face fg)
-                       (propertize blank 'face (list :background color))
-                       (propertize (mapconcat (lambda (dup)
-                                                (concat " " dup))
-                                              (get-text-property 0 'dups color)
-                                              ",")
-                                   'face fg)))))))
+         (counsel--colors-format
+          (format "%%-%ds %%s %%s%%s"
+                  (apply #'max 0 (mapcar #'string-width colors)))))
     (ivy-read "Emacs color: " colors
               :require-match t
               :history 'counsel-colors-emacs-history
               :action #'insert
               :caller 'counsel-colors-emacs)))
+(add-to-list 'ivy-format-functions-alist '(counsel-colors-emacs . counsel--colors-emacs-format-function))
 
 (ivy-set-actions
  'counsel-colors-emacs
@@ -4749,16 +4774,9 @@ You can insert or kill the name or hexadecimal RGB value of the
 selected color."
   (interactive)
   (let* ((colors (counsel-colors--web-alist))
-         (blank (make-string 10 ?\s))
-         (fmt (format "%%-%ds %%s %%s"
-                      (apply #'max 0 (mapcar #'string-width colors))))
-         (ivy-format-function
-          (counsel-colors--formatter
-           (lambda (color)
-             (let ((hex (get-text-property 0 'hex color)))
-               (format fmt color
-                       (propertize hex 'face (list :foreground hex))
-                       (propertize blank 'face (list :background hex))))))))
+         (counsel--colors-format
+          (format "%%-%ds %%s %%s"
+                  (apply #'max 0 (mapcar #'string-width colors)))))
     (ivy-read "Web color: " colors
               :require-match t
               :history 'counsel-colors-web-history
@@ -4766,6 +4784,7 @@ selected color."
               :action #'insert
               :caller 'counsel-colors-web)))
 
+(add-to-list 'ivy-format-functions-alist '(counsel-colors-web . counsel--colors-web-format-function))
 (ivy-set-actions
  'counsel-colors-web
  '(("h" counsel-colors-action-insert-hex "insert hexadecimal value")
@@ -5565,16 +5584,16 @@ specified by the `blddir' property."
 (defun counsel-compile-env ()
   "Update `counsel-compile-env' interactively."
   (interactive)
-  (let ((ivy-format-function #'counsel-compile-env--format-hint))
-    (ivy-read "Compile environment variable: "
-              (delete-dups (append
-                            counsel-compile-env counsel-compile-env-history))
-              :action #'counsel-compile-env--update
-              :predicate (lambda (cand)
-                           (string-match-p counsel-compile-env-pattern
-                                           cand))
-              :history 'counsel-compile-env-history
-              :caller 'counsel-compile-env)))
+  (ivy-read "Compile environment variable: "
+            (delete-dups (append
+                          counsel-compile-env counsel-compile-env-history))
+            :action #'counsel-compile-env--update
+            :predicate (lambda (cand)
+                         (string-match-p counsel-compile-env-pattern
+                                         cand))
+            :history 'counsel-compile-env-history
+            :caller 'counsel-compile-env))
+(add-to-list 'ivy-format-functions-alist '(counsel-compile-env . counsel-compile-env--format-hint))
 
 ;;** `counsel-minor'
 (defvar counsel-minor-history nil

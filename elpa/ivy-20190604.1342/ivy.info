@@ -162,12 +162,13 @@ Customizability
      interfaces of completion to tailor the selection process.  For
      example, adding a custom display function that points to a selected
      candidate with ‘>’, instead of highlighting the selected candidate
-     with the ‘ivy-current-match’ face (see ‘ivy-format-function’).  Or
-     take the customization of actions, say after the candidate function
-     is selected.  ‘RET’ uses ‘counsel-describe-function’ to describe
-     the function, whereas ‘M-o d’ jumps to that function’s definition
-     in the code.  The ‘M-o’ prefix can be uniformly used with
-     characters like ‘d’ to group similar actions.
+     with the ‘ivy-current-match’ face (see
+     ‘ivy-format-functions-alist’).  Or take the customization of
+     actions, say after the candidate function is selected.  ‘RET’ uses
+     ‘counsel-describe-function’ to describe the function, whereas ‘M-o
+     d’ jumps to that function’s definition in the code.  The ‘M-o’
+     prefix can be uniformly used with characters like ‘d’ to group
+     similar actions.
 
 Discoverability
 ...............
@@ -1852,51 +1853,51 @@ Keystroke Index
 Tag Table:
 Node: Top1361
 Node: Introduction3272
-Node: Installation5783
-Node: Installing from Emacs Package Manager6233
-Node: Installing from the Git repository7347
-Node: Getting started8167
-Node: Basic customization8474
-Node: Key bindings9069
-Node: Global key bindings9261
-Node: Minibuffer key bindings10701
-Node: Key bindings for navigation11933
-Node: Key bindings for single selection action then exit minibuffer13140
-Node: Key bindings for multiple selections and actions keep minibuffer open15787
-Node: Key bindings that alter the minibuffer input18179
-Node: Other key bindings20124
-Node: Hydra in the minibuffer20502
-Node: Saving the current completion session to a buffer22605
-Node: Completion Styles24017
-Node: ivy--regex-plus25768
-Node: ivy--regex-ignore-order27254
-Node: ivy--regex-fuzzy27622
-Node: Customization28119
-Node: Faces28305
-Node: Defcustoms30734
-Node: Actions32028
-Node: What are actions?32354
-Node: How can different actions be called?33172
-Node: How to modify the actions list?33743
-Node: Example - add two actions to each command34403
-Node: How to undo adding the two actions35362
-Node: How to add actions to a specific command35814
-Node: Example - define a new command with several actions36230
-Node: Test the above function with ivy-occur37118
-Node: Packages37960
-Node: Commands38925
-Node: File Name Completion39110
-Node: Using TRAMP40906
-Node: Buffer Name Completion41783
-Node: Counsel commands42398
-Node: API43045
-Node: Required arguments for ivy-read43643
-Node: Optional arguments for ivy-read44162
-Node: Example - counsel-describe-function47588
-Node: Example - counsel-locate50831
-Node: Example - ivy-read-with-extra-properties54581
-Node: Variable Index55789
-Node: Keystroke Index62836
+Node: Installation5795
+Node: Installing from Emacs Package Manager6245
+Node: Installing from the Git repository7359
+Node: Getting started8179
+Node: Basic customization8486
+Node: Key bindings9081
+Node: Global key bindings9273
+Node: Minibuffer key bindings10713
+Node: Key bindings for navigation11945
+Node: Key bindings for single selection action then exit minibuffer13152
+Node: Key bindings for multiple selections and actions keep minibuffer open15799
+Node: Key bindings that alter the minibuffer input18191
+Node: Other key bindings20136
+Node: Hydra in the minibuffer20514
+Node: Saving the current completion session to a buffer22617
+Node: Completion Styles24029
+Node: ivy--regex-plus25780
+Node: ivy--regex-ignore-order27266
+Node: ivy--regex-fuzzy27634
+Node: Customization28131
+Node: Faces28317
+Node: Defcustoms30746
+Node: Actions32040
+Node: What are actions?32366
+Node: How can different actions be called?33184
+Node: How to modify the actions list?33755
+Node: Example - add two actions to each command34415
+Node: How to undo adding the two actions35374
+Node: How to add actions to a specific command35826
+Node: Example - define a new command with several actions36242
+Node: Test the above function with ivy-occur37130
+Node: Packages37972
+Node: Commands38937
+Node: File Name Completion39122
+Node: Using TRAMP40918
+Node: Buffer Name Completion41795
+Node: Counsel commands42410
+Node: API43057
+Node: Required arguments for ivy-read43655
+Node: Optional arguments for ivy-read44174
+Node: Example - counsel-describe-function47600
+Node: Example - counsel-locate50843
+Node: Example - ivy-read-with-extra-properties54593
+Node: Variable Index55801
+Node: Keystroke Index62848
 
 End Tag Table
 

@@ -4,7 +4,7 @@
 ;;   Phil Hagelberg, Doug Alcorn, Will Farrington, Chen Bin
 ;;
 ;; Version: 5.7.4
-;; Package-Version: 20190408.325
+;; Package-Version: 20190602.1042
 ;; Author: Phil Hagelberg, Doug Alcorn, and Will Farrington
 ;; Maintainer: Chen Bin <chenbin.sh@gmail.com>
 ;; URL: https://github.com/technomancy/find-file-in-project
@@ -177,6 +177,9 @@ Used by `ffip-split-window-horizontally' and `ffip-split-window-vertically'.")
   "\\(\\.mock\\|\\.test\\|\\.mockup\\)"
   "Strip file name to get minimum keyword with this regex.
 It's used by `find-file-with-similar-name'.")
+
+(defvar ffip-split-window-without-asking-for-keyword nil
+  "`ffip-split-window-horizontally' or `ffip-split-window-vertically' don't ask keyword.")
 
 (defvar ffip-diff-find-file-before-hook nil
   "Hook before `ffip-diff-find-file' move focus out of *ffip-diff* buffer.")
@@ -1009,7 +1012,9 @@ If OPEN-ANOTHER-WINDOW is not nil, the file will be opened in new window."
   "Use SPLIT-FN to split window and focus on new window by MV-FN.
 Window split in RATIO."
   (let* (ratio-val
-         (cands (ffip-project-search (ffip-read-keyword) nil))
+         (keyword (if ffip-split-window-without-asking-for-keyword ""
+                    (ffip-read-keyword)))
+         (cands (ffip-project-search keyword nil))
          (file (if (= 1 (length cands)) (ffip-path (car cands))
                  (ffip-path (ffip-completing-read "Find file: " cands))))
          (buf (if (and file (file-exists-p file)) (find-file-noselect file)

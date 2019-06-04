@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20190601.1249
+;; Package-Version: 20190604.630
 ;; Keywords: project, convenience
 ;; Version: 2.1.0-snapshot
 ;; Package-Requires: ((emacs "25.1") (pkg-info "0.4"))
@@ -646,7 +646,7 @@ Set to nil to disable listing submodules contents."
 
 (defcustom projectile-generic-command
   (if (executable-find "fd")
-      "fd . -0 --color=never"
+      "fd . -0 --type f --color=never"
     "find . -type f -print0")
   "Command used by projectile to get the files in a generic project."
   :group 'projectile
@@ -2509,7 +2509,8 @@ test/impl/other files as below:
 
 (defun projectile-go-project-p ()
   "Check if a project contains Go source files."
-  (projectile-verify-file-wildcard "*.go"))
+  (or (projectile-verify-file "go.mod")
+      (projectile-verify-file-wildcard "*.go")))
 
 (define-obsolete-variable-alias 'projectile-go-function 'projectile-go-project-test-function "1.0.0")
 (defcustom projectile-go-project-test-function #'projectile-go-project-p
