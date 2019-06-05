@@ -63,6 +63,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "lsp-metals" "lsp-metals.el" (0 0 0 0))
+;;; Generated autoloads from lsp-metals.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-metals" '("lsp-metals-")))
+
+;;;***
+
 ;;;### (autoloads nil "lsp-mode" "lsp-mode.el" (0 0 0 0))
 ;;; Generated autoloads from lsp-mode.el
 
