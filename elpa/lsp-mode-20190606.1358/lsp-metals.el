@@ -35,16 +35,14 @@
 (defcustom lsp-metals-server-command "metals-emacs"
   "The command to launch the Scala language server."
   :group 'lsp-metals
-  :type 'file)
+  :type 'file
+  :package-version '(lsp-mode . "6.1"))
 
 (defcustom lsp-metals-server-args '()
   "Extra arguments for the Scala language server."
   :group 'lsp-metals
-  :type '(repeat string))
-
-(defun lsp-metals--server-command ()
-  "Generate the Scala language server startup command."
-  `(,lsp-metals-server-command ,@lsp-metals-server-args))
+  :type '(repeat string)
+  :package-version '(lsp-mode . "6.1"))
 
 (defcustom lsp-metals-java-home ""
   "The Java Home directory used for indexing JDK sources and locating
@@ -80,11 +78,16 @@ more customizations like using environment variables."
   :group 'lsp-metals
   :package-version '(lsp-mode . "6.1"))
 
+
 (lsp-register-custom-settings
  '(("metals.java-home" lsp-metals-java-home)
    ("metals.scalafmt-config-path" lsp-metals-scalafmt-config-path)
    ("metals.sbt-script" lsp-metals-sbt-script)
    ("metals.gradle-script" lsp-metals-gradle-script)))
+
+(defun lsp-metals--server-command ()
+  "Generate the Scala language server startup command."
+  `(,lsp-metals-server-command ,@lsp-metals-server-args))
 
 (defun lsp-metals-build-import ()
   "Unconditionally run `sbt bloopInstall` and re-connect to the build server."
