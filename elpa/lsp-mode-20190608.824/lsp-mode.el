@@ -531,6 +531,7 @@ If set to `:none' neither of two will be enabled."
 
 (defvar lsp-language-id-configuration '((".*.vue" . "vue")
                                         (".*.tsx" . "typescriptreact")
+                                        (sh-mode . "shellscript")
                                         (scala-mode . "scala")
                                         (julia-mode . "julia")
                                         (java-mode . "java")
@@ -2413,7 +2414,7 @@ in that particular folder."
   "Return whether did save notifications should be sent to the server."
   (let ((sync (gethash "textDocumentSync" (lsp--server-capabilities))))
     (and (hash-table-p sync)
-         (hash-table-p (gethash "save" sync nil)))))
+         (gethash "save" sync nil))))
 
 (defun lsp--save-include-text-p ()
   "Return whether save notifications should include the text document's contents."
