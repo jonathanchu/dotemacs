@@ -50,15 +50,17 @@ execution at the first statement."
       (user-error "No NodeJS command specified in the .indium.json file"))
     (let* ((default-directory .resolvedRoot)
 	   (filter (indium-nodejs--process-filter-function conf))
+           (command-with-flags (indium-nodejs--command-with-flags
+                                .command
+                                .inspect-brk
+                                .port))
 	   (process (make-process :name "indium-nodejs-process"
 				  :buffer "*node process*"
 				  :filter filter
 				  :command (list shell-file-name
 						 shell-command-switch
-						 (indium-nodejs--command-with-flags
-						  .command
-						  .inspect-brk
-                                                  .port)))))
+						 command-with-flags))))
+      (message "Running node command \"%s\"" command-with-flags)
       (switch-to-buffer (process-buffer process)))))
 
 
@@ -72,9 +74,14 @@ If PORT is non-nil, start the debugging process on that port,
 otherwise use Node's default port (9229)."
   (let ((inspect-flag (if (eq inspect-brk t) " --inspect-brk" " --inspect"))
         (inspect-port-flag (if port (format " --inspect-port=%s" port) "")))
-    (if (string-match "\\<node\\>" command)
-	(replace-match (format "node%s%s" inspect-flag inspect-port-flag) nil nil command)
-      (user-error "Invalid command specified"))))
+    (save-match-data
+      (if (string-match "\\<\\(babel-\\)?node\\>" command)
+          (replace-match (format "%s%s%s"
+                                 (match-string 0 command)
+                                 inspect-flag
+                                 inspect-port-flag)
+                         nil nil command)
+        (user-error "Invalid command specified")))))
 
 (defun indium-nodejs--process-filter-function (conf)
   "Return a process filter function for CONF.

@@ -1,4 +1,4 @@
-(define-package "indium" "20190517.726" "JavaScript Awesome Development Environment"
+(define-package "indium" "20190612.2102" "JavaScript Awesome Development Environment"
   '((emacs "25")
     (seq "2.16")
     (js2-mode "20140114")
