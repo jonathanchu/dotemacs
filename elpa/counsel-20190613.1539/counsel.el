@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190604.1057
+;; Package-Version: 20190613.1539
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1694,14 +1694,11 @@ currently checked out."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-DEL") 'counsel-up-directory)
     (define-key map (kbd "C-<backspace>") 'counsel-up-directory)
-    (define-key map (kbd "C-M-y") 'counsel-yank-directory)
     (define-key map (kbd "`") (ivy-make-magic-action 'counsel-find-file "b"))
     map))
 
-(defun counsel-yank-directory ()
-  "Yank the current directory into the minibuffer."
-  (interactive)
-  (insert ivy--directory))
+(define-obsolete-function-alias 'counsel-yank-directory 'ivy-insert-current-full
+  "<2019-06-13 Thu>")
 
 (when (executable-find "git")
   (add-to-list 'ivy-ffap-url-functions 'counsel-github-url-p)
