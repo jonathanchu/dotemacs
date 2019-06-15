@@ -329,7 +329,8 @@
 ;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono for Powerline-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Code-13"))
-(add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
+;; (add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
+(add-to-list 'default-frame-alist '(font . "Operator Mono-13"))
 
 ;; mode line modifications based on powerline
 (defvar mode-line-height 30)
