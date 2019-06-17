@@ -139,6 +139,21 @@ determine the exact padding."
     :background modeline-bg-inactive-l
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
 
+     (font-lock-comment-face
+    :foreground comments
+    :background (if doom-city-lights-comment-bg (doom-lighten bg 0.05))
+    :slant 'italic)
+
+  ;;  (font-lock-doc-face
+  ;;   :inherit 'font-lock-comment-face
+  ;;   :foreground doc-comments
+  ;;   :slant 'italic)
+
+     ((font-lock-type-face &override) :slant 'italic)
+   ((font-lock-builtin-face &override) :slant 'italic)
+
+       ((js2-function-param &override) :foreground fg :slant 'italic)
+
    ;; --- major-mode faces -------------------
    ;; css-mode / scss-mode
    (css-proprietary-property :foreground orange)

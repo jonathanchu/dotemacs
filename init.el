@@ -324,13 +324,13 @@
 (column-number-mode 1)
 
 ;; highlight current line
-(global-hl-line-mode +1)
+;; (global-hl-line-mode +1)
 
 ;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono for Powerline-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Code-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
-(add-to-list 'default-frame-alist '(font . "Operator Mono-13"))
+(add-to-list 'default-frame-alist '(font . "Operator Mono-14"))
 
 ;; mode line modifications based on powerline
 (defvar mode-line-height 30)
@@ -434,10 +434,15 @@
 (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
       doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
+
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
 ;; (load-theme 'doom-one t)
 (load-theme 'doom-city-lights t)
+;; (use-package atom-one-dark-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'atom-one-dark t))
 
 ;; Enable flashing mode-line on errors
 (doom-themes-visual-bell-config)
