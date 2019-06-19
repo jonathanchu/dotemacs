@@ -134,54 +134,54 @@ Node: Wip Modes298109
 Node: Wip Graph303796
 Node: Legacy Wip Modes306110
 Node: Minor Mode for Buffers Visiting Files309005
-Node: Minor Mode for Buffers Visiting Blobs316117
-Node: Customizing316930
-Node: Per-Repository Configuration318526
-Node: Essential Settings320175
-Node: Safety320499
-Node: Performance322264
-Node: Microsoft Windows Performance328981
-Node: MacOS Performance330172
-Ref: MacOS Performance-Footnote-1331408
-Ref: MacOS Performance-Footnote-2331490
-Ref: MacOS Performance-Footnote-3331550
-Node: Plumbing331716
-Node: Calling Git332545
-Node: Getting a Value from Git334070
-Node: Calling Git for Effect337156
-Node: Section Plumbing343676
-Node: Creating Sections343904
-Node: Section Selection347804
-Node: Matching Sections349603
-Node: Refreshing Buffers355576
-Node: Conventions358724
-Node: Theming Faces358916
-Node: FAQ367031
-Node: FAQ - How to ...?367473
-Node: How to show git's output?367833
-Node: How to install the gitman info manual?368587
-Node: How to show diffs for gpg-encrypted files?369557
-Node: How does branching and pushing work?370153
-Node: Can Magit be used as ediff-version-control-package?370516
-Node: FAQ - Issues and Errors372505
-Node: Magit is slow373437
-Node: I changed several thousand files at once and now Magit is unusable373651
-Node: I am having problems committing374380
-Node: I am using MS Windows and cannot push with Magit374861
-Node: I am using OS X and SOMETHING works in shell but not in Magit375478
-Node: Diffs contain control sequences376284
-Node: Expanding a file to show the diff causes it to disappear377397
-Node: Point is wrong in the COMMIT_EDITMSG buffer377948
-Node: The mode-line information isn't always up-to-date378994
-Node: A branch and tag sharing the same name breaks SOMETHING380076
-Node: My Git hooks work on the command-line but not inside Magit380964
-Node: git-commit-mode isn't used when committing from the command-line381801
-Node: Point ends up inside invisible text when jumping to a file-visiting buffer384068
-Node: Debugging Tools384866
-Node: Keystroke Index386753
-Node: Command Index420467
-Node: Function Index457222
-Node: Variable Index472784
+Node: Minor Mode for Buffers Visiting Blobs316106
+Node: Customizing316919
+Node: Per-Repository Configuration318515
+Node: Essential Settings320164
+Node: Safety320488
+Node: Performance322253
+Node: Microsoft Windows Performance328970
+Node: MacOS Performance330161
+Ref: MacOS Performance-Footnote-1331397
+Ref: MacOS Performance-Footnote-2331479
+Ref: MacOS Performance-Footnote-3331539
+Node: Plumbing331705
+Node: Calling Git332534
+Node: Getting a Value from Git334059
+Node: Calling Git for Effect337145
+Node: Section Plumbing343665
+Node: Creating Sections343893
+Node: Section Selection347793
+Node: Matching Sections349592
+Node: Refreshing Buffers355565
+Node: Conventions358713
+Node: Theming Faces358905
+Node: FAQ367020
+Node: FAQ - How to ...?367462
+Node: How to show git's output?367822
+Node: How to install the gitman info manual?368576
+Node: How to show diffs for gpg-encrypted files?369546
+Node: How does branching and pushing work?370142
+Node: Can Magit be used as ediff-version-control-package?370505
+Node: FAQ - Issues and Errors372494
+Node: Magit is slow373426
+Node: I changed several thousand files at once and now Magit is unusable373640
+Node: I am having problems committing374369
+Node: I am using MS Windows and cannot push with Magit374850
+Node: I am using OS X and SOMETHING works in shell but not in Magit375467
+Node: Diffs contain control sequences376273
+Node: Expanding a file to show the diff causes it to disappear377386
+Node: Point is wrong in the COMMIT_EDITMSG buffer377937
+Node: The mode-line information isn't always up-to-date378983
+Node: A branch and tag sharing the same name breaks SOMETHING380065
+Node: My Git hooks work on the command-line but not inside Magit380953
+Node: git-commit-mode isn't used when committing from the command-line381790
+Node: Point ends up inside invisible text when jumping to a file-visiting buffer384057
+Node: Debugging Tools384855
+Node: Keystroke Index386742
+Node: Command Index420456
+Node: Function Index457211
+Node: Variable Index472773
 
 End Tag Table
 

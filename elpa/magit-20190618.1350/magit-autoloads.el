@@ -227,7 +227,15 @@ bisect run'.
 ;;;;;;  0))
 ;;; Generated autoloads from magit-bookmark.el
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "magit-bookmark" '("magit--")))
+(autoload 'magit--handle-bookmark "magit-bookmark" "\
+Open a bookmark created by `magit--make-bookmark'.
+Call the `magit-*-setup-buffer' function of the the major-mode
+with the variables' values as arguments, which were recorded by
+`magit--make-bookmark'.  Ignore `magit-display-buffer-function'.
+
+\(fn BOOKMARK)" nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "magit-bookmark" '("magit--make-bookmark")))
 
 ;;;***
 
@@ -1307,9 +1315,9 @@ Show log for all references and `HEAD'.
 
 (autoload 'magit-log-buffer-file "magit-log" "\
 Show log for the blob or file visited in the current buffer.
-With a prefix argument or when `--follow' is part of
-`magit-log-arguments', then follow renames.  When the region is
-active, restrict the log to the lines that the region touches.
+With a prefix argument or when `--follow' is an active log
+argument, then follow renames.  When the region is active,
+restrict the log to the lines that the region touches.
 
 \(fn &optional FOLLOW BEG END)" t nil)
 

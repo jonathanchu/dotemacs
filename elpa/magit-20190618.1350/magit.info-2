@@ -259,8 +259,8 @@ binding for ‘magit-file-dispatch’.
 
      This command shows the log for the file of blob that the current
      buffer visits.  Renames are followed when a prefix argument is used
-     or when ‘--follow’ is part of ‘magit-log-arguments’.  When the
-     region is active, the log is restricted to the selected line range.
+     or when ‘--follow’ is an active log argument.  When the region is
+     active, the log is restricted to the selected line range.
 
 ‘C-c M-g t’     (‘magit-log-trace-definition’)
 

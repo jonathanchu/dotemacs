@@ -531,6 +531,8 @@ If set to `:none' neither of two will be enabled."
 
 (defvar lsp-language-id-configuration '((".*.vue" . "vue")
                                         (".*.tsx" . "typescriptreact")
+                                        (".*.ts" . "typescript")
+                                        (".*.jsx" . "javascriptreact")
                                         (sh-mode . "shellscript")
                                         (scala-mode . "scala")
                                         (julia-mode . "julia")
@@ -556,6 +558,7 @@ If set to `:none' neither of two will be enabled."
                                         (mhtml-mode . "html")
                                         (go-mode . "go")
                                         (haskell-mode . "haskell")
+                                        (hack-mode . "hack")
                                         (php-mode . "php")
                                         (json-mode . "json")
                                         (rjsx-mode . "javascript")
@@ -603,6 +606,9 @@ must be used for handling a particular message.")
   `((created . 1)
     (changed . 2)
     (deleted . 3)))
+
+(defvar lsp-window-body-width 40
+  "Window body width when rendering doc.")
 
 (defface lsp-face-highlight-textual
   '((t :inherit highlight))
@@ -2296,7 +2302,8 @@ disappearing, unset all the variables related to it."
                                                                                       "Yasnippet is not present but `lsp-enable-snippet' is set to `t'. "
                                                                                       "You must either install yasnippet or disable snippet support."))
                                                                                t)
-                                                                            :json-false))))
+                                                                            :json-false))
+                                                       (documentationFormat . ["markdown"])))
                                     (contextSupport . t)))
                      (signatureHelp . ((signatureInformation . ((parameterInformation . ((labelOffsetSupport . t)))))))
                      (documentLink . ((dynamicRegistration . t)))
@@ -3392,6 +3399,12 @@ Stolen from `org-copy-visible'."
     (while (re-search-forward "&lt;" nil t)
       (replace-match "<"))
 
+    (goto-char (point-min))
+
+    ;; temporary patch --- since the symbol is not rendered fine in lsp-ui
+    (while (re-search-forward "^[-]+$" nil t)
+      (replace-match ""))
+
     (gfm-view-mode)
     (lsp--setup-markdown major-mode)))
 
@@ -3401,7 +3414,8 @@ Stolen from `org-copy-visible'."
       (with-temp-buffer
         (insert str)
         (delay-mode-hooks (funcall mode))
-        (font-lock-ensure)
+        (cl-flet ((window-body-width () lsp-window-body-width))
+          (font-lock-ensure))
         (lsp--buffer-string-visible))
     (error str)))
 
