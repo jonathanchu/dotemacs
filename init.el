@@ -562,6 +562,7 @@
   (add-hook 'prog-mode-hook #'company-mode))
 
 (use-package counsel
+  :disabled
   :ensure t
   :bind (("M-x" . counsel-M-x)
          ;; ("C-x C-f" . counsel-find-file)
@@ -973,6 +974,7 @@
   :bind
   ("C-x g" . magit-status)
   ("C-c C-a" . magit-commit-amend)
+  ("C-c g" . magit-file-dispatch)
   )
 
 (setq magit-repository-directories '(("\~/projects" . 3)))
