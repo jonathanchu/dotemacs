@@ -175,7 +175,6 @@
   (unless (server-running-p)
     (server-start))
   (if (server-running-p)
-      (load-theme 'green-phosphor t)
     (setq confirm-kill-emacs #'yes-or-no-p)
     (server-start)
     (global-set-key (kbd "C-x C-3") 'server-edit)))
