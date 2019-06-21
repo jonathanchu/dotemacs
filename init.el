@@ -173,11 +173,7 @@
   (require 'server)
   (message "Starting up server...")
   (unless (server-running-p)
-    (server-start))
-  (if (server-running-p)
-    (setq confirm-kill-emacs #'yes-or-no-p)
-    (server-start)
-    (global-set-key (kbd "C-x C-3") 'server-edit)))
+    (server-start)))
 
 ;;----------------------------------------------------------------------------
 ;; Editor Config
