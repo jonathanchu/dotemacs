@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190613.1539
+;; Package-Version: 20190622.1356
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1926,8 +1926,6 @@ one that exists will be used.")
 If USE-IGNORE is non-nil, try to generate a command that respects
 `counsel-find-file-ignore-regexp'."
   (let ((regex ivy--old-re)
-        (ignore-re (list (counsel--elisp-to-pcre
-                          counsel-find-file-ignore-regexp)))
         (filter-cmd (cl-find-if
                      (lambda (x)
                        (executable-find
@@ -1940,9 +1938,11 @@ If USE-IGNORE is non-nil, try to generate a command that respects
                (not (string-match-p "\\`\\." ivy-text))
                (not (string-match-p counsel-find-file-ignore-regexp
                                     (or (car ivy--old-cands) ""))))
-      (setq regex (if (stringp regex)
-                      (list ignore-re (cons regex t))
-                    (cons ignore-re regex))))
+      (let ((ignore-re (list (counsel--elisp-to-pcre
+                              counsel-find-file-ignore-regexp))))
+        (setq regex (if (stringp regex)
+                        (list ignore-re (cons regex t))
+                      (cons ignore-re regex)))))
     (setq cmd (format (car filter-cmd)
                       (counsel--elisp-to-pcre regex (cdr filter-cmd))))
     (if (string-match-p "csh\\'" shell-file-name)
@@ -3556,11 +3556,47 @@ This variable has no effect unless
 
 ;;* Misc. Emacs
 ;;** `counsel-mark-ring'
+(defface counsel--mark-ring-highlight
+  '((t (:inherit highlight)))
+  "Face for current `counsel-mark-ring' line.")
+
+(defvar counsel--mark-ring-overray nil
+  "Intarnal overray to highlight line by candidate of `counsel-mark-ring'.")
+
+(defun counsel--mark-ring-add-highlight ()
+  "Add highlight to current line."
+  (setq counsel--mark-ring-overray
+        (make-overlay (line-beginning-position) (1+ (line-end-position))))
+  (with-ivy-window
+    (overlay-put counsel--mark-ring-overray 'face
+                 'counsel--mark-ring-highlight)))
+
+(defun counsel--mark-ring-delete-highlight ()
+  "If `counsel-mark-ring' have highlight, delete highlight."
+  (if counsel--mark-ring-overray (delete-overlay counsel--mark-ring-overray)))
+
+(defvar counsel--mark-ring-calling-point 0
+  "Internal variable to remember calling position.")
+
+(defun counsel--mark-ring-unwind ()
+  "Return back to calling position of `counsel-mark-ring'."
+  (goto-char counsel--mark-ring-calling-point)
+  (counsel--mark-ring-delete-highlight))
+
+(defun counsel--mark-ring-update-fn ()
+  "Show preview by candidate."
+  (let ((linenum (string-to-number (ivy-state-current ivy-last))))
+    (counsel--mark-ring-delete-highlight)
+    (unless (= linenum 0)
+      (with-ivy-window
+        (forward-line (- linenum (line-number-at-pos)))))))
+
 (defun counsel-mark-ring ()
   "Browse `mark-ring' interactively.
 Obeys `widen-automatically', which see."
   (interactive)
-  (let ((cands
+  (let ((counsel--mark-ring-calling-point (point))
+        (cands
          (save-excursion
            (save-restriction
              ;; Widen, both to save `line-number-at-pos' the trouble
@@ -3580,6 +3616,7 @@ Obeys `widen-automatically', which see."
     (if cands
         (ivy-read "Mark: " cands
                   :require-match t
+                  :update-fn #'counsel--mark-ring-update-fn
                   :action (lambda (cand)
                             (let ((pos (cdr-safe cand)))
                               (when pos
@@ -3589,6 +3626,7 @@ Obeys `widen-automatically', which see."
                                     (error "\
 Position of selected mark outside accessible part of buffer")))
                                 (goto-char pos))))
+                  :unwind #'counsel--mark-ring-unwind
                   :caller 'counsel-mark-ring)
       (message "Mark ring is empty"))))
 

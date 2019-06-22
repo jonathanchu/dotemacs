@@ -2324,7 +2324,7 @@ Appendix C Keystroke Index
 * r s <1>:                               Rebasing.            (line 114)
 * r u:                                   Rebasing.            (line  37)
 * r w:                                   Rebasing.            (line  95)
-* RET:                                   References Buffer.   (line 174)
+* RET:                                   References Buffer.   (line 179)
 * RET <1>:                               Visiting Files and Blobs from a Diff.
                                                               (line   8)
 * RET <2>:                               Blaming.             (line  78)
@@ -2905,7 +2905,7 @@ Appendix D Command Index
                                                               (line  63)
 * magit-version:                         Git Executable.      (line  17)
 * magit-version <1>:                     Debugging Tools.     (line  10)
-* magit-visit-ref:                       References Buffer.   (line 174)
+* magit-visit-ref:                       References Buffer.   (line 179)
 * magit-wip-commit:                      Wip Modes.           (line  88)
 * magit-wip-log:                         Wip Modes.           (line  48)
 * magit-wip-log-current:                 Wip Modes.           (line  57)
@@ -3354,7 +3354,7 @@ Appendix F Variable Index
 * magit-unstage-committed:               Staging and Unstaging.
                                                               (line  56)
 * magit-update-other-window-delay:       Section Movement.    (line  89)
-* magit-visit-ref-behavior:              References Buffer.   (line 185)
+* magit-visit-ref-behavior:              References Buffer.   (line 190)
 * magit-wip-after-apply-mode:            Legacy Wip Modes.    (line  19)
 * magit-wip-after-apply-mode-lighter:    Legacy Wip Modes.    (line  59)
 * magit-wip-after-save-local-mode-lighter: Legacy Wip Modes.  (line  55)

@@ -529,10 +529,10 @@ If set to `:none' neither of two will be enabled."
 
 (defvar-local lsp--flymake-report-fn nil)
 
-(defvar lsp-language-id-configuration '((".*.vue" . "vue")
-                                        (".*.tsx" . "typescriptreact")
-                                        (".*.ts" . "typescript")
-                                        (".*.jsx" . "javascriptreact")
+(defvar lsp-language-id-configuration '((".*\.vue$" . "vue")
+                                        (".*\.tsx$" . "typescriptreact")
+                                        (".*\.ts$" . "typescript")
+                                        (".*\.jsx$" . "javascriptreact")
                                         (sh-mode . "shellscript")
                                         (scala-mode . "scala")
                                         (julia-mode . "julia")
@@ -2677,7 +2677,7 @@ interface Range {
   (if-let (document-changes (gethash "documentChanges" edit))
       (progn
         (lsp--check-document-changes-version document-changes)
-        (seq-do #'lsp--apply-text-document-edit document-changes))
+        (seq-do #'lsp--apply-text-document-edit (seq-reverse document-changes)))
     (when-let (changes (gethash "changes" edit))
       (maphash
        (lambda (uri text-edits)
@@ -3585,10 +3585,10 @@ RENDER-ALL - nil if only the signature should be rendered."
 
 (defun lsp-execute-code-action-by-kind (command-kind)
   "Execute code action by name."
-  (if-let (action (-first
-                   (-lambda ((&hash "kind"))
-                     (equal command-kind kind))
-                   (lsp-get-or-calculate-code-actions)))
+  (if-let (action (->> (lsp-get-or-calculate-code-actions)
+                       (-filter (-lambda ((&hash "kind"))
+                                  (and kind (equal command-kind kind))))
+                       lsp--select-action))
       (lsp-execute-code-action action)
     (user-error "No to action")))
 

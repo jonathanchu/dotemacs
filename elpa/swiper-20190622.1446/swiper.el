@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190611.858
+;; Package-Version: 20190622.1446
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -1028,6 +1028,8 @@ WND, when specified is the window."
   (format "Buffers (%s): "
           (mapconcat #'identity swiper-multi-buffers ", ")))
 
+(defvar swiper-window-width 80)
+
 (defun swiper-multi ()
   "Select one or more buffers.
 Run `swiper' for those buffers."
@@ -1037,10 +1039,11 @@ Run `swiper' for those buffers."
     (ivy-read (swiper-multi-prompt)
               #'internal-complete-buffer
               :action #'swiper-multi-action-1))
-  (ivy-read "Swiper: " swiper-multi-candidates
-            :action #'swiper-multi-action-2
-            :unwind #'swiper--cleanup
-            :caller 'swiper-multi))
+  (let ((swiper-window-width (- (- (frame-width) (if (display-graphic-p) 0 1)) 4)))
+    (ivy-read "Swiper: " swiper-multi-candidates
+              :action #'swiper-multi-action-2
+              :unwind #'swiper--cleanup
+              :caller 'swiper-multi)))
 
 (defun swiper-multi-action-1 (x)
   "Add X to list of selected buffers `swiper-multi-buffers'.
@@ -1138,8 +1141,6 @@ otherwise continue prompting for buffers."
          (list "")
        (setq ivy--old-cands (nreverse cands))))))
 
-(defvar swiper-window-width 80)
-
 (defun swiper--all-format-function (cands)
   "Format CANDS for `swiper-all'.
 See `ivy-format-functions-alist' for further information."
@@ -1210,36 +1211,15 @@ See `ivy-format-functions-alist' for further information."
 
 (defun swiper--multi-candidates (buffers)
   "Extract candidates from BUFFERS."
-  (let* ((ww (window-width))
-         (res nil)
-         (column-2 (apply #'max
-                          (mapcar
-                           (lambda (b)
-                             (length (buffer-name b)))
-                           buffers)))
-         (column-1 (- ww 4 column-2 1)))
+  (let ((res nil))
     (dolist (buf buffers)
       (with-current-buffer buf
         (setq res
-              (append
+              (nconc
                (mapcar
-                (lambda (s)
-                  (setq s (concat (ivy--truncate-string s column-1) " "))
-                  (let ((len (length s)))
-                    (put-text-property
-                     (1- len) len 'display
-                     (concat
-                      (make-string
-                       (max 0
-                            (- ww (string-width s) (length (buffer-name)) 3))
-                       ?\ )
-                      (buffer-name))
-                     s)
-                    (put-text-property 0 len 'buffer buf s)
-                    s))
+                (lambda (s) (put-text-property 0 1 'buffer (buffer-name) s) s)
                 (swiper--candidates 4))
-               res))
-        nil))
+               res))))
     res))
 
 ;;* `swiper-isearch'
@@ -1486,6 +1466,7 @@ When not running `swiper-isearch' already, start it."
                  :action #'swiper-isearch-action
                  :update-fn 'auto
                  :unwind #'swiper--cleanup
+                 :re-builder #'swiper--re-builder
                  :history 'swiper-history
                  :caller 'swiper-isearch))
           (point))
