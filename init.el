@@ -1121,8 +1121,6 @@
 
 (use-package ox-hugo
   :ensure t
-  :config
-  (ox-hugo-auto-export-mode t)
   :after ox)
 
 (use-package paperless
