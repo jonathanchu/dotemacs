@@ -90,6 +90,13 @@ argument ask the user to select which language server to start.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'lsp-deferred "lsp-mode" "\
+Entry point that defers server startup until buffer is visible.
+`lsp-deferred' will wait until the buffer is visible before invoking `lsp'.
+This avoids overloading the server with many files when starting Emacs.
+
+\(fn)" nil nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-mode" '("log--notification-performance" "lsp-" "make-lsp-client" "with-lsp-workspace" "when-lsp-workspace" "seq-")))
 
 ;;;***
