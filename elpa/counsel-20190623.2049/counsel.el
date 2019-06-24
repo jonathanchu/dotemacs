@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190622.1356
+;; Package-Version: 20190623.2049
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -3784,9 +3784,8 @@ Additional actions:\\<ivy-minibuffer-map>
           (const :tag "Dashes" "\n----\n")
           string))
 
-(defcustom counsel-yank-pop-height 5
-  "The `ivy-height' of `counsel-yank-pop'."
-  :type 'integer)
+(define-obsolete-variable-alias 'counsel-yank-pop-height
+    'ivy-height-alist "0.11.0")
 
 (defun counsel--yank-pop-format-function (cand-pairs)
   "Transform CAND-PAIRS into a string for `counsel-yank-pop'."
