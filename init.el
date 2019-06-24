@@ -445,6 +445,15 @@
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
 
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/vendor/emacs-horizon-theme")
+;; (load-file "~/.emacs.d/vendor/emacs-horizon-theme/horizon-themes.el")
+;; (require 'horizon-themes)
+;; (load-theme 'horizon t)
+;; (use-package horizon-themes
+;;   :load-path "vendor/emacs-horizon-theme"
+;;   :config
+;;   (load-theme 'horizon t))
+
 ;;----------------------------------------------------------------------------
 ;; Packages
 ;;----------------------------------------------------------------------------
