@@ -685,14 +685,16 @@ N is obtained from `ivy-more-chars-alist'."
 
 (defun ivy--done (text)
   "Insert TEXT and exit minibuffer."
-  (insert
-   (setf (ivy-state-current ivy-last)
-         (if (and ivy--directory
-                  (not (eq (ivy-state-history ivy-last) 'grep-files-history)))
-             (expand-file-name text ivy--directory)
-           text)))
-  (setq ivy-exit 'done)
-  (exit-minibuffer))
+  (if (member (ivy-state-prompt ivy-last) '("Create directory: " "Make directory: "))
+      (ivy-immediate-done)
+    (insert
+     (setf (ivy-state-current ivy-last)
+           (if (and ivy--directory
+                    (not (eq (ivy-state-history ivy-last) 'grep-files-history)))
+               (expand-file-name text ivy--directory)
+             text)))
+    (setq ivy-exit 'done)
+    (exit-minibuffer)))
 
 (defcustom ivy-use-selectable-prompt nil
   "When non-nil, make the prompt line selectable like a candidate.
@@ -1841,7 +1843,7 @@ PROMPT is a string, normally ending in a colon and a space.
 `ivy-count-format' is prepended to PROMPT during completion.
 
 COLLECTION is either a list of strings, a function, an alist, or
-a hash table.
+a hash table, supplied for `minibuffer-completion-table'.
 
 PREDICATE is applied to filter out the COLLECTION immediately.
 This argument is for compatibility with `completing-read'.

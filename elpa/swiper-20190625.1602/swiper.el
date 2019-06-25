@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190622.1446
+;; Package-Version: 20190625.1602
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -516,6 +516,15 @@ When non-nil, INITIAL-INPUT is the initial search pattern."
     (when (use-region-p)
       (deactivate-mark))
     (swiper thing)))
+
+;;;###autoload
+(defun swiper-all-thing-at-point ()
+  "`swiper-all' with `ivy-thing-at-point'."
+  (interactive)
+  (let ((thing (ivy-thing-at-point)))
+    (when (use-region-p)
+      (deactivate-mark))
+    (swiper-all thing)))
 
 (defvar swiper--current-window-start nil
   "Store `window-start' to restore it later.

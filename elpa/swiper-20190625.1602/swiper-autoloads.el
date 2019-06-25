@@ -25,6 +25,11 @@ When non-nil, INITIAL-INPUT is the initial search pattern.
 
 \(fn)" t nil)
 
+(autoload 'swiper-all-thing-at-point "swiper" "\
+`swiper-all' with `ivy-thing-at-point'.
+
+\(fn)" t nil)
+
 (autoload 'swiper-all "swiper" "\
 Run `swiper' for all open buffers.
 
