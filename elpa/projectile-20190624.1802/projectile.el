@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20190617.1338
+;; Package-Version: 20190624.1802
 ;; Keywords: project, convenience
 ;; Version: 2.1.0-snapshot
 ;; Package-Requires: ((emacs "25.1") (pkg-info "0.4"))
@@ -2535,7 +2535,7 @@ test/impl/other files as below:
                                   :test "cabal test"
                                   :test-suffix "Spec")
 (projectile-register-project-type 'go projectile-go-project-test-function
-                                  :compile "go build ./..."
+                                  :compile "go build"
                                   :test "go test ./..."
                                   :test-suffix "_test")
 ;; File-based detection project types
