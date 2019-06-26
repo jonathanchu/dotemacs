@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190625.1602
+;; Package-Version: 20190625.1935
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.11.0"))
 ;; Keywords: matching
@@ -138,8 +138,19 @@
 (defvar swiper--query-replace-overlays nil)
 
 (defun swiper--query-replace-updatefn ()
-  (dolist (ov swiper--query-replace-overlays)
-    (overlay-put ov 'after-string (propertize ivy-text 'face 'error))))
+  (let ((lisp (ignore-errors (nth 2 (query-replace-compile-replacement ivy-text t)))))
+    (dolist (ov swiper--query-replace-overlays)
+      (when lisp
+        (dolist (x (overlay-get ov 'matches))
+          (setq lisp (cl-subst (cadr x) (car x) lisp :test #'equal)))
+        (setq lisp (ignore-errors (eval lisp))))
+      (overlay-put
+       ov 'after-string
+       (propertize
+        (if (stringp lisp)
+            lisp
+          ivy-text)
+        'face 'error)))))
 
 (defun swiper--query-replace-cleanup ()
   (while swiper--query-replace-overlays
@@ -152,8 +163,15 @@
       (save-excursion
         (goto-char (window-start))
         (while (re-search-forward re end t)
-          (push (make-overlay (1- (match-end 0)) (match-end 0))
-                swiper--query-replace-overlays))))))
+          (let ((ov (make-overlay (1- (match-end 0)) (match-end 0)))
+                (md (match-data)))
+            (overlay-put
+             ov 'matches
+             (mapcar
+              (lambda (x)
+                (list `(match-string ,x) (match-string x)))
+              (number-sequence 0 (1- (/ (length md) 2)))))
+            (push ov swiper--query-replace-overlays)))))))
 
 (defun swiper-query-replace ()
   "Start `query-replace' with string to replace from last search string."
@@ -167,15 +185,20 @@
          (unwind-protect
               (let* ((enable-recursive-minibuffers t)
                      (from (ivy--regex ivy-text))
-                     (to (minibuffer-with-setup-hook
-                             (lambda ()
-                               (setq minibuffer-default
-                                     (if (string-match "\\`\\\\_<\\(.*\\)\\\\_>\\'" ivy-text)
-                                         (match-string 1 ivy-text)
-                                       ivy-text)))
-                           (ivy-read
-                            (format "Query replace %s with: " from) nil
-                            :update-fn #'swiper--query-replace-updatefn))))
+                     (default
+                      (format "\\,(concat %s)"
+                              (if (<= ivy--subexps 1)
+                                  "\\&"
+                                (mapconcat (lambda (i) (format "\\%d" i))
+                                           (number-sequence 1 ivy--subexps)
+                                           " \" \" "))))
+                     (to
+                      (query-replace-compile-replacement
+                       (ivy-read
+                        (format "Query replace %s with: " from) nil
+                        :def default
+                        :update-fn #'swiper--query-replace-updatefn)
+                       t)))
                 (swiper--cleanup)
                 (ivy-exit-with-action
                  (lambda (_)
