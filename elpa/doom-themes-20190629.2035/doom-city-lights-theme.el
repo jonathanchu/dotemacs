@@ -97,11 +97,11 @@ determine the exact padding."
    (modeline-bg
     (if -modeline-bright
         base3
-        `(,(doom-darken (car bg) 0.15) ,@(cdr base0))))
+      `(,(doom-darken (car bg) 0.15) ,@(cdr base0))))
    (modeline-bg-l
     (if -modeline-bright
         base3
-        `(,(doom-darken (car bg) 0.1) ,@(cdr base0))))
+      `(,(doom-darken (car bg) 0.1) ,@(cdr base0))))
    (modeline-bg-inactive   (doom-darken bg 0.1))
    (modeline-bg-inactive-l `(,(car bg) ,@(cdr base1))))
 
@@ -138,6 +138,24 @@ determine the exact padding."
     :inherit 'mode-line-inactive
     :background modeline-bg-inactive-l
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
+
+   ;; start of customizations
+   (font-lock-comment-face
+    :foreground comments
+    :background (if doom-city-lights-comment-bg (doom-lighten bg 0.05))
+    :slant 'italic)
+
+   ;;  (font-lock-doc-face
+   ;;   :inherit 'font-lock-comment-face
+   ;;   :foreground doc-comments
+   ;;   :slant 'italic)
+
+   ((font-lock-type-face &override) :slant 'italic)
+   ((font-lock-builtin-face &override) :slant 'italic)
+
+   ((js2-function-param &override) :foreground fg :slant 'italic)
+
+   ;; end of customizations
 
    ;; --- major-mode faces -------------------
    ;; css-mode / scss-mode
