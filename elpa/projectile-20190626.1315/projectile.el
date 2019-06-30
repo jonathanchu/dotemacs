@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov <bozhidar@batsov.com>
 ;; URL: https://github.com/bbatsov/projectile
-;; Package-Version: 20190624.1802
+;; Package-Version: 20190626.1315
 ;; Keywords: project, convenience
 ;; Version: 2.1.0-snapshot
 ;; Package-Requires: ((emacs "25.1") (pkg-info "0.4"))
@@ -2507,6 +2507,10 @@ test/impl/other files as below:
   (and (projectile-verify-file-wildcard "?*.cabal")
        (not (projectile-verify-file "stack.yaml"))))
 
+(defun projectile-dotnet-project-p ()
+  (or (projectile-verify-file-wildcard "?*.csproj")
+      (projectile-verify-file-wildcard "?*.fsproj")))
+
 (defun projectile-go-project-p ()
   "Check if a project contains Go source files."
   (or (projectile-verify-file "go.mod")
@@ -2534,6 +2538,10 @@ test/impl/other files as below:
                                   :compile "cabal build"
                                   :test "cabal test"
                                   :test-suffix "Spec")
+(projectile-register-project-type 'dotnet #'projectile-dotnet-project-p
+                                  :compile "dotnet build"
+                                  :run "dotnet run"
+                                  :test "dotnet test")
 (projectile-register-project-type 'go projectile-go-project-test-function
                                   :compile "go build"
                                   :test "go test ./..."

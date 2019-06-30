@@ -600,6 +600,20 @@ Either a string or a list for `ivy-re-match'.")
 (defvar ivy--old-text ""
   "Store old `ivy-text' for dynamic completion.")
 
+(defvar ivy--trying-to-resume-dynamic-collection nil
+  "Non-nil if resuming from a dynamic collection.
+When non-nil, ivy will wait until the first chunk of asynchronous
+candidates has been received before selecting the last
+preselected candidate.")
+
+(defun ivy--set-index-dynamic-collection ()
+  (when ivy--trying-to-resume-dynamic-collection
+    (let ((preselect-index
+           (ivy--preselect-index (ivy-state-preselect ivy-last) ivy--all-candidates)))
+      (when preselect-index
+        (ivy-set-index preselect-index)))
+    (setq ivy--trying-to-resume-dynamic-collection nil)))
+
 (defcustom ivy-case-fold-search-default
   (if search-upper-case
       'auto
@@ -1411,6 +1425,8 @@ Call the permanent action if possible."
   (if (and (= minibuffer-history-position 0)
            (equal ivy-text ""))
       (progn
+        (when minibuffer-default
+          (setq ivy--default (car minibuffer-default)))
         (insert ivy--default)
         (when (and (with-ivy-window (derived-mode-p 'prog-mode))
                    (eq (ivy-state-caller ivy-last) 'swiper)
@@ -2177,13 +2193,15 @@ This is useful for recursive `ivy-read'."
       (setq coll (ivy--set-candidates coll))
       (setq ivy--old-re nil)
       (setq ivy--old-cands nil)
-      (when (integerp preselect)
-        (setq ivy--old-re "")
-        (ivy-set-index preselect))
       (when initial-input
         ;; Needed for anchor to work
         (setq ivy--old-cands coll)
         (setq ivy--old-cands (ivy--filter initial-input coll)))
+      (unless (setq ivy--trying-to-resume-dynamic-collection
+                    (and preselect dynamic-collection))
+        (when (integerp preselect)
+          (setq ivy--old-re "")
+          (ivy-set-index preselect)))
       (setq ivy--all-candidates coll)
       (unless (integerp preselect)
         (ivy-set-index (or
@@ -2992,6 +3010,7 @@ Should be run via minibuffer `post-command-hook'."
               (setq ivy--old-text ivy-text)))
           (when (or ivy--all-candidates
                     (not (get-process " *counsel*")))
+            (ivy--set-index-dynamic-collection)
             (ivy--insert-minibuffer
              (ivy--format ivy--all-candidates))))
       (cond (ivy--directory
@@ -3906,26 +3925,32 @@ Use `ivy-pop-view' to delete any item from `ivy-views'."
          (let* ((wnd1 (selected-window))
                 (wnd2 (split-window-vertically))
                 (views (cdr view))
-                (v (pop views)))
+                (v (pop views))
+                (temp-wnd))
            (with-selected-window wnd1
              (ivy-set-view-recur v))
            (while (setq v (pop views))
              (with-selected-window wnd2
-               (ivy-set-view-recur v))
-             (when views
-               (setq wnd2 (split-window-vertically))))))
+               (when views
+                 (setq temp-wnd (split-window-vertically)))
+               (ivy-set-view-recur v)
+               (when views
+                 (setq wnd2 temp-wnd))))))
         ((eq (car view) 'horz)
          (let* ((wnd1 (selected-window))
                 (wnd2 (split-window-horizontally))
                 (views (cdr view))
-                (v (pop views)))
+                (v (pop views))
+                (temp-wnd))
            (with-selected-window wnd1
              (ivy-set-view-recur v))
            (while (setq v (pop views))
              (with-selected-window wnd2
-               (ivy-set-view-recur v))
-             (when views
-               (setq wnd2 (split-window-horizontally))))))
+               (when views
+                 (setq temp-wnd (split-window-horizontally)))
+               (ivy-set-view-recur v)
+               (when views
+                 (setq wnd2 temp-wnd))))))
         ((eq (car view) 'file)
          (let* ((name (nth 1 view))
                 (virtual (assoc name ivy--virtual-buffers))
@@ -3987,9 +4012,12 @@ BUFFER may be a string or nil."
 
 (defun ivy--find-file-action (buffer)
   "Find file from BUFFER's directory."
-  (let ((default-directory (buffer-local-value 'default-directory
-                                               (or (get-buffer buffer)
-                                                   (current-buffer)))))
+  (let* ((virtual (assoc buffer ivy--virtual-buffers))
+         (default-directory (if virtual
+                                (file-name-directory (cdr virtual))
+                              (buffer-local-value 'default-directory
+                                                  (or (get-buffer buffer)
+                                                      (current-buffer))))))
     (call-interactively (if (functionp 'counsel-find-file)
                             #'counsel-find-file
                           #'find-file))))

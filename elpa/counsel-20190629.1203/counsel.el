@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190624.1444
+;; Package-Version: 20190629.1203
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -5286,6 +5286,7 @@ in the current window."
   (interactive)
   (ivy-read "Switch to buffer: " 'internal-complete-buffer
             :preselect (buffer-name (other-buffer (current-buffer)))
+            :keymap ivy-switch-buffer-map
             :action #'ivy--switch-buffer-action
             :matcher #'ivy--switch-buffer-matcher
             :caller 'counsel-switch-buffer
@@ -5305,6 +5306,22 @@ in the current window."
             :caller 'counsel-switch-buffer-other-window
             :unwind #'counsel--switch-buffer-unwind
             :update-fn 'counsel--switch-buffer-update-fn))
+
+(defun counsel-open-buffer-file-externally (buffer)
+  "Open the file associated with BUFFER with an external program."
+  (when (zerop (length buffer))
+    (user-error "Can't open that"))
+  (let* ((virtual (assoc buffer ivy--virtual-buffers))
+         (filename (if virtual
+                       (cdr virtual)
+                     (buffer-file-name (get-buffer buffer)))))
+    (unless filename
+      (user-error "Can't open `%s' externally" buffer))
+    (counsel-locate-action-extern (expand-file-name filename))))
+
+(ivy-add-actions
+ 'ivy-switch-buffer
+ '(("x" counsel-open-buffer-file-externally "open externally")))
 
 ;;** `counsel-compile'
 (defvar counsel-compile-history nil

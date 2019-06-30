@@ -1,6 +1,5 @@
-(define-package "doom-themes" "20190521.419" "an opinionated pack of modern color-themes"
-  '((emacs "24.4")
-    (all-the-icons "1.0.0")
+(define-package "doom-themes" "20190629.2035" "an opinionated pack of modern color-themes"
+  '((emacs "25.1")
     (cl-lib "0.5"))
   :keywords
   '("dark" "light" "blue" "atom" "one" "theme" "neotree" "icons" "faces" "nova")
