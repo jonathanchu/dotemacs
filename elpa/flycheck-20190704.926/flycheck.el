@@ -223,6 +223,7 @@ attention to case differences."
     processing
     proselint
     protobuf-protoc
+    protobuf-prototool
     pug
     puppet-parser
     puppet-lint
@@ -9121,12 +9122,23 @@ See URL `http://proselint.com/'."
   :error-parser flycheck-proselint-parse-errors
   :modes (text-mode markdown-mode gfm-mode message-mode org-mode))
 
+(flycheck-def-option-var flycheck-protoc-import-path nil protobuf-protoc
+  "A list of directories to resolve import directives.
+
+The value of this variable is a list of strings, where each
+string is a directory to add to the import path.  Relative paths
+are relative to the file being checked."
+  :type '(repeat (directory :tag "Import directory"))
+  :safe #'flycheck-string-list-p
+  :package-version '(flycheck . "32"))
+
 (flycheck-define-checker protobuf-protoc
   "A protobuf syntax checker using the protoc compiler.
 
 See URL `https://developers.google.com/protocol-buffers/'."
   :command ("protoc" "--error_format" "gcc"
             (eval (concat "--java_out=" (flycheck-temp-dir-system)))
+            (option-list "--proto_path=" flycheck-protoc-import-path concat)
             ;; Add the file directory of protobuf path to resolve import
             ;; directives
             (eval (concat "--proto_path="
@@ -9142,6 +9154,22 @@ See URL `https://developers.google.com/protocol-buffers/'."
           column ":" line-end))
   :modes protobuf-mode
   :predicate (lambda () (buffer-file-name)))
+
+(defun flycheck-prototool-project-root (&optional _checker)
+  "Return the nearest directory holding the prototool.yaml configuration."
+  (and buffer-file-name
+       (locate-dominating-file buffer-file-name "prototool.yaml")))
+
+(flycheck-define-checker protobuf-prototool
+  "A protobuf syntax checker using prototool.
+
+See URL `https://github.com/uber/prototool'."
+  :command ("prototool" "lint" source-original)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ":" column ":" (message) line-end))
+  :modes protobuf-mode
+  :enabled flycheck-prototool-project-root
+  :predicate flycheck-buffer-saved-p)
 
 (flycheck-define-checker pug
   "A Pug syntax checker using the pug compiler.
@@ -10780,6 +10808,16 @@ See URL `https://www.terraform.io/docs/commands/fmt.html'."
   :next-checkers ((warning . terraform-tflint))
   :modes terraform-mode)
 
+(flycheck-def-option-var flycheck-tflint-variable-files nil terraform-tflint
+  "A list of files to resolve terraform variables.
+
+The value of this variable is a list of strings, where each
+string is a file to add to the terraform variables files.
+Relative files are relative to the file being checked."
+  :type '(repeat (directory :tag "Variable file"))
+  :safe #'flycheck-string-list-p
+  :package-version '(flycheck . "32"))
+
 (defun flycheck-parse-tflint-linter (output checker buffer)
   "Parse tflint warnings from JSON OUTPUT.
 
@@ -10809,8 +10847,11 @@ information about tflint."
   "A Terraform checker using tflint.
 
 See URL `https://github.com/wata727/tflint'."
-  :command ("tflint" "--error-with-issues" "--format=json" source)
+  :command ("tflint" "--format=json"
+            (option-list "--var-file=" flycheck-tflint-variable-files concat)
+            source-original)
   :error-parser flycheck-parse-tflint-linter
+  :predicate flycheck-buffer-saved-p
   :modes terraform-mode)
 
 (flycheck-define-checker tex-chktex

@@ -342,21 +342,6 @@ An extra action allows to switch to the process buffer.
 
 \(fn)" t nil)
 
-(autoload 'counsel-expression-history "counsel" "\
-Select an element of `read-expression-history'.
-And insert it into the minibuffer.  Useful during `eval-expression'.
-
-\(fn)" t nil)
-
-(make-obsolete 'counsel-expression-history 'counsel-minibuffer-history '"0.10.0 <2017-11-13 Mon>")
-
-(autoload 'counsel-shell-command-history "counsel" "\
-Browse shell command history.
-
-\(fn)" t nil)
-
-(make-obsolete 'counsel-shell-command-history 'counsel-minibuffer-history '"0.10.0 <2017-11-13 Mon>")
-
 (autoload 'counsel-minibuffer-history "counsel" "\
 Browse minibuffer history.
 
