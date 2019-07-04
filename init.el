@@ -1018,7 +1018,7 @@
 (use-package neotree
   :ensure t
   :config
-  (setq neo-window-width 32
+  (setq neo-window-fixed-size nil
         neo-create-file-auto-open t
         neo-banner-message nil
         neo-mode-line-type 'none
