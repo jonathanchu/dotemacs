@@ -1,0 +1,314 @@
+#+TITLE: Centaur tabs
+#+CREATOR: Emmanuel Bustos T.
+
+  [[./images/centaur.png]]
+  
+* What is this?
+  This projects aims to become an aesthetic, functional and efficient tabs plugin for Emacs with a lot of customization options. 
+  Although this is a fork from [[https://github.com/manateelazycat/awesome-tab][awesome-tab]] (that I forked with the permission from the author) it's been heavily modified so now it may be considered a different package.
+
+  It currently looks like this:
+
+  [[./screenshot.png]]
+
+* Installation
+  I'm currently working so this package can be downloaded from MELPA. Meanwhile, you can download the centaur-tabs.el file, put it on your .emacs.d, byte compile it and load it like this using ~use-package~: 
+  #+BEGIN_SRC emacs-lisp :tangle yes
+    (use-package centaur-tabs
+      :load-path "~/.emacs.d/other/centaur-tabs"
+      :config
+      (centaur-tabs-mode t)
+      :bind
+      ("C-<prior>" . centaur-tabs-backward)
+      ("C-<next>" . centaur-tabs-forward))
+  #+END_SRC
+
+  Or if you use require:
+  #+BEGIN_SRC emacs-lisp :tangle yes
+    (add-to-list 'load-path "~/.emacs.d/other/centaur-tabs")
+    (centaur-tabs-mode t)
+    (global-set-key (kbd "C-<prior>")  'centaur-tabs-backward)
+    (global-set-key (kbd "C-<next>") 'centaur-tabs-forward)
+  #+END_SRC
+
+* Customization
+  This package is heavily customizable, with many options available to the user. Here are some of them:
+** Tab Styles
+   To change the tab style, modify the centaur-tabs-style variable like this:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (setq centaur-tabs-style "bar")
+   #+END_SRC
+
+   The options available are:
+   - "alternate"
+
+  [[./images/alternate.png]]
+
+   - "bar"
+
+  [[./images/bar.png]]
+
+   - "box"
+
+  [[./images/box.png]]
+
+   - "chamfer"
+
+  [[./images/chamfer.png]]
+
+   - "rounded"
+
+  [[./images/rounded.png]]
+
+   - "slant"
+
+  [[./images/slant.png]]
+
+   - "wave"
+
+  [[./images/wave.png]]
+
+   - "zigzag"
+
+  [[./images/zigzag.png]]
+  
+** Tab height
+   To change the tab height do
+   #+BEGIN_SRC emacs-lisp :tangle yes
+    (setq centaur-tabs-height 32)
+   #+END_SRC
+** Tab icons
+   To display themed icons from all the icons
+   #+BEGIN_SRC emacs-lisp :tangle yes
+    (setq centaur-tabs-set-icons t)
+   #+END_SRC
+** Selected tab bar
+   To display a colored bar at the left of the selected tab
+   #+BEGIN_SRC emacs-lisp :tangle yes
+    (setq centaur-tabs-set-bar t)
+   #+END_SRC
+   The color can be customized via the centaur-active-bar-face face (see my personal configuration for reference).
+   [[./images/bar.png]]
+** Customize the close button
+   To disable the close button
+   #+BEGIN_SRC emacs-lisp :tangle yes
+    (setq centaur-tabs-set-close-button nil)
+   #+END_SRC
+   To change the displayed string for the close button
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (setq centaur-tabs-close-button "X")
+   #+END_SRC
+   Also there are two faces to customize the close button string: centaur-tabs-close-unselected and centaur-tabs-close-selected
+** Customizes the modified marker
+   To display a marker indicating that a buffer has been modified (atom-style)
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (setq centaur-tabs-set-modified-marker t)
+   #+END_SRC
+   To change the displayed string for the modified-marker
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (setq centaur-tabs-modified-marker "*")
+   #+END_SRC
+   Also there are two faces to customize the close button string: centaur-tabs-modified-marker-unselected and centaur-tabs-modified-marker-selected
+
+  [[./images/marker.png]]
+** Inherit tabbar faces:
+   Many theme plugins have already themed other tab plugins (~doom-themes~ for example). This package is able to use those tab plugin faces to theme itself. In a near future, many PRs will be sent so this package gets properly themed.
+   To use the already existing tabbar faces use:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (centaur-tabs-inherit-tabbar-faces)
+   #+END_SRC
+** Disable centaur-tabs in selected buffers
+   To disable the tabs in a buffer just add a hook to the ~centaur-tabs-local-mode~ function like this:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (add-hook 'dired-mode-hook 'centaur-tabs-local-mode)
+   #+END_SRC
+   
+   or with ~use-package~:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package centaur-tabs
+       ...
+       :hook
+       (dired-mode . centaur-tabs-local-mode)
+       ...)
+   #+END_SRC
+
+** Buffer groups
+   To customize the way that the buffers are grouped modify the ~centaur-tabs-buffer-groups~ function like this: 
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (defun centaur-tabs-buffer-groups ()
+       "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+     Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+     All buffer name start with * will group to \"Emacs\".
+     Other buffer group by `centaur-tabs-get-group-name' with project name."
+       (list
+	(cond
+	 ((or (string-equal "*" (substring (buffer-name) 0 1))
+	      (memq major-mode '(magit-process-mode
+				 magit-status-mode
+				 magit-diff-mode
+				 magit-log-mode
+				 magit-file-mode
+				 magit-blob-mode
+				 magit-blame-mode
+				 )))
+	  "Emacs")
+	 ((derived-mode-p 'prog-mode)
+	  "Editing")
+	 ((derived-mode-p 'dired-mode)
+	  "Dired")
+	 ((memq major-mode '(helpful-mode
+			     help-mode))
+	  "Help")
+	 ((memq major-mode '(org-mode
+			     org-agenda-clockreport-mode
+			     org-src-mode
+			     org-agenda-mode
+			     org-beamer-mode
+			     org-indent-mode
+			     org-bullets-mode
+			     org-cdlatex-mode
+			     org-agenda-log-mode
+			     diary-mode))
+	  "OrgMode")
+	 (t
+	  (centaur-tabs-get-group-name (current-buffer))))))
+   #+END_SRC
+   
+** Enable Vim like tab motions
+   To enable Vim like tab changing binds
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (define-key evil-normal-state-map (kbd "g t") 'centaur-tabs-forward)
+     (define-key evil-normal-state-map (kbd "g T") 'centaur-tabs-backward)
+   #+END_SRC
+   
+   or with ~use-package~:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (use-package centaur-tabs
+       ...
+       :bind
+       (:map evil-normal-state-map
+	     ("g t" . centaur-tabs-forward)
+	     ("g T" . centaur-tabs-backward))
+       ...)
+   #+END_SRC
+** Prevent the access to specified buffers 
+   You can prevent the access to some buffers via tab motions changing the following function like this:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (defun centaur-tabs-hide-tab (x)
+       (let ((name (format "%s" x)))
+	 (or
+	  (string-prefix-p "*epc" name)
+	  (string-prefix-p "*helm" name)
+	  (string-prefix-p "*Compile-Log*" name)
+	  (string-prefix-p "*lsp" name)
+	  (and (string-prefix-p "magit" name)
+	       (not (file-name-extension name)))
+	  )))
+   #+END_SRC
+** Tab cycling
+   The default behaviour from the ~centaur-tabs-forward/backward~ functions is to go through all the tabs in the current group and then change the group. If this is something that is desired to desired to be changed the ~centaur-tabs-cycle-scope~ custom must be changed like this:
+   #+BEGIN_SRC emacs-lisp :tangle yes
+     (setq centaur-tabs-cycle-scope 'tabs)
+   #+END_SRC
+   
+   There are three options:
+   -'default: (Already described)
+   -'tabs: Cycle through visible tabs (that is, the tabs in the current group)
+   -'default: Navigate through tab groups only
+** Helm integration
+   You can integrate Helm with centaur-tabs for changing tab-groups. Just add helm-source-centaur-tabs-group in helm-source-list. Then you'll be able to use ~(centaur-tabs-build-helm-source)~ function and bind it to any key you want. (I'm not a Helm user so I'll not be able to solve problems related to this).
+** Ivy integration
+   You can integrate Ivy with centaur-tabs for changing tab-groups. Just use the ~(centaur-tabs-build-ivy-source)~ and bind it to any key you want.
+   
+* TO DO [10/15]
+  - [X] Integrate all-the-icons
+  - [X] Improve all the icons placing
+  - [X] Fix all the icons background
+  - [X] Add selected, unselected, selected-modified and unselected-modified faces
+  - [X] Make function to inherit tabbar faces 
+  - [ ] Group tabs by projectile's project (was already implemented but not for projectile)
+  - [ ] Create PR to different theme packages for this package 
+  - [X] Add modified marker icon option
+  - [X] Add sideline for selected tab (atom style)
+  - [ ] Add tab styles (Atom, Sublime, VS Code...)
+  - [X] Make icon insert after the separator
+  - [X] Add a customizable close button
+  - [ ] Improve ~after-modifying-buffer~ function so it's called just when needed
+  - [X] Fix messages buffer icon an FontAwesome errors
+  - [ ] Check for Elscreen compatibility
+    
+* My personal configuration 
+My personal configuration for reference:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package centaur-tabs
+    :load-path "~/.emacs.d/other/centaur-tabs"
+    :config
+    (setq centaur-tabs-style "bar")
+    (setq centaur-tabs-height 32)
+    (setq centaur-tabs-set-icons t)
+    (setq centaur-tabs-set-bar t)
+    (setq centaur-tabs-set-modified-marker t)
+    (centaur-tabs-mode t)
+    (defun centaur-tabs-buffer-groups ()
+      "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+  Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+  All buffer name start with * will group to \"Emacs\".
+  Other buffer group by `centaur-tabs-get-group-name' with project name."
+      (list
+       (cond
+	((or (string-equal "*" (substring (buffer-name) 0 1))
+	     (memq major-mode '(magit-process-mode
+				magit-status-mode
+				magit-diff-mode
+				magit-log-mode
+				magit-file-mode
+				magit-blob-mode
+				magit-blame-mode
+				)))
+	 "Emacs")
+	((derived-mode-p 'prog-mode)
+	 "Editing")
+	((derived-mode-p 'dired-mode)
+	 "Dired")
+	((memq major-mode '(helpful-mode
+			    help-mode))
+	 "Help")
+	((memq major-mode '(org-mode
+			    org-agenda-clockreport-mode
+			    org-src-mode
+			    org-agenda-mode
+			    org-beamer-mode
+			    org-indent-mode
+			    org-bullets-mode
+			    org-cdlatex-mode
+			    org-agenda-log-mode
+			    diary-mode))
+	 "OrgMode")
+	(t
+	 (centaur-tabs-get-group-name (current-buffer))))))
+    :hook
+    (dashboard-mode . centaur-tabs-local-mode)
+    (term-mode . centaur-tabs-local-mode)
+    (calendar-mode . centaur-tabs-local-mode)
+    (org-agenda-mode . centaur-tabs-local-mode)
+    (helpful-mode . centaur-tabs-local-mode)
+    :bind
+    ("C-<prior>" . centaur-tabs-backward)
+    ("C-<next>" . centaur-tabs-forward)
+    (:map evil-normal-state-map
+	  ("g t" . centaur-tabs-forward)
+	  ("g T" . centaur-tabs-backward)))
+#+END_SRC
+
+* Known supported theme plugins
+** Currently Themed
+   - [[https://github.com/ogdenwebb/emacs-kaolin-themes][Kaolin Themes]]
+** Sent Pull Request
+   - [[https://github.com/hlissner/emacs-doom-themes][Doom Themes]]
+   - [[https://github.com/nashamri/spacemacs-theme][Spacemacs Theme]]
+* How to contribute
+  You can contribute by forking the repo and then creating a pull request with the changes you consider will improve the package. I'll be glad to receive help.
+  

@@ -131,7 +131,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (go-mode toml-mode helm-projectile projectile edit-indirect typo typo-mode indium org-bullets olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo typo-mode indium org-bullets olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -160,7 +160,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
 
 ;; set paths from shell
 (use-package exec-path-from-shell
@@ -514,6 +514,77 @@
   :ensure t
   :config
   (beginend-global-mode))
+
+(use-package centaur-tabs
+  :load-path "~/.emacs.d/vendor/centaur-tabs"
+  :config
+  (setq centaur-tabs-background-color (face-background 'default))
+  (centaur-tabs-inherit-tabbar-faces)
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-height 32)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-bar t)
+  (setq centaur-tabs-set-modified-marker t)
+  (centaur-tabs-mode t)
+  (set-face-attribute 'centaur-tabs-modified-marker-selected nil :foreground (face-background 'doom-modeline-bar))
+  (set-face-attribute 'centaur-tabs-modified-marker-unselected nil :foreground (face-background 'doom-modeline-bar))
+  (defun centaur-tabs-buffer-groups ()
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+ Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+ All buffer name start with * will group to \"Emacs\".
+ Other buffer group by `centaur-tabs-get-group-name' with project name."
+    (list
+     (cond
+      ((or (string-equal "*" (substring (buffer-name) 0 1))
+           (memq major-mode '(magit-process-mode
+                              magit-status-mode
+                              magit-diff-mode
+                              magit-log-mode
+                              magit-file-mode
+                              magit-blob-mode
+                              magit-blame-mode
+                              )))
+       "Emacs")
+      ((derived-mode-p 'prog-mode)
+       "Editing")
+      ((derived-mode-p 'dired-mode)
+       "Dired")
+      ((memq major-mode '(helpful-mode
+                          help-mode))
+       "Help")
+      ((memq major-mode '(org-agenda-clockreport-mode
+                          org-src-mode
+                          org-agenda-mode
+                          org-beamer-mode
+                          org-indent-mode
+                          org-bullets-mode
+                          org-cdlatex-mode
+                          org-agenda-log-mode
+                          diary-mode))
+       "OrgMode")
+      (t
+       (centaur-tabs-get-group-name (current-buffer))))))
+  :hook
+  (dashboard-mode . centaur-tabs-local-mode)
+  (term-mode . centaur-tabs-local-mode)
+  (calendar-mode . centaur-tabs-local-mode)
+  (dired-mode . centaur-tabs-local-mode)
+  (org-agenda-mode . centaur-tabs-local-mode)
+  (magit-log-mode . centaur-tabs-local-mode)
+  (magit-diff-mode . centaur-tabs-local-mode)
+  (magit-status-mode . centaur-tabs-local-mode)
+  (magit-process-mode . centaur-tabs-local-mode)
+  (magit-stashes-mode . centaur-tabs-local-mode)
+  (helpful-mode . centaur-tabs-local-mode)
+  (help-mode . centaur-tabs-local-mode)
+  (fundamental-mode . centaur-tabs-local-mode)
+  (lisp-interaction-mode . centaur-tabs-local-mode)
+  :bind
+  ("s-{" . centaur-tabs-backward)
+  ("s-}" . centaur-tabs-forward)
+  :custom-face
+  (centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
 
 (use-package cider
   :disabled
