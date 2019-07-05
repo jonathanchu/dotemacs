@@ -5,6 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
+;; Package-Version: 20190705.436
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -530,7 +531,7 @@ Otherwise insert it."
 (defun centaur-tabs-insert-at (list index insert-element)
   "Insert INSERT-ELEMENT in LIST at index INDEX."
   (let ((counter 0)
-	(result '()))
+	result)
     (dolist (element list)
       (if (equal counter index)
 	  (setq result (append result (list element insert-element)))
@@ -1201,7 +1202,7 @@ COLOR1 and COLOR2 must be supplied as hex strings with a leading #."
 (defun centaur-tabs-separator-color-srgb-to-apple-rgb (red green blue)
   "Convert RED GREEN BLUE colors from sRGB color space to Apple RGB.
 RED, GREEN and BLUE should be between 0.0 and 1.0, inclusive."
-  (apply 'centaur-tabs-separator-color-xyz-to-apple-rgb (color-srgb-to-xyz red green blue)))
+  (apply #'centaur-tabs-separator-color-xyz-to-apple-rgb (color-srgb-to-xyz red green blue)))
 
 (defun centaur-tabs-separator-hex-color (color)
   "Get the hexadecimal value of COLOR."
@@ -1334,7 +1335,7 @@ BODY-2X is an optional argument."
 			  (color2 (or color2 "None"))
 			  (colori (or colori "None")))
 			let-vars)
-	   (apply 'create-image
+	   (apply #'create-image
 		  ,(append `(concat (format "/* XPM */ static char * %s_%s[] = { \"%s %s 3 1\", \"0 c %s\", \"1 c %s\", \"2 c %s\","
 					    ,(replace-regexp-in-string "-" "_" name)
 					    (symbol-name ',dir)
@@ -1897,7 +1898,7 @@ not the actual logical index position of the current group."
 (defun centaur-tabs-get-extensions ()
   "Get file extension of tabs."
   (set centaur-tabs-tabsets-tabset (centaur-tabs-map-tabsets 'centaur-tabs-selected-tab))
-  (let ((extension-names '()))
+  (let (extension-names)
     (mapc #'(lambda (buffer)
 	      (with-current-buffer buffer
 		(when (string-equal 'current-group-name (cdr (centaur-tabs-selected-tab (centaur-tabs-current-tabset t))))

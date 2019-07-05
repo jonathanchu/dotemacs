@@ -521,7 +521,7 @@
   (beginend-global-mode))
 
 (use-package centaur-tabs
-  :load-path "~/.emacs.d/vendor/centaur-tabs"
+  :ensure t
   :config
   (setq centaur-tabs-background-color (face-background 'default))
   (centaur-tabs-inherit-tabbar-faces)
