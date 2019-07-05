@@ -57,19 +57,19 @@
    There are a few requirements needed for this config to properly run.
    All of these prerequisites can be installed via =homebrew= and =npm=.
 
-   #+BEGIN_SRC
-   brew install gpg
-   brew install ag
-   brew install node
-   npm install eslint
+   #+BEGIN_SRC shell
+   $ brew install gpg
+   $ brew install ag
+   $ brew install node
+   $ npm install -g eslint
    #+END_SRC
 
    For using =python-mode= and =elpy=, you'll need to have =pip=
    installed and install the following packages:
 
-   #+BEGIN_SRC
-   pip install rope
-   pip install flake8
+   #+BEGIN_SRC shell
+   $ pip install rope
+   $ pip install flake8
    #+END_SRC
 
 ** Package Updates
