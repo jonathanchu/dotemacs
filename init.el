@@ -420,6 +420,11 @@
 (use-package doom-themes
   :ensure t)
 
+(use-package doom-modeline
+  :ensure t
+  :hook
+  (after-init . doom-modeline-mode))
+
 (setq-default frame-title-format '(""))
 
 ;; Global settings (defaults)
