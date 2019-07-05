@@ -551,23 +551,6 @@
                               magit-blame-mode
                               )))
        "Emacs")
-      ((derived-mode-p 'prog-mode)
-       "Editing")
-      ((derived-mode-p 'dired-mode)
-       "Dired")
-      ((memq major-mode '(helpful-mode
-                          help-mode))
-       "Help")
-      ((memq major-mode '(org-agenda-clockreport-mode
-                          org-src-mode
-                          org-agenda-mode
-                          org-beamer-mode
-                          org-indent-mode
-                          org-bullets-mode
-                          org-cdlatex-mode
-                          org-agenda-log-mode
-                          diary-mode))
-       "OrgMode")
       (t
        (centaur-tabs-get-group-name (current-buffer))))))
   :hook
