@@ -28,24 +28,24 @@
    To install, it's recommended to clone this repo wherever you prefer
    and symlink the directory to =~/.emacs.d=.
 
-   #+BEGIN_SRC
-   git clone https://github.com/jonathanchu/dotemacs.git
+   #+BEGIN_SRC shell
+   $ git clone https://github.com/jonathanchu/dotemacs.git
    #+END_SRC
 
    There is a =Makefile= provided that will create the symlink for you at
    =~/.emacs.d=:
 
-   #+BEGIN_SRC
-   make setup
+   #+BEGIN_SRC shell
+   $ make setup
    #+END_SRC
 
    My current Emacs distro of choice is:
 
-   #+BEGIN_SRC
-   brew install emacs --with-cocoa --with-imagemagick@6 --with-gnutls --with-librsvg --with-mailutils --with-modules --devel
+   #+BEGIN_SRC shell
+   $ brew install emacs --with-cocoa --with-imagemagick@6 --with-gnutls --with-librsvg --with-mailutils --with-modules --devel
    #+END_SRC
 
-   Please note, this requires [[http://brew.sh][homebrew]] to be installed.
+   Please note, this requires [[http://brew.sh][Homebrew]] to be installed.
 
 ** Requirements
 
@@ -56,7 +56,7 @@
    brew install gpg
    brew install ag
    brew install node
-   npm install jshint
+   npm install eslint
    #+END_SRC
 
    For using =python-mode= and =elpy=, you'll need to have =pip=
@@ -67,9 +67,9 @@
    pip install flake8
    #+END_SRC
 
-** Updates
+** Package Updates
 
-   To update the packages, type @@html:<kbd>@@M-x
+   To update the third-party packages, type @@html:<kbd>@@M-x
    list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
    followed by @@html:<kbd>@@x@@html:</kbd>@@.
 
