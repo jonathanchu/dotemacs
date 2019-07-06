@@ -418,7 +418,8 @@
 (load-file "~/.emacs.d/doom.el")
 
 (use-package doom-themes
-  :ensure t)
+  ;; :ensure t
+  :load-path "vendor/emacs-doom-themes-modified")
 
 (use-package doom-modeline
   :ensure t
