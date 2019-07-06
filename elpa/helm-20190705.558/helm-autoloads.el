@@ -907,22 +907,23 @@ To use this bind it to a key in `isearch-mode-map'.
 ;;; Generated autoloads from helm-org.el
 
 (autoload 'helm-org-agenda-files-headings "helm-org" "\
-Preconfigured Helm for agenda files.
+Preconfigured helm for org files headings.
 
 \(fn)" t nil)
 
 (autoload 'helm-org-in-buffer-headings "helm-org" "\
-Preconfigured Helm for buffer headings.
+Preconfigured helm for org buffer headings.
 
 \(fn)" t nil)
 
 (autoload 'helm-org-parent-headings "helm-org" "\
-Preconfigured Helm for parent headings of the current heading.
+Preconfigured helm for org headings that are parents of the
+current heading.
 
 \(fn)" t nil)
 
 (autoload 'helm-org-capture-templates "helm-org" "\
-Preconfigured Helm for capture templates.
+Preconfigured helm for org templates.
 
 \(fn)" t nil)
 
@@ -933,8 +934,8 @@ This function is used as a `completing-read' function in
 `helm-completing-read-handlers-alist' by `org-set-tags' and
 `org-capture'.
 
-NOTE: Org tag completion will work only if Org's fast tag selection is
-disabled. See (info \"(org) setting tags\").
+NOTE: Org tag completion will work only if you disable org fast tag
+selection, see (info \"(org) setting tags\").
 
 \(fn PROMPT COLLECTION PRED REQ INITIAL HIST DEF INHERIT-INPUT-METHOD NAME BUFFER)" nil nil)
 

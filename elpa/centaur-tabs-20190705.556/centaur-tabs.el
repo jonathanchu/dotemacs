@@ -5,11 +5,11 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190705.436
+;; Package-Version: 20190705.556
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
-;; Version: 4
+;; Version: 5
 ;; Known Compatibility: GNU Emacs 26.2
 ;; Package-Requires: ((emacs "24.4"))
 ;;
