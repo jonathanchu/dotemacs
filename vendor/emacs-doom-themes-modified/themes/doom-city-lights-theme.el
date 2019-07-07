@@ -154,6 +154,11 @@ determine the exact padding."
    ((font-lock-builtin-face &override) :slant 'italic)
 
    ((js2-function-param &override) :foreground fg :slant 'italic)
+
+   ;; Centaur tabs
+   (centaur-tabs-active-bar-face :background (if -modeline-bright modeline-bg highlight))
+   (centaur-tabs-modified-marker-selected :inherit 'centaur-tabs-selected :foreground green)
+   (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected :foreground green)
    ;; end of customizations
 
    ;; --- major-mode faces -------------------
