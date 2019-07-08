@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190707.630
+;; Package-Version: 20190708.332
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -53,6 +53,8 @@
 (declare-function all-the-icons-auto-mode-match? "ext:all-the-icons.el" t t)
 (declare-function all-the-icons-icon-for-file "ext:all-the-icons.el" t t)
 (declare-function all-the-icons-icon-for-mode "ext:all-the-icons.el" t t)
+(declare-function projectile-project-root "ext:projectile.el" t t)
+(declare-function projectile-project-name "ext:projectile.el" t t)
 (defvar ivy-source-centaur-tabs-group)
 (defvar helm-source-centaur-tabs-group)
 
@@ -281,6 +283,8 @@ group.  Notice that it is better that a buffer belongs to one group.")
 (defvar centaur-tabs-adjust-buffer-order-function 'centaur-tabs-adjust-buffer-order
   "Function to adjust buffer order after switch tab.
 Default is `centaur-tabs-adjust-buffer-order', you can write your own rule.")
+
+(defvar centaur-tabs--buffer-show-groups nil)
 
 ;; Separators
 (defvar centaur-tabs-style-left nil)
@@ -674,7 +678,8 @@ Call `centaur-tabs-tab-label-function' to obtain a label for TAB."
 					      (when (windowp window) (select-window window)))
 					    (centaur-tabs-buffer-select-tab ',tab)))))
 		""))
-	 (icon (if centaur-tabs-set-icons
+	 (icon (if (and centaur-tabs-set-icons
+			(not centaur-tabs--buffer-show-groups))
 		   (propertize
 		    (centaur-tabs-icon tab face)
 		    'centaur-tabs-tab tab
@@ -1147,7 +1152,6 @@ Return the the first group where the current buffer is."
 
 ;;; Tab bar callbacks
 ;;
-(defvar centaur-tabs--buffer-show-groups nil)
 
 (defsubst centaur-tabs-buffer-show-groups (flag)
   "Set display of tabs for groups of buffers to FLAG."
@@ -1595,7 +1599,9 @@ That is, a string used to represent it on the tab bar."
   ;; Init tab style.
   ;; Render tab.
     (format " %s"
-	    (let ((bufname (centaur-tabs-buffer-name (car tab))))
+	    (let ((bufname (if centaur-tabs--buffer-show-groups
+			       (centaur-tabs-tab-tabset tab)
+			     (centaur-tabs-buffer-name (car tab)))))
 	      (if (> centaur-tabs-label-fixed-length 0)
 		  (centaur-tabs-truncate-string  centaur-tabs-label-fixed-length bufname)
 		bufname))))
@@ -1619,7 +1625,7 @@ That is, a string used to represent it on the tab bar."
   "Select TAB."
   (let ((buffer (centaur-tabs-tab-value tab)))
     (switch-to-buffer buffer)
-    (centaur-tabs-buffer-show-groups nil)
+    ;; (centaur-tabs-buffer-show-groups nil)
     (centaur-tabs-display-update)
     ))
 
@@ -1653,7 +1659,7 @@ first."
   "Initialize tab bar buffer data.
 Run as `centaur-tabs-init-hook'."
   (setq centaur-tabs--buffers nil
-	centaur-tabs--buffer-show-groups nil
+	;; centaur-tabs--buffer-show-groups nil
 	centaur-tabs-current-tabset-function 'centaur-tabs-buffer-tabs
 	centaur-tabs-tab-label-function 'centaur-tabs-buffer-tab-label
 	centaur-tabs-select-tab-function 'centaur-tabs-buffer-select-tab
@@ -1664,7 +1670,7 @@ Run as `centaur-tabs-init-hook'."
   "Quit tab bar buffer.
 Run as `centaur-tabs-quit-hook'."
   (setq centaur-tabs--buffers nil
-	centaur-tabs--buffer-show-groups nil
+	;; centaur-tabs--buffer-show-groups nil
 	centaur-tabs-current-tabset-function nil
 	centaur-tabs-tab-label-function nil
 	centaur-tabs-select-tab-function nil
@@ -1971,6 +1977,53 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
      "OrgMode")
     (t
      (centaur-tabs-get-group-name (current-buffer))))))
+
+(defun centaur-tabs-group-buffer-groups ()
+  "Use centaur-tabs's own buffer grouping function."
+  (interactive)
+  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups))
+
+;; Projectile integration. Taken from tabbar-ruler
+(defvar centaur-tabs-projectile-buffer-group-calc nil
+  "Set buffer groups for projectile.
+Should be buffer local and speed up calculation of buffer groups.")
+
+(defun centaur-tabs-projectile-buffer-groups ()
+  "Return the list of group names BUFFER belongs to.
+Return only one group for each buffer."
+
+  (if centaur-tabs-projectile-buffer-group-calc
+      (symbol-value 'centaur-tabs-projectile-buffer-group-calc)
+    (set (make-local-variable 'centaur-tabs-projectile-buffer-group-calc)
+
+         (cond
+          ((or (get-buffer-process (current-buffer)) (memq major-mode '(comint-mode compilation-mode))) '("Term"))
+          ((string-equal "*" (substring (buffer-name) 0 1)) '("Misc"))
+          ((condition-case _err
+               (projectile-project-root)
+             (error nil)) (list (projectile-project-name)))
+          ((memq major-mode '(emacs-lisp-mode python-mode emacs-lisp-mode c-mode
+					      c++-mode javascript-mode js-mode
+					      js2-mode makefile-mode
+					      lua-mode vala-mode)) '("Coding"))
+          ((memq major-mode '(nxhtml-mode html-mode
+					  mhtml-mode css-mode)) '("HTML"))
+          ((memq major-mode '(org-mode calendar-mode diary-mode)) '("Org"))
+          ((memq major-mode '(dired-mode)) '("Dir"))
+          (t '("Other"))))
+    (symbol-value 'centaur-tabs-projectile-buffer-group-calc)))
+
+(defun centaur-tabs-group-by-projectile-project()
+  "Group by projectile project."
+  (interactive)
+  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-projectile-buffer-groups))
+
+;; Show groups instead of tabs
+(defun centaur-tabs-toggle-groups ()
+  "Show group names on the tabs instead of buffer names."
+  (interactive)
+  (centaur-tabs-buffer-show-groups (not centaur-tabs--buffer-show-groups))
+  (centaur-tabs-display-update))
 
 ;; Helm source for switching group in helm.
 
