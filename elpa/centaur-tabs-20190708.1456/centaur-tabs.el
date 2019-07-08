@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190708.332
+;; Package-Version: 20190708.1456
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -623,6 +623,10 @@ current cached copy."
     (with-current-buffer buffer
       (kill-buffer buffer))
     (centaur-tabs-display-update)))
+
+(defun centaur-tabs-headline-match ()
+  "Make headline use centaur-tabs-default-face."
+  (set-face-attribute 'header-line nil :background (face-background 'centaur-tabs-default)))
 
 ;; Hooks for modification
 (defun centaur-tabs-on-saving-buffer ()
