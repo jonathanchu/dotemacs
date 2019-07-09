@@ -9,7 +9,7 @@
 ;;       Bozhidar Batsov <bozhidar@batsov.com>
 ;;       Artur Malabarba <bruce.connor.am@gmail.com>
 ;; URL: http://github.com/clojure-emacs/clojure-mode
-;; Package-Version: 20190701.1239
+;; Package-Version: 20190709.1441
 ;; Keywords: languages clojure clojurescript lisp
 ;; Version: 5.11.0-snapshot
 ;; Package-Requires: ((emacs "25.1"))
@@ -472,22 +472,15 @@ ENDP and DELIMITER."
                        t)
                       (= orig-point (match-end 0)))))))))
 
-(declare-function paredit-open-curly "ext:paredit")
-(declare-function paredit-close-curly "ext:paredit")
+(declare-function paredit-open-curly "ext:paredit" t t)
+(declare-function paredit-close-curly "ext:paredit" t t)
 (declare-function paredit-convolute-sexp "ext:paredit")
 
-(defun clojure--replace-let-bindings-and-indent (orig-fun &rest args)
-  "Advise ORIG-FUN to replace let bindings.
-
-Sexps are replace by their bound name if a let form was
-convoluted.
-
-ORIG-FUN should be `paredit-convolute-sexp'.
-
-ARGS are passed to ORIG-FUN, as with all advice."
+(defun clojure--replace-let-bindings-and-indent ()
+  "Replace let bindings and indent."
   (save-excursion
     (backward-sexp)
-    (when (looking-back clojure--let-regexp)
+    (when (looking-back clojure--let-regexp nil)
       (clojure--replace-sexps-with-bindings-and-indent))))
 
 (defun clojure-paredit-setup (&optional keymap)
@@ -555,9 +548,16 @@ replacement for `cljr-expand-let`."
   (clojure-font-lock-setup)
   (add-hook 'paredit-mode-hook #'clojure-paredit-setup)
   ;; `electric-layout-post-self-insert-function' prevents indentation in strings
-  ;; and comments, force indentation in docstrings:
+  ;; and comments, force indentation of non-inlined docstrings:
   (add-hook 'electric-indent-functions
-            (lambda (_char) (if (clojure-in-docstring-p) 'do-indent)))
+            (lambda (_char) (if (and (clojure-in-docstring-p)
+                                     ;; make sure we're not dealing with an inline docstring
+                                     ;; e.g. (def foo "inline docstring" bar)
+                                     (save-excursion
+                                       (beginning-of-line-text)
+                                       (eq (get-text-property (point) 'face)
+                                           'font-lock-doc-face)))
+                                'do-indent)))
   ;; integration with project.el
   (add-hook 'project-find-functions #'clojure-current-project))
 
@@ -1971,7 +1971,7 @@ Returns a list pair, e.g. (\"defn\" \"abc\") or (\"deftest\" \"some-test\")."
 \"Non-logical\" sexp are ^metadata and #reader.macros."
   (comment-normalize-vars)
   (comment-forward (point-max))
-  (looking-at-p "\\^\\|#[[:alpha:]]"))
+  (looking-at-p "\\^\\|#:?:?[[:alpha:]]"))
 
 (defun clojure-forward-logical-sexp (&optional n)
   "Move forward N logical sexps.
@@ -2069,9 +2069,8 @@ many times."
         (condition-case nil
             (save-match-data
               (let ((original-position (point))
-                    clojure-comment-start clojure-comment-end)
+                    clojure-comment-end)
                 (beginning-of-defun)
-                (setq clojure-comment-start (point))
                 (end-of-defun)
                 (setq clojure-comment-end (point))
                 (beginning-of-defun)
@@ -2126,8 +2125,7 @@ list of (fn args) to pass to `apply''"
 Point must be between the opening paren and the ->> symbol."
   (forward-sexp)
   (save-excursion
-    (let ((beg (point))
-          (contents (clojure-delete-and-extract-sexp)))
+    (let ((contents (clojure-delete-and-extract-sexp)))
       (when (looking-at " *\n")
         (join-line 'following))
       (clojure--ensure-parens-around-function-names)
@@ -2467,7 +2465,7 @@ See: https://github.com/clojure-emacs/clj-refactor.el/wiki/cljr-cycle-if"
     (condition-case nil
         (backward-up-list)
       (scan-error (user-error "`clojure-cycle-not' must be invoked inside a list")))
-    (if (looking-back "(not ")
+    (if (looking-back "(not " nil)
         (progn
           (delete-char -5)
           (forward-sexp)
@@ -2703,7 +2701,7 @@ into the let form."
 With a numeric prefix argument slurp the next N s-expressions into the let form."
   (interactive "p")
   (unless n (setq n 1))
-  (dotimes (k n)
+  (dotimes (_ n)
     (save-excursion (clojure--let-forward-slurp-sexp-internal))))
 
 ;;;###autoload

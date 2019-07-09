@@ -391,9 +391,13 @@ If the actual char height is larger, it respects the actual char height.")
                " "
                'face (if (doom-modeline--active) 'mode-line 'mode-line-inactive)
                'display `((space :align-to (- (+ right right-fringe right-margin)
-                                              ,(string-width
-                                                (format-mode-line
-                                                 (cons "" rhs-forms)))))))
+                                              ,(* (if (number-or-marker-p (face-attribute 'mode-line :height))
+                                                      (/ (window-font-width nil 'mode-line)
+                                                         (frame-char-width) 1.0)
+                                                    1)
+                                                  (string-width
+                                                   (format-mode-line
+                                                    (cons "" rhs-forms))))))))
               rhs-forms))
       (concat "Modeline:\n"
               (format "  %s\n  %s"
@@ -506,9 +510,9 @@ If the actual char height is larger, it respects the actual char height.")
 (defun doom-modeline--font-height ()
   "Calculate the actual char height of the mode-line."
   (let ((height (face-attribute 'mode-line :height)))
-    (round (* 1.68 (if (number-or-marker-p height)
-                       (/ height 10)
-                     (frame-char-height))))))
+    (round (* 1.68 (cond ((integerp height) (/ height 10))
+                         ((floatp height) (* height (frame-char-height)))
+                         (t (frame-char-height)))))))
 
 (defun doom-modeline-icon-octicon (&rest args)
   "Display octicon via ARGS."

@@ -1133,6 +1133,27 @@ provide for this function.  This is the intended behavior.
 Generally you are better off using the native Helm command
 than the helmized Emacs equivalent.
 
+*** Completion behavior with Helm and completion-at-point
+
+Helm is NOT completing dynamically, that's mean that when you are
+completing some text at point, completion is done against this
+text and subsequent characters you add AFTER this text, this
+allow you to use matching methods provided by Helm, that is multi
+matching or fuzzy matching (see [[Matching in Helm][Matching in Helm]]).
+
+Completion is not done dynamically (against `helm-pattern')
+because backend functions (i.e. `competion-at-point-functions')
+are not aware of the Helm matching methods.
+
+By behaving like this, the benefit is that you can fully use Helm
+matching methods but you can't start a full completion against a
+prefix different than the initial text you have at point, Helm
+warn you against this by colorizing the initial input and send an
+user-error message when trying to delete backward text beyond
+this limit at first hit on DEL and on second hit on DEL within a
+short delay (1s) quit Helm and delete-backward char in
+current-buffer.
+
 ** Helm help
 
 \\[helm-documentation]: Show all helm documentations concatenated in one org file.
@@ -3816,7 +3837,6 @@ Default function to match candidates according to `helm-pattern'."
 ;;; Fuzzy matching
 ;;
 ;;
-(defconst helm--fuzzy-word-separators '("-" "_" ":" "/"))
 (defvar helm--fuzzy-regexp-cache (make-hash-table :test 'eq))
 (defun helm--fuzzy-match-maybe-set-pattern ()
   ;; Computing helm-pattern with helm--mapconcat-pattern
@@ -3907,29 +3927,18 @@ CANDIDATE. Contiguous matches get a coefficient of 2."
                             (string= pattern (substring cand 0 1)))
                        150)
                       (t 0)))
-         ;; Exact match e.g. foo > foo == 200
+         ;; Exact match e.g. foo -> foo == 200
          (bonus1 (and (string= cand pattern) 200))
-         ;; Partial match e.g. foo > aafooaa == 100
-         (bonus2 (and (string-match
-                       (concat "\\<" (regexp-quote pattern) "\\>")
-                       cand)
-                      100))
-         ;; Prefix at word boundary e.g fb > foo-bar coeff 2
-         (bonus3 (if (or bonus1 bonus2 (null pat-lookup))
-                     0
-                   (cl-loop with seq = (copy-sequence str-lookup)
-                            with count = 0
-                            for c across (substring pattern 1)
-                            for assoc = (rassoc (list (string c)) (cdr seq))
-                            when (helm-aand
-                                  assoc
-                                  (car it)
-                                  (member it helm--fuzzy-word-separators))
-                            do (cl-incf count 2)
-                            and do (setq seq (cdr (member assoc seq)))
-                            finally return count))))
+         ;; Partial match e.g. foo -> aafooaa == 100
+         ;;               or   foo -> fooaaa
+         (bonus2 (and (or (string-match
+                           (concat "\\`" (regexp-quote pattern))
+                           cand)
+                          (string-match
+                           (concat "\\<" (regexp-quote pattern) "\\>")
+                           cand))
+                      100)))
     (+ bonus
-       bonus3
        (or bonus1 bonus2
            ;; Give a coefficient of 2 for contiguous matches.
            ;; That's mean that "wiaaaki" will not take precedence

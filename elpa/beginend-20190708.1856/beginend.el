@@ -5,7 +5,7 @@
 ;; Authors: Damien Cassou <damien@cassou.me>
 ;;          Matus Goljer <matus.goljer@gmail.com>
 ;; Version: 2.0.0
-;; Package-Version: 20180827.926
+;; Package-Version: 20190708.1856
 ;; URL: https://github.com/DamienCassou/beginend
 ;; Package-Requires: ((emacs "25.3"))
 ;; Created: 01 Jun 2015
@@ -324,6 +324,24 @@ If optional argument P is present test at that point instead of `point'."
                     (beginend--prog-mode-code-position-p)))
       (forward-line -1))
     (goto-char (line-end-position))))
+
+(declare-function outline-next-visible-heading "outline")
+(declare-function outline-on-heading-p "outline")
+
+(beginend-define-mode outline-mode
+  (progn
+    (unless (outline-on-heading-p)
+      (outline-next-visible-heading 1)))
+  (progn))
+
+(declare-function org-next-visible-heading "org")
+(declare-function org-on-heading-p "org")
+
+(beginend-define-mode org-mode
+  (progn
+    (unless (org-on-heading-p)
+      (org-next-visible-heading 1)))
+  (progn))
 
 
 

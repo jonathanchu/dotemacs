@@ -473,6 +473,11 @@ The hook is called with two params: the signature information and hover data."
   :type 'hook
   :group 'lsp-mode)
 
+(defcustom lsp-before-apply-edits-hook nil
+  "Hooks to run before applying edits."
+  :type 'hook
+  :group 'lsp-mode)
+
 (defgroup lsp-imenu nil
   "Imenu."
   :group 'lsp-mode
@@ -2804,6 +2809,7 @@ The method uses `replace-buffer-contents'."
 This method is used if we do not have `buffer-replace-content'."
   (unless (seq-empty-p edits)
     (atomic-change-group
+      (run-hooks 'lsp-before-apply-edits-hook)
       (let* ((change-group (when (functionp 'undo-amalgamate-change-group)
                              (prepare-change-group)))
              (howmany (length edits))
@@ -3720,13 +3726,8 @@ If ACTION is not set it will be selected from `lsp-code-actions'."
   (lsp-execute-code-action-by-kind "source.organizeImports"))
 
 (defun lsp--apply-formatting (edits)
-  (let ((point (point))
-        (w-start (window-start)))
-    (let ((lsp--server-sync-method 'full))
-      (lsp--apply-text-edits edits))
-    (goto-char point)
-    (goto-char (line-beginning-position))
-    (set-window-start (selected-window) w-start)))
+  (let ((lsp--server-sync-method 'full))
+    (lsp--apply-text-edits edits)))
 
 (defun lsp--make-document-range-formatting-params (start end)
   "Make DocumentRangeFormattingParams for selected region.
@@ -5351,6 +5352,16 @@ such."
   (lsp--warn "Stopping %s" (lsp--workspace-print workspace))
   (setf (lsp--workspace-shutdown-action workspace) 'shutdown)
   (with-lsp-workspace workspace (lsp--shutdown-workspace)))
+
+(defun lsp-disconnect ()
+  "Disconnect the buffer from the language server."
+  (interactive)
+  (with-no-warnings (when (functionp 'lsp-ui-mode) (lsp-ui-mode -1)))
+  (lsp--text-document-did-close t)
+  (lsp--managed-mode -1)
+  (lsp-mode -1)
+  (setq-local lsp--buffer-workspaces nil)
+  (lsp--info "Disconnected"))
 
 (defun lsp-restart-workspace ()
   (interactive)
