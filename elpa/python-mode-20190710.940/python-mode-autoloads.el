@@ -81,76 +81,54 @@ Optional BOL: go to beginning of line following end-position
 
 \(fn &optional ORIG BOL)" t nil)
 
-(autoload 'py-shell "python-mode" "\
-Start a Python interpreter.
-
-Interactively, \\[universal-argument] prompts for a new ‘buffer-name’.
-  \\[universal-argument] 2 prompts for ‘py-python-command-args’.
-  If ‘default-directory’ is a remote file name, it is also prompted
-  to change if called with a prefix arg.
-  Optional ARGPROMPT DEDICATED
-  Optional string SHELL overrides default ‘py-shell-name’.
-  Returns py-shell's ‘buffer-name’.
-  BUFFER allows specifying a name, the Python process is connected to
-  FAST process not in ‘comint-mode’ buffer
-  EXCEPTION-BUFFER point to error
-  Optional SPLIT see var ‘py-split-window-on-execute’
-  Optional SWITCH see var ‘py-switch-buffers-on-execute-p’
-  Optional INPUT-PROMPT permit command to set prompt
-  Optional INTERNAL shell will be invisible for users
-
- \\[describe-mode] in the process buffer provides more info.
-
-\(fn &optional ARGPROMPT DEDICATED SHELL BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH INTERNAL)" t nil)
-
 (autoload 'ipython "python-mode" "\
 Start an IPython interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
-(autoload 'ipython2 "python-mode" "\
-Start an IPython2 interpreter.
+(autoload 'ipython2\.7 "python-mode" "\
+Start an IPython2.7 interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'ipython3 "python-mode" "\
 Start an IPython3 interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'jython "python-mode" "\
 Start an Jython interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'python "python-mode" "\
 Start an Python interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'python2 "python-mode" "\
 Start an Python2 interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'python3 "python-mode" "\
 Start an Python3 interpreter.
 
 Optional ARG \\[universal-argument] prompts for path to the interpreter.
 
-\(fn &optional ARGPROMPT BUFFER FAST EXCEPTION-BUFFER SPLIT SWITCH)" t nil)
+\(fn &optional ARGPROMPT ARGS BUFFER FAST EXCEPTION-BUFFER SPLIT)" t nil)
 
 (autoload 'py-auto-completion-mode "python-mode" "\
 Run auto-completion
@@ -188,32 +166,6 @@ VARIABLES
 See available customizations listed in files variables-python-mode at directory doc
 
 \\{python-mode-map}
-
-\(fn)" t nil)
-
-(autoload 'py-python-shell-mode "python-mode" "\
-Major mode for interacting with a Python process.
-A Python process can be started with \\[py-shell].
-
-You can send text to the Python process from other buffers
-containing Python source.
- * \\[py-execute-region] sends the current region to the Python process.
-
-Sets basic comint variables, see also versions-related stuff in `py-shell'.
-\\{py-python-shell-mode-map}
-
-\(fn)" t nil)
-
-(autoload 'py-ipython-shell-mode "python-mode" "\
-Major mode for interacting with a (I)Python process.
-A Python process can be started with \\[py-shell].
-
-You can send text to the (I)Python process from other buffers
-containing Python source.
- * \\[py-execute-region] sends the current region to the Python process.
-
-Sets basic comint variables, see also versions-related stuff in `py-shell'.
-\\{py-ipython-shell-mode-map}
 
 \(fn)" t nil)
 

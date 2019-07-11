@@ -71,6 +71,11 @@ Returns non-nil if the new state is enabled.
 
 \(fn &optional ARG)" t nil)
 
+(autoload 'centaur-tabs-counsel-switch-group "centaur-tabs" "\
+Display a list of current buffer groups using Counsel.
+
+\(fn)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "centaur-tabs" '("centaur-tabs-")))
 
 ;;;***

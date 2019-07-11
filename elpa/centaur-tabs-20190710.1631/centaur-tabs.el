@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190708.1456
+;; Package-Version: 20190710.1631
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -55,7 +55,6 @@
 (declare-function all-the-icons-icon-for-mode "ext:all-the-icons.el" t t)
 (declare-function projectile-project-root "ext:projectile.el" t t)
 (declare-function projectile-project-name "ext:projectile.el" t t)
-(defvar ivy-source-centaur-tabs-group)
 (defvar helm-source-centaur-tabs-group)
 
 ;;;;;;;;;;;;;;;;;;;;;;; Centaur-Tabs source code ;;;;;;;;;;;;;;;;;;;;;;;
@@ -2043,16 +2042,17 @@ Return only one group for each buffer."
 
 ;; Ivy source for switching group in ivy.
 
-(defun centaur-tabs-build-ivy-source ()
-  "Display a list of current buffer groups in Ivy."
+;;;###autoload
+(defun centaur-tabs-counsel-switch-group ()
+  "Display a list of current buffer groups using Counsel."
   (interactive)
-  (setq ivy-source-centaur-tabs-group
-	(when (featurep 'ivy)
-	  (require 'ivy)
-	  (ivy-read
-	   "Centaur-Tabs Groups:"
-	   (centaur-tabs-get-groups)
-	   :action #'centaur-tabs-switch-group))))
+  (when (featurep 'ivy)
+    (require 'ivy)
+    (ivy-read
+     "Centaur Tabs Groups:"
+     (centaur-tabs-get-groups)
+     :action #'centaur-tabs-switch-group
+     :caller 'centaur-tabs-counsel-switch-group)))
 
 (defun centaur-tabs-hide-tab (x)
   "Do no to show buffer X in tabs."

@@ -9,7 +9,7 @@
 ;;       Bozhidar Batsov <bozhidar@batsov.com>
 ;;       Artur Malabarba <bruce.connor.am@gmail.com>
 ;; URL: http://github.com/clojure-emacs/clojure-mode
-;; Package-Version: 20190709.1441
+;; Package-Version: 20190710.1239
 ;; Keywords: languages clojure clojurescript lisp
 ;; Version: 5.11.0-snapshot
 ;; Package-Requires: ((emacs "25.1"))
@@ -2663,13 +2663,12 @@ lists up."
   (clojure--find-ns-in-direction 'backward)
   (let ((rgx (concat ":as +" current-alias))
         (bound (save-excursion (forward-list 1) (point))))
-    (when (save-excursion (search-forward-regexp rgx bound t))
-      (save-excursion
-        (while (re-search-forward rgx bound t)
-          (replace-match (concat ":as " new-alias))))
+    (when (search-forward-regexp rgx bound t)
+      (replace-match (concat ":as " new-alias))
       (save-excursion
         (while (re-search-forward (concat current-alias "/") nil t)
-          (replace-match (concat new-alias "/"))))
+          (when (not (nth 3 (syntax-ppss)))
+            (replace-match (concat new-alias "/")))))
       (save-excursion
         (while (re-search-forward (concat "#::" current-alias "{") nil t)
           (replace-match (concat "#::" new-alias "{"))))

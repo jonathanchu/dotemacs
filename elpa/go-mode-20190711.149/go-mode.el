@@ -8,7 +8,7 @@
 
 ;; Author: The go-mode Authors
 ;; Version: 1.5.0
-;; Package-Version: 20181012.329
+;; Package-Version: 20190711.149
 ;; Keywords: languages go
 ;; URL: https://github.com/dominikh/go-mode.el
 ;;
@@ -1383,7 +1383,8 @@ If IGNORE-CASE is non-nil, the comparison is case-insensitive."
         (dolist (file files)
           (unless (member file '("." ".."))
             (let ((file (concat dir "/" file)))
-              (if (file-directory-p file)
+              (if (and (file-directory-p file)
+                       (not (file-symlink-p file)))
                   (setq dirs (append (cons file
                                            (go--directory-dirs file))
                                      dirs))))))
