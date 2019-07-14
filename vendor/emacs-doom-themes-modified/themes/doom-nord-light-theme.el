@@ -156,6 +156,28 @@ determine the exact padding."
     :background modeline-bg-inactive-l
     :box (if -modeline-pad `(:line-width ,-modeline-pad :color ,modeline-bg-inactive-l)))
 
+   ;; start of customizations
+   (font-lock-comment-face
+    :foreground comments
+    :background (if doom-nord-light-comment-bg (doom-lighten bg 0.05))
+    :slant 'italic)
+
+   ;;  (font-lock-doc-face
+   ;;   :inherit 'font-lock-comment-face
+   ;;   :foreground doc-comments
+   ;;   :slant 'italic)
+
+   ((font-lock-type-face &override) :slant 'italic)
+   ((font-lock-builtin-face &override) :slant 'italic)
+
+   ((js2-function-param &override) :foreground fg :slant 'italic)
+
+   ;; Centaur tabs
+   (centaur-tabs-active-bar-face :background (if -modeline-bright modeline-bg highlight))
+   (centaur-tabs-modified-marker-selected :inherit 'centaur-tabs-selected :foreground green)
+   (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected :foreground green)
+   ;; end of customizations
+
    ;; elscreen
    (elscreen-tab-other-screen-face :background "#353a42" :foreground "#1e2022")
 
