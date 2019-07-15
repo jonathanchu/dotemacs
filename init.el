@@ -76,6 +76,9 @@
 (setq gc-cons-threshold 25000000)
 (setq gc-cons-percentage 0.6)
 
+;; turn on visual line mode
+(global-visual-line-mode t)
+
 ;;----------------------------------------------------------------------------
 ;; Packages
 ;;----------------------------------------------------------------------------
