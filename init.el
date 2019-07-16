@@ -438,7 +438,8 @@
 
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
-(load-theme 'doom-nord-light t)
+;; (load-theme 'doom-nord-light t)
+(load-theme 'doom-one-light t)
 ;; (load-theme 'doom-city-lights t)
 ;; (use-package atom-one-dark-theme
 ;;   :ensure t
