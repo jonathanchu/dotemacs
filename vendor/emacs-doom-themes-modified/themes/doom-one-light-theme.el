@@ -34,7 +34,7 @@ determine the exact padding."
 
   ;; name        default   256       16
   ((bg         '("#fafafa" nil       nil            ))
-   (bg-alt     '("#f0f0f0" nil       nil            ))
+   (bg-alt     '("#c6c7c7" nil       nil            ))
    (base0      '("#f0f0f0" "#f0f0f0" "white"        ))
    (base1      '("#e7e7e7" "#e7e7e7" "brightblack"  ))
    (base2      '("#dfdfdf" "#dfdfdf" "brightblack"  ))
@@ -112,6 +112,28 @@ determine the exact padding."
     :inherit 'font-lock-comment-face
     :foreground doc-comments
     :slant 'italic)
+
+   ;; Centaur tabs
+   (centaur-tabs-active-bar-face :background green)
+   (centaur-tabs-modified-marker-selected :inherit 'centaur-tabs-selected :foreground green)
+   (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected :foreground green)
+
+   ;; start of customizations
+   (font-lock-comment-face
+    :foreground comments
+    :background (if doom-one-light-comment-bg (doom-lighten bg 0.05))
+    :slant 'italic)
+
+   (font-lock-doc-face
+    :inherit 'font-lock-comment-face
+    :foreground doc-comments
+    :slant 'italic)
+
+   ((font-lock-type-face &override) :slant 'italic)
+   ((font-lock-builtin-face &override) :slant 'italic)
+
+   ((js2-function-param &override) :foreground fg :slant 'italic)
+   ;; end of customizations
 
    ((line-number &override) :foreground (doom-lighten base4 0.15))
    ((line-number-current-line &override) :foreground base8)
