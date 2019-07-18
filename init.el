@@ -538,6 +538,7 @@
   (setq centaur-tabs-modified-marker "*")
   (setq centaur-tabs-set-close-button nil)
   (setq centaur-tabs-gray-out-icons 'buffer)
+  (setq centaur-tabs-set-bar 'left)
   (centaur-tabs-mode t)
   (set-face-attribute 'centaur-tabs-modified-marker-selected nil :foreground (face-background 'doom-modeline-bar))
   (set-face-attribute 'centaur-tabs-modified-marker-unselected nil :foreground (face-background 'doom-modeline-bar))
