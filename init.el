@@ -535,6 +535,8 @@
   (setq centaur-tabs-set-icons t)
   (setq centaur-tabs-set-bar t)
   (setq centaur-tabs-set-modified-marker t)
+  (setq centaur-tabs-modified-marker "*")
+  (setq centaur-tabs-set-close-button nil)
   (centaur-tabs-mode t)
   (set-face-attribute 'centaur-tabs-modified-marker-selected nil :foreground (face-background 'doom-modeline-bar))
   (set-face-attribute 'centaur-tabs-modified-marker-unselected nil :foreground (face-background 'doom-modeline-bar))
