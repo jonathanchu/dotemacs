@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190716.306
+;; Package-Version: 20190717.1829
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -182,7 +182,10 @@ visible."
   :type 'int)
 
 (defcustom centaur-tabs-hide-tabs-hooks
-  '(magit-status-mode-hook magit-popup-mode-hook reb-mode-hook)
+  '(magit-status-mode-hook
+    magit-popup-mode-hook
+    reb-mode-hook
+    completion-list-mode-hook)
   "Set hooks to buffer in which it isn't desired to have tabs."
   :type '(repeat symbol)
   :group 'centaur-tabs)
@@ -214,6 +217,12 @@ background color of the `default' face otherwise."
   "When non nil, display an icon from all-the-icons alongside the tab name."
   :group 'centaur-tabs
   :type 'boolean)
+
+(defcustom centaur-tabs-gray-out-icons nil
+  "When non nil, enable gray icons for unselected buffer."
+  :group 'centaur-tabs
+  :type '(choice :tag "Gray out icons for unselected..."
+		 (const :tag "Buffer" buffer)))
 
 (defcustom centaur-tabs-set-bar nil
   "When non nil, display a bar to show the currently selected tab.
@@ -601,31 +610,33 @@ current cached copy."
   (centaur-tabs-set-template centaur-tabs-tabsets-tabset nil)
   centaur-tabs-tabsets-tabset)
 
-(defun centaur-tabs-icon (tab face)
-  "Generate all-the-icons icon for TAB using FACE's background."
+(defun centaur-tabs-icon (tab face selected)
+  "Generate all-the-icons icon for TAB using FACE's background.
+If icon gray out option enabled, gray out icon if not SELECTED."
   (if (featurep 'all-the-icons)
       (with-current-buffer (car tab)
-	(ignore-errors
-	  (let* ((icon (if (and (buffer-file-name)
-				(all-the-icons-auto-mode-match?))
-			   (all-the-icons-icon-for-file (file-name-nondirectory (buffer-file-name))
-							:v-adjust 0.01)
-			 (all-the-icons-icon-for-mode major-mode
-						      :v-adjust 0.01)))
-		 (background (face-background face))
-		 (original-props (get-text-property 0 'face icon)))
-	    (remove-text-properties 0 1 '(face nil) icon)
-	    ;; Pop :background from face so it doesn't accumulate
-	    ;; The unless part is to omit the initial case when :background hasn't been added
-	    (unless (<= (length original-props) 6)
-	      (pop original-props)
-	      (when (eq centaur-tabs-set-bar 'over)
-		(pop original-props)))
-	    (add-face-text-property 0 1 original-props nil icon)
-	    (add-face-text-property 0 1 `(:background ,background) nil icon)
-	    (when (eq centaur-tabs-set-bar 'over)
-	      (add-face-text-property 0 1 `(:overline ,(face-attribute face :overline)) nil icon))
-	    icon)))
+	(let* ((icon
+		(if (and (buffer-file-name)
+			 (all-the-icons-auto-mode-match?))
+		    (all-the-icons-icon-for-file
+		     (file-name-nondirectory (buffer-file-name))
+		     :v-adjust 0.01)
+		  (all-the-icons-icon-for-mode major-mode :v-adjust 0.01)))
+	       (background (face-background face))
+	       (inactive (if (and (not selected)
+				  (eq centaur-tabs-gray-out-icons 'buffer))
+			     'mode-line-inactive
+			   'unspecified))
+	       (overline (if (eq centaur-tabs-set-bar 'over)
+			     (face-attribute face :overline)
+			   nil)))
+	  (if (stringp icon)
+	      (progn
+		(propertize icon 'face `(:inherit ,(get-text-property 0 'face icon)
+						  :inherit ,inactive
+						  :background ,background
+						  :overline ,overline)))
+	    "")))
     ""))
 
 ;; Utility functions
@@ -700,7 +711,7 @@ Call `centaur-tabs-tab-label-function' to obtain a label for TAB."
 	 (icon (if (and centaur-tabs-set-icons
 			(not centaur-tabs--buffer-show-groups))
 		   (propertize
-		    (centaur-tabs-icon tab face)
+		    (centaur-tabs-icon tab face selected-p)
 		    'centaur-tabs-tab tab
 		    'pointer centaur-tabs-mouse-pointer
 		    'help-echo (with-current-buffer (centaur-tabs-tab-value tab)

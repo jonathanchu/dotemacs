@@ -46,6 +46,11 @@ A `swiper' that's not line-based.
 
 \(fn &optional INITIAL-INPUT)" t nil)
 
+(autoload 'swiper-isearch-backward "swiper" "\
+Like `swiper-isearch' but the first result is before the point.
+
+\(fn &optional INITIAL-INPUT)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "swiper" '("swiper-")))
 
 ;;;***
