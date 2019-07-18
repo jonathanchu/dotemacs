@@ -529,7 +529,7 @@
   :ensure t
   :config
   (setq centaur-tabs-background-color (face-background 'default))
-  (centaur-tabs-inherit-tabbar-faces)
+  ;; (centaur-tabs-inherit-tabbar-faces)
   (setq centaur-tabs-style "bar")
   (setq centaur-tabs-height 32)
   (setq centaur-tabs-set-icons t)
