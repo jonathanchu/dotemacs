@@ -2267,7 +2267,7 @@ The cdr can also be a function that returns a name to use.")
      (doom-modeline-vspc)
 
      ;; buffer name
-     (propertize "%b" 'face (if active
+     (propertize "*%b*" 'face (if active
                                 'doom-modeline-buffer-file
                               'mode-line-inactive)))))
 
