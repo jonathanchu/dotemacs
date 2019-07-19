@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190716.1748
+;; Package-Version: 20190718.1805
 ;; Version: 0.11.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.11.0"))
 ;; Keywords: convenience, matching, tools
@@ -1621,7 +1621,7 @@ done") "\n" t)))
 (defun counsel-git-log-show-commit-action (log-entry)
   "Visit the commit corresponding to LOG-ENTRY."
   (require 'magit-diff)
-  (let ((commit (substring-no-properties log-entry 0 (string-match-p "\n" log-entry))))
+  (let ((commit (substring-no-properties log-entry 0 (string-match-p "\\W" log-entry))))
     (magit-show-commit commit)))
 
 (ivy-set-actions
