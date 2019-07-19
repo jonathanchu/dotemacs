@@ -114,9 +114,9 @@ determine the exact padding."
     :slant 'italic)
 
    ;; Centaur tabs
-   (centaur-tabs-active-bar-face :background green)
-   (centaur-tabs-modified-marker-selected :inherit 'centaur-tabs-selected :foreground green)
-   (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected :foreground green)
+   (centaur-tabs-active-bar-face :background blue)
+   (centaur-tabs-modified-marker-selected :inherit 'centaur-tabs-selected :foreground blue)
+   (centaur-tabs-modified-marker-unselected :inherit 'centaur-tabs-unselected :foreground blue)
 
    ;; start of customizations
    (font-lock-comment-face
