@@ -2363,11 +2363,27 @@ or ‘py-shell--prompt-calculated-output-regexp’ are set
                             symbol-end))
 	(decorator . ,(rx line-start (* space) ?@ (any letter ?_)
                           (* (any word ?_))))
+	;; probably useless here
 	(defun . ,(rx symbol-start
                       (or "def" "class"
                           ;; Python 3.5+ PEP492
                           (and "async" (+ space) "def"))
                       symbol-end))
+	(def . ,(rx symbol-start
+		    (or "def"
+		    ;; Python 3.5+ PEP492
+		    (and "async" (+ space) "def"))
+		    symbol-end))
+	(class . ,(rx symbol-start
+                      (or "class"
+		      ;; Python 3.5+ PEP492
+		      (and "async" (+ space) "class"))
+                      symbol-end))
+	(def-or-class . ,(rx symbol-start
+			     (or "def" "class"
+				 ;; Python 3.5+ PEP492
+				 (and "async" (+ space) (or "def" "class")))
+			     symbol-end))
 	(if-name-main . ,(rx line-start "if" (+ space) "__name__"
                              (+ space) "==" (+ space)
                              (any ?' ?\") "__main__" (any ?' ?\")
@@ -7076,7 +7092,7 @@ goes wrong and syntax highlighting in the shell gets messed up."
     ;; Otherwise just add a newline.
     (py-shell-font-lock-with-font-lock-buffer
       (goto-char (point-max))
-      (newline)))
+      (newline 1)))
   output)
 
 (defun py-font-lock-post-command-hook ()
@@ -7201,9 +7217,6 @@ identifies FILE locally on the remote system.
 The returned file name can be used directly as argument of
 `process-file', `start-file-process', or `shell-command'."
     (or (file-remote-p file 'localname) file)))
-
-
-
 
 ;; python-components-map
 
@@ -8070,7 +8083,7 @@ When indent is set back manually, this is honoured in following lines."
 	  (when (and (or (eq 10 (char-after))(eobp))(looking-back "^[ \t]*" (line-beginning-position)))
 	    (current-column)))
 	 erg)
-    (newline)
+    (newline 1)
     (py--delete-trailing-whitespace orig)
     (setq erg
 	  (cond (this-dedent
@@ -8090,7 +8103,7 @@ Returns column."
   (interactive "*")
   (let ((cui (current-indentation))
         erg)
-    (newline)
+    (newline 1)
     (when (< 0 cui)
       (setq erg (- (py-compute-indentation) py-indent-offset))
       (indent-to-column erg))
@@ -11555,25 +11568,26 @@ Returns position where output starts."
       (py-send-string cmd proc)
       (with-current-buffer buffer
 	(when (or py-return-result-p py-store-result-p)
-	  (setq erg (py--postprocess-comint buffer origline))
+	  (setq erg (py--postprocess-comint buffer origline nil filename))
 	  (if py-error
 	      (setq py-error (prin1-to-string py-error))
 	    erg))))))
 
-(defun py--execute-buffer-finally (strg which-shell proc procbuf origline)
-  (let* ((temp (make-temp-name
-                (concat (replace-regexp-in-string py-separator-char "-" (replace-regexp-in-string (concat "^" py-separator-char) "" (replace-regexp-in-string ":" "-" (if (stringp which-shell) which-shell (prin1-to-string which-shell))))) "-")))
-         (tempbuf (get-buffer-create temp))
-	 erg)
-    (setq py-tempfile (concat (expand-file-name py-temp-directory) py-separator-char (replace-regexp-in-string py-separator-char "-" temp) ".py"))
-    (with-current-buffer tempbuf
-      (insert strg)
-      (write-file py-tempfile))
-    (unwind-protect
-	(setq erg (py--execute-file-base proc py-tempfile nil procbuf origline)))
-    erg))
+(defun py--execute-buffer-finally (strg which-shell proc procbuf origline filename)
+  (if filename
+      (unwind-protect
+	  (py--execute-file-base proc filename nil procbuf origline))
+    (let* ((temp (make-temp-name
+		  (concat (replace-regexp-in-string py-separator-char "-" (replace-regexp-in-string (concat "^" py-separator-char) "" (replace-regexp-in-string ":" "-" (if (stringp which-shell) which-shell (prin1-to-string which-shell))))) "-")))
+	   (tempbuf (get-buffer-create temp)))
+      (setq py-tempfile (concat (expand-file-name py-temp-directory) py-separator-char (replace-regexp-in-string py-separator-char "-" temp) ".py"))
+      (with-current-buffer tempbuf
+	(insert strg)
+	(write-file py-tempfile))
+      (unwind-protect
+	  (py--execute-file-base proc py-tempfile nil procbuf origline)))))
 
-(defun py--execute-base-intern (strg filename proc file wholebuf buffer origline execute-directory start end which-shell &optional fast return)
+(defun py--execute-base-intern (strg filename proc file wholebuf buffer origline execute-directory start end which-shell &optional fast result)
   "Select the handler according to:
 
 STRG FILENAME PROC FILE WHOLEBUF
@@ -11584,7 +11598,7 @@ Optional FAST RETURN"
     (setq py-error nil)
 
     ;; (message "(current-buffer) %s" (current-buffer))
-    (cond (fast (py--send-to-fast-process strg proc buffer return))
+    (cond (fast (py--send-to-fast-process strg proc buffer result))
 	  ;; enforce proceeding as python-mode.el v5
 	  (python-mode-v5-behavior-p
 	   (py-execute-python-mode-v5 start end py-exception-buffer origline))
@@ -11594,10 +11608,10 @@ Optional FAST RETURN"
 	   (py--execute-file-base proc filename nil buffer origline))
 	  (t
 	   ;; (message "(current-buffer) %s" (current-buffer))
-	   (py--execute-buffer-finally strg which-shell proc buffer origline)
+	   (py--execute-buffer-finally strg which-shell proc buffer origline filename)
 	   (py--delete-temp-file py-tempfile)))))
 
-(defun py--execute-base (&optional start end shell filename proc file wholebuf fast dedicated split switch return)
+(defun py--execute-base (&optional start end shell filename proc file wholebuf fast dedicated split switch result)
   "Update optionial variables START END SHELL FILENAME PROC FILE WHOLEBUF FAST DEDICATED SPLIT SWITCH RETURN."
   (setq py-error nil)
   (let* ((exception-buffer (current-buffer))
@@ -11644,13 +11658,13 @@ Optional FAST RETURN"
 		       (get-buffer-process (py-shell nil nil dedicated shell buffer fast exception-buffer split switch))
 		     (sit-for 0.1))))
 	 (fast (or fast py-fast-process-p))
-	 (return (or return py-return-result-p py-store-result-p)))
+	 (result (or result py-return-result-p py-store-result-p)))
     (setq py-buffer-name buffer)
-    (py--execute-base-intern strg filename proc file wholebuf buffer origline execute-directory start end shell fast return)
+    (py--execute-base-intern strg filename proc file wholebuf buffer origline execute-directory start end shell fast result)
     (when (or split py-split-window-on-execute py-switch-buffers-on-execute-p)
       (py--shell-manage-windows buffer exception-buffer split switch))))
 
-(defun py--send-to-fast-process (strg proc output-buffer return)
+(defun py--send-to-fast-process (strg proc output-buffer result)
   "Called inside of ‘py--execute-base-intern’.
 
 Optional STRG PROC OUTPUT-BUFFER RETURN"
@@ -11661,14 +11675,14 @@ Optional STRG PROC OUTPUT-BUFFER RETURN"
       ;; (erase-buffer)
       (py-fast-send-string strg
 			   proc
-			   output-buffer return))))
+			   output-buffer result))))
 
 (defun py--delete-temp-file (tempfile &optional tempbuf)
   "After ‘py--execute-buffer-finally’ returned delete TEMPFILE &optional TEMPBUF."
   (sit-for py--delete-temp-file-delay t)
   (py--close-execution tempbuf tempfile))
 
-(defun py--fetch-error (&optional origline)
+(defun py--fetch-error (&optional origline filename)
   "Highlight exceptions found in BUF.
 
 If an exception occurred return error-string, otherwise return nil.
@@ -11677,34 +11691,36 @@ BUF must exist.
 Indicate LINE if code wasn't run from a file, thus remember ORIGLINE of source buffer"
   (let* (erg)
     (when py-debug-p (switch-to-buffer (current-buffer)))
-    (goto-char (point-min))
-    (when (re-search-forward "File \"\\(.+\\)\", line \\([0-9]+\\)\\(.*\\)$" nil t)
-      ;; (while (re-search-forward "File \"\\(.+\\)\", line \\([0-9]+\\)\\(.*\\)$" nil t))
-      (setq erg (copy-marker (point)))
-      ;; Replace hints to temp-file by orig-file
-      (delete-region (progn (beginning-of-line)
-			    (save-match-data
-			      (when (looking-at
-				     ;; all prompt-regexp known
-				     py-fast-filter-re)
-				(goto-char (match-end 0))))
+    (if filename
+	(setq py-error (buffer-substring-no-properties (point) (point-max)))
+      (goto-char (point-min))
+      (when (re-search-forward "File \"\\(.+\\)\", line \\([0-9]+\\)\\(.*\\)$" nil t)
+	;; (while (re-search-forward "File \"\\(.+\\)\", line \\([0-9]+\\)\\(.*\\)$" nil t))
+	(setq erg (copy-marker (point)))
+	;; Replace hints to temp-file by orig-file
+	(delete-region (progn (beginning-of-line)
+			      (save-match-data
+				(when (looking-at
+				       ;; all prompt-regexp known
+				       py-fast-filter-re)
+				  (goto-char (match-end 0))))
 
-			    (skip-chars-forward " \t\r\n\f")(point)) (line-end-position))
-      (insert (concat "    File " (buffer-name py-exception-buffer) ", line "
-		      (prin1-to-string origline))))
-    (when erg
-      (goto-char erg)
-      (save-match-data
-	(and (not (py--buffer-filename-remote-maybe
-		   (or
-		    (get-buffer py-exception-buffer)
-		    (get-buffer (file-name-nondirectory py-exception-buffer)))))
-	     (string-match "^[ \t]*File" (buffer-substring-no-properties (point) (line-end-position)))
-	     (looking-at "[ \t]*File")
-	     (replace-match " Buffer")))
-      (setq py-error (buffer-substring-no-properties (point-min) (point-max)))
-      (sit-for 0.1 t)
-      py-error)))
+			      (skip-chars-forward " \t\r\n\f") (point)) (line-end-position))
+	(insert (concat "    File " (buffer-name py-exception-buffer) ", line "
+			(prin1-to-string origline))))
+      (when erg
+	(goto-char erg)
+	(save-match-data
+	  (and (not (py--buffer-filename-remote-maybe
+		     (or
+		      (get-buffer py-exception-buffer)
+		      (get-buffer (file-name-nondirectory py-exception-buffer)))))
+	       (string-match "^[ \t]*File" (buffer-substring-no-properties (point) (line-end-position)))
+	       (looking-at "[ \t]*File")
+	       (replace-match " Buffer")))
+	(setq py-error (buffer-substring-no-properties (point-min) (point-max)))
+	(sit-for 0.1 t)
+	py-error))))
 
 (defun py--fetch-result (&optional orig fast)
   "Return ‘buffer-substring’ from ORIG to ‘point-max’."
@@ -11713,10 +11729,10 @@ Indicate LINE if code wasn't run from a file, thus remember ORIGLINE of source b
     (cond ((derived-mode-p 'comint-mode)
 	   (ignore-errors
 	     (string-trim (replace-regexp-in-string
-			 (format "[ \\n]*%s[ \\n]*" py-fast-filter-re)
-			 ""
-			 ;; (buffer-substring-no-properties (car-safe comint-last-prompt) (cdr-safe comint-last-prompt)))))
-	  		 (buffer-substring-no-properties (car-safe comint-last-prompt) (progn (ignore-errors (goto-char (car-safe comint-last-prompt)))(re-search-backward py-fast-filter-re nil t 1)))))))
+			   (format "[ \\n]*%s[ \\n]*" py-fast-filter-re)
+			   ""
+			   ;; (buffer-substring-no-properties (car-safe comint-last-prompt) (cdr-safe comint-last-prompt)))))
+			   (buffer-substring-no-properties (car-safe comint-last-prompt) (progn (ignore-errors (goto-char (car-safe comint-last-prompt)))(re-search-backward py-fast-filter-re nil t 1)))))))
 	  (fast (replace-regexp-in-string
 		 (format "[ \n]*%s[ \n]*" py-fast-filter-re)
 		 ""
@@ -11726,25 +11742,27 @@ Indicate LINE if code wasn't run from a file, thus remember ORIGLINE of source b
 	      ""
 	      (buffer-substring-no-properties orig (point-max)))))))
 
-(defun py--postprocess-comint (output-buffer origline &optional orig)
+(defun py--postprocess-comint (output-buffer origline &optional orig filename)
   "Provide return values, check result for error, manage windows.
 
 According to OUTPUT-BUFFER ORIGLINE ORIG"
   ;; py--fast-send-string doesn't set origline
   (when (or py-return-result-p py-store-result-p)
     (with-current-buffer output-buffer
-      ;; (switch-to-buffer (current-buffer))
+      (when py-debug-p (switch-to-buffer (current-buffer)))
       (sit-for 0.1 t)
       (and (setq py-result (py--fetch-result orig))
 	   (string-match "\n$" py-result)
 	   (setq py-result (replace-regexp-in-string py-fast-filter-re "" (substring py-result 0 (match-beginning 0)))))
       (if (and py-result (not (string= "" py-result)))
 	  (if (string-match "^Traceback" py-result)
-	      (progn
-		(with-temp-buffer
-		  (insert py-result)
-		  (sit-for 0.1 t)
-		  (setq py-error (py--fetch-error origline))))
+	      (if filename
+		  (setq py-error py-result)
+		(progn
+		  (with-temp-buffer
+		    (insert py-result)
+		    (sit-for 0.1 t)
+		    (setq py-error (py--fetch-error origline filename)))))
 	    (when py-store-result-p
 	      (kill-new py-result))
 	    py-result)
@@ -11901,7 +11919,7 @@ See also ‘py-execute-region’."
            (py--insert-execute-directory directory orig done))
           (t (forward-line 1)
              (unless  ;; (empty-line-p)
-                 (eq 9 (char-after)) (newline))
+                 (eq 9 (char-after)) (newline 1))
              (insert (concat "import os; os.chdir(\"" directory "\")\n"))))))
 
 (defun py--fix-if-name-main-permission (strg)
@@ -11959,7 +11977,7 @@ Avoid empty lines at the beginning."
 	(py-shift-left py-indent-offset))
       (goto-char (point-max))
       (unless (empty-line-p)
-	(newline))
+	(newline 1))
       (buffer-substring-no-properties 1 (point-max)))))
 
 (defun py-fetch-py-master-file ()
@@ -14044,7 +14062,7 @@ With \\[universal argument] just indent.
   (interactive "*p")
   (py-dedent arg)
   (if (eobp)
-      (newline)
+      (newline 1)
     (forward-line 1))
   (end-of-line))
 
@@ -21588,7 +21606,7 @@ See lp:1066489 "
   (goto-char thisend)
   (skip-chars-backward "\"'\n ")
   (delete-region (point) (progn (skip-chars-forward " \t\r\n\f") (point)))
-  (unless (eq (char-after) ?\n)
+  (unless (eq (char-after) 10)
     (and
      (cdr delimiters-style)
      (or (newline (cdr delimiters-style)) t)))
@@ -21629,7 +21647,7 @@ See lp:1066489 "
       (skip-chars-forward " \t\r\n\f")
       (forward-line 1)
       (beginning-of-line)
-      (unless (empty-line-p) (newline)))
+      (unless (empty-line-p) (newline 1)))
     (py--fill-fix-end thisend orig delimiters-style)))
 
 (defun py--fill-docstring-last-line (thisend beg end multi-line-p)
@@ -21650,20 +21668,21 @@ See lp:1066489 "
   (let (multi-line-p)
     (fill-region beg (line-end-position))
     (forward-line 1)
-    (fill-region (line-beginning-position) end)
-    (save-restriction
-      (widen)
-      (setq multi-line-p (string-match "\n" (buffer-substring-no-properties thisbeg thisend))))
-    (when multi-line-p
-      ;; adjust the region to fill according to style
-      (goto-char beg)
-      (skip-chars-forward "\"'")
-      ;; style might be nil
-      (when style
-	(unless (or (eq style 'pep-257-nn)(eq style 'pep-257)(eq (char-after) ?\n))
-	  (newline-and-indent)
-	  ;; if TQS is at a single line, re-fill remaining line
-	  (fill-region (point) end))))))
+    (fill-region (line-beginning-position) end)))
+
+;; (save-restriction
+;;       (widen)
+;;       (setq multi-line-p (string-match "\n" (buffer-substring-no-properties thisbeg thisend))))
+;;     (when multi-line-p
+;;       ;; adjust the region to fill according to style
+;;       (goto-char beg)
+;;       (skip-chars-forward "\"'")
+;;       ;; style might be nil
+;;       (when style
+;; 	(unless (or (eq style 'pep-257-nn)(eq style 'pep-257)(eq (char-after) ?\n))
+;; 	  (newline-and-indent)
+;; 	  ;; if TQS is at a single line, re-fill remaining line
+;; 	  (fill-region (point) end))))))
 
 (defun py--fill-docstring (justify style docstring orig py-current-indent)
   ;; Delete spaces after/before string fence
@@ -21681,20 +21700,16 @@ See lp:1066489 "
          (beg (copy-marker (if (< thisbeg parabeg) parabeg thisbeg)))
          (end (copy-marker (if (< thisend paraend) thisend paraend)))
 	 (multi-line-p (string-match "\n" (buffer-substring-no-properties thisbeg thisend)))
-         first-line-p)
-    ;;    (narrow-to-region beg end)
-    (goto-char beg)
-    (setq first-line-p (member (char-after) (list ?\" ?\' ?u ?U ?r ?R)))
-    (cond ((string-match (concat "^" py-labelled-re) (buffer-substring-no-properties beg end))
-           (py-fill-labelled-string beg end))
-          (first-line-p
-           (py--fill-docstring-first-line beg end thisbeg thisend style))
-          ((save-excursion (goto-char end)
-			   (or (member (char-after) (list ?\" ?\'))
-			       (member (char-before) (list ?\" ?\'))))
-           (py--fill-docstring-last-line thisend beg end multi-line-p))
-          (t ;; (narrow-to-region beg end)
-	     (fill-region beg end justify)))
+	 (first-line-p (progn (goto-char beg) (member (char-after) (list ?\" ?\' ?u ?U ?r ?R)))))
+    (when (string-match (concat "^" py-labelled-re) (buffer-substring-no-properties beg end))
+      (py-fill-labelled-string beg end))
+    (when first-line-p
+      (py--fill-docstring-first-line beg end thisbeg thisend style))
+    (when (save-excursion (goto-char end)
+			  (or (member (char-after) (list ?\" ?\'))
+			      (member (char-before) (list ?\" ?\'))))
+      (py--fill-docstring-last-line thisend beg end multi-line-p))
+    (fill-region beg end justify)
     (py--fill-docstring-base thisbeg thisend style multi-line-p beg end py-current-indent orig)))
 
 (defun py-fill-string (&optional justify style docstring)
@@ -21709,30 +21724,42 @@ Fill according to `py-docstring-style' "
 	 (pps (parse-partial-sexp (point-min) (point)))
 	 (indent (save-excursion (and (nth 3 pps) (goto-char (nth 8 pps)) (current-indentation))))
 	 ;; fill-paragraph sets orig
-	 (orig (copy-marker (point)))
+	 (orig (point))
 	 (docstring (if (and docstring (not (number-or-marker-p docstring)))
 			(py--in-or-behind-or-before-a-docstring)
 		      docstring))
 	 (beg (and (nth 3 pps) (nth 8 pps)))
-	 end)
+	 end tqs)
     (when beg
       (if docstring
 	  (py--fill-docstring justify style docstring orig indent)
 	(save-excursion
 	  (setq end
 		(progn (goto-char beg)
-		       ;; (setq tqs (looking-at "\"\"\"\|'''"))
+		       (setq tqs (looking-at "\"\"\"\\|'''"))
 		       (forward-sexp) (point))))
 	(save-restriction
-	  (narrow-to-region beg end)
-	  (py-fill-paragraph justify pps beg end))))))
+	  (if (not tqs)
+	      (if (py-preceding-line-backslashed-p)
+		  (progn
+		    (narrow-to-region (line-beginning-position) end)
+		    (fill-region (line-beginning-position) end)
+		    (when (< 1 (py-count-lines))
+		      (py--continue-lines-region (point-min) end)))
+		(narrow-to-region beg end)
+		(fill-region beg end justify)
+		(when
+		    ;; counting in narrowed buffer
+		    (< 1 (py-count-lines))
+		  (py--continue-lines-region beg end)))
+	    (fill-region beg end justify)))))))
 
 (defun py--continue-lines-region (beg end)
   (save-excursion
     (goto-char beg)
     (while (< (line-end-position) end)
       (end-of-line)
-      (unless (py-escaped-p) (insert-and-inherit 32)(insert-and-inherit 92))
+      (unless (py-escaped-p) (insert-and-inherit 32) (insert-and-inherit 92))
       (ignore-errors (forward-line 1)))))
 
 (defun py-fill-paragraph (&optional justify pps beg end tqs)
@@ -21742,7 +21769,7 @@ Fill according to `py-docstring-style' "
       (window-configuration-to-register py-windows-config-register)
       (let* ((tqs tqs)
 	     (pps (or pps (parse-partial-sexp (point-min) (point))))
-	     (docstring (unless (not py-docstring-style)(py--in-or-behind-or-before-a-docstring)))
+	     (docstring (unless (not py-docstring-style) (py--in-or-behind-or-before-a-docstring)))
 	     (fill-column py-comment-fill-column)
 	     (in-string (nth 3 pps)))
 	(cond ((or (nth 4 pps)
@@ -21750,7 +21777,9 @@ Fill according to `py-docstring-style' "
 	       (py-fill-comment))
 	      (docstring
 	       (setq fill-column py-docstring-fill-column)
-	       (py-fill-string justify py-docstring-style docstring))
+	       (py--fill-docstring justify py-docstring-style docstring (point)
+				   ;; current indentation
+				   (save-excursion (and (nth 3 pps) (goto-char (nth 8 pps)) (current-indentation)))))
 	      (t
 	       (let* ((beg (or beg (save-excursion
 				     (if (looking-at paragraph-start)
@@ -21771,8 +21800,7 @@ Fill according to `py-docstring-style' "
 				    (progn
 				      (forward-paragraph)
 				      (when (looking-at paragraph-separate)
-					(point)))
-				    ))))))
+					(point)))))))))
 		 (and beg end (fill-region beg end))
 		 (when (and in-string (not tqs))
 		   (py--continue-lines-region beg end))))))
@@ -22836,7 +22864,7 @@ It is not in interactive, i.e. comint-mode, as its bookkeepings seem linked to t
   (or (string-match "\n$" strg)
       (process-send-string proc "\n")))
 
-(defun py-fast-send-string (strg proc output-buffer &optional return)
+(defun py-fast-send-string (strg proc output-buffer &optional result)
   ;; (process-send-string proc "\n")
   (with-current-buffer output-buffer
     ;; (erase-buffer)
@@ -22848,7 +22876,7 @@ It is not in interactive, i.e. comint-mode, as its bookkeepings seem linked to t
 				proc)
 
     ;; (accept-process-output proc 0.1)
-    (when return
+    (when result
       (sit-for 0.1 t)
       (setq py-result (py--filter-result (py--fetch-result))))
     py-result))
@@ -23437,11 +23465,12 @@ Returns position reached if successful"
   (unless (bobp)
     (goto-char (point-min))))
 
-(defmacro py--execute-prepare (form &optional shell dedicated switch beg end file fast proc wholebuf split buffer)
+(defmacro py--execute-prepare (form &optional shell dedicated switch beg end file fast proc wholebuf split result)
   "Used by python-components-extended-executes ."
   (save-excursion
     `(let* ((form ,(prin1-to-string form))
            (origline (py-count-lines))
+	   (py-exception-buffer (current-buffer)) 
            (beg (unless ,file
                   (prog1
                       (or ,beg (funcall (intern-soft (concat "py--beginning-of-" form "-p")))
@@ -23458,7 +23487,7 @@ Returns position reached if successful"
             (if (file-readable-p filename)
                 (py--execute-file-base nil filename nil nil origline)
               (message "%s not readable. %s" ,file "Do you have write permissions?")))
-        (py--execute-base beg end ,shell filename ,proc ,file ,wholebuf ,fast ,dedicated ,split ,switch ,buffer)))))
+        (py--execute-base beg end ,shell filename ,proc ,file ,wholebuf ,fast ,dedicated ,split ,switch ,result)))))
 
 (defun py-load-skeletons ()
   "Load skeletons from extensions. "
@@ -25473,7 +25502,7 @@ Use current region unless optional args BEG END are delivered."
       (beginning-of-line)
       (insert py-section-start)
       (goto-char end)
-      (unless (empty-line-p) (newline))
+      (unless (empty-line-p) (newline 1))
       (insert py-section-end))))
 
 (defun py-execute-section-prepare (&optional shell)
@@ -27895,6 +27924,7 @@ See available customizations listed in files variables-python-mode at directory 
   (set (make-local-variable 'open-paren-in-column-0-is-defun-start) nil)
   (set (make-local-variable 'add-log-current-defun-function) 'py-current-defun)
   (set (make-local-variable 'fill-paragraph-function) 'py-fill-paragraph)
+  (set (make-local-variable 'normal-auto-fill-function) 'py-fill-string)
   (set (make-local-variable 'require-final-newline) mode-require-final-newline)
   (set (make-local-variable 'tab-width) py-indent-offset)
   (set (make-local-variable 'eldoc-documentation-function)

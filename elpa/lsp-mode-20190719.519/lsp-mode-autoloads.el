@@ -41,6 +41,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "lsp-erlang" "lsp-erlang.el" (0 0 0 0))
+;;; Generated autoloads from lsp-erlang.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-erlang" '("lsp-erlang-server-")))
+
+;;;***
+
 ;;;### (autoloads nil "lsp-fsharp" "lsp-fsharp.el" (0 0 0 0))
 ;;; Generated autoloads from lsp-fsharp.el
 

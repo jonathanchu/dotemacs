@@ -4,7 +4,7 @@
 
 ;; Author: Bozhidar Batsov
 ;; URL: https://github.com/bbatsov/helm-projectile
-;; Package-Version: 20190713.546
+;; Package-Version: 20190719.2136
 ;; Created: 2011-31-07
 ;; Keywords: project, convenience
 ;; Version: 0.14.0
@@ -947,8 +947,9 @@ DIR is the project root, if not set then current directory is used"
                                      (append grep-find-ignored-files grep-find-ignored-directories (cadr (projectile-parse-dirconfig-file)))
                                      " "))
                  (helm-ag-base-command (concat helm-ag-base-command " " ignored " " options))
-                 (current-prefix-arg nil))
-            (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file))))
+                 (current-prefix-arg nil)
+                 (keep-paths (projectile-normalise-paths (car (projectile-parse-dirconfig-file)))))
+            (helm-do-ag (projectile-project-root) (append (list (projectile-project-root)) keep-paths (projectile-paths-to-ensure))))
         (error "You're not in a project"))
     (when (yes-or-no-p "`helm-ag' is not installed. Install? ")
       (condition-case nil
