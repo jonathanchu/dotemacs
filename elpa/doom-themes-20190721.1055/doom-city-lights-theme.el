@@ -171,7 +171,7 @@ determine the exact padding."
 
 
   ;; --- extra variables ---------------------
-  ;; ()
+  ()
   )
 
 ;;; doom-city-lights-theme.el ends here

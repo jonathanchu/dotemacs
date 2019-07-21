@@ -183,7 +183,7 @@ determine the exact padding."
 
 
   ;; --- extra variables ---------------------
-  ;; ()
+  ()
   )
 
 ;;; doom-nord-light-theme.el ends here

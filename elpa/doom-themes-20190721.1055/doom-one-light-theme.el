@@ -191,7 +191,7 @@ determine the exact padding."
    )
 
   ;; --- extra variables ---------------------
-  ;; ()
+  ()
   )
 
 ;;; doom-one-light-theme.el ends here

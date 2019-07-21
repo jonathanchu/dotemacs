@@ -206,7 +206,7 @@ determine the exact padding."
    )
 
   ;; --- extra variables ---------------------
-  ;; ()
+  ()
   )
 
 ;;; doom-dracula-theme.el ends here
