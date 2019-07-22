@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190721.440
+;; Package-Version: 20190722.1444
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -2042,7 +2042,8 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
 (defun centaur-tabs-group-buffer-groups ()
   "Use centaur-tabs's own buffer grouping function."
   (interactive)
-  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups))
+  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups)
+  (centaur-tabs-display-update))
 
 ;; Projectile integration. Taken from tabbar-ruler
 (defvar centaur-tabs-projectile-buffer-group-calc nil
@@ -2077,7 +2078,8 @@ Return only one group for each buffer."
 (defun centaur-tabs-group-by-projectile-project()
   "Group by projectile project."
   (interactive)
-  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-projectile-buffer-groups))
+  (setq centaur-tabs-buffer-groups-function 'centaur-tabs-projectile-buffer-groups)
+  (centaur-tabs-display-update))
 
 ;; Show groups instead of tabs
 (defun centaur-tabs-toggle-groups ()
@@ -2126,6 +2128,7 @@ Return only one group for each buffer."
      (string-prefix-p "*lsp" name)
      (string-prefix-p "*company" name)
      (string-prefix-p "*Flycheck" name)
+     (string-prefix-p "*tramp" name)
 
      ;; Is not magit buffer.
      (and (string-prefix-p "magit" name)

@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "swiper" "20190722.1955" "Isearch with an overview. Oh, man!" '((emacs "24.1") (ivy "0.12.0")) :stars '(#("1168" 0 4 (font-lock-face paradox-star-face))) :commit "582c9d4bf118f58e424ada5f4c69da7128757564" :keywords '("matching") :authors '(("Oleh Krehel" . "ohwoeowho@gmail.com")) :maintainer '("Oleh Krehel" . "ohwoeowho@gmail.com") :url "https://github.com/abo-abo/swiper")
