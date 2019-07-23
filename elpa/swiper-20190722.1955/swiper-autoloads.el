@@ -55,6 +55,10 @@ Like `swiper-isearch' but the first result is before the point.
 
 ;;;***
 
+;;;### (autoloads nil nil ("swiper-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

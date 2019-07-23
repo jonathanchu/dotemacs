@@ -80,6 +80,10 @@ Display a list of current buffer groups using Counsel.
 
 ;;;***
 
+;;;### (autoloads nil nil ("centaur-tabs-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
