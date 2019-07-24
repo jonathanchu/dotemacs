@@ -2473,7 +2473,9 @@ in that particular folder."
                               (or (lsp--suggest-project-root) default-directory) nil t)))
   (cl-pushnew (f-canonical project-root)
               (lsp-session-folders (lsp-session)) :test 'equal)
-  (lsp--persist-session (lsp-session)))
+  (lsp--persist-session (lsp-session))
+
+  (run-hook-with-args 'lsp-workspace-folders-changed-hook (list project-root) nil))
 
 (defun lsp-workspace-folders-remove (project-root)
   "Remove PROJECT-ROOT from the list of workspace folders."
@@ -2695,7 +2697,14 @@ interface Range {
   (if-let (document-changes (gethash "documentChanges" edit))
       (progn
         (lsp--check-document-changes-version document-changes)
-        (seq-do #'lsp--apply-text-document-edit (seq-reverse document-changes)))
+        (->> document-changes
+             (seq-filter (lambda (edit)
+                           (string= (gethash "kind" edit) "edit")))
+             (seq-do #'lsp--apply-text-document-edit))
+        (->> document-changes
+             (seq-filter (lambda (edit)
+                           (not (string= (gethash "kind" edit) "edit"))))
+             (seq-do #'lsp--apply-text-document-edit)))
     (when-let (changes (gethash "changes" edit))
       (maphash
        (lambda (uri text-edits)

@@ -157,7 +157,10 @@ prefix) if `which-key-use-C-h-commands' is non nil.
 Show the top-level bindings in KEYMAP using which-key. KEYMAP
 is selected interactively from all available keymaps.
 
-\(fn KEYMAP)" t nil)
+If NO-PAGING is non-nil, which-key will not intercept subsequent
+keypresses for the paging functionality.
+
+\(fn KEYMAP &optional NO-PAGING)" t nil)
 
 (autoload 'which-key-show-full-keymap "which-key" "\
 Show all bindings in KEYMAP using which-key. KEYMAP is

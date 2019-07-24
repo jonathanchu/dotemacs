@@ -6,7 +6,7 @@
 ;;          Noam Postavsky <npostavs@gmail.com>
 ;; Maintainer: Noam Postavsky <npostavs@gmail.com>
 ;; Version: 0.13.0
-;; Package-Version: 20190630.1720
+;; Package-Version: 20190723.2205
 ;; X-URL: http://github.com/joaotavora/yasnippet
 ;; Keywords: convenience, emulation
 ;; URL: http://github.com/joaotavora/yasnippet
@@ -3040,8 +3040,13 @@ snippet field.  The arguments are the same as `completing-read'.
 
 (defun yas--auto-next ()
   "Helper for `yas-auto-next'."
-  (remove-hook 'post-command-hook #'yas--auto-next t)
-  (yas-next-field))
+  (cl-loop
+   do (progn (remove-hook 'post-command-hook #'yas--auto-next t)
+             (yas-next-field))
+   ;; The transform in the next field may have requested auto-next as
+   ;; well.  Call it ourselves, since the command loop itself won't
+   ;; recheck the value of post-command-hook while running it.
+   while (memq #'yas--auto-next post-command-hook)))
 
 (defmacro yas-auto-next (&rest body)
   "Automatically advance to next field after eval'ing BODY."
