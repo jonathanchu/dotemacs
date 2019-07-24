@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190720.1653
+;; Package-Version: 20190723.1002
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools
@@ -163,6 +163,9 @@ The time is measured in seconds.")
 This plist maps commands to a plist mapping their exit codes to
 descriptions.")
 
+(defvar counsel--async-last-error-string nil
+  "When the process returned non-0, store the output here.")
+
 (defun counsel-set-async-exit-code (cmd number str)
   "For CMD, associate NUMBER exit code with STR."
   (let ((plist (plist-get counsel--async-exit-code-plist cmd)))
@@ -186,6 +189,9 @@ descriptions.")
 (defvar counsel-async-ignore-re-alist nil
   "An alist of regexp matching candidates to ignore in `counsel--async-filter'.")
 
+(defvar counsel--async-last-command nil
+  "Store the last command ran by `counsel--async-command'.")
+
 (defun counsel--async-command (cmd &optional sentinel filter name)
   "Start and return new counsel process by calling CMD.
 CMD can be either a shell command as a string, or a list of the
@@ -199,6 +205,7 @@ respectively."
   (setq name (or name " *counsel*"))
   (when (get-buffer name)
     (kill-buffer name))
+  (setq counsel--async-last-command cmd)
   (let* ((buf (get-buffer-create name))
          (proc (if (listp cmd)
                    (apply #'start-file-process name buf cmd)
@@ -244,6 +251,8 @@ respectively."
           (if ivy--all-candidates
               (ivy--exhibit)
             (ivy--insert-minibuffer "")))
+      (setq counsel--async-last-error-string
+            (with-current-buffer (process-buffer process) (buffer-string)))
       (setq ivy--all-candidates
             (let ((status (process-exit-status process))
                   (plist (plist-get counsel--async-exit-code-plist

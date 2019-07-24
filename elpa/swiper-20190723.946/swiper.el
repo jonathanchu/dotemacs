@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190722.1955
+;; Package-Version: 20190723.946
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.12.0"))
 ;; Keywords: matching
@@ -1339,6 +1339,20 @@ See `ivy-format-functions-alist' for further information."
       cands)
      0)))
 
+(defun swiper--isearch-filter-ignore-order (re-full cands)
+  (let (filtered-cands)
+    (dolist (re-cons re-full)
+      (save-excursion
+        (dolist (cand cands)
+          (goto-char cand)
+          (beginning-of-line)
+          (unless (if (re-search-forward (car re-cons) (line-end-position) t)
+                      (not (cdr re-cons))
+                    (cdr re-cons))
+            (push cand filtered-cands))))
+      (setq cands (nreverse filtered-cands))
+      (setq filtered-cands nil))))
+
 (defun swiper--isearch-function (str)
   (let ((re-full (funcall ivy--regex-function str)))
     (unless (equal re-full "")
@@ -1349,18 +1363,7 @@ See `ivy-format-functions-alist' for further information."
                 (regexp-opt (delq nil (mapcar (lambda (x) (and (cdr x) (car x))) re-full)))))
              (cands (swiper--isearch-function-1 re swiper--isearch-backward)))
         (when (consp re-full)
-          (let (filtered-cands)
-            (dolist (re-cons re-full)
-              (save-excursion
-                (dolist (cand cands)
-                  (goto-char cand)
-                  (beginning-of-line)
-                  (unless (if (re-search-forward (car re-cons) (line-end-position) t)
-                              (not (cdr re-cons))
-                            (cdr re-cons))
-                    (push cand filtered-cands))))
-              (setq cands (nreverse filtered-cands))
-              (setq filtered-cands nil))))
+          (setq cands (swiper--isearch-filter-ignore-order re-full cands)))
         (setq ivy--old-re re)
         (ivy-set-index (swiper--isearch-next-item re cands))
         (setq ivy--old-cands cands)))))
@@ -1391,11 +1394,14 @@ that we search only for one character."
 
 (defun swiper-isearch-action (x)
   "Move to X for `swiper-isearch'."
-  (if (or (numberp x)
-          (and (> (length x) 0)
-               (setq x (get-text-property 0 'point x))))
+  (if (numberp x)
       (with-ivy-window
         (goto-char x)
+        (when (and (or (eq this-command 'ivy-previous-line-or-history)
+                       (and (eq this-command 'ivy-done)
+                            (eq last-command 'ivy-previous-line-or-history)))
+                   (looking-back ivy--old-re (line-beginning-position)))
+          (goto-char (match-beginning 0)))
         (isearch-range-invisible (point) (1+ (point)))
         (when swiper-action-recenter
           (recenter))
