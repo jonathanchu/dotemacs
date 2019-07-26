@@ -110,6 +110,14 @@
 
 ;;;***
 
+;;;### (autoloads nil "doom-solarized-dark-theme" "doom-solarized-dark-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from doom-solarized-dark-theme.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-solarized-dark-theme" '("doom-solarized-dark")))
+
+;;;***
+
 ;;;### (autoloads nil "doom-solarized-light-theme" "doom-solarized-light-theme.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from doom-solarized-light-theme.el

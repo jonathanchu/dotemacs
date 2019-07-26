@@ -5,7 +5,7 @@
 ;; Filename: centaur-tabs.el
 ;; Description: Provide an out of box configuration to use highly customizable tabs.
 ;; URL: https://github.com/ema2159/centaur-tabs
-;; Package-Version: 20190722.1444
+;; Package-Version: 20190725.2148
 ;; Author: Emmanuel Bustos <ema2159@gmail.com>
 ;; Maintainer: Emmanuel Bustos <ema2159@gmail.com>
 ;; Created: 2019-21-19 22:14:34
@@ -1984,6 +1984,11 @@ not the actual logical index position of the current group."
 
 (dolist (hook centaur-tabs-hide-tabs-hooks)
   (add-hook hook (lambda () (setq-local header-line-format nil))))
+
+(mapc (lambda (hook)
+	(add-hook hook (lambda ()
+			 (setq-local header-line-format nil))))
+      centaur-tabs-hide-tabs-hooks)
 
 ;; Rules to control buffer's group rules.
 (defvar centaur-tabs-groups-hash (make-hash-table :test 'equal))
