@@ -209,21 +209,14 @@ This is an Export \"What I Mean\" function:
 - If the current subtree doesn't have that property, but one of its
   parent subtrees has, then export from that subtree's scope.
 - If none of the subtrees have that property (or if there are no Org
-  subtrees at all), but the Org #+title keyword is present,
-  export the whole Org file as a post with that title (calls
-  `org-hugo-export-to-md' with its SUBTREEP argument set to nil).
+  subtrees at all), call `org-hugo--export-file-to-md'.
 
 - If ALL-SUBTREES is non-nil, export all valid Hugo post subtrees
   (that have the \"EXPORT_FILE_NAME\" property) in the current file
   to multiple Markdown posts.
 - If ALL-SUBTREES is non-nil, and again if none of the subtrees have
-  that property (or if there are no Org subtrees), but the Org #+title
-  keyword is present, export the whole Org file.
-
-- If the file neither has valid Hugo post subtrees, nor has the
-  #+title present, throw a user error.  If NOERROR is non-nil, use
-  `message' to display the error message instead of signaling a user
-  error.
+  that property (or if there are no Org subtrees), call
+  `org-hugo--export-file-to-md'.
 
 A non-nil optional argument ASYNC means the process should happen
 asynchronously.  The resulting file should be accessible through
@@ -232,12 +225,14 @@ the `org-export-stack' interface.
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
 
-If ALL-SUBTREES is nil, return output file's name.
-If ALL-SUBTREES is non-nil, and valid subtrees are found, return
-a list of output files.
-If ALL-SUBTREES is non-nil, and valid subtrees are not found,
-return the output file's name (exported using file-based
-approach).
+- If ALL-SUBTREES is non-nil:
+  - If valid subtrees are found, return the list of output files.
+  - If no valid subtrees are found, return value is the same as
+    that of `org-hugo--export-file-to-md'.
+
+- If ALL-SUBTREES is nil:
+  - If `org-hugo--export-subtree-to-md' returns a non-nil value, return that.
+  - Else return the value of `org-hugo--export-file-to-md'.
 
 \(fn &optional ALL-SUBTREES ASYNC VISIBLE-ONLY NOERROR)" t nil)
 
