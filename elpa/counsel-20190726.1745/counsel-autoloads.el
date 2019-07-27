@@ -238,7 +238,7 @@ Call the \"rpm\" shell command.
 
 (autoload 'counsel-file-jump "counsel" "\
 Jump to a file below the current directory.
-List all files within the current directory or any of its subdirectories.
+List all files within the current directory or any of its sub-directories.
 INITIAL-INPUT can be given as the initial minibuffer input.
 INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 
@@ -246,7 +246,7 @@ INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 
 (autoload 'counsel-dired-jump "counsel" "\
 Jump to a directory (see `dired-jump') below the current directory.
-List all subdirectories within the current directory.
+List all sub-directories within the current directory.
 INITIAL-INPUT can be given as the initial minibuffer input.
 INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 
@@ -387,7 +387,7 @@ Additional actions:\\<ivy-minibuffer-map>
 \(fn)" t nil)
 
 (autoload 'counsel-tmm "counsel" "\
-Text-mode emulation of looking and choosing from a menubar.
+Text-mode emulation of looking and choosing from a menu bar.
 
 \(fn)" t nil)
 
@@ -570,10 +570,6 @@ Local bindings (`counsel-mode-map'):
 \(fn &optional ARG)" t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "counsel" '("counsel-" "tmm-km-list" "ivy-function-called-at-point")))
-
-;;;***
-
-;;;### (autoloads nil nil ("counsel-pkg.el") (0 0 0 0))
 
 ;;;***
 

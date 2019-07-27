@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190724.2102
+;; Package-Version: 20190726.1745
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools
@@ -31,11 +31,11 @@
 ;;
 ;; Currently available:
 ;; - Symbol completion for Elisp, Common Lisp, Python, Clojure, C, C++.
-;; - Describe fuctions for Elisp: function, variable, library, command,
+;; - Describe functions for Elisp: function, variable, library, command,
 ;;   bindings, theme.
 ;; - Navigation functions: imenu, ace-line, semantic, outline.
 ;; - Git utilities: git-files, git-grep, git-log, git-stash, git-checkout.
-;; - Grep utitilies: grep, ag, pt, recoll, ack, rg.
+;; - Grep utilities: grep, ag, pt, recoll, ack, rg.
 ;; - System utilities: process list, rhythmbox, linux-app.
 ;; - Many more.
 
@@ -116,7 +116,7 @@ complex regexes."
     str))
 
 (defun counsel-require-program (cmd)
-  "Check system for program used in CMD, printing error if unfound.
+  "Check system for program used in CMD, printing error if not found.
 CMD is either a string or a list of strings.
 To skip the `executable-find' check, start the string with a space."
   (unless (and (stringp cmd) (string-match-p "^ " cmd))
@@ -1925,7 +1925,7 @@ Skip some dotfiles unless `ivy-text' requires them."
 
 (defun counsel--preselect-file ()
   "Return candidate to preselect during filename completion.
-The preselect behaviour can be customized via user options
+The preselect behavior can be customized via user options
 `counsel-find-file-at-point' and
 `counsel-preselect-current-file', which see."
   (or
@@ -2238,7 +2238,7 @@ By default `counsel-bookmark' opens a dired buffer for directories."
             :caller 'counsel-bookmark))
 
 (defun counsel--apply-bookmark-fn (fn)
-  "Return a function applyinig FN to a bookmark's location."
+  "Return a function applying FN to a bookmark's location."
   (lambda (bookmark)
     (funcall fn (bookmark-location bookmark))))
 
@@ -2294,7 +2294,7 @@ can use `C-x r j i' to open that file."
   (interactive)
   (ivy-read "File Register: "
             ;; Use the `register-alist' variable to filter out file
-            ;; registers.  Each entry for a file registar will have the
+            ;; registers.  Each entry for a file register will have the
             ;; following layout:
             ;;
             ;;     (NUMBER 'file . "string/path/to/file")
@@ -2577,7 +2577,7 @@ FZF-PROMPT, if non-nil, is passed as `ivy-read' prompt argument."
 ;;;###autoload
 (defun counsel-file-jump (&optional initial-input initial-directory)
   "Jump to a file below the current directory.
-List all files within the current directory or any of its subdirectories.
+List all files within the current directory or any of its sub-directories.
 INITIAL-INPUT can be given as the initial minibuffer input.
 INITIAL-DIRECTORY, if non-nil, is used as the root directory for search."
   (interactive
@@ -2611,7 +2611,7 @@ INITIAL-DIRECTORY, if non-nil, is used as the root directory for search."
 ;;;###autoload
 (defun counsel-dired-jump (&optional initial-input initial-directory)
   "Jump to a directory (see `dired-jump') below the current directory.
-List all subdirectories within the current directory.
+List all sub-directories within the current directory.
 INITIAL-INPUT can be given as the initial minibuffer input.
 INITIAL-DIRECTORY, if non-nil, is used as the root directory for search."
   (interactive
@@ -3341,7 +3341,7 @@ MAJOR-MODE and, if so, loads the settings specified by PLIST
 instead of the default settings.  The following settings are
 recognized:
 
-- `:outline-regexp' is a regexp to match the beggining of an
+- `:outline-regexp' is a regexp to match the beginning of an
   outline heading.  It is only checked at the start of a line and
   so need not start with \"^\".
   Defaults to the value of the variable `outline-regexp'.
@@ -3370,7 +3370,7 @@ recognized:
   eponymous `ivy-read' keyword, as used by `counsel-outline'.
   Defaults to the symbol `counsel-outline-history'.
 
-- `:caller' is a symbol to uniquely idendify the caller to
+- `:caller' is a symbol to uniquely identify the caller to
   `ivy-read'.  It corresponds directly to its eponymous
   `ivy-read' keyword, as used by `counsel-outline'.
   Defaults to the symbol `counsel-outline'.
@@ -3652,20 +3652,20 @@ This variable has no effect unless
   "Face for current `counsel-mark-ring' line."
   :group 'ivy-faces)
 
-(defvar counsel--mark-ring-overray nil
-  "Intarnal overray to highlight line by candidate of `counsel-mark-ring'.")
+(defvar counsel--mark-ring-overlay nil
+  "Internal overlay to highlight line by candidate of `counsel-mark-ring'.")
 
 (defun counsel--mark-ring-add-highlight ()
   "Add highlight to current line."
-  (setq counsel--mark-ring-overray
+  (setq counsel--mark-ring-overlay
         (make-overlay (line-beginning-position) (1+ (line-end-position))))
   (with-ivy-window
-    (overlay-put counsel--mark-ring-overray 'face
+    (overlay-put counsel--mark-ring-overlay 'face
                  'counsel--mark-ring-highlight)))
 
 (defun counsel--mark-ring-delete-highlight ()
   "If `counsel-mark-ring' have highlight, delete highlight."
-  (if counsel--mark-ring-overray (delete-overlay counsel--mark-ring-overray)))
+  (if counsel--mark-ring-overlay (delete-overlay counsel--mark-ring-overlay)))
 
 (defvar counsel--mark-ring-calling-point 0
   "Internal variable to remember calling position.")
@@ -3834,7 +3834,7 @@ Additional actions:\\<ivy-minibuffer-map>
 
 ;;;###autoload
 (defun counsel-tmm ()
-  "Text-mode emulation of looking and choosing from a menubar."
+  "Text-mode emulation of looking and choosing from a menu bar."
   (interactive)
   (require 'tmm)
   (run-hooks 'menu-bar-update-hook)
@@ -3923,7 +3923,7 @@ All blank strings are deleted from `kill-ring' by default."
 (defun counsel--yank-pop-kills ()
   "Return filtered `kill-ring' for `counsel-yank-pop' completion.
 Both `kill-ring' and `kill-ring-yank-pointer' may be
-destructively modifed to eliminate duplicates under
+destructively modified to eliminate duplicates under
 `equal-including-properties', satisfy `counsel-yank-pop-filter',
 and incorporate `interprogram-paste-function'."
   ;; Protect against `kill-ring' and result of
@@ -4501,7 +4501,7 @@ setting in `counsel-outline-settings', which see."
     (funcall outline-level)))
 
 (defvar counsel-outline--preselect 0
-  "Index of the presected candidate in `counsel-outline'.")
+  "Index of the preselected candidate in `counsel-outline'.")
 
 (defun counsel-outline-candidates (&optional settings prefix)
   "Return an alist of outline heading completion candidates.
@@ -4854,7 +4854,7 @@ selected color."
 (defvar shr-color-html-colors-alist)
 
 (defun counsel-colors--web-alist ()
-  "Return list of CSS colours for `counsel-colors-web'."
+  "Return list of CSS colors for `counsel-colors-web'."
   (require 'shr-color)
   (let* ((alist (copy-alist shr-color-html-colors-alist))
          (mp  (assoc "MediumPurple"  alist))
@@ -5460,7 +5460,7 @@ Use the presence of a `dir-locals-file' to determine the root."
   "Additional compile invocations to feed into `counsel-compile'.
 
 This can either be a list of compile invocation strings or
-functions that will provide such a list.  You should customise
+functions that will provide such a list.  You should customize
 this if you want to provide specific non-standard build types to
 `counsel-compile'.  The default helpers are set up to handle
 common build environments.")
@@ -5554,7 +5554,7 @@ The resulting strings are tagged with properties that
   "Have a look in the root directory for any build control files.
 
 The optional BLDDIR is useful for other helpers that have found
-subdirectories that builds may be invoked in."
+sub-directories that builds may be invoked in."
   (let ((srcdir (counsel--compile-root)))
     (when (directory-files (or blddir srcdir) nil
                            counsel-compile-make-pattern t)

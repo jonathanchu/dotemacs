@@ -38,6 +38,14 @@
 
 ;;;***
 
+;;;### (autoloads nil "doom-gruvbox-theme" "doom-gruvbox-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from doom-gruvbox-theme.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-gruvbox-theme" '("doom-gruvbox")))
+
+;;;***
+
 ;;;### (autoloads nil "doom-molokai-theme" "doom-molokai-theme.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from doom-molokai-theme.el
