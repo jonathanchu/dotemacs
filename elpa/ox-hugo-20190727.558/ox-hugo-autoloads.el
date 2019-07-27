@@ -225,6 +225,9 @@ the `org-export-stack' interface.
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
 
+The optional argument NOERROR is passed to
+`org-hugo--export-file-to-md'.
+
 - If ALL-SUBTREES is non-nil:
   - If valid subtrees are found, return the list of output files.
   - If no valid subtrees are found, return value is the same as
