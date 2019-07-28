@@ -1189,16 +1189,20 @@
   )
 
 (use-package org-bullets
-  ;; :disabled
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (setq org-bullets-bullet-list
-        '("◉" "○"))
-  ;; (setq org-bullets-bullet-list '("●"
-  ;;                                 "○"
-  ;;                                 "◉"
-  ;;                                 "◆"))
+  ;; (setq org-bullets-bullet-list
+  ;;       '("◉" "○"))
+  ;; (setq org-bullets-bullet-list
+  ;;       '("●" "○" "◉" "◆"))
+  ;; (setq org-bullets-bullet-list '("·"))
+  ;; (setq org-bullets-bullet-list
+  ;;       (quote ("\uf054" "\uf105" "\uf067" "\uf069")))
+  ;; (setq org-bullets-bullet-list
+  ;;       '("#" "#" "#" "#" "#" "#"))
+  (setq header-line-format " ")
+  (setq org-hide-emphasis-markers t)
   )
 
 (use-package origami
@@ -1671,6 +1675,7 @@ The CHAR is replaced and the point is put before CHAR."
   (org-save-all-org-buffers))
 
 (add-hook 'org-archive-hook 'my-org-config/after-org-archive)
+
 ;;----------------------------------------------------------------------------
 ;; Key bindinds
 ;;----------------------------------------------------------------------------
