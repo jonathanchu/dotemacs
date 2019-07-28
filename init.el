@@ -1116,11 +1116,10 @@
   (setq org-startup-indented t)
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "|" "DONE(d)")
-          (sequence "WAITING(w)" "|" "CANCELED(c)")
-          (sequence "NEXT(n)" "|" "HOLD(h)")
-          ))
+  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+                            (sequence "⚑ WAITING(w)" "|")
+                            (sequence "|" "✘ CANCELED(c)")))
+  (setq org-ellipsis "  ")
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "green" :weight bold)
           ("NEXT" :foreground "blue" :weight bold)
@@ -1132,7 +1131,6 @@
   (setq org-use-speed-commands t)       ; n, p, l, r
   (setq org-goto-interface 'outline-path-completion) ; C-c C-j
   (setq org-goto-max-level 10)
-  (setq org-ellipsis "⤵")
   (setq org-agenda-files '("~/Dropbox/org/inbox.org"
                            "~/Dropbox/org/gtd.org"))
   (setq org-default-notes-file "~/Dropbox/org/inbox.org")
