@@ -38,6 +38,14 @@
 
 ;;;***
 
+;;;### (autoloads nil "doom-fairy-floss-theme" "doom-fairy-floss-theme.el"
+;;;;;;  (0 0 0 0))
+;;; Generated autoloads from doom-fairy-floss-theme.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "doom-fairy-floss-theme" '("doom-fairy-floss")))
+
+;;;***
+
 ;;;### (autoloads nil "doom-gruvbox-theme" "doom-gruvbox-theme.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from doom-gruvbox-theme.el
