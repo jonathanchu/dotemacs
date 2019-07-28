@@ -1170,11 +1170,20 @@
               (setq yas/trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field)
-              ;; (olivetti-mode 1)        ;; Centers text in the buffer
+              (olivetti-mode 1)        ;; Centers text in the buffer
+              (setq olivetti-body-width 100)
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
               (linum-mode 0)           ;; No line numbers for prose
+              (setq buffer-face-mode-face '(:family "iA Writer Mono S"))
+              (buffer-face-mode)
+              (require 'org-indent)
+              (org-indent-mode)
+              (setq set-face-attribute 'org-indent nil :inhereit '(org-hide fixed-pitch))
+              (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings)
+              (setq org-fontify-quote-and-verse-blocks t)
+              (setq org-fontify-done-headline t)  ;;
               )
             )
   )
