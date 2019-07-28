@@ -1659,6 +1659,10 @@ The CHAR is replaced and the point is put before CHAR."
 
 (add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
 
+(defun my-org-config/after-org-archive ()
+  (org-save-all-org-buffers))
+
+(add-hook 'org-archive-hook 'my-org-config/after-org-archive)
 ;;----------------------------------------------------------------------------
 ;; Key bindinds
 ;;----------------------------------------------------------------------------
