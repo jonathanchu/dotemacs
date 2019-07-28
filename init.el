@@ -1150,6 +1150,7 @@
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
   (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
   (setq org-agenda-window-setup (quote current-window))
+  (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
   (setq org-agenda-span (quote fortnight))
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
