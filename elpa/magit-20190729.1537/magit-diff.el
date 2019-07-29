@@ -254,15 +254,14 @@ Used only when `magit-diff-paint-whitespace' is non-nil."
   "Highlight the \"wrong\" indentation style.
 Used only when `magit-diff-paint-whitespace' is non-nil.
 
-The value is a list of cons cells.  The car is a regular
-expression, and the cdr is the value that applies to repositories
-whose directory matches the regular expression.  If more than one
-element matches, then the *last* element in the list applies.
-The default value should therefore come first in the list.
+The value is an alist of the form ((REGEXP . INDENT)...).  The
+path to the current repository is matched against each element
+in reverse order.  Therefore if a REGEXP matches, then earlier
+elements are not tried.
 
-If the value is `tabs', highlight indentation with tabs.  If the
-value is an integer, highlight indentation with at least that
-many spaces.  Otherwise, highlight neither."
+If the used INDENT is `tabs', highlight indentation with tabs.
+If INDENT is an integer, highlight indentation with at least
+that many spaces.  Otherwise, highlight neither."
   :group 'magit-diff
   :type `(repeat (cons (string :tag "Directory regexp")
                        (choice (const :tag "Tabs" tabs)
@@ -1114,10 +1113,8 @@ be committed."
   (interactive (list (car (magit-diff-arguments))))
   (unless (magit-commit-message-buffer)
     (user-error "No commit in progress"))
-  (let ((magit-display-buffer-noselect t)
-        (diff-buf (magit-get-mode-buffer 'magit-diff-mode)))
-    (if (and diff-buf
-             (get-buffer-window diff-buf))
+  (let ((magit-display-buffer-noselect t))
+    (if-let ((diff-buf (magit-get-mode-buffer 'magit-diff-mode 'selected)))
         (with-current-buffer diff-buf
           (cond ((and (equal magit-buffer-range "HEAD^")
                       (equal magit-buffer-typearg "--cached"))
