@@ -1,4 +1,5 @@
-#name : Author
-#contributor : Rick Moynihan <rick@sourcesmouth.co.uk>
+# -*- mode: snippet -*-
+# name: author
+# key: <au
 # --
-#+AUTHOR: ${1:`user-full-name`}
+#+author: $0

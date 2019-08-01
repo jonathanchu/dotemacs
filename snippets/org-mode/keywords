@@ -1,4 +1,5 @@
-#name : KEYWORDS
-#contributor : Rick Moynihan <rick@sourcesmouth.co.uk>
+# -*- mode: snippet -*-
+# name: keywords
+# key: <ke
 # --
-#+KEYWORDS: ${0}
+#+keywords: $0

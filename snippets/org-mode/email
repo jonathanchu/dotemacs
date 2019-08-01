@@ -1,4 +1,5 @@
-#name : Email
-#contributor : Rick Moynihan <rick@sourcesmouth.co.uk>
+# -*- mode: snippet -*-
+# name: email
+# key: <em
 # --
-#+EMAIL: ${1:`user-mail-address`}
+#+email: $0
