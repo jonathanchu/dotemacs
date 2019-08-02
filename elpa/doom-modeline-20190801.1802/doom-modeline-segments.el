@@ -479,13 +479,14 @@ directory, the file name, and its state (modified, read-only or non-existent)."
   (propertize
    (concat
     (doom-modeline-spc)
-    (propertize (format-mode-line mode-name)
-                'help-echo "Major mode\n\
+    (format-mode-line
+     `(:propertize ("" mode-name)
+       help-echo "Major mode\n\
 mouse-1: Display major mode menu\n\
 mouse-2: Show help for major mode\n\
 mouse-3: Toggle minor modes"
-                'mouse-face 'mode-line-highlight
-                'local-map mode-line-major-mode-keymap)
+       mouse-face mode-line-highlight
+       local-map ,mode-line-major-mode-keymap))
     (when (and doom-modeline-env-version doom-modeline-env--version)
       (format " %s" doom-modeline-env--version))
     (and (boundp 'text-scale-mode-amount)
@@ -534,16 +535,13 @@ mouse-1: Display minor modes menu"
                        'local-map (make-mode-line-mouse-map
                                    'mouse-1 #'minions-minor-modes-menu))
            (doom-modeline-spc))
-        (propertize
-         (concat
-          (replace-regexp-in-string (regexp-quote "%")
-                                    "%%%%"
-                                    (format-mode-line minor-mode-alist)
-                                    t t)
-          (doom-modeline-spc))
-         'face (if active
-                   'doom-modeline-buffer-minor-mode
-                 'mode-line-inactive))))))
+        (concat
+         (format-mode-line
+          `(:propertize ("" minor-mode-alist)
+            face ,(if active
+                      'doom-modeline-buffer-minor-mode
+                    'mode-line-inactive)))
+         (doom-modeline-vspc))))))
 
 
 ;;
@@ -1613,7 +1611,7 @@ mouse-3: Describe current input method")
   "Update `lsp-mode' status."
   (setq doom-modeline--lsp
         (let* ((workspaces (lsp-workspaces))
-               (face (if workspaces 'success 'warning))
+               (face (if workspaces 'doom-modeline-lsp-success 'doom-modeline-lsp-warning))
                (icon (doom-modeline-lsp-icon "LSP" face)))
           (propertize icon
                       'help-echo
@@ -1664,10 +1662,10 @@ mouse-1: Reload to start server")
                      (`(,_id ,doing ,done-p ,detail) (and server (eglot--spinner server)))
                      (last-error (and server (jsonrpc-last-error server)))
                      (face (cond
-                            (last-error 'error)
+                            (last-error 'doom-modeline-lsp-error)
                             ((and doing (not done-p)) 'compilation-mode-line-run)
-                            ((and pending (cl-plusp pending)) 'warning)
-                            (nick 'success)
+                            ((and pending (cl-plusp pending)) 'doom-modeline-lsp-warning)
+                            (nick 'doom-modeline-lsp-success)
                             (t 'mode-line)))
                      (icon (doom-modeline-lsp-icon "EGLOT" face)))
           (propertize icon

@@ -174,18 +174,6 @@ is selected interactively by mode in `minor-mode-map-alist'.
 
 \(fn)" t nil)
 
-(autoload 'which-key-manual-update "which-key" "\
-Force which-key update.
-
-This command is intended to be used for `prefix-help-command', as
-follows
-
-\(setq prefix-help-command 'which-key-manual-update).
-
-This should be set after activating `which-key-mode'.
-
-\(fn)" t nil)
-
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "which-key" '("which-key-")))
 
 ;;;***
