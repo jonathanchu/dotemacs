@@ -4269,7 +4269,6 @@ Skip buffers that match `ivy-ignore-buffers'."
 (defun ivy-switch-buffer ()
   "Switch to another buffer."
   (interactive)
-  (setq this-command #'ivy-switch-buffer)
   (ivy-read "Switch to buffer: " #'internal-complete-buffer
             :keymap ivy-switch-buffer-map
             :preselect (buffer-name (other-buffer (current-buffer)))
@@ -4295,8 +4294,6 @@ Skip buffers that match `ivy-ignore-buffers'."
             :action #'ivy--switch-buffer-other-window-action
             :keymap ivy-switch-buffer-map
             :caller 'ivy-switch-buffer-other-window))
-
-(define-obsolete-function-alias 'ivy-recentf 'counsel-recentf "0.8.0")
 
 (defun ivy--yank-by (fn &rest args)
   "Pull buffer text from current line into search string.

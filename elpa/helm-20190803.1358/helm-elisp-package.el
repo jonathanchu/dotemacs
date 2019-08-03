@@ -208,14 +208,7 @@
     (helm-exit-and-execute-action 'helm-el-package-uninstall)))
 (put 'helm-el-run-package-uninstall 'helm-only t)
 
-;; FIXME: Attempt to fix melpa issue #6336, see url below.
-;; (defun helm-el-package--find-more-upgrades (pkg)
-;;   "Find more upgrade from PKG which is a dependency package."
-;;   (cl-loop for p in package-selected-packages
-;;            for deps = (package--get-deps p)
-;;            ;; PKG is a dependency of P a selected package.
-;;            when (member (package-desc-name pkg) deps) collect p))
-
+(defvar helm-el-package--extra-upgrades nil)
 (defun helm-el-package-menu--find-upgrades ()
   (cl-loop for entry in helm-el-package--tabulated-list
            for pkg-desc = (car entry)
@@ -224,41 +217,60 @@
            collect pkg-desc into installed
            when (string= status "dependency")
            collect pkg-desc into dependencies
-           ;; and append (helm-el-package--find-more-upgrades pkg-desc) into installed
            when (member status '("available" "new"))
            collect (cons (package-desc-name pkg-desc) pkg-desc) into available
            finally return
            ;; Always try to upgrade dependencies before installed.
-           ;; See https://github.com/melpa/melpa/issues/6336#issuecomment-517073353
            (cl-loop with all = (append dependencies installed)
+                    with extra-upgrades
                     for pkg in all
-                    for avail-pkg = (assq (package-desc-name pkg) available)
+                    for name = (package-desc-name pkg)
+                    for avail-pkg = (assq name available)
+                    for avail-is-dep = (and avail-pkg (member pkg dependencies))
+                    when avail-is-dep
+                    ;; Store the installed packages that don't need
+                    ;; upgrade but that have `name' as dependency.
+                    do (cl-loop for p in installed
+                                for pkg = (package-desc-name p)
+                                for deps = (and (package--user-installed-p pkg)
+                                                (package--get-deps pkg))
+                                when (and (memq name deps)
+                                          (not (eq name pkg)))
+                                do (push (cons pkg p) extra-upgrades))
                     when (and avail-pkg
                               (version-list-< (package-desc-version pkg)
                                               (package-desc-version
                                                (cdr avail-pkg))))
-                    collect avail-pkg)))
+                    collect avail-pkg into upgrades
+                    finally return
+                    ;; Extra-upgrades are packages that need to be
+                    ;; recompiled because their dependencies have been upgraded. 
+                    (append upgrades
+                            (setq helm-el-package--extra-upgrades
+                                  extra-upgrades)))))
 
 (defun helm-el-package-upgrade-1 (pkg-list)
   (cl-loop for p in pkg-list
            for pkg-desc = (car p)
            for upgrade = (cdr (assq (package-desc-name pkg-desc)
                                     helm-el-package--upgrades))
+           for extra-upgrade = (cdr (assq (package-desc-name pkg-desc)
+                                          helm-el-package--extra-upgrades))
            do
-           (cond ((null upgrade)
-                  (ignore))
-                 ((equal pkg-desc upgrade)
-                  ;;Install.
-                  (with-no-warnings
-                    (if (boundp 'package-selected-packages)
-                        (package-install pkg-desc t)
-                        (package-install pkg-desc))))
-                 (t
-                  ;; Delete.
-                  (if (boundp 'package-selected-packages)
-                      (with-no-warnings
-                        (package-delete pkg-desc t t))
-                      (package-delete pkg-desc))))))
+           (cond (;; Recompile.
+                  (and (null upgrade)
+                       (equal pkg-desc extra-upgrade))
+                  (helm-el-package-recompile-1 pkg-desc))
+                 ((null upgrade) (ignore))
+                 (;; Reinstall.
+                  (and (equal pkg-desc upgrade)
+                       (package-installed-p pkg-desc))
+                  (helm-el-package-reinstall-1 pkg-desc))
+                 (;; Install.
+                  (equal pkg-desc upgrade)
+                  (package-install pkg-desc t))
+                 (;; Delete.
+                  t (package-delete pkg-desc t t)))))
 
 (defun helm-el-package-upgrade (_candidate)
   (helm-el-package-upgrade-1
@@ -427,34 +439,33 @@
 
 (defun helm-el-package-recompile (_pkg)
   (cl-loop for p in (helm-marked-candidates)
-           for pkg-desc = (get-text-property 0 'tabulated-list-id p)
-           for name = (package-desc-name pkg-desc)
-           for dir = (package-desc-dir pkg-desc)
-           do (if (fboundp 'async-byte-recompile-directory)
-                  (async-byte-recompile-directory dir)
-                  (when (y-or-n-p (format "Really recompile `%s' while already loaded ?" name))
-                    (byte-recompile-directory dir 0 t)))))
+           do (helm-el-package-recompile-1 p)))
+
+(defun helm-el-package-recompile-1 (pkg)
+  (let* ((pkg-desc (get-text-property 0 'tabulated-list-id pkg))
+         (dir (package-desc-dir pkg-desc)))
+    (async-byte-recompile-directory dir)
+    (setq helm-el-package--extra-upgrades nil)))
 
 (defun helm-el-package-reinstall (_pkg)
   (cl-loop for p in (helm-marked-candidates)
            for pkg-desc = (get-text-property 0 'tabulated-list-id p)
-           for name = (package-desc-name pkg-desc)
-           do (if (boundp 'package-selected-packages)
-                  (with-no-warnings
-                    (package-delete pkg-desc 'force 'nosave)
-                    ;; pkg-desc contain the description
-                    ;; of the installed package just removed
-                    ;; and is BTW no more valid.
-                    ;; Use the entry in package-archive-content
-                    ;; which is the non--installed package entry.
-                    ;; For some reason `package-install'
-                    ;; need a pkg-desc (package-desc-p) for the build-in
-                    ;; packages already installed, the name (as symbol)
-                    ;; fails with such packages.
-                    (package-install
-                     (cadr (assq name package-archive-contents)) t))
-                  (package-delete pkg-desc)
-                  (package-install name))))
+           do (helm-el-package-reinstall-1 pkg-desc)))
+
+(defun helm-el-package-reinstall-1 (pkg-desc)
+  (let ((name (package-desc-name pkg-desc)))
+    (package-delete pkg-desc 'force 'nosave)
+    ;; pkg-desc contain the description
+    ;; of the installed package just removed
+    ;; and is BTW no more valid.
+    ;; Use the entry in package-archive-content
+    ;; which is the non--installed package entry.
+    ;; For some reason `package-install'
+    ;; need a pkg-desc (package-desc-p) for the build-in
+    ;; packages already installed, the name (as symbol)
+    ;; fails with such packages.
+    (package-install
+     (cadr (assq name package-archive-contents)) t)))
 
 (defun helm-el-run-package-reinstall ()
   (interactive)

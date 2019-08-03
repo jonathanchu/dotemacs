@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20190802.1521
+;; Package-Version: 20190803.1121
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools
@@ -531,9 +531,6 @@ Used by commands `counsel-describe-variable' and
                  (error "Couldn't find definition of %s"
                         sym))))))))
 
-(define-obsolete-function-alias 'counsel-symbol-at-point
-    'ivy-thing-at-point "0.7.0")
-
 (defun counsel--variable-p (symbol)
   "Return non-nil if SYMBOL is a bound or documented variable."
   (or (and (boundp symbol)
@@ -877,6 +874,18 @@ packages are, in order of precedence, `amx' and `smex'."
 (defvar counsel-M-x-history nil
   "History for `counsel-M-x'.")
 
+(defun counsel-M-x-action (cmd)
+  "Execute CMD."
+  (setq cmd (intern cmd))
+  (cond ((bound-and-true-p amx-initialized)
+         (amx-rank cmd))
+        ((bound-and-true-p smex-initialized-p)
+         (smex-rank cmd)))
+  (setq prefix-arg current-prefix-arg)
+  (setq this-command cmd)
+  (setq real-this-command cmd)
+  (command-execute cmd 'record))
+
 ;;;###autoload
 (defun counsel-M-x (&optional initial-input)
   "Ivy version of `execute-extended-command'.
@@ -897,16 +906,7 @@ when available, in that order of precedence."
                                      (not (get sym 'byte-obsolete-info)))))
               :require-match t
               :history 'counsel-M-x-history
-              :action (lambda (cmd)
-                        (setq cmd (intern cmd))
-                        (cond ((bound-and-true-p amx-initialized)
-                               (amx-rank cmd))
-                              ((bound-and-true-p smex-initialized-p)
-                               (smex-rank cmd)))
-                        (setq prefix-arg current-prefix-arg)
-                        (setq this-command cmd)
-                        (setq real-this-command cmd)
-                        (command-execute cmd 'record))
+              :action #'counsel-M-x-action
               :sort (not externs)
               :keymap counsel-describe-map
               :initial-input initial-input
@@ -5824,6 +5824,20 @@ Additional actions:\\<ivy-minibuffer-map>
  'counsel-minor
  `(("d" ,(lambda (x) (find-function (cdr x))) "definition")
    ("h" ,(lambda (x) (describe-function (cdr x))) "help")))
+
+;;;###autoload
+(defun counsel-major ()
+  (interactive)
+  (ivy-read "Major modes: " obarray
+            :predicate (lambda (f)
+                         (and (commandp f) (string-match "-mode$" (symbol-name f))
+                              (or (and (autoloadp (symbol-function f))
+                                       (let ((doc-split (help-split-fundoc (documentation f) f)))
+                                         ;; major mode starters have no arguments
+                                         (and doc-split (null (cdr (read (car doc-split)))))))
+                                  (null (help-function-arglist f)))))
+            :action #'counsel-M-x-action
+            :caller 'counsel-major))
 
 ;;* `counsel-mode'
 (defvar counsel-mode-map
