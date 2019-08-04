@@ -1132,7 +1132,8 @@
   (setq org-goto-interface 'outline-path-completion) ; C-c C-j
   (setq org-goto-max-level 10)
   (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                           "~/Dropbox/org/gtd.org"))
+                           "~/Dropbox/org/gtd.org"
+                           "~/Dropbox/org/simplehealth.org"))
   (setq org-default-notes-file "~/Dropbox/org/inbox.org")
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                  (file+headline "~/Dropbox/org/inbox.org" "Tasks") "* TODO %i%?")
