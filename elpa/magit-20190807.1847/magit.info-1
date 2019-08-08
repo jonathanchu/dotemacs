@@ -31,7 +31,7 @@ to perform almost all of their daily version control tasks directly from
 within Emacs.  While many fine Git clients exist, only Magit and Git
 itself deserve to be called porcelains.
 
-This manual is for Magit version 2.90.1 (v2.90.1-750-g7e6b544aa+1).
+This manual is for Magit version 2.90.1 (v2.90.1-753-g71ed6f0d8+1).
 
      Copyright (C) 2015-2019 Jonas Bernoulli <jonas@bernoul.li>
 
@@ -2951,15 +2951,18 @@ File: magit.info,  Node: Repository List,  Next: Logging,  Prev: Status Buffer, 
 
      This function inserts the number of stashes.
 
- -- Function: magit-repolist-column-dirty
+ -- Function: magit-repolist-column-flag
 
-     This function inserts a letter if there are uncommitted changes:
+     This function inserts a flag as specified by
+     ‘magit-repolist-column-flag-alist’.
 
-        • N if there is at least one untracked file.
+     By default this indicates whether there are uncommitted changes.
 
-        • U if there is at least one unstaged file.
+        • ‘N’ if there is at least one untracked file.
 
-        • S if there is at least one staged file.
+        • ‘U’ if there is at least one unstaged file.
+
+        • ‘S’ if there is at least one staged file.
 
      Only the first one of these that applies is shown.
 
@@ -7279,8 +7282,8 @@ File: magit.info,  Node: Plain Patches,  Next: Maildir Patches,  Prev: Pushing, 
      Inside ‘magit-diff-mode’ or ‘magit-revision-mode’ buffers, ‘C-x
      C-w’ is also bound to this command.
 
-   FIXME It is also possible to save a plain patch file by using ‘C-x
-C-w’ inside a ‘magit-diff-mode’ or ‘magit-revision-mode’ buffer.
+   It is also possible to save a plain patch file by using ‘C-x C-w’
+inside a ‘magit-diff-mode’ or ‘magit-revision-mode’ buffer.
 
 
 File: magit.info,  Node: Maildir Patches,  Prev: Plain Patches,  Up: Transferring

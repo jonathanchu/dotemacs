@@ -3109,18 +3109,18 @@ Appendix E Function Index
 * magit-region-values:                   Section Selection.   (line  37)
 * magit-repolist-column-branch:          Repository List.     (line  44)
 * magit-repolist-column-branches:        Repository List.     (line  53)
-* magit-repolist-column-dirty:           Repository List.     (line  61)
+* magit-repolist-column-flag:            Repository List.     (line  61)
 * magit-repolist-column-ident:           Repository List.     (line  30)
 * magit-repolist-column-path:            Repository List.     (line  35)
 * magit-repolist-column-stashes:         Repository List.     (line  57)
 * magit-repolist-column-unpulled-from-pushremote: Repository List.
-                                                              (line  78)
+                                                              (line  81)
 * magit-repolist-column-unpulled-from-upstream: Repository List.
-                                                              (line  73)
+                                                              (line  76)
 * magit-repolist-column-unpushed-to-pushremote: Repository List.
-                                                              (line  88)
+                                                              (line  91)
 * magit-repolist-column-unpushed-to-upstream: Repository List.
-                                                              (line  83)
+                                                              (line  86)
 * magit-repolist-column-upstream:        Repository List.     (line  48)
 * magit-repolist-column-version:         Repository List.     (line  39)
 * magit-restore-window-configuration:    Quitting Windows.    (line  23)
