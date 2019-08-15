@@ -1,2 +1,0 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "centaur-tabs" "20190810.243" "Aesthetic, modern looking customizable tabs plugin" '((emacs "24.4") (powerline "2.4") (cl-lib "0.5")) :stars '("") :commit "f7174827c0b3d301ed5e98455334f7e8bd170340" :authors '(("Emmanuel Bustos" . "ema2159@gmail.com")) :maintainer '("Emmanuel Bustos" . "ema2159@gmail.com") :url "https://github.com/ema2159/centaur-tabs")
