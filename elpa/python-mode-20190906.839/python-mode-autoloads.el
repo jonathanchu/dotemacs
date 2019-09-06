@@ -120,7 +120,7 @@ See available customizations listed in files variables-python-mode at directory 
 
 \(fn)" t nil)
 
-(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-mode" '("pdb-track-stack-from-shell-p" "pep8" "pst-here" "pps-emacs-version" "pios" "autopair-mode" "all-mode-setting" "info-lookup-mode" "ios" "ipy" "iyp" "Python" "IPython" "Ipython" "virtualenv-" "durck" "druck" "empty-line-p" "eva" "force-py-shell-name-p-o" "flake8" "toggle-" "turn-o" "with-buffer-prepared-for-jit-lock" "jython-mode-hook" "highlight-indent-active" "hs-hide-comments-when-hiding-all" "strip-chars-")))
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-mode" '("pdb-track-stack-from-shell-p" "pep8" "pst-here" "pps-emacs-version" "pios" "autopair-mode" "all-mode-setting" "info-lookup-mode" "ios" "ipy" "iyp" "Python" "IPython" "Ipython" "virtualenv-" "durck" "druck" "eva" "force-py-shell-name-p-o" "flake8" "toggle-" "turn-o" "with-buffer-prepared-for-jit-lock" "jython-mode-hook" "highlight-indent-active" "hs-hide-comments-when-hiding-all" "strip-chars-")))
 
 ;;;***
 
