@@ -1,6 +1,6 @@
 ;;; magit-git-toolbelt.el --- A Magit interface git-toolbelt
 
-;; Copyright 2018 Jonathan Chu
+;; Copyright 2018-2019 Jonathan Chu
 
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/magit-git-toolbelt
@@ -56,18 +56,11 @@
   (interactive)
   (magit-run-git "cleanup"))
 
-;; (defun magit-git-toolbelt-initial-commit ()
-;;   "Prints the initial commit for the repo.
-;; \('git initial-commit')"
-;;   (interactive)
-;;   (message (shell-command-to-string "git initial-commit")))
-
 (defun magit-git-toolbelt-initial-commit ()
   "Prints the initial commit for the repo.
 \('git initial-commit')"
   (interactive)
-  (message (magit-git-toolbelt-run "initial-commit"))
-  )
+  (magit-show-commit (magit-git-string "initial-commit")))
 
 
 ;;;###autoload
@@ -81,8 +74,7 @@
 
 (defun magit-git-toolbelt-run (&rest args)
   "Call git synchronously in a separate process with ARGS."
-  (magit-run-git args)
-  )
+  (magit-run-git args))
 
 (provide 'magit-git-toolbelt)
 
