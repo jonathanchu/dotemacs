@@ -545,6 +545,7 @@
   (setq centaur-tabs-gray-out-icons 'buffer)
   (setq centaur-tabs-set-bar 'left)
   (centaur-tabs-mode t)
+  (centaur-tabs-headline-match)
   (set-face-attribute 'centaur-tabs-modified-marker-selected nil :foreground (face-background 'doom-modeline-bar))
   (set-face-attribute 'centaur-tabs-modified-marker-unselected nil :foreground (face-background 'doom-modeline-bar))
   (defun centaur-tabs-buffer-groups ()
