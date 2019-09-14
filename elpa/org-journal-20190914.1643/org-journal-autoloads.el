@@ -109,6 +109,31 @@ If a prefix argument is given, search all dates.
 
 \(fn STR &optional PERIOD-NAME)" t nil)
 
+(autoload 'org-journal-search-calendar-week "org-journal" "\
+Search for a string within a current calendar-mode week entries.
+
+\(fn STR)" t nil)
+
+(autoload 'org-journal-search-calendar-month "org-journal" "\
+Search for a string within a current calendar-mode month entries.
+
+\(fn STR)" t nil)
+
+(autoload 'org-journal-search-calendar-year "org-journal" "\
+Search for a string within a current calendar-mode year entries.
+
+\(fn STR)" t nil)
+
+(autoload 'org-journal-search-forever "org-journal" "\
+Search for a string within all entries.
+
+\(fn STR)" t nil)
+
+(autoload 'org-journal-search-future "org-journal" "\
+Search for a string within all future entries.
+
+\(fn STR)" t nil)
+
 (add-hook 'org-journal-mode-hook (lambda nil (add-hook org-journal-encrypt-on 'org-journal-encryption-hook nil t)))
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-journal" '("org-journal-")))

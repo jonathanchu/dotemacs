@@ -613,7 +613,9 @@ Changes take effect only when a new session is started."
                                         (elm-mode . "elm")
                                         (dart-mode . "dart")
                                         (erlang-mode . "erlang")
-                                        (dockerfile-mode . "dockerfile"))
+                                        (dockerfile-mode . "dockerfile")
+                                        (plain-tex-mode . "plaintex")
+                                        (latex-mode . "latex"))
   "Language id configuration.")
 
 (defvar lsp-method-requirements
@@ -2044,6 +2046,12 @@ CALLBACK - callback for the lenses."
   ;; ‘highlight-overlays’ is a hash table mapping buffers to a list of overlays
   ;; used for highlighting the symbol under point.
   (highlight-overlays (make-hash-table :test 'eq) :read-only t)
+
+  ;; ‘semantic-highlighting-faces' is a vector containing one face for each
+  ;; TextMate scope (or set of scopes) supported by the language server. Cf.
+  ;; ‘lsp-semantic-highlighting-faces' if you wish to change the default
+  ;; semantic highlighting faces
+  (semantic-highlighting-faces nil)
 
   ;; Extra client capabilities provided by third-party packages using
   ;; `lsp-register-client-capabilities'. It's value is an alist of (PACKAGE-NAME
@@ -3609,7 +3617,7 @@ If INCLUDE-DECLARATION is non-nil, request the server to include declarations."
                             (lsp--make-request "textDocument/hover")
                             (lsp--send-request)
                             (gethash "contents")))
-        (buffer (get-buffer-create "*lsp-help*")))
+        (buffer (help-buffer)))
     (if (and contents (not (equal contents "")) )
         (progn
           (pop-to-buffer buffer)
@@ -3617,8 +3625,7 @@ If INCLUDE-DECLARATION is non-nil, request the server to include declarations."
             (let ((inhibit-read-only t))
               (erase-buffer)
               (insert (lsp--render-on-hover-content contents t))
-              (goto-char (point-min))
-              (view-mode t))))
+              (goto-char (point-min)))))
       (lsp--info "No content at point."))))
 
 (defun lsp--point-in-bounds-p (bounds)
@@ -4076,6 +4083,13 @@ unless overriden by a more specific face association."
 unless overriden by a more specific face association."
   :group 'lsp-faces)
 
+(defface lsp-face-semhl-type-typedef
+  '((t :inherit font-lock-type-face :slant italic))
+  "Face used for semantic highlighting scopes matching
+ entity.name.type.typedef.*, unless overriden by a more
+ specific face association."
+  :group 'lsp-faces)
+
 (defface lsp-face-semhl-namespace
   '((t :inherit font-lock-type-face :weight bold))
   "Face used for semantic highlighting scopes matching entity.name.namespace.*,
@@ -4130,6 +4144,7 @@ unless overriden by a more specific face association."
     ((("entity.name.function")) . lsp-face-semhl-function)
     ((("entity.name.type.class")) . lsp-face-semhl-type-class)
     ((("entity.name.type.enum")) . lsp-face-semhl-type-enum)
+    ((("entity.name.type.typedef")) . lsp-face-semhl-type-typedef)
     ((("entity.name.namespace")) . lsp-face-semhl-namespace)
     ((("entity.name.function.preprocessor")) . lsp-face-semhl-preprocessor)
     ((("entity.name.type.template")) . lsp-face-semhl-type-template)
@@ -4158,9 +4173,7 @@ unless overriden by a more specific face association."
                  (s-join ", " scope-names)))
     maybe-face))
 
-(defvar-local lsp--faces nil)
-
-(defun lsp--apply-semantic-highlighting (lines)
+(defun lsp--apply-semantic-highlighting (semantic-highlighting-faces lines)
   (let (line raw-str i end el start (cur-line 1) ov tokens)
     (goto-char 0)
     (cl-loop for entry across-ref lines do
@@ -4183,16 +4196,17 @@ unless overriden by a more specific face association."
                  (setq ov (make-overlay
                            (+ (point) start)
                            (+ (point) (+ start (bindat-get-field el 'len)))))
-                 (overlay-put ov 'face (aref lsp--faces (bindat-get-field el 'scopeIndex)))
+                 (overlay-put ov 'face (aref semantic-highlighting-faces
+                                             (bindat-get-field el 'scopeIndex)))
                  (overlay-put ov 'lsp-sem-highlight t))))))
 
 (defun lsp--on-semantic-highlighting (workspace params)
   ;; TODO: defer highlighting if buffer's not currently focused?
-  (unless lsp--faces
+  (unless (lsp--workspace-semantic-highlighting-faces workspace)
     (let* ((capabilities (lsp--workspace-server-capabilities workspace))
            (semanticHighlighting (gethash "semanticHighlighting" capabilities))
            (scopes (or (gethash "scopes" semanticHighlighting) [])))
-      (setq lsp--faces
+      (setf (lsp--workspace-semantic-highlighting-faces workspace)
             (vconcat (mapcar #'lsp--semantic-highlighting-find-face scopes)))))
   (let* ((file (lsp--uri-to-path (gethash "uri" (gethash "textDocument" params))))
          (lines (gethash "lines" params))
@@ -4201,7 +4215,8 @@ unless overriden by a more specific face association."
       (with-current-buffer buffer
         (save-mark-and-excursion
           (with-silent-modifications
-            (lsp--apply-semantic-highlighting lines)))))))
+            (lsp--apply-semantic-highlighting
+             (lsp--workspace-semantic-highlighting-faces workspace) lines)))))))
 
 (defconst lsp--symbol-kind
   '((1 . "File")

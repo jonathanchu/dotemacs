@@ -4,7 +4,7 @@
 ;;   Phil Hagelberg, Doug Alcorn, Will Farrington, Chen Bin
 ;;
 ;; Version: 5.7.7
-;; Package-Version: 20190720.313
+;; Package-Version: 20190914.524
 ;; Author: Phil Hagelberg, Doug Alcorn, and Will Farrington
 ;; Maintainer: Chen Bin <chenbin.sh@gmail.com>
 ;; URL: https://github.com/technomancy/find-file-in-project
@@ -414,7 +414,7 @@ This overrides variable `ffip-project-root' when set.")
 
 ;;;###autoload
 (defun ffip-project-root ()
-  "Return the root of the project."
+  "Return project root or `default-directory'."
   (let* ((project-root (or ffip-project-root
                            (cond
                             ((functionp ffip-project-root-function)
@@ -427,9 +427,7 @@ This overrides variable `ffip-project-root' when set.")
                              (locate-dominating-file default-directory
                                                      ffip-project-file))))))
     (or (and project-root (file-name-as-directory project-root))
-        (progn
-          (message "Since NO project was found, use `default-directory' instead.")
-          default-directory))))
+        default-directory)))
 
 (defun ffip--read-file-text (file)
   "Read text from FILE."

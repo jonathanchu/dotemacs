@@ -34,7 +34,7 @@ Create org link from P and copy the result.
 The callback after calling `find-relative-path'.")
 
 (autoload 'ffip-project-root "find-file-in-project" "\
-Return the root of the project.
+Return project root or `default-directory'.
 
 \(fn)" nil nil)
 
