@@ -567,6 +567,7 @@ Changes take effect only when a new session is started."
                                         (".*\.ts$" . "typescript")
                                         (".*\.jsx$" . "javascriptreact")
                                         (".*\.xml$" . "xml")
+                                        (".*\.hx$" . "haxe")
                                         (sh-mode . "shellscript")
                                         (scala-mode . "scala")
                                         (julia-mode . "julia")
@@ -628,7 +629,9 @@ Changes take effect only when a new session is started."
     ("textDocument/documentHighlight" :capability "documentHighlightProvider")
     ("textDocument/definition" :capability "definitionProvider")
     ("workspace/symbol" :capability "workspaceSymbolProvider")
-    ("textDocument/codeLens" :capability "codeLensProvider")
+    ("textDocument/codeLens"
+     :capability "codeLensProvider"
+     :registered-capability "textDocument/codeLens")
     ("textDocument/selectionRange" :capability "selectionRangeProvider")
     ("textDocument/prepareRename"
      :check-command (lambda (workspace)
@@ -2456,7 +2459,7 @@ disappearing, unset all the variables related to it."
                    (applyEdit . t)
                    (symbol . ((symbolKind . ((valueSet . ,(apply 'vector (number-sequence 1 26)))))))
                    (executeCommand . ((dynamicRegistration . :json-false)))
-                   (didChangeWatchedFiles . ((dynamicRegistration . t)))
+                   (didChangeWatchedFiles . ,(when lsp-enable-file-watchers '((dynamicRegistration . t))))
                    (workspaceFolders . t)
                    (configuration . t)))
      (textDocument . ((declaration . ((linkSupport . t)))
@@ -3442,12 +3445,10 @@ https://microsoft.github.io/language-server-protocol/specification#textDocument_
 
 (defun lsp--annotate (item)
   "Annotate ITEM detail."
-  (-let (((&hash "detail" "kind" kind-index) (plist-get (text-properties-at 0 item) 'lsp-completion-item))
-         kind)
-    ;; We need check index before call `aref'.
-    (when kind-index
-      (setq kind (aref lsp--completion-item-kind kind-index))
-      (concat " " detail (when kind (format " (%s)" kind))))))
+  (-let (((&hash "detail" "kind") (plist-get (text-properties-at 0 item) 'lsp-completion-item)))
+    (concat (when detail (concat " " detail))
+            (when-let (kind-name (and kind (aref lsp--completion-item-kind kind)))
+              (format " (%s)" kind-name)))))
 
 (defun lsp--default-prefix-function ()
   "Default prefix function."
@@ -3468,7 +3469,8 @@ https://microsoft.github.io/language-server-protocol/specification#textDocument_
             ;; *we* don't need to know the string being completed
             ;; the language server does all the work by itself
             (let* ((resp (lsp-request "textDocument/completion"
-                                      (lsp--text-document-position-params)))
+                                      (plist-put (lsp--text-document-position-params)
+                                                 :context (ht ("triggerKind" 1)))))
                    (items (cond
                            ((seqp resp) resp)
                            ((hash-table-p resp) (gethash "items" resp nil)))))

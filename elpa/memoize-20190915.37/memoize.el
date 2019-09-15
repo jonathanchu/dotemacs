@@ -4,7 +4,7 @@
 
 ;; Author: Christopher Wellons <mosquitopsu@gmail.com>
 ;; URL: https://github.com/skeeto/emacs-memoize
-;; Package-Version: 20180614.1930
+;; Package-Version: 20190915.37
 ;; Version: 1.1
 
 ;;; Commentary:
@@ -19,7 +19,7 @@
 ;; `defmemoize' defines a memoized function directly, behaving just
 ;; like `defun'.
 
-;;     (defmemoize my-expensive-function (x)
+;;     (defmemoize my-expensive-function (n)
 ;;       (if (zerop n)
 ;;           1
 ;;         (* n (my-expensive-function (1- n)))))

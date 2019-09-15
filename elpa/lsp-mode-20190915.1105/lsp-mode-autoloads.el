@@ -62,6 +62,13 @@
 
 ;;;***
 
+;;;### (autoloads nil "lsp-haxe" "lsp-haxe.el" (0 0 0 0))
+;;; Generated autoloads from lsp-haxe.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "lsp-haxe" '("lsp-")))
+
+;;;***
+
 ;;;### (autoloads nil "lsp-html" "lsp-html.el" (0 0 0 0))
 ;;; Generated autoloads from lsp-html.el
 
