@@ -47,7 +47,8 @@
   "Popup console for git-toolbelt commands."
   'magit-popups
   :actions '((?c "Cleanup" magit-git-toolbelt-cleanup)
-             (?i "Initial commit" magit-git-toolbelt-initial-commit))
+             (?i "Initial commit" magit-git-toolbelt-initial-commit)
+             (?r "Recent branches" magit-git-toolbelt-recent-branches))
   :max-action-columns 3)
 
 (defun magit-git-toolbelt-cleanup ()
@@ -61,6 +62,12 @@
 \('git initial-commit')"
   (interactive)
   (magit-show-commit (magit-git-string "initial-commit")))
+
+(defun magit-git-toolbelt-recent-branches ()
+  "Show a list of branches that have been modified since the specified date range. Defaults to '1.week.ago'.
+\('git recent-branches')"
+  (interactive)
+  (magit-refs-setup-buffer "HEAD" nil))
 
 
 ;;;###autoload
