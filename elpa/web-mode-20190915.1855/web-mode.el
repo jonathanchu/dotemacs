@@ -4,7 +4,7 @@
 ;; Copyright 2011-2019 François-Xavier Bois
 
 ;; Version: 16.0.24
-;; Package-Version: 20190625.1951
+;; Package-Version: 20190915.1855
 ;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
 ;; Maintainer: François-Xavier Bois
 ;; Package-Requires: ((emacs "23.1"))
@@ -317,6 +317,15 @@ See web-mode-block-face."
   '(web-mode-mark-and-expand er/expand-region mc/mark-next-like-this)
   "Add it to here if you have some wrapper function for er/expand-region"
   :type '(repeat function)
+  :group 'web-mode)
+
+(defcustom web-mode-comment-formats
+  '(("java"       . "/*")
+    ("javascript" . "/*")
+    ("php"        . "/*")
+    ("css"        . "/*"))
+  "Default comment format for a language"
+  :type '(alist :key-type string :value-type string)
   :group 'web-mode)
 
 ;;---- FACES -------------------------------------------------------------------
@@ -889,13 +898,6 @@ Must be used in conjunction with web-mode-enable-block-face."
     ("part-face"                 . web-mode-enable-part-face)))
 
 (defvar web-mode-comment-prefixing t)
-
-(defvar web-mode-comment-formats
-  '(("java"       . "/*")
-    ("javascript" . "/*")
-    ("php"        . "/*")
-    ("css"        . "/*")
-    ))
 
 (defvar web-mode-engine-file-regexps
   '(("angular"          . "\\.component.html\\'")
