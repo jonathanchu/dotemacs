@@ -166,6 +166,7 @@
 (declare-function org-narrow-to-block 'org)
 (declare-function org-narrow-to-element 'org)
 (declare-function org-narrow-to-subtree 'org)
+(declare-function org-toggle-narrow-to-subtree 'org)
 (declare-function parrot-create 'parrot)
 (declare-function pdf-cache-number-of-pages 'pdf-cache)
 (declare-function persp-add-buffer 'persp-mode)
@@ -305,6 +306,7 @@ Uses `all-the-icons-material' to fetch the icon."
 (advice-add #'org-narrow-to-block :after #'doom-modeline-update-buffer-file-state-icon)
 (advice-add #'org-narrow-to-element :after #'doom-modeline-update-buffer-file-state-icon)
 (advice-add #'org-narrow-to-subtree :after #'doom-modeline-update-buffer-file-state-icon)
+(advice-add #'org-toggle-narrow-to-subtree :after #'doom-modeline-update-buffer-file-state-icon)
 (advice-add #'org-edit-src-save :after #'doom-modeline-update-buffer-file-state-icon)
 (advice-add #'symbol-overlay-rename :after #'doom-modeline-update-buffer-file-state-icon)
 

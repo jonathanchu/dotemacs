@@ -2,7 +2,7 @@
 ;; Copyright (C) 2015-2019 jack angers
 ;; Author: jack angers and contributors
 ;; Version: 0.5.3
-;; Package-Version: 20190912.531
+;; Package-Version: 20190918.426
 ;; Package-Requires: ((emacs "24.3") (f "0.20.0") (s "1.11.0") (dash "2.9.0") (popup "0.5.3"))
 ;; Keywords: programming
 
@@ -403,6 +403,17 @@ or most optimal searcher."
            :tests ("NSString *test = @\"asdf\"")
            :not ("NSString *testnot = @\"asdf\"" "NSString *nottest = @\"asdf\""))
 
+    (:type "type" :supports ("ag" "grep" "rg" "git-grep") :language "objc"
+           :regex "(@interface|@protocol|@implementation)\\b\\s*JJJ\\b\\s*"
+           :tests ("@interface test: UIWindow")
+           :not ("@interface testnon: UIWindow"))
+
+
+    (:type "type" :supports ("ag" "grep" "rg" "git-grep") :language "objc"
+           :regex "typedef\\b\\s+(NS_OPTIONS|NS_ENUM)\\b\\([^,]+?,\\s*JJJ\\b\\s*"
+           :tests ("typedef NS_ENUM(NSUInteger, test)")
+           :not ("typedef NS_ENUMD(NSUInteger, test)"))
+
     ;; swift
     (:type "variable" :supports ("ag" "grep" "rg" "git-grep") :language "swift"
            :regex "(let|var)\\s*JJJ\\s*(=|:)[^=:\\n]+"
@@ -642,6 +653,18 @@ or most optimal searcher."
     (:type "type" :supports ("ag" "rg" "git-grep") :language "crystal"
            :regex "(^|[^\\w.])alias\\s+(\\w*::)*JJJ($|[^\\w|:])"
            :tests ("alias test" "alias Foo::test"))
+
+    ;; scad
+    (:type "variable" :supports ("ag" "grep" "rg" "git-grep") :language "scad"
+           :regex "\\s*\\bJJJ\\s*=[^=\\n]+" :tests ("test = 1234") :not ("if test == 1234 {"))
+
+    (:type "function" :supports ("ag" "grep" "rg" "git-grep") :language "scad"
+           :regex "function\\s*JJJ\\s*\\\("
+           :tests ("function test()" "function test ()"))
+
+    (:type "module" :supports ("ag" "grep" "rg" "git-grep") :language "scad"
+           :regex "module\\s*JJJ\\s*\\\("
+           :tests ("module test()" "module test ()"))
 
     ;; scala
     (:type "variable" :supports ("ag" "grep" "rg" "git-grep") :language "scala"
@@ -1286,7 +1309,19 @@ or most optimal searcher."
     (:type "type" :supports ("ag" "grep" "git-grep") :language "fsharp"
 	   :regex "type\\s+JJJ\\b.*\\\="
 	   :tests ("type test = 1234")
-	   :not ("type testnot = 1234")))
+	   :not ("type testnot = 1234"))
+
+    ;; kotlin
+    (:type "function" :supports ("ag" "grep" "rg" "git-grep") :language "kotlin"
+           :regex "fun\\s*(<[^>]*>)?\\s*JJJ\\s*\\("
+           :tests ("fun test()" "fun <T> test()"))
+    (:type "variable" :supports ("ag" "grep" "rg" "git-grep") :language "kotlin"
+           :regex "(val|var)\\s*JJJ\\b"
+           :not ("val testval" "var testvar")
+           :tests ("val test " "var test"))
+    (:type "type" :supports ("ag" "grep" "rg" "git-grep") :language "kotlin"
+           :regex "(class|interface)\\s*JJJ\\b"
+           :tests ("class test" "class test : SomeInterface" "interface test")))
 
 
   "List of regex patttern templates organized by language and type to use for generating the grep command."
@@ -1398,6 +1433,7 @@ or most optimal searcher."
     (:language "ruby" :ext "rake" :agtype "ruby" :rgtype nil)
     (:language "ruby" :ext "slim" :agtype "ruby" :rgtype nil)
     (:language "rust" :ext "rs" :agtype "rust" :rgtype "rust")
+    (:language "scad" :ext "scad" :agtype nil :rgtype nil)
     (:language "scala" :ext "scala" :agtype "scala" :rgtype "scala")
     (:language "scheme" :ext "scm" :agtype "scheme" :rgtype "lisp")
     (:language "scheme" :ext "ss" :agtype "scheme" :rgtype "lisp")
@@ -1426,7 +1462,9 @@ or most optimal searcher."
     (:language "pascal" :ext "dfm" :agtype "delphi" :rgtype nil)
     (:language "fsharp" :ext "fs" :agtype "fsharp" :rgtype nil)
     (:language "fsharp" :ext "fsi" :agtype "fsharp" :rgtype nil)
-    (:language "fsharp" :ext "fsx" :agtype "fsharp" :rgtype nil))
+    (:language "fsharp" :ext "fsx" :agtype "fsharp" :rgtype nil)
+    (:language "kotlin" :ext "kt" :agtype "kotlin" :rgtype "kotlin")
+    (:language "kotlin" :ext "kts" :agtype "kotlin" :rgtype "kotlin"))
 
   "Mapping of programming language(s) to file extensions."
   :group 'dumb-jump
