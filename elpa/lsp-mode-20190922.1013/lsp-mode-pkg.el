@@ -1,4 +1,4 @@
-(define-package "lsp-mode" "20190918.1903" "LSP mode"
+(define-package "lsp-mode" "20190922.1013" "LSP mode"
   '((emacs "25.1")
     (dash "2.14.1")
     (dash-functional "2.14.1")
