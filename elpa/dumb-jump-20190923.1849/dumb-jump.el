@@ -2,7 +2,7 @@
 ;; Copyright (C) 2015-2019 jack angers
 ;; Author: jack angers and contributors
 ;; Version: 0.5.3
-;; Package-Version: 20190920.1531
+;; Package-Version: 20190923.1849
 ;; Package-Requires: ((emacs "24.3") (f "0.20.0") (s "1.11.0") (dash "2.9.0") (popup "0.5.3"))
 ;; Keywords: programming
 
@@ -1326,7 +1326,11 @@ or most optimal searcher."
     ;; protobuf
     (:type "message" :supports ("ag" "grep" "rg" "git-grep") :language "protobuf"
            :regex "message\\s+JJJ\\s*\\\{"
-           :tests ("message test{" "message test {")))
+           :tests ("message test{" "message test {"))
+
+    (:type "enum" :supports ("ag" "grep" "rg" "git-grep") :language "protobuf"
+           :regex "enum\\s+JJJ\\s*\\\{"
+           :tests ("enum test{" "enum test {")))
 
 
   "List of regex patttern templates organized by language and type to use for generating the grep command."
