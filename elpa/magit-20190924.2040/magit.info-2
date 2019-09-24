@@ -1920,8 +1920,9 @@ When Magit calls ‘git’ it adds a few global arguments including
 ‘--literal-pathspecs’ and the ‘git’ process started by Magit then passes
 that setting on to other ‘git’ process it starts itself.  It does so by
 setting the environment variable ‘GIT_LITERAL_PATHSPECS’, not by calling
-subprocesses with the ‘--literal-pathspecs’.  You can therefore override
-this setting in hook scripts using ‘unset GIT_LITERAL_PATHSPECS’.
+subprocesses with the ‘--literal-pathspecs’ argument.  You can therefore
+override this setting in hook scripts using ‘unset
+GIT_LITERAL_PATHSPECS’.
 
 
 File: magit.info,  Node: git-commit-mode isn't used when committing from the command-line,  Next: Point ends up inside invisible text when jumping to a file-visiting buffer,  Prev: My Git hooks work on the command-line but not inside Magit,  Up: FAQ - Issues and Errors

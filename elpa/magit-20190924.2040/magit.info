@@ -173,13 +173,13 @@ Node: Point is wrong in the COMMIT_EDITMSG buffer379354
 Node: The mode-line information isn't always up-to-date380400
 Node: A branch and tag sharing the same name breaks SOMETHING381482
 Node: My Git hooks work on the command-line but not inside Magit382370
-Node: git-commit-mode isn't used when committing from the command-line383207
-Node: Point ends up inside invisible text when jumping to a file-visiting buffer385474
-Node: Debugging Tools386272
-Node: Keystroke Index388159
-Node: Command Index421873
-Node: Function Index458628
-Node: Variable Index474847
+Node: git-commit-mode isn't used when committing from the command-line383216
+Node: Point ends up inside invisible text when jumping to a file-visiting buffer385483
+Node: Debugging Tools386281
+Node: Keystroke Index388168
+Node: Command Index421882
+Node: Function Index458637
+Node: Variable Index474856
 
 End Tag Table
 

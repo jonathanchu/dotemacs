@@ -247,12 +247,11 @@
            for pkg-name = (package-desc-name pkg-desc)
            for upgrade = (cdr (assq pkg-name
                                     helm-el-package--upgrades))
-           for extra-upgrade = (cdr (assq pkg-name
-                                          helm-el-package--to-recompile))
+           for to-recompile = (assq pkg-name
+                                     helm-el-package--to-recompile)
            do
            (cond (;; Recompile.
-                  (and (null upgrade)
-                       (equal pkg-desc extra-upgrade))
+                  (and (null upgrade) to-recompile)
                   (message "Recompiling package `%s'" pkg-name)
                   (helm-el-package-recompile-1 pkg-desc))
                  (;; Do nothing.
@@ -261,7 +260,6 @@
                       ;; is installed and need upgrade and pkg is as
                       ;; well a builtin package.
                       (package-built-in-p pkg-name))
-                  (message "Do nothing, `%s' is a built-in package" pkg-name)
                   (ignore))
                  (;; Install.
                   (equal pkg-desc upgrade)
@@ -316,14 +314,18 @@
            for installed-p = (member desc '("installed" "dependency"))
            for upgrade-p = (assq name helm-el-package--upgrades)
            for user-installed-p = (memq name package-selected-packages)
-           do (when user-installed-p (put-text-property 0 2 'display "S " disp))
-           do (when (memq name helm-el-package--removable-packages)
+           do (when (and user-installed-p (not upgrade-p))
+                (put-text-property 0 2 'display "S " disp))
+           do (when (or (memq name helm-el-package--removable-packages)
+                        (and upgrade-p installed-p))
                 (put-text-property 0 2 'display "U " disp)
                 (put-text-property
                  2 (+ (length (symbol-name name)) 2)
                  'face 'font-lock-variable-name-face disp))
            do (when (and upgrade-p (assq name helm-el-package--to-recompile))
                 (put-text-property 0 2 'display "R " disp))
+           do (when (and upgrade-p (not installed-p))
+                (put-text-property 0 2 'display "I " disp))
            for cand = (cons disp (car (split-string disp)))
            when (or (and built-in-p
                          (eq helm-el-package--show-only 'built-in))
