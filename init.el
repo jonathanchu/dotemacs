@@ -1118,16 +1118,30 @@
   (setq org-startup-indented t)
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
-  (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
-                            (sequence "⚑ WAITING(w)" "|")
-                            (sequence "|" "✘ CANCELED(c)")))
+  ;; (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+  ;;                           (sequence "⚑ WAITING(w)" "|")
+  ;;                           (sequence "|" "✘ CANCELED(c)")))
+  '(org-todo-keyword-faces
+    (quote
+     (("TODO" :foreground "medium blue" :weight bold)
+      ("EPIC" :foreground "deep sky blue" :weight bold)
+      ("STORY" :foreground "royal blue" :weight bold)
+      ("RECUR" :foreground "cornflowerblue" :weight bold)
+      ("APPT" :foreground "medium blue" :weight bold)
+      ("NOTE" :foreground "brown" :weight bold)
+      ("STARTED" :foreground "dark orange" :weight bold)
+      ("WAITING" :foreground "red" :weight bold)
+      ("DELEGATED" :foreground "dark violet" :weight bold)
+      ("DEFERRED" :foreground "dark blue" :weight bold)
+      ("SOMEDAY" :foreground "dark blue" :weight bold)
+      ("PROJECT" :foreground "#088e8e" :weight bold))))
   (setq org-ellipsis "  ")
-  (setq org-todo-keyword-faces
-        '(("TODO" :foreground "green" :weight bold)
-          ("NEXT" :foreground "blue" :weight bold)
-          ("WAITING" :foreground "orange" :weight bold)
-          ("HOLD" :foreground "magenta" :weight bold)
-          ("CANCELED" :foreground "red" :weight bold)))
+  ;; (setq org-todo-keyword-faces
+  ;;       '(("TODO" :foreground "green" :weight bold)
+  ;;         ("NEXT" :foreground "blue" :weight bold)
+  ;;         ("WAITING" :foreground "orange" :weight bold)
+  ;;         ("HOLD" :foreground "magenta" :weight bold)
+  ;;         ("CANCELED" :foreground "red" :weight bold)))
   ;; (setq org-completion-use-ido t)
   (setq org-startup-folded nil)
   (setq org-use-speed-commands t)       ; n, p, l, r
@@ -1192,6 +1206,7 @@
   )
 
 (use-package org-bullets
+  :disabled
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
