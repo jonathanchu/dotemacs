@@ -136,7 +136,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (org-fancy-priorities org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami noflet neotree move-text markdown-mode magit latex-preview-pane key-chord json-mode js2-refactor js2-mode imenu-anywhere ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flx-ido flow-minor-mode fix-word fish-mode fireplace expand-region evil esup elpy elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode beacon anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -165,7 +165,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
+ '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar))))
+ '(org-ellipsis ((t (:foreground nil)))))
 
 ;; set paths from shell
 (use-package exec-path-from-shell
@@ -1109,47 +1110,71 @@
   :ensure t)
 
 (use-package org
-  :defer t
+  :ensure nil
+  :custom-face (org-ellipsis ((t (:foreground nil))))
+  :preface
   :bind
   ("C-c c" . org-capture)
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
+  :mode
+  (("\\.org$" . org-mode))
+  :init (setq org-agenda-files '("~/Dropbox/org/inbox.org"
+                                 "~/Dropbox/org/todo.org"
+                                 "~/Dropbox/org/gtd.org"
+                                 "~/Dropbox/org/simplehealth.org")
+              org-todo-keywords
+              '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")
+                (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)"))
+              org-todo-keyword-faces '(("❓" . warning)
+                                       ("TODO" :foreground "medium blue" :weight bold)
+                                       ("STARTED" :foreground "dark orange" :weight bold)
+                                       ("WAITING" :foreground "red" :weight bold)
+                                       ("DONE" :foreground "dark violet" :weight bold)
+                                       ("CANCELED" :foreground "dark blue" :weight bold))
+              org-priority-faces '((?A . error)
+                                   (?B . warning)
+                                   (?C . success))
+              org-tags-column -80
+              org-log-done 'time
+              org-catch-invisible-edits 'smart
+              org-startup-indented t
+              org-ellipsis (if (char-displayable-p ?) " " nil)
+              org-pretty-entities nil
+              org-hide-emphasis-markers t)
   :config
-  (setq org-startup-indented t)
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
-  ;; (setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
-  ;;                           (sequence "⚑ WAITING(w)" "|")
-  ;;                           (sequence "|" "✘ CANCELED(c)")))
-  '(org-todo-keyword-faces
-    (quote
-     (("TODO" :foreground "medium blue" :weight bold)
-      ("EPIC" :foreground "deep sky blue" :weight bold)
-      ("STORY" :foreground "royal blue" :weight bold)
-      ("RECUR" :foreground "cornflowerblue" :weight bold)
-      ("APPT" :foreground "medium blue" :weight bold)
-      ("NOTE" :foreground "brown" :weight bold)
-      ("STARTED" :foreground "dark orange" :weight bold)
-      ("WAITING" :foreground "red" :weight bold)
-      ("DELEGATED" :foreground "dark violet" :weight bold)
-      ("DEFERRED" :foreground "dark blue" :weight bold)
-      ("SOMEDAY" :foreground "dark blue" :weight bold)
-      ("PROJECT" :foreground "#088e8e" :weight bold))))
-  (setq org-ellipsis "  ")
-  ;; (setq org-todo-keyword-faces
-  ;;       '(("TODO" :foreground "green" :weight bold)
-  ;;         ("NEXT" :foreground "blue" :weight bold)
-  ;;         ("WAITING" :foreground "orange" :weight bold)
-  ;;         ("HOLD" :foreground "magenta" :weight bold)
-  ;;         ("CANCELED" :foreground "red" :weight bold)))
-  ;; (setq org-completion-use-ido t)
   (setq org-startup-folded nil)
   (setq org-use-speed-commands t)       ; n, p, l, r
   (setq org-goto-interface 'outline-path-completion) ; C-c C-j
   (setq org-goto-max-level 10)
-  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                           "~/Dropbox/org/gtd.org"
-                           "~/Dropbox/org/simplehealth.org"))
+
+  ;;;;;
+  (setq header-line-format " ")
+  (setq org-hide-emphasis-markers t)
+  (use-package org-bullets
+    :ensure t
+    :if (char-displayable-p ?⚫)
+    :hook (org-mode . org-bullets-mode)
+    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
+
+  (use-package org-journal
+    :ensure t
+    :defer t
+    :custom
+    (org-journal-dir "~/Dropbox/org/journal/")
+    (org-journal-date-format "%A, %d %B %Y"))
+
+  (use-package org-fancy-priorities
+    :ensure t
+    :diminish
+    :hook (org-mode . org-fancy-priorities-mode)
+    :init (setq org-fancy-priorities-list
+                (if (char-displayable-p ?⯀)
+                    '("⯀" "⯀" "⯀" "⯀")
+                  '("HIGH" "MIDIUM" "LOW" "OPTIONAL"))))
+  ;;;;;
   (setq org-default-notes-file "~/Dropbox/org/inbox.org")
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                  (file+headline "~/Dropbox/org/inbox.org" "Tasks") "* TODO %i%?")
@@ -1205,31 +1230,7 @@
             )
   )
 
-(use-package org-bullets
-  :disabled
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  ;; (setq org-bullets-bullet-list
-  ;;       '("◉" "○"))
-  ;; (setq org-bullets-bullet-list
-  ;;       '("●" "○" "◉" "◆"))
-  ;; (setq org-bullets-bullet-list '("·"))
-  ;; (setq org-bullets-bullet-list
-  ;;       (quote ("\uf054" "\uf105" "\uf067" "\uf069")))
-  ;; (setq org-bullets-bullet-list
-  ;;       '("#" "#" "#" "#" "#" "#"))
-  (setq header-line-format " ")
-  (setq org-hide-emphasis-markers t)
-  )
 
-(use-package org-journal
-  :ensure t
-  :defer t
-  :custom
-  (org-journal-dir "~/Dropbox/org/journal/")
-  (org-journal-date-format "%A, %d %B %Y")
-  )
 
 (use-package origami
   :ensure t
