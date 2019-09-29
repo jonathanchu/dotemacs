@@ -1222,7 +1222,6 @@
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
-              (setq set-face-attribute 'org-indent nil :inhereit '(org-hide fixed-pitch))
               (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings)
               (setq org-fontify-quote-and-verse-blocks t)
               (setq org-fontify-done-headline t)  ;;
