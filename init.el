@@ -1133,9 +1133,9 @@
                                        ("WAITING" :foreground "red" :weight bold)
                                        ("DONE" :foreground "dark violet" :weight bold)
                                        ("CANCELED" :foreground "dark blue" :weight bold))
-              org-priority-faces '((?A . error)
-                                   (?B . warning)
-                                   (?C . success))
+              ;; org-priority-faces '((?A . error)
+              ;;                      (?B . warning)
+              ;;                      (?C . success))
               org-tags-column -80
               org-log-done 'time
               org-catch-invisible-edits 'smart
@@ -1150,7 +1150,6 @@
   (setq org-use-speed-commands t)       ; n, p, l, r
   (setq org-goto-interface 'outline-path-completion) ; C-c C-j
   (setq org-goto-max-level 10)
-
   ;;;;;
   (setq header-line-format " ")
   (setq org-hide-emphasis-markers t)
@@ -1185,17 +1184,17 @@
   (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
-  (setq org-agenda-span (quote fortnight))
+  (setq org-agenda-span (quote day))
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
   ;; (setq org-agenda-todo-ignore-deadlines (quote all))
-  (setq org-agenda-todo-ignore-scheduled (quote all))
-  (setq org-agenda-sorting-strategy
-        (quote
-         ((agenda deadline-up priority-down)
-          (todo priority-down category-keep)
-          (tags priority-down category-keep)
-          (search category-keep))))
+  ;; (setq org-agenda-todo-ignore-scheduled (quote all))
+  ;; (setq org-agenda-sorting-strategy
+  ;;       (quote
+  ;;        ((agenda deadline-up priority-down)
+  ;;         (todo priority-down category-keep)
+  ;;         (tags priority-down category-keep)
+  ;;         (search category-keep))))
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
   (setq org-src-preserve-indentation t)
@@ -1221,6 +1220,57 @@
               )
             )
   )
+
+(use-package org-super-agenda
+  :after org-mode
+  :preface
+  (defun super-jump-to-org-agenda ()
+    (interactive)
+    (let ((org-super-agenda-groups
+           '(;; Each group has an implicit boolean OR operator between its selectors.
+             (:name "Today"  ; Optionally specify section name
+                    :time-grid t  ; Items that appear on the time grid
+                    :todo "TODAY")  ; Items that have this TODO keyword
+             (:name "Important"
+                    ;; Single arguments given alone
+                    :tag "bills"
+                    :priority "A")
+             ;; Set order of multiple groups at once
+             (:order-multi (2 (:name "Shopping in town"
+                                     ;; Boolean AND group matches items that match all subgroups
+                                     :and (:tag "shopping" :tag "@town"))
+                              (:name "Food-related"
+                                     ;; Multiple args given in list with implicit OR
+                                     :tag ("food" "dinner"))
+                              (:name "Personal"
+                                     ;; :habit t
+                                     :tag "personal")
+                              (:name "Space-related (non-moon-or-planet-related)"
+                                     ;; Regexps match case-insensitively on the entire entry
+                                     :and (:regexp ("space" "NASA")
+                                                   ;; Boolean NOT also has implicit OR between selectors
+                                                   :not (:regexp "moon" :tag "planet")))))
+             ;; Groups supply their own section names when none are given
+             (:todo "WAITING" :order 8)  ; Set order of this section
+             (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+                    ;; Show this group at the end of the agenda (since it has the
+                    ;; highest number). If you specified this group last, items
+                    ;; with these todo keywords that e.g. have priority A would be
+                    ;; displayed in that group instead, because items are grouped
+                    ;; out in the order the groups are listed.
+                    :order 9)
+             (:priority<= "B"
+                          ;; Show this section after "Today" and "Important", because
+                          ;; their order is unspecified, defaulting to 0. Sections
+                          ;; are displayed lowest-number-first.
+                          :order 1)
+             ;; After the last group, the agenda will display items that didn't
+             ;; match any of these groups, with the default order position of 99
+             )))
+      (org-agenda nil "a"))
+    )
+  :config
+  (org-super-agenda-mode))
 
 
 
