@@ -141,11 +141,12 @@ INITIAL-INPUT can be given as the initial minibuffer input.
 
 (autoload 'counsel-git-grep "counsel" "\
 Grep for a string in the current Git repository.
+INITIAL-INPUT can be given as the initial minibuffer input.
+INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 When CMD is a string, use it as a \"git grep\" command.
 When CMD is non-nil, prompt for a specific \"git grep\" command.
-INITIAL-INPUT can be given as the initial minibuffer input.
 
-\(fn &optional CMD INITIAL-INPUT)" t nil)
+\(fn &optional INITIAL-INPUT INITIAL-DIRECTORY CMD)" t nil)
 
 (autoload 'counsel-git-stash "counsel" "\
 Search through all available git stashes.

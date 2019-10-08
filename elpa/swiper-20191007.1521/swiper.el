@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20191005.1554
+;; Package-Version: 20191007.1521
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.1") (ivy "0.12.0"))
 ;; Keywords: matching
@@ -1430,6 +1430,16 @@ that we search only for one character."
           (swiper--add-cursor-overlay
            (ivy-state-window ivy-last))))
     (swiper--cleanup)))
+
+(defun swiper-action-copy (_x)
+  "Copy line at point and go back."
+  (kill-new
+   (buffer-substring-no-properties
+    (line-beginning-position) (line-end-position)))
+  (goto-char swiper--opoint))
+
+(ivy-add-actions 'swiper-isearch '(("w" swiper-action-copy "copy")))
+(ivy-add-actions 'swiper '(("w" swiper-action-copy "copy")))
 
 (defun swiper-isearch-thing-at-point ()
   "Insert `symbol-at-point' into the minibuffer of `swiper-isearch'.

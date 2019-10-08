@@ -4,7 +4,7 @@
 
 ;; Author: Oleh Krehel <ohwoeowho@gmail.com>
 ;; URL: https://github.com/abo-abo/swiper
-;; Package-Version: 20191006.1302
+;; Package-Version: 20191007.1406
 ;; Version: 0.12.0
 ;; Package-Requires: ((emacs "24.3") (swiper "0.12.0"))
 ;; Keywords: convenience, matching, tools
@@ -820,7 +820,7 @@ With prefix arg MODE a query for the symbol help mode is offered."
                (memq sym minor-mode-list)
                (boundp sym)
                (buffer-local-value sym (ivy-state-buffer ivy-last))))
-      (put-text-property 0 (length cmd) 'face 'counsel-active-mode cmd))
+      (setq cmd (propertize cmd 'face 'counsel-active-mode)))
     (concat cmd
             (when (and (symbolp alias) counsel-alias-expand)
               (format " (%s)" alias))
@@ -1415,7 +1415,7 @@ files in a project.")
         proj)
     (cond
       ((stringp cmd))
-      (cmd
+      (current-prefix-arg
        (if (setq proj
                  (cl-find-if
                   (lambda (x)
@@ -1475,12 +1475,13 @@ On success, RESULT-FN is called in output buffer with no arguments."
   (counsel--call command))
 
 ;;;###autoload
-(defun counsel-git-grep (&optional cmd initial-input)
+(defun counsel-git-grep (&optional initial-input initial-directory cmd)
   "Grep for a string in the current Git repository.
+INITIAL-INPUT can be given as the initial minibuffer input.
+INITIAL-DIRECTORY, if non-nil, is used as the root directory for search.
 When CMD is a string, use it as a \"git grep\" command.
-When CMD is non-nil, prompt for a specific \"git grep\" command.
-INITIAL-INPUT can be given as the initial minibuffer input."
-  (interactive "P")
+When CMD is non-nil, prompt for a specific \"git grep\" command."
+  (interactive)
   (let ((proj-and-cmd (counsel--git-grep-cmd-and-proj cmd))
         proj)
     (setq proj (car proj-and-cmd))
@@ -1494,9 +1495,10 @@ INITIAL-INPUT can be given as the initial minibuffer input."
            (lambda ()
              (counsel-delete-process)
              (swiper--cleanup)))
-          (default-directory (if proj
-                                 (car proj)
-                               (counsel-locate-git-root))))
+          (default-directory (or initial-directory
+                                 (if proj
+                                     (car proj)
+                                   (counsel-locate-git-root)))))
       (ivy-read "git grep: " collection-function
                 :initial-input initial-input
                 :dynamic-collection t
@@ -2840,13 +2842,13 @@ CALLER is passed to `ivy-read'."
               :caller (or caller 'counsel-ag))))
 
 (defun counsel-cd ()
-  "Change the directory for the currently running Ivy command."
+  "Change the directory for the currently running Ivy grep-like command.
+Works for `counsel-git-grep', `counsel-ag', etc."
   (interactive)
   (let ((input ivy-text)
         (new-dir (read-directory-name "cd: ")))
     (ivy-quit-and-run
-      (let ((default-directory new-dir))
-        (funcall (ivy-state-caller ivy-last) input)))))
+      (funcall (ivy-state-caller ivy-last) input new-dir))))
 
 (cl-pushnew 'counsel-ag ivy-highlight-grep-commands)
 
