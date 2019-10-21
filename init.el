@@ -1146,7 +1146,8 @@
   :config
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
-  (setq org-startup-folded nil)
+  ;; Always showall by default
+  ;; (setq org-startup-folded nil)
   (setq org-use-speed-commands t)       ; n, p, l, r
   (setq org-goto-interface 'outline-path-completion) ; C-c C-j
   (setq org-goto-max-level 10)
