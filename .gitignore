@@ -56,3 +56,5 @@ transient
 elpa/archives
 *__pycache__
 .lsp-*
+/*.sqlite
+/*.cache
