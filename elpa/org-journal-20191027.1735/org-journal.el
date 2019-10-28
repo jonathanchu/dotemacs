@@ -2,7 +2,7 @@
 
 ;; Author: Bastian Bechtold
 ;; URL: http://github.com/bastibe/org-journal
-;; Package-Version: 20191011.1315
+;; Package-Version: 20191027.1735
 ;; Version: 1.15.1
 ;; Package-Requires: ((emacs "25.1"))
 
@@ -537,7 +537,8 @@ hook is run."
       (org-journal-decrypt)
 
       ;; move TODOs from previous day here
-      (when (and (not (string-blank-p org-journal-carryover-items))
+      (when (and org-journal-carryover-items
+                 (not (string-blank-p org-journal-carryover-items))
                  (string= entry-path (org-journal-get-entry-path (current-time))))
         (org-journal-carryover))
 

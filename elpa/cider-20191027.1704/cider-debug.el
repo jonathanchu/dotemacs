@@ -211,19 +211,23 @@ Can be toggled at any time with `\\[cider-debug-toggle-locals]'."
     (?s "stacktrace" "stacktrace")
     (?t "trace" "trace")
     (?q "quit" "quit"))
-  "A list of debugger command specs in the format
-  (KEY COMMAND-NAME DISPLAY-NAME?)
-  where KEY is a character which is mapped to the command
-  COMMAND-NAME is a valid debug command to be passed to the cider-nrepl middleware
-  DISPLAY-NAME is the string displayed in the debugger overlay
+  "A list of debugger command specs.
+They are in the format (KEY COMMAND-NAME DISPLAY-NAME?), where:
 
-  If DISPLAY-NAME is nil, that command is hidden from the overlay but still callable.
-  The rest of the commands are displayed in the same order as this list."
+* KEY is a character which is mapped to the command
+* COMMAND-NAME is a valid debug command to be passed to the cider-nrepl
+middleware
+* DISPLAY-NAME is the string displayed in the debugger overlay
+
+If DISPLAY-NAME is nil, that command is hidden from the overlay but still
+callable.  The rest of the commands are displayed in their order of appearance
+on this list."
   :type '(alist :key-type character
                 :value-type (list
                              (string :tag "command name")
                              (choice (string :tag "display name") nil)))
-  :group 'cider-debug)
+  :group 'cider-debug
+  :package-version '(cider . "0.24.0"))
 
 (defun cider--debug-format-locals-list (locals)
   "Return a string description of list LOCALS.
@@ -240,7 +244,7 @@ Each element of LOCALS should be a list of at least two elements."
     ""))
 
 (defun cider--debug-propertize-prompt-commands ()
-  "In-place formatting of the command display names for the cider-debug-prompt overlay"
+  "In-place formatting of the command display names for the cider-debug-prompt overlay."
   (mapc (lambda (spec)
           (cl-destructuring-bind (char cmd disp-name) spec
             (when-let* ((pos (cl-position char disp-name)))
@@ -248,7 +252,7 @@ Each element of LOCALS should be a list of at least two elements."
         cider-debug-prompt-commands))
 
 (defun cider--debug-prompt (commands)
-  "Return prompt to display for COMMANDS"
+  "Return prompt to display for COMMANDS."
   ;; Force `default' face, otherwise the overlay "inherits" the face of the text
   ;; after it.
   (format (propertize "%s\n" 'face 'default)
