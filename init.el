@@ -1219,12 +1219,12 @@
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
-              (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings)
+              (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings
               (setq org-fontify-quote-and-verse-blocks t)
-              (setq org-fontify-done-headline t)  ;;
-              )
-            )
-  )
+              (setq org-fontify-done-headline t))))
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(load "org-settings")
 
 (use-package org-present
   :ensure t
