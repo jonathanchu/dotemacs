@@ -1,0 +1,101 @@
+* It’s Magit!
+[[./magit-logo.png]]
+* Hi, I’m Jonathan!
+#+ATTR_HTML: width="300px"
+#+ATTR_ORG: :width 300
+[[./emacs-icon.png]] [[./heart-eyes.png]] [[./logo-git.png]]😍
+* Confessions of a Self-Proclaimed Git Expert
+
+** I don’t remember any git commands anymore.
+** It was very hard resisting the urge to tinker with my Emacs config instead of working on this talk.
+
+* A Git Porcelain in Emacs
+
+** Plumbing -> Porcelain
+** Wraps Git commands combined with popups, arguments, and workflows
+** It has enough functionality to free you from ever having to use git on the command line
+
+* In the beginning there was darkness
+#+ATTR_HTML: width="400px"
+#+ATTR_ORG: :width 400
+[[./git_2x.png]]
+
+* Today we will cover
+
+** Inspecting
+** Manipulating
+
+* The Magit Status Buffer
+
+** m-x magit-status
+** C-x g (suggested)
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x g") ’magit-status)
+#+END_SRC
+** Refresh (g/G)
+** global-magit-file-mode (C-c M-g)
+** magit-dispatch (C-x M-g)
+
+* The Magit Status Buffer
+
+** Sections
+*** Movement ([M-]n/p, j)
+*** Visibility ([M-]1/2/3/4, TAB, S-<tab>)
+
+* Diffing
+
+** Diff Options (D)
+
+* Logging
+
+** L
+
+* Blaming
+
+** (magit-blame)
+
+* Staging
+
+** (s/u/S/U)
+** (-/0/+)
+
+* Committing
+
+** m-n, m-p
+** Insert Git headers with (C-c C-r, C-c, C-s)
+
+* Branching (b)
+
+** Spin-off
+
+* Reverting
+
+** Revert with and without commit
+
+* Resetting
+
+** hard, soft
+
+* Stashing
+
+** z
+
+* Rebasing
+
+** My favorite feature
+
+* Bisect
+
+* Lots more
+** Tagging (magit-tag)
+** Notes (magit-notes)
+** Submodules
+** Worktree
+
+* What has Magit done for me?
+*** Helped me conceptually understand many (complicated!) git paradigms with its workflow and ease of use
+*** Let’s me get back to work
+* Magit Resources
+*** https://magit.vc/manual/magit/
+**** forge
+* Invest in Your Tooling
