@@ -1048,9 +1048,7 @@
   :ensure t
   :config
   (progn
-    (setq magit-push-always-verify nil)
     (setq magit-completing-read-function #'ivy-completing-read)
-    (setq magit-last-seen-setup-instructions "1.4.0")
     (setq magit-diff-refine-hunk t)
     (setq magit-status-margin
           '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
