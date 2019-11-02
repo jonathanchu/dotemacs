@@ -1060,6 +1060,8 @@
   ("C-c g" . magit-file-dispatch)
   )
 
+(message "Hi Emacsconf!")
+
 (setq magit-repository-directories '(("\~/projects" . 3)))
 (defun magit-status-with-prefix-arg ()
   "Call `magit-status` with a prefix."
@@ -1072,9 +1074,13 @@
 (use-package magit-git-toolbelt
   :load-path "vendor/")
 
+(message "Some more text")
+
 (use-package make-mode
   :config
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+
+(message "And some more text over here")
 
 (use-package markdown-mode
   :ensure t
@@ -1820,5 +1826,7 @@ The CHAR is replaced and the point is put before CHAR."
                        (time-subtract (current-time) emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
                           ,load-file-name elapsed))) t))
+
+(load "erc-settings")
 
 ;;; init.el ends here

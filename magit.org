@@ -11,12 +11,15 @@
 * Confessions of a Self-Proclaimed Git Expert
 
 ** I don’t remember any git commands anymore.
+
 ** It was very hard resisting the urge to tinker with my Emacs config instead of working on this talk.
 
 * A Git Porcelain in Emacs
 
 ** Plumbing -> Porcelain
+
 ** Wraps Git commands combined with popups, arguments, and workflows
+
 ** It has enough functionality to free you from ever having to use git on the command line
 
 * In the beginning there was darkness
@@ -27,28 +30,38 @@
 * Today we will cover
 
 ** Inspecting
+
 ** Manipulating
 
 * The Magit Status Buffer
 
 ** m-x magit-status
+
 ** C-x g (suggested)
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x g") ’magit-status)
 #+END_SRC
+
 ** Refresh (g/G)
+
 ** global-magit-file-mode (C-c M-g)
+
 ** magit-dispatch (C-x M-g)
 
 * The Magit Status Buffer
 
 ** Sections
 *** Movement ([M-]n/p, j)
+
 *** Visibility ([M-]1/2/3/4, TAB, S-<tab>)
 
 * Diffing
 
 ** Diff Options (D)
+
+** Context lines, hunk refinement
+
+** C-c C-t (magit-diff-trace-definition)
 
 * Logging
 
@@ -61,49 +74,67 @@
 * Staging
 
 ** (s/u/S/U)
+
 ** (-/0/+)
 
 * Committing
 
 ** m-n, m-p
+
 ** Insert Git headers with (C-c C-r, C-c, C-s)
 
 * Branching (b)
 
 ** Spin-off
 
-* Reverting
+* Reverting (V)
 
-** Revert with and without commit
+** V V (magit-revert-and-commit)
 
-* Resetting
+** V v (magit-revert-no-commit)
 
-** hard, soft
+* Resetting (x)
 
-* Stashing
+* Stashing (z)
 
-** z
+** z z (magit-stash-both)
+Stashes index and working tree, untracked files included
 
-* Rebasing
+* Rebasing (r)
 
-** My favorite feature
+** r i (magit-rebase-interactive)
+Resolve conflicts and rewrite history
 
-* Bisect
+* Bisect (B)
 
-* Lots more
+** B B (magit-bisect-start)
+** B s (magit-bisect-run)
+** B b (magit-bisect-bad)
+** B g (magit-bisect-good)
+** B r (magit-bisect-reset)
+
+* And Lots More
 
 ** Tagging (magit-tag)
 ** Notes (magit-notes)
 ** Submodules
 ** Worktree
 
-* Magit is awesome
+* Magit is Awesome
 
-*** Helped me conceptually understand many (complicated!) git paradigms with its workflow and ease of use
-*** Let’s me get back to work
+*** Helped me conceptually understand many (complicated!) git paradigms with its workflow and ease of use.
+
+*** Makes a lot of the more arcane git features easier to use.
+
+*** Let’s me get back to work.
 
 * Magit Resources
 
 *** https://magit.vc/manual/magit/
 
 * Thank you!
+
+** Questions?
+#emacsconf #emacsconf-questions
+
+** Say hi! @jonathanchu
