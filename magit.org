@@ -1,9 +1,13 @@
-* It’s Magit!
-[[./magit-logo.png]]
+* A Deep Dive into Magit
+
+[[./magit-400x400px.png]]
+
 * Hi, I’m Jonathan!
+
 #+ATTR_HTML: width="300px"
 #+ATTR_ORG: :width 300
 [[./emacs-icon.png]] [[./heart-eyes.png]] [[./logo-git.png]]😍
+
 * Confessions of a Self-Proclaimed Git Expert
 
 ** I don’t remember any git commands anymore.
@@ -87,15 +91,19 @@
 * Bisect
 
 * Lots more
+
 ** Tagging (magit-tag)
 ** Notes (magit-notes)
 ** Submodules
 ** Worktree
 
-* What has Magit done for me?
+* Magit is awesome
+
 *** Helped me conceptually understand many (complicated!) git paradigms with its workflow and ease of use
 *** Let’s me get back to work
+
 * Magit Resources
+
 *** https://magit.vc/manual/magit/
-**** forge
-* Invest in Your Tooling
+
+* Thank you!
