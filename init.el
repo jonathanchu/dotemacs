@@ -703,6 +703,7 @@
     (add-to-list 'company-backends 'company-elm)))
 
 (use-package elpy
+  :disabled
   :ensure t
   :config
   (elpy-enable)
