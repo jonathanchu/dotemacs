@@ -1122,29 +1122,35 @@
   ("C-c l" . org-store-link)
   :mode
   (("\\.org$" . org-mode))
-  :init (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                                 "~/Dropbox/org/todo.org"
-                                 "~/Dropbox/org/gtd.org"
-                                 "~/Dropbox/org/simplehealth.org")
-              org-todo-keywords
-              '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")
-                (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)"))
-              org-todo-keyword-faces '(("❓" . warning)
-                                       ("TODO" :foreground "medium blue" :weight bold)
-                                       ("STARTED" :foreground "dark orange" :weight bold)
-                                       ("WAITING" :foreground "red" :weight bold)
-                                       ("DONE" :foreground "dark violet" :weight bold)
-                                       ("CANCELED" :foreground "dark blue" :weight bold))
-              ;; org-priority-faces '((?A . error)
-              ;;                      (?B . warning)
-              ;;                      (?C . success))
-              org-tags-column -80
-              org-log-done 'time
-              org-catch-invisible-edits 'smart
-              org-startup-indented t
-              org-ellipsis (if (char-displayable-p ?) " " nil)
-              org-pretty-entities nil
-              org-hide-emphasis-markers t)
+  :init
+  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
+                           "~/Dropbox/org/todo.org"
+                           "~/Dropbox/org/gtd.org"
+                           "~/Dropbox/org/simplehealth.org")
+        org-todo-keywords
+        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT" "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
+          (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)"))
+        org-todo-keyword-faces '(("❓" . warning)
+                                 ("TODO" :foreground "medium blue" :weight bold)
+                                 ("STARTED" :foreground "dark orange" :weight bold)
+                                 ("WAITING" :foreground "red" :weight bold)
+                                 ("PROJECT" :foreground "royal blue" :weight bold)
+                                 ("DELEGATED" :foreground "dark violet" :weight bold)
+                                 ("DEFERRED" :foreground "dark blue" :weight bold)
+                                 ("SOMEDAY" :foreground "dark blue" :weight bold)
+                                 ("DONE" :foreground "dark violet" :weight bold)
+                                 ("CANCELED" :foreground "black" :weight bold)
+                                 )
+        org-priority-faces '((?A . error)
+                             (?B . warning)
+                             (?C . success))
+        org-tags-column -80
+        org-log-done 'time
+        org-catch-invisible-edits 'smart
+        org-startup-indented t
+        org-ellipsis (if (char-displayable-p ?) " " nil)
+        org-pretty-entities nil
+        org-hide-emphasis-markers t)
   :config
   (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
@@ -1184,12 +1190,12 @@
                         ("email" . ?e) ("errand" . ?x)))
   (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
   (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
-  (setq org-agenda-window-setup (quote current-window))
+  ;; (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
-  (setq org-agenda-span (quote day))
-  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
-  (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+  ;; (setq org-agenda-span (quote day))
+  ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  ;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
   ;; (setq org-agenda-todo-ignore-deadlines (quote all))
   ;; (setq org-agenda-todo-ignore-scheduled (quote all))
   ;; (setq org-agenda-sorting-strategy
@@ -1242,7 +1248,12 @@
               (org-present-read-write))))
 
 (use-package org-super-agenda
-  :after org-mode
+  :after org-agenda
+  :init
+  (setq org-super-agenda-groups '((:name "Today"
+                                         :time-grid t
+                                         :scheduled today)
+                                  ))
   :preface
   (defun super-jump-to-org-agenda ()
     (interactive)
