@@ -1547,6 +1547,7 @@
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 
 (use-package which-key
+  :disabled
   :ensure t
   :config
   (which-key-mode))
