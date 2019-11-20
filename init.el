@@ -1179,7 +1179,12 @@
   ;;;;;
   (setq org-default-notes-file "~/Dropbox/org/inbox.org")
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
-                                 (file+headline "~/Dropbox/org/inbox.org" "Tasks") "* TODO %i%?")
+                                 (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+                                 "* TODO %i%?
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:"
+                                 )
                                 ))
   (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
                              ("~/Dropbox/org/someday.org" :level . 1)
