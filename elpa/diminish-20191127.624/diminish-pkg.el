@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "diminish" "20191127.624" "Diminished modes are minor modes with no modeline display" 'nil :stars '(#("94" 0 2 (font-lock-face paradox-star-face))) :commit "8bed521dbd10c009ca76f5efbf95966fc186465f" :keywords '("extensions" "diminish" "minor" "codeprose") :authors '(("Will Mengarini" . "seldon@eskimo.com")) :maintainer '("Martin Yrjölä" . "martin.yrjola@gmail.com") :url "https://github.com/myrjola/diminish.el")
