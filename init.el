@@ -1149,7 +1149,7 @@
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-startup-indented t
-        org-ellipsis (if (char-displayable-p ?) " " nil)
+        ;; org-ellipsis (if (char-displayable-p ?) " " nil)
         org-pretty-entities nil
         org-hide-emphasis-markers t)
   :config
@@ -1164,9 +1164,10 @@
   (setq header-line-format " ")
   (setq org-hide-emphasis-markers t)
   (use-package org-bullets
+    :disabled
     :ensure t
     :if (char-displayable-p ?⚫)
-    :hook (org-mode . org-bullets-mode)
+    ;; :hook (org-mode . org-bullets-mode)
     :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
 
   (use-package org-journal
@@ -1219,7 +1220,7 @@
               (setq yas/trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field)
-              (olivetti-mode 1)        ;; Centers text in the buffer
+              ;; (olivetti-mode 1)        ;; Centers text in the buffer
               (setq olivetti-body-width 100)
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               (typo-mode 1)            ;; Good for symbols like em-dash
@@ -1233,8 +1234,16 @@
               (setq org-fontify-quote-and-verse-blocks t)
               (setq org-fontify-done-headline t))))
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(load "org-settings")
+;; (add-to-list 'load-path "~/.emacs.d/lisp")
+(setq load-path
+      (append '(~/.emacs.d)
+              (delete-dups load-path)
+              '("~/.emacs.d/lisp")))
+
+(use-package dot-org
+  :load-path "lisp/dot-org")
+
+;; (load "org-settings")
 
 (use-package org-present
   :ensure t
@@ -1552,8 +1561,8 @@
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 
 (use-package which-key
-  :disabled
   :ensure t
+  :diminish which-key-mode
   :config
   (which-key-mode))
 
