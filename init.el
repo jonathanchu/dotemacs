@@ -574,7 +574,7 @@
   (term-mode . centaur-tabs-local-mode)
   (calendar-mode . centaur-tabs-local-mode)
   (dired-mode . centaur-tabs-local-mode)
-  (org-agenda-mode . centaur-tabs-local-mode)
+  ;; (org-agenda-mode . centaur-tabs-local-mode)
   (magit-log-mode . centaur-tabs-local-mode)
   (magit-diff-mode . centaur-tabs-local-mode)
   (magit-status-mode . centaur-tabs-local-mode)
@@ -1200,7 +1200,7 @@
   ;; (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
-  ;; (setq org-agenda-span (quote day))
+  (setq org-agenda-span (quote day))
   ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   ;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
   ;; (setq org-agenda-todo-ignore-deadlines (quote all))
@@ -1262,61 +1262,61 @@
               (org-present-show-cursor)
               (org-present-read-write))))
 
-(use-package org-super-agenda
-  :after org-agenda
-  :init
-  (setq org-super-agenda-groups '((:name "Today"
-                                         :time-grid t
-                                         :scheduled today)
-                                  ))
-  :preface
-  (defun super-jump-to-org-agenda ()
-    (interactive)
-    (let ((org-super-agenda-groups
-           '(;; Each group has an implicit boolean OR operator between its selectors.
-             (:name "Today"  ; Optionally specify section name
-                    :time-grid t  ; Items that appear on the time grid
-                    :todo "TODAY")  ; Items that have this TODO keyword
-             (:name "Important"
-                    ;; Single arguments given alone
-                    :tag "bills"
-                    :priority "A")
-             ;; Set order of multiple groups at once
-             (:order-multi (2 (:name "Shopping in town"
-                                     ;; Boolean AND group matches items that match all subgroups
-                                     :and (:tag "shopping" :tag "@town"))
-                              (:name "Food-related"
-                                     ;; Multiple args given in list with implicit OR
-                                     :tag ("food" "dinner"))
-                              (:name "Personal"
-                                     ;; :habit t
-                                     :tag "personal")
-                              (:name "Space-related (non-moon-or-planet-related)"
-                                     ;; Regexps match case-insensitively on the entire entry
-                                     :and (:regexp ("space" "NASA")
-                                                   ;; Boolean NOT also has implicit OR between selectors
-                                                   :not (:regexp "moon" :tag "planet")))))
-             ;; Groups supply their own section names when none are given
-             (:todo "WAITING" :order 8)  ; Set order of this section
-             (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-                    ;; Show this group at the end of the agenda (since it has the
-                    ;; highest number). If you specified this group last, items
-                    ;; with these todo keywords that e.g. have priority A would be
-                    ;; displayed in that group instead, because items are grouped
-                    ;; out in the order the groups are listed.
-                    :order 9)
-             (:priority<= "B"
-                          ;; Show this section after "Today" and "Important", because
-                          ;; their order is unspecified, defaulting to 0. Sections
-                          ;; are displayed lowest-number-first.
-                          :order 1)
-             ;; After the last group, the agenda will display items that didn't
-             ;; match any of these groups, with the default order position of 99
-             )))
-      (org-agenda nil "a"))
-    )
-  :config
-  (org-super-agenda-mode))
+;; (use-package org-super-agenda
+;;   :after org-agenda
+;;   :init
+;;   (setq org-super-agenda-groups '((:name "Today"
+;;                                          :time-grid t
+;;                                          :scheduled today)
+;;                                   ))
+;;   :preface
+;;   (defun super-jump-to-org-agenda ()
+;;     (interactive)
+;;     (let ((org-super-agenda-groups
+;;            '(;; Each group has an implicit boolean OR operator between its selectors.
+;;              (:name "Today"  ; Optionally specify section name
+;;                     :time-grid t  ; Items that appear on the time grid
+;;                     :todo "TODAY")  ; Items that have this TODO keyword
+;;              (:name "Important"
+;;                     ;; Single arguments given alone
+;;                     :tag "bills"
+;;                     :priority "A")
+;;              ;; Set order of multiple groups at once
+;;              (:order-multi (2 (:name "Shopping in town"
+;;                                      ;; Boolean AND group matches items that match all subgroups
+;;                                      :and (:tag "shopping" :tag "@town"))
+;;                               (:name "Food-related"
+;;                                      ;; Multiple args given in list with implicit OR
+;;                                      :tag ("food" "dinner"))
+;;                               (:name "Personal"
+;;                                      ;; :habit t
+;;                                      :tag "personal")
+;;                               (:name "Space-related (non-moon-or-planet-related)"
+;;                                      ;; Regexps match case-insensitively on the entire entry
+;;                                      :and (:regexp ("space" "NASA")
+;;                                                    ;; Boolean NOT also has implicit OR between selectors
+;;                                                    :not (:regexp "moon" :tag "planet")))))
+;;              ;; Groups supply their own section names when none are given
+;;              (:todo "WAITING" :order 8)  ; Set order of this section
+;;              (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+;;                     ;; Show this group at the end of the agenda (since it has the
+;;                     ;; highest number). If you specified this group last, items
+;;                     ;; with these todo keywords that e.g. have priority A would be
+;;                     ;; displayed in that group instead, because items are grouped
+;;                     ;; out in the order the groups are listed.
+;;                     :order 9)
+;;              (:priority<= "B"
+;;                           ;; Show this section after "Today" and "Important", because
+;;                           ;; their order is unspecified, defaulting to 0. Sections
+;;                           ;; are displayed lowest-number-first.
+;;                           :order 1)
+;;              ;; After the last group, the agenda will display items that didn't
+;;              ;; match any of these groups, with the default order position of 99
+;;              )))
+;;       (org-agenda nil "a"))
+;;     )
+;;   :config
+;;   (org-super-agenda-mode))
 
 (use-package origami
   :ensure t
