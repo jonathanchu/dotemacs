@@ -1,2 +1,0 @@
-;;; -*- no-byte-compile: t -*-
-(define-package "pyvenv" "20191006.1304" "Python virtual environment interface" 'nil :stars '(#("170" 0 3 (font-lock-face paradox-star-face))) :commit "103d2f158ef2a760741682e18741e44107c68f3f" :keywords '("python" "virtualenv" "tools") :authors '(("Jorgen Schaefer" . "contact@jorgenschaefer.de")) :maintainer '("Jorgen Schaefer" . "contact@jorgenschaefer.de") :url "http://github.com/jorgenschaefer/pyvenv")

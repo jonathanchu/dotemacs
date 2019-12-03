@@ -4,7 +4,7 @@
 
 ;; Author: Jorgen Schaefer <contact@jorgenschaefer.de>
 ;; URL: http://github.com/jorgenschaefer/pyvenv
-;; Package-Version: 20191006.1304
+;; Package-Version: 20191202.1039
 ;; Version: 1.21
 ;; Keywords: Python, Virtualenv, Tools
 
@@ -108,6 +108,12 @@ educated guess, but that can be off."
   :type '(file :must-match t)
   :group 'pyvenv)
 
+(defcustom pyvenv-default-virtual-env-name nil
+  "Default directory to use when prompting for a virtualenv directory
+in `pyvenv-activate'."
+  :type 'string
+  :group 'pyvenv)
+
 ;; API for other libraries
 
 (defvar pyvenv-virtual-env nil
@@ -198,7 +204,8 @@ This is usually the base name of `pyvenv-virtual-env'.")
 ;;;###autoload
 (defun pyvenv-activate (directory)
   "Activate the virtual environment in DIRECTORY."
-  (interactive "DActivate venv: ")
+  (interactive (list (read-directory-name "Activate venv: " nil nil nil
+					  pyvenv-default-virtual-env-name)))
   (setq directory (expand-file-name directory))
   (pyvenv-deactivate)
   (setq pyvenv-virtual-env (file-name-as-directory directory)
@@ -206,8 +213,12 @@ This is usually the base name of `pyvenv-virtual-env'.")
                                  (directory-file-name directory))
         python-shell-virtualenv-path directory
         python-shell-virtualenv-root directory)
-  ;; Set venv name as parent directory for generic directories
-  (when (member pyvenv-virtual-env-name '("venv" ".venv"))
+  ;; Set venv name as parent directory for generic directories or for
+  ;; the user's default venv name
+  (when (or (member pyvenv-virtual-env-name '("venv" ".venv" "env" ".env"))
+	    (and pyvenv-default-virtual-env-name
+		 (string= pyvenv-default-virtual-env-name
+			  pyvenv-virtual-env-name)))
     (setq pyvenv-virtual-env-name
           (file-name-nondirectory
            (directory-file-name
@@ -347,7 +358,7 @@ configured."
                                     (pyvenv-virtualenv-list t))))
     (widget-types-convert-widget widget))
 
-  :prompt-value (lambda (widget prompt value unbound)
+  :prompt-value (lambda (_widget prompt _value _unbound)
                   (let ((name (completing-read
                                prompt
                                (cons "None"

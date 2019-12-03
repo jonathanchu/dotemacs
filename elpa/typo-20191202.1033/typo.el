@@ -3,7 +3,7 @@
 ;; Copyright (C) 2012 Jorgen Schaefer
 
 ;; Version: 1.1
-;; Package-Version: 20171209.1023
+;; Package-Version: 20191202.1033
 ;; Author: Jorgen Schaefer <forcer@forcix.cx>
 ;; URL: https://github.com/jorgenschaefer/typoel
 ;; Created: 6 Feb 2012
@@ -105,10 +105,9 @@
     ("German"                "„" "“" "‚" "‘")
     ("German (Guillemets)"   "»" "«" "›" "‹")
     ("French"                "«" "»" "‹" "›")
-    ;; Finnish does not work THAT well because they use the same
-    ;; quotation mark on both sides. En ymmärrä suomalaisen.
     ("Finnish"               "”" "”" "’" "’")
     ("Finnish (Guillemets)"  "»" "»" "›" "›")
+    ("Swedish"               "”" "”" "’" "’")
     ("Russian"               "«" "»" "„" "“")
     ("Italian"               "«" "»" "“" "”"))
   "*Quotation marks per language."
@@ -303,6 +302,11 @@ marks will be inserted."
           (after-any-opening (looking-back (regexp-opt (list double-open
                                                              single-open)))))
      (cond
+      ;; For languages that use the same symbol for opening and
+      ;; closing (Finnish, Swedish...), the simplest thing to do is to
+      ;; not try to be too smart and just cycle ” and "
+      ((equal double-open double-close)
+       (typo-insert-cycle (list double-open "\"")))
       ;; Inside a single quotation, if we're not directly at the
       ;; opening one, we close it.
       ((and single-needs-closing

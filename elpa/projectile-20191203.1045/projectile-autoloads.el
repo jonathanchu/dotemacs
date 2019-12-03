@@ -381,6 +381,13 @@ Switch to the project specific term buffer if it already exists.
 
 \(fn PROGRAM)" t nil)
 
+(autoload 'projectile-run-vterm "projectile" "\
+Invoke `vterm' in the project's root.
+
+Switch to the project specific term buffer if it already exists.
+
+\(fn)" t nil)
+
 (autoload 'projectile-replace "projectile" "\
 Replace literal string in project using non-regexp `tags-query-replace'.
 

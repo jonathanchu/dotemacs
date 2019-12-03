@@ -60,11 +60,11 @@
 (require 'ewoc)
 (require 'yasnippet nil t)
 
-(declare-function company-mode "company")
-(declare-function flycheck-mode "flycheck")
-(declare-function lsp-ui-flycheck-enable "lsp-ui")
-(declare-function evil-set-command-property "evil")
-(declare-function projectile-project-root "projectile")
+(declare-function company-mode "ext:company")
+(declare-function flycheck-mode "ext:flycheck")
+(declare-function lsp-ui-flycheck-enable "ext:lsp-ui-flycheck")
+(declare-function evil-set-command-property "ext:evil-common")
+(declare-function projectile-project-root "ext:projectile")
 
 (defconst lsp--message-type-face
   `((1 . ,compilation-error-face)
@@ -6029,7 +6029,7 @@ Returns nil if the project should not be added to the current SESSION."
          (--max-by (> (length it)
                       (length other))))))
 
-(defun lsp-find-workspace (server-id file-name)
+(defun lsp-find-workspace (server-id &optional file-name)
   "Find workspace for SERVER-ID for FILE-NAME."
   (-when-let* ((session (lsp-session))
                (folder->servers (lsp-session-folder->servers session))
@@ -6234,8 +6234,8 @@ This avoids overloading the server with many files when starting Emacs."
 
 ;; avy integration
 
-(declare-function avy-process "avy" (candidates overlay-fn cleanup-fn))
-(declare-function avy--key-to-char "avy" (c))
+(declare-function avy-process "ext:avy" (candidates overlay-fn cleanup-fn))
+(declare-function avy--key-to-char "ext:avy" (c))
 (defvar avy-action)
 
 (defun lsp-avy-lens ()

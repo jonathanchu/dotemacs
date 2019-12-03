@@ -52,6 +52,7 @@
 (defvar aw-keys)
 (defvar battery-echo-area-format)
 (defvar battery-load-critical)
+(defvar battery-mode-line-format)
 (defvar battery-mode-line-limit)
 (defvar battery-status-function)
 (defvar edebug-execution-mode)
@@ -678,27 +679,27 @@ Uses `all-the-icons-octicon' to fetch the icon."
 (advice-add #'vc-refresh-state :after #'doom-modeline-update-vcs-text)
 
 (doom-modeline-def-segment vcs
-"Displays the current branch, colored based on its state."
-(let ((active (doom-modeline--active)))
-  (when-let ((icon doom-modeline--vcs-icon)
-             (text doom-modeline--vcs-text))
-    (concat
-     (doom-modeline-spc)
-     (propertize
+  "Displays the current branch, colored based on its state."
+  (let ((active (doom-modeline--active)))
+    (when-let ((icon doom-modeline--vcs-icon)
+               (text doom-modeline--vcs-text))
       (concat
+       (doom-modeline-spc)
+       (propertize
+        (concat
+         (if active
+             icon
+           (propertize icon
+                       'face `(:inherit ,(get-text-property 0 'face icon)
+                               :inherit mode-line-inactive)))
+         (doom-modeline-vspc))
+        'mouse-face 'mode-line-highlight
+        'help-echo (get-text-property 1 'help-echo vc-mode)
+        'local-map (get-text-property 1 'local-map vc-mode))
        (if active
-           icon
-         (propertize icon
-                     'face `(:inherit ,(get-text-property 0 'face icon)
-                             :inherit mode-line-inactive)))
-       (doom-modeline-vspc))
-      'mouse-face 'mode-line-highlight
-      'help-echo (get-text-property 1 'help-echo vc-mode)
-      'local-map (get-text-property 1 'local-map vc-mode))
-     (if active
-         text
-       (propertize text 'face 'mode-line-inactive))
-     (doom-modeline-spc)))))
+           text
+         (propertize text 'face 'mode-line-inactive))
+       (doom-modeline-spc)))))
 
 
 ;;
@@ -1854,7 +1855,7 @@ mouse-1: Start server"))
 
 
 ;;
-;; Github
+;; GitHub
 ;;
 
 (defvar doom-modeline--github-notification-number 0)
@@ -1943,7 +1944,7 @@ mouse-3: Fetch notifications"
 
 
 ;;
-;; Debug state
+;; Debug states
 ;;
 
 (defun doom-modeline-debug-icon (face &rest args)
@@ -2027,7 +2028,7 @@ mouse-1: Toggle Debug on Quit"
 
 
 ;;
-;; pdf pages
+;; PDF pages
 ;;
 
 (defvar-local doom-modeline--pdf-pages nil)
@@ -2238,7 +2239,10 @@ mouse-3: Switch to next unread buffer")))
 		      (delq 'rcirc-activity-string global-mode-string))
         (remove-hook 'window-configuration-change-hook
 		             #'rcirc-window-configuration-change))
-    (when rcirc-track-minor-mode (rcirc-track-minor-mode 1))))
+    (when (and rcirc-track-minor-mode
+               (not (memq 'rcirc-activity-string global-mode-string)))
+	  (setq global-mode-string
+		    (append global-mode-string '(rcirc-activity-string))))))
 (add-hook 'rcirc-track-minor-mode-hook #'doom-modeline-override-rcirc-modeline)
 (add-hook 'doom-modeline-mode-hook #'doom-modeline-override-rcirc-modeline)
 
@@ -2249,49 +2253,49 @@ mouse-3: Switch to next unread buffer")))
 
 (defvar doom-modeline--battery-status nil)
 (defun doom-modeline-update-battery-status ()
-"Update battery status."
-(setq doom-modeline--battery-status
-      (when (bound-and-true-p display-battery-mode)
-        (let* ((data (and (bound-and-true-p battery-status-function)
-                          (funcall battery-status-function)))
-               (charging? (string-equal "AC" (cdr (assoc ?L data))))
-               (percentage (car (read-from-string (or (cdr (assq ?p data)) "ERR"))))
-               (valid-percentage? (and (numberp percentage)
-                                       (>= percentage 0)
-                                       (<= percentage battery-mode-line-limit)))
-               (face (if valid-percentage?
-                         (cond (charging? 'doom-modeline-battery-charging)
-                               ((< percentage battery-load-critical) 'doom-modeline-battery-critical)
-                               ((< percentage 25) 'doom-modeline-battery-warning)
-                               ((< percentage 95) 'doom-modeline-battery-normal)
-                               (t 'doom-modeline-battery-full))
-                       'doom-modeline-battery-error))
-               (icon (if valid-percentage?
-                         (cond (charging?
-                                (doom-modeline-icon 'alltheicon "battery-charging" "🔋" "+"
-                                                    face :height 1.4 :v-adjust -0.1))
-                               ((> percentage 95)
-                                (doom-modeline-icon 'faicon "battery-full" "🔋" "-"
-                                                    face :v-adjust -0.0575))
-                               ((> percentage 70)
-                                (doom-modeline-icon 'faicon "battery-three-quarters" "🔋" "-"
-                                                    face :v-adjust -0.0575))
-                               ((> percentage 40)
-                                (doom-modeline-icon 'faicon "battery-half" "🔋" "-"
-                                                    face :v-adjust -0.0575))
-                               ((> percentage battery-load-critical)
-                                (doom-modeline-icon 'faicon "battery-quarter" "🔋" "-"
-                                                    face :v-adjust -0.0575))
-                               (t (doom-modeline-icon 'faicon "battery-empty" "🔋" "!"
-                                                      face :v-adjust -0.0575)))
-                       (doom-modeline-icon 'faicon "battery-empty" "⚠" "N/A"
-                                           face :v-adjust -0.0575)))
-               (text (if valid-percentage? (format "%d%%%%" percentage) ""))
-               (help-echo (if (and battery-echo-area-format data valid-percentage?)
-                              (battery-format battery-echo-area-format data)
-                            "Battery status not available")))
-          (cons (propertize icon 'help-echo help-echo)
-                (propertize text 'face face 'help-echo help-echo))))))
+  "Update battery status."
+  (setq doom-modeline--battery-status
+        (when (bound-and-true-p display-battery-mode)
+          (let* ((data (and (bound-and-true-p battery-status-function)
+                            (funcall battery-status-function)))
+                 (charging? (string-equal "AC" (cdr (assoc ?L data))))
+                 (percentage (car (read-from-string (or (cdr (assq ?p data)) "ERR"))))
+                 (valid-percentage? (and (numberp percentage)
+                                         (>= percentage 0)
+                                         (<= percentage battery-mode-line-limit)))
+                 (face (if valid-percentage?
+                           (cond (charging? 'doom-modeline-battery-charging)
+                                 ((< percentage battery-load-critical) 'doom-modeline-battery-critical)
+                                 ((< percentage 25) 'doom-modeline-battery-warning)
+                                 ((< percentage 95) 'doom-modeline-battery-normal)
+                                 (t 'doom-modeline-battery-full))
+                         'doom-modeline-battery-error))
+                 (icon (if valid-percentage?
+                           (cond (charging?
+                                  (doom-modeline-icon 'alltheicon "battery-charging" "🔋" "+"
+                                                      face :height 1.4 :v-adjust -0.1))
+                                 ((> percentage 95)
+                                  (doom-modeline-icon 'faicon "battery-full" "🔋" "-"
+                                                      face :v-adjust -0.0575))
+                                 ((> percentage 70)
+                                  (doom-modeline-icon 'faicon "battery-three-quarters" "🔋" "-"
+                                                      face :v-adjust -0.0575))
+                                 ((> percentage 40)
+                                  (doom-modeline-icon 'faicon "battery-half" "🔋" "-"
+                                                      face :v-adjust -0.0575))
+                                 ((> percentage battery-load-critical)
+                                  (doom-modeline-icon 'faicon "battery-quarter" "🔋" "-"
+                                                      face :v-adjust -0.0575))
+                                 (t (doom-modeline-icon 'faicon "battery-empty" "🔋" "!"
+                                                        face :v-adjust -0.0575)))
+                         (doom-modeline-icon 'faicon "battery-empty" "⚠" "N/A"
+                                             face :v-adjust -0.0575)))
+                 (text (if valid-percentage? (format "%d%%%%" percentage) ""))
+                 (help-echo (if (and battery-echo-area-format data valid-percentage?)
+                                (battery-format battery-echo-area-format data)
+                              "Battery status not available")))
+            (cons (propertize icon 'help-echo help-echo)
+                  (propertize text 'face face 'help-echo help-echo))))))
 
 (doom-modeline-add-variable-watcher
  'doom-modeline-icon
@@ -2328,16 +2332,20 @@ mouse-3: Switch to next unread buffer")))
       (progn
         (advice-add #'battery-update :override #'doom-modeline-update-battery-status)
         (setq global-mode-string
-		      (delq 'battery-mode-line-string global-mode-string)))
+		      (delq 'battery-mode-line-string global-mode-string))
+        (and (bound-and-true-p display-battery-mode) (battery-update)))
     (progn
       (advice-remove #'battery-update #'doom-modeline-update-battery-status)
-      (when display-battery-mode (display-battery-mode 1)))))
+      (when (and display-battery-mode battery-status-function battery-mode-line-format
+                 (not (memq 'battery-mode-line-string global-mode-string)))
+        (setq global-mode-string
+		      (append global-mode-string '(battery-mode-line-string)))))))
 (add-hook 'display-battery-mode-hook #'doom-modeline-override-battery-modeline)
 (add-hook 'doom-modeline-mode-hook #'doom-modeline-override-battery-modeline)
 
 
 ;;
-;; package information
+;; Package information
 ;;
 
 (doom-modeline-def-segment package
@@ -2487,34 +2495,34 @@ The cdr can also be a function that returns a name to use.")
 ;;
 
 (doom-modeline-def-segment grip
-(when (bound-and-true-p grip-mode)
-  (concat
-   (doom-modeline-spc)
-   (let ((face (if (doom-modeline--active)
-                   (if grip-process
-                       (pcase (process-status grip-process)
-                         ('run 'doom-modeline-buffer-path)
-                         ('exit 'doom-modeline-warning)
-                         (_ 'doom-modeline-urgent))
-                     'doom-modeline-urgent)
-                 'mode-line-inactive)))
-     (propertize (doom-modeline-icon 'material "pageview" "🗐" "@"
-                                     (if doom-modeline-icon
-                                         `(:inherit ,face :weight normal)
-                                       face)
-                                     :height 1.2 :v-adjust -0.2)
-                 'help-echo (format "Preview on: http://localhost:%d
+  (when (bound-and-true-p grip-mode)
+    (concat
+     (doom-modeline-spc)
+     (let ((face (if (doom-modeline--active)
+                     (if grip-process
+                         (pcase (process-status grip-process)
+                           ('run 'doom-modeline-buffer-path)
+                           ('exit 'doom-modeline-warning)
+                           (_ 'doom-modeline-urgent))
+                       'doom-modeline-urgent)
+                   'mode-line-inactive)))
+       (propertize (doom-modeline-icon 'material "pageview" "🗐" "@"
+                                       (if doom-modeline-icon
+                                           `(:inherit ,face :weight normal)
+                                         face)
+                                       :height 1.2 :v-adjust -0.2)
+                   'help-echo (format "Preview on: http://localhost:%d
 mouse-1: Open browser
 mouse-2: Stop preview"
-                                    grip-port)
-                 'mouse-face 'mode-line-highlight
-                 'local-map (let ((map (make-sparse-keymap)))
-                              (define-key map [mode-line mouse-1]
-                                #'grip-browse-preview)
-                              (define-key map [mode-line mouse-2]
-                                #'grip-mode)
-                              map)))
-   (doom-modeline-spc))))
+                                      grip-port)
+                   'mouse-face 'mode-line-highlight
+                   'local-map (let ((map (make-sparse-keymap)))
+                                (define-key map [mode-line mouse-1]
+                                  #'grip-browse-preview)
+                                (define-key map [mode-line mouse-2]
+                                  #'grip-mode)
+                                map)))
+     (doom-modeline-spc))))
 
 (provide 'doom-modeline-segments)
 
