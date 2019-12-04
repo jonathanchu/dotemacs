@@ -1564,6 +1564,7 @@
   :ensure t
   :diminish which-key-mode
   :config
+  (setq which-key-use-C-h-commands nil)
   (which-key-mode))
 
 (use-package white-christmas
