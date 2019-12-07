@@ -44,6 +44,10 @@ default C-x 8 prefix map.
 
 ;;;***
 
+;;;### (autoloads nil nil ("typo-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
