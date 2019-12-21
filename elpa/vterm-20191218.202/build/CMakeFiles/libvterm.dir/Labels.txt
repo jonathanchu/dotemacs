@@ -1,0 +1,13 @@
+# Target labels
+ libvterm
+# Source files and their labels
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/libvterm
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/libvterm.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/libvterm-complete.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-install.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-mkdir.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-download.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-update.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-patch.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-configure.rule
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/libvterm-prefix/src/libvterm-stamp/libvterm-build.rule

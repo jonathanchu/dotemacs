@@ -1,0 +1,5 @@
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/rebuild_cache.dir
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/edit_cache.dir
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/libvterm.dir
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/run.dir
+/Users/jonathan/projects/dotemacs/elpa/vterm-20191218.202/build/CMakeFiles/vterm-module.dir
