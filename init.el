@@ -838,7 +838,8 @@
 (use-package helm
   :ensure t
   :diminish helm-mode
-  :bind (("M-x" . helm-M-x)
+  :bind (
+         ;; ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x C-r" . helm-recentf)
          ("C-x b" . helm-buffers-list)
@@ -851,7 +852,10 @@
         helm-recentf-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-imenu-fuzzy-match t
-        helm-display-header-line nil))
+        helm-display-header-line nil)
+  ;; (setq helm-completion-in-region-fuzzy-match t)
+  ;; (setq helm-mode-fuzzy-match t)
+  (setq helm-candidate-number-limit 30))
 
 (use-package helm-ag
   :ensure t
