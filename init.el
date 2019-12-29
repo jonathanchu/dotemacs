@@ -1118,7 +1118,6 @@
   :ensure t)
 
 (use-package org
-  :ensure nil
   :custom-face (org-ellipsis ((t (:foreground nil))))
   :preface
   :bind
@@ -1128,14 +1127,14 @@
   :mode
   (("\\.org$" . org-mode))
   :init
-  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                           "~/Dropbox/org/todo.org"
-                           "~/Dropbox/org/gtd.org"
-                           "~/Dropbox/org/simplehealth.org")
-        org-todo-keywords
+  (require 'find-lisp)
+  (defvar jc/org-agenda-directory "~/Dropbox/org/gtd/")
+  (setq org-agenda-files
+        (find-lisp-find-files jc/org-agenda-directory "\.org$"))
+  (setq org-todo-keywords
         '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT" "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
-          (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)"))
-        org-todo-keyword-faces '(("❓" . warning)
+          (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
+  (setq org-todo-keyword-faces '(("❓" . warning)
                                  ("TODO" :foreground "medium blue" :weight bold)
                                  ("STARTED" :foreground "dark orange" :weight bold)
                                  ("WAITING" :foreground "red" :weight bold)
@@ -1145,19 +1144,19 @@
                                  ("SOMEDAY" :foreground "dark blue" :weight bold)
                                  ("DONE" :foreground "dark violet" :weight bold)
                                  ("CANCELED" :foreground "black" :weight bold)
-                                 )
-        org-priority-faces '((?A . error)
+                                 ))
+  (setq org-priority-faces '((?A . error)
                              (?B . warning)
-                             (?C . success))
-        org-tags-column -80
-        org-log-done 'time
-        org-catch-invisible-edits 'smart
-        org-startup-indented t
-        ;; org-ellipsis (if (char-displayable-p ?) " " nil)
-        org-pretty-entities nil
-        org-hide-emphasis-markers t)
+                             (?C . success)))
+  (setq  org-tags-column -80)
+  (setq org-log-done 'time)
+  (setq  org-catch-invisible-edits 'smart)
+  (setq  org-startup-indented t)
+  ;; (setq  org-ellipsis (if (char-displayable-p ?) " " nil))
+  (setq  org-pretty-entities nil)
+  (setq org-hide-emphasis-markers t)
   :config
-  (setq org-directory "~/Dropbox/org")
+  ;; (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
   ;; Always showall by default
   ;; (setq org-startup-folded nil)
@@ -1174,6 +1173,8 @@
     ;; :hook (org-mode . org-bullets-mode)
     :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
 
+  (require 'org)
+
   (use-package org-journal
     :ensure t
     :defer t
@@ -1182,18 +1183,17 @@
     (org-journal-date-format "%A, %d %B %Y"))
 
   ;;;;;
-  (setq org-default-notes-file "~/Dropbox/org/inbox.org")
+  (setq org-default-notes-file "~/Dropbox/org/gtd/inbox.org")
   (setq org-capture-templates '(("t" "Todo [inbox]" entry
-                                 (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+                                 (file+headline "~/Dropbox/org/gtd/inbox.org" "Tasks")
                                  "* TODO %i%?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:"
                                  )
                                 ))
-  (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
-                             ("~/Dropbox/org/someday.org" :level . 1)
-                             ))
+  ;; (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
+  ;;                            ("~/Dropbox/org/someday.org" :level . 1)))
   (setq org-tag-alist '((:startgroup . nil)
                         ("@home" . ?h) ("@work" . ?w)
                         ("@phone" . ?p)

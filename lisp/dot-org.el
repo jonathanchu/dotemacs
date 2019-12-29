@@ -18,10 +18,10 @@
 
 (message "hello!")
 
-(setq org-agenda-files '("~/Dropbox/org/inbox.org"
-                         "~/Dropbox/org/todo.org"
-                         "~/Dropbox/org/gtd.org"
-                         "~/Dropbox/org/simplehealth.org"))
+;; (setq org-agenda-files '("~/Dropbox/org/inbox.org"
+;;                          "~/Dropbox/org/todo.org"
+;;                          "~/Dropbox/org/gtd.org"
+;;                          "~/Dropbox/org/simplehealth.org"))
 
 ;; TODO Put this in org-settings.el
 ;; (setq org-todo-keywords
