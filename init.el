@@ -1162,14 +1162,6 @@
 
   ;;;;;
   (setq org-default-notes-file "~/Dropbox/org/gtd/inbox.org")
-  (setq org-capture-templates '(("t" "Todo [inbox]" entry
-                                 (file+headline "~/Dropbox/org/gtd/inbox.org" "Tasks")
-                                 "* TODO %i%?
-:PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:"
-                                 )
-                                ))
 
   ;; (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
