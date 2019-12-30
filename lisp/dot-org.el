@@ -18,6 +18,12 @@
 
 (message "hello!")
 
+;; Setup my org agenda files
+(require 'find-lisp)
+(defvar jc/org-agenda-directory "~/Dropbox/org/gtd/")
+(setq org-agenda-files
+      (find-lisp-find-files jc/org-agenda-directory "\.org$"))
+
 ;; (setq org-agenda-files '("~/Dropbox/org/inbox.org"
 ;;                          "~/Dropbox/org/todo.org"
 ;;                          "~/Dropbox/org/gtd.org"

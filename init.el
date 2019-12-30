@@ -1127,10 +1127,6 @@
   :mode
   (("\\.org$" . org-mode))
   :init
-  (require 'find-lisp)
-  (defvar jc/org-agenda-directory "~/Dropbox/org/gtd/")
-  (setq org-agenda-files
-        (find-lisp-find-files jc/org-agenda-directory "\.org$"))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT" "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
           (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
