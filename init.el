@@ -1127,9 +1127,6 @@
   :mode
   (("\\.org$" . org-mode))
   :init
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT" "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
-          (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
   (setq org-todo-keyword-faces '(("❓" . warning)
                                  ("TODO" :foreground "medium blue" :weight bold)
                                  ("STARTED" :foreground "dark orange" :weight bold)

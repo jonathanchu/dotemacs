@@ -30,10 +30,10 @@
 ;;                          "~/Dropbox/org/simplehealth.org"))
 
 ;; TODO Put this in org-settings.el
-;; (setq org-todo-keywords
-;;       '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT"
-;;                   "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
-;;         (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT"
+                  "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
+        (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
 ;;
 ;; (setq org-priority-faces '((?A . error)
 ;;                            (?B . warning)
