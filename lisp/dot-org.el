@@ -34,10 +34,21 @@
       '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT"
                   "DELEGATED" "DEFERRED" "SOMEDAY" "|" "DONE(d)" "CANCELED(c)")
         (sequence "⚑(T)" "🏴(S)" "❓(W)" "|" "✔(D)" "✘(C)")))
-;;
-;; (setq org-priority-faces '((?A . error)
-;;                            (?B . warning)
-;;                            (?C . success)))
+
+(setq org-todo-keyword-faces '(("❓" . warning)
+                               ("TODO" :foreground "medium blue" :weight bold)
+                               ("STARTED" :foreground "dark orange" :weight bold)
+                               ("WAITING" :foreground "red" :weight bold)
+                               ("PROJECT" :foreground "royal blue" :weight bold)
+                               ("DELEGATED" :foreground "dark violet" :weight bold)
+                               ("DEFERRED" :foreground "dark blue" :weight bold)
+                               ("SOMEDAY" :foreground "dark blue" :weight bold)
+                               ("DONE" :foreground "dark violet" :weight bold)
+                               ("CANCELED" :foreground "black" :weight bold)
+                               ))
+(setq org-priority-faces '((?A . error)
+                           (?B . warning)
+                           (?C . success)))
 
 (setq org-tags-column -80)
 
@@ -100,36 +111,6 @@
     )
   :config
   (org-super-agenda-mode))
-
-;; (use-package org-super-agenda
-;;   :preface
-;;   (defun super-jump-to-org-agenda ()
-;;     (interactive)
-;;     (let ((org-super-agenda-groups
-;;            '((:name "Today"
-;;                     :time-grid t
-;;                     :todo "TODAY")
-;;              (:name "Important"
-;;                     :tag "bills"
-;;                     :priority "A")
-;;              (:order-multi
-;;               (2 (:name "Shopping in town"
-;;                         :and (:tag "shopping" :tag "@town"))
-;;                  (:name "Food-related"
-;;                         :tag ("food" "dinner"))
-;;                  (:name "Personal"
-;;                         :habit t
-;;                         :tag "personal")
-;;                  (:name "Space-related (non-moon-or-planet-related)"
-;;                         :and (:regexp ("space" "NASA")
-;;                                       :not (:regexp "moon" :tag "planet")))))
-;;              (:todo "WAITING" :order 8)
-;;              (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
-;;                     :order 9)
-;;              (:priority<= "B" :order 1))))
-;;       (org-agenda nil "a")))
-;;   :config
-;;   (org-super-agenda-mode))
 
 (provide 'dot-org)
 ;;; dot-org.el ends here
