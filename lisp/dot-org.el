@@ -42,6 +42,12 @@
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 
+(setq org-tag-alist '((:startgroup . nil)
+                      ("@home" . ?h) ("@work" . ?w)
+                      ("@phone" . ?p) ("bills" . ?b)
+                      (:endgroup . nil)
+                      ("email" . ?e) ("errand" . ?x)))
+
 ;; TODO Put this in org-settings.el
 (setq org-todo-keywords
       '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT"

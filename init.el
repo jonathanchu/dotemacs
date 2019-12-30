@@ -1171,12 +1171,6 @@
                                  )
                                 ))
 
-  (setq org-tag-alist '((:startgroup . nil)
-                        ("@home" . ?h) ("@work" . ?w)
-                        ("@phone" . ?p)
-                        (:endgroup . nil)
-                        ("email" . ?e) ("errand" . ?x)))
-
   ;; (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
