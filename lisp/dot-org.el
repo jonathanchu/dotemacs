@@ -29,6 +29,19 @@
 ;;                          "~/Dropbox/org/gtd.org"
 ;;                          "~/Dropbox/org/simplehealth.org"))
 
+(setq org-refile-targets '(("~/Dropbox/org/gtd/next.org" :level . 0)
+                           ("~/Dropbox/org/gtd/someday.org" :level . 0)
+                           ("~/Dropbox/org/gtd/emails.org" :level . 0)
+                           ("~/Dropbox/org/gtd/projects.org" :maxlevel . 1)
+                           ))
+
+;; (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+;; (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
+
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+
 ;; TODO Put this in org-settings.el
 (setq org-todo-keywords
       '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "PROJECT"

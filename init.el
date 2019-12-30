@@ -1170,15 +1170,13 @@
 :END:"
                                  )
                                 ))
-  ;; (setq org-refile-targets '(("~/Dropbox/org/gtd.org" :maxlevel . 3)
-  ;;                            ("~/Dropbox/org/someday.org" :level . 1)))
+
   (setq org-tag-alist '((:startgroup . nil)
                         ("@home" . ?h) ("@work" . ?w)
                         ("@phone" . ?p)
                         (:endgroup . nil)
                         ("email" . ?e) ("errand" . ?x)))
-  (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
-  (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
+
   ;; (setq org-agenda-window-setup (quote current-window))
   (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
   (setq org-deadline-warning-days 7)
