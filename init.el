@@ -1132,7 +1132,6 @@
   (setq  org-startup-indented t)
   ;; (setq  org-ellipsis (if (char-displayable-p ?) " " nil))
   (setq  org-pretty-entities nil)
-  (setq org-hide-emphasis-markers t)
   :config
   ;; (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
@@ -1151,7 +1150,7 @@
     ;; :hook (org-mode . org-bullets-mode)
     :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
 
-  (require 'org)
+  ;; (require 'org)
 
   (use-package org-journal
     :ensure t
