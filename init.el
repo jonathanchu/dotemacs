@@ -1174,9 +1174,7 @@
   (setq org-default-notes-file "~/Dropbox/org/gtd/inbox.org")
 
   ;; (setq org-agenda-window-setup (quote current-window))
-  (setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
-  (setq org-deadline-warning-days 7)
-  (setq org-agenda-span (quote day))
+
   ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
   ;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
   ;; (setq org-agenda-todo-ignore-deadlines (quote all))

@@ -41,6 +41,9 @@
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-log-state-notes-into-drawer t)  ;; Changes to task states might get logged, so we log them in a drawer and not the content of the note.
+(setq org-deadline-warning-days 7)
+(setq org-agenda-span (quote day))
 
 (setq org-tag-alist '((:startgroup . nil)
                       ("@home" . ?h) ("@work" . ?w)
@@ -65,9 +68,9 @@
                                ("DONE" :foreground "dark violet" :weight bold)
                                ("CANCELED" :foreground "black" :weight bold)
                                ))
-(setq org-priority-faces '((?A . error)
-                           (?B . warning)
-                           (?C . success)))
+;; (setq org-priority-faces '((?A . error)
+;;                            (?B . warning)
+;;                            (?C . success)))
 
 (setq org-tags-column -80)
 
@@ -85,18 +88,123 @@
 (use-package org-super-agenda
   ;; :after org-agenda
   :init
-  (setq org-super-agenda-groups '((:name "Today"
-                                         :time-grid t
-                                         :todo "TODAY"
-                                         :deadline today)
-                                  (:name "Important"
-                                         ;; Single arguments given alone
-                                         :tag "bills"
-                                         ;; :priority "A"
-                                         )
-                                  (:name "Past due"
+  ;; (setq org-super-agenda-groups '(
+  ;;                                 (:name "Today"  ; Optionally specify section name
+  ;;                                        :time-grid t  ; Items that appear on the time grid
+  ;;                                        :todo "TODAY")  ; Items that have this TODO keyword
+  ;;                                 (:name "Important"
+  ;;                                        ;; Single arguments given alone
+  ;;                                        :tag "bills"
+  ;;                                        :priority "A")
+  ;;                                 ;; Set order of multiple groups at once
+  ;;                                 ;; (:order-multi (2 (:name "Shopping in town"
+  ;;                                 ;;                         ;; Boolean AND group matches items that match all subgroups
+  ;;                                 ;;                         :and (:tag "shopping" :tag "@town"))
+  ;;                                 ;;                  (:name "Food-related"
+  ;;                                 ;;                         ;; Multiple args given in list with implicit OR
+  ;;                                 ;;                         :tag ("food" "dinner"))
+  ;;                                 ;;                  (:name "Personal"
+  ;;                                 ;;                         :habit t
+  ;;                                 ;;                         :tag "personal")
+  ;;                                 ;;                  (:name "Space-related (non-moon-or-planet-related)"
+  ;;                                 ;;                         ;; Regexps match case-insensitively on the entire entry
+  ;;                                 ;;                         :and (:regexp ("space" "NASA")
+  ;;                                 ;;                                       ;; Boolean NOT also has implicit OR between selectors
+  ;;                                 ;;                                       :not (:regexp "moon" :tag "planet")))))
+  ;;                                 ;; Groups supply their own section names when none are given
+  ;;                                 (:todo "WAITING" :order 8)  ; Set order of this section
+  ;;                                 (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+  ;;                                        ;; Show this group at the end of the agenda (since it has the
+  ;;                                        ;; highest number). If you specified this group last, items
+  ;;                                        ;; with these todo keywords that e.g. have priority A would be
+  ;;                                        ;; displayed in that group instead, because items are grouped
+  ;;                                        ;; out in the order the groups are listed.
+  ;;                                        :order 9)
+  ;;                                 (:name "All other things"
+  ;;                                        :deadline nil
+  ;;                                        :scheduled nil)
+  ;;                                 (:priority<= "B"
+  ;;                                              ;; Show this section after "Today" and "Important", because
+  ;;                                              ;; their order is unspecified, defaulting to 0. Sections
+  ;;                                              ;; are displayed lowest-number-first.
+  ;;                                              :order 1)
+  ;;                                 ;; After the last group, the agenda will display items that didn't
+  ;;                                 ;; match any of these groups, with the default order position of 99
+  ;;                                 ))
+  (setq org-super-agenda-groups '(
+
+                                  (:name "Overdue"
+                                         :deadline past
                                          :scheduled past
-                                         :deadline past)))
+                                         )
+                                  (:name "Due Today"
+                                         :deadline today
+                                         )
+                                  (:name "Scheduled Today"
+                                         :scheduled today
+                                         )
+
+                                  (:name "Important"
+                                         :priority "A"
+                                         :discard (:anything t)
+                                         )
+                                  )
+
+
+        )
+
+  ;; (setq org-super-agenda-groups '((:name "Today"
+  ;;                                        ;; :time-grid t
+  ;;                                        ;; :todo "TODAY"
+  ;;                                        :deadline today)
+  ;;                                 ;; (:name "Important"
+  ;;                                 ;;        ;; Single arguments given alone
+  ;;                                 ;;        ;; :tag "bills"
+  ;;                                 ;;        :priority "A"
+  ;;                                 ;;        )
+  ;;                                 (:name "Bills"
+  ;;                                        :tag "bills"
+  ;;                                        :children todo)
+  ;;                                 (:name "Past due"
+  ;;                                        :scheduled past
+  ;;                                        :deadline past)
+  ;;                                 ))
+
+  ;; (setq org-super-agenda-groups '((:name "Today"
+  ;;                                        :time-grid t
+  ;;                                        :scheduled today)
+  ;;                                 (:name "Due today"
+  ;;                                        :deadline today)
+  ;;                                 (:name "Important"
+  ;;                                        :priority "A")
+  ;;                                 (:name "Overdue"
+  ;;                                        :deadline past)
+  ;;                                 (:name "Due soon"
+  ;;                                        :deadline future)
+  ;;                                 (:name "Waiting"
+  ;;                                        :todo "WAIT")))
+  ;; (let ((org-super-agenda-groups
+  ;;        '((:log t)  ; Automatically named "Log"
+  ;;          (:name "Schedule"
+  ;;                 :time-grid t)
+  ;;          (:name "Today"
+  ;;                 :scheduled today)
+  ;;          (:habit t)
+  ;;          (:name "Due today"
+  ;;                 :deadline today)
+  ;;          (:name "Overdue"
+  ;;                 :deadline past)
+  ;;          (:name "Due soon"
+  ;;                 :deadline future)
+  ;;          (:name "Unimportant"
+  ;;                 :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
+  ;;                 :order 100)
+  ;;          (:name "Waiting..."
+  ;;                 :todo "WAITING"
+  ;;                 :order 98)
+  ;;          (:name "Scheduled earlier"
+  ;;                 :scheduled past))))
+  ;;   (org-agenda-list))
   :config
   (org-super-agenda-mode t))
 
