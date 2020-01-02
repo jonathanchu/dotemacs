@@ -1483,6 +1483,10 @@
   :diminish which-key-mode
   :config
   (setq which-key-use-C-h-commands nil)
+  ;; Prevent
+  ;; https://github.com/justbur/emacs-which-key/issues/130
+  (setq inhibit-compacting-font-caches nil)
+  (setq which-key-allow-imprecise-window-fit t)
   (which-key-mode))
 
 (use-package white-christmas
