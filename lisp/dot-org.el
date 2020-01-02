@@ -164,25 +164,24 @@
   ;;                                 ))
   (setq org-super-agenda-groups '(
 
-                                  (:name "Overdue"
-                                         :deadline past
-                                         :scheduled past
-                                         )
-                                  (:name "Due Today"
-                                         :deadline today
-                                         )
-                                  (:name "Scheduled Today"
-                                         :scheduled today
-                                         )
+                                  ;; (:name "Overdue"
+                                  ;;        :deadline past
+                                  ;;        :scheduled past
+                                  ;;        )
+                                  ;; (:name "Due Today"
+                                  ;;        :deadline today
+                                  ;;        )
+                                  ;; (:name "Scheduled Today"
+                                  ;;        :scheduled today
+                                  ;;        )
 
-                                  (:name "Important"
-                                         :priority "A"
-                                         :discard (:anything t)
-                                         )
-                                  )
-
-
-        )
+                                  ;; (:name "Important"
+                                  ;;        :priority "A"
+                                  ;;        :discard (:anything t)
+                                  ;;        )
+                                  (:name "To Refile"
+                                         :not (:scheduled nil))
+                                  ))
 
   ;; (setq org-super-agenda-groups '((:name "Today"
   ;;                                        ;; :time-grid t
