@@ -83,7 +83,7 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (require 'package)
 (setq load-prefer-newer t
@@ -239,8 +239,9 @@
 (delete-selection-mode t)
 
 ;; prevent active process query on quit
-(require 'cl)
+(require 'cl-lib)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent active process query on quit."
   (cl-flet ((process-list ())) ad-do-it))
 
 ;; instantly display current key sequence in mini buffer
@@ -248,8 +249,8 @@
 
 ;; desktop save mode
 (desktop-save-mode t)
-(setq desktop-restore-eager 5)
-(setq desktop-save t)
+(defvar desktop-restore-eager 5)
+(defvar desktop-save t)
 
 (setq initial-major-mode 'emacs-lisp-mode)
 
@@ -272,10 +273,10 @@
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 ;; javascript
-(setq js-indent-level 2)
+(defvar js-indent-level 2)
 
 ;; css
-(setq css-indent-offset 2)
+(defvar css-indent-offset 2)
 
 ;; cua mode
 ;; (cua-mode t)
@@ -847,14 +848,14 @@
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
-  (setq helm-M-x-fuzzy-match t
-        helm-M-x-always-save-history t
-        helm-recentf-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-imenu-fuzzy-match t
-        helm-display-header-line nil)
-  ;; (setq helm-completion-in-region-fuzzy-match t)
-  ;; (setq helm-mode-fuzzy-match t)
+  (defvar helm-M-x-fuzzy-match t)
+  (defvar helm-M-x-always-save-history t)
+  (defvar helm-recentf-fuzzy-match t)
+  (defvar lm-buffers-fuzzy-matching t)
+  (defvar helm-imenu-fuzzy-match t)
+  (defvar helm-display-header-line nil)
+  ;; (defvar helm-completion-in-region-fuzzy-match t)
+  ;; (defvar helm-mode-fuzzy-match t)
   (setq helm-candidate-number-limit 30))
 
 (use-package helm-ag
@@ -1191,7 +1192,7 @@
   (add-hook 'org-mode-hook
             (lambda ()
               (make-variable-buffer-local 'yas/trigger-key)
-              (setq yas/trigger-key [tab])
+              (defvar yas/trigger-key [tab])
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field)
               ;; (olivetti-mode 1)        ;; Centers text in the buffer
@@ -1200,7 +1201,7 @@
               (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
               (linum-mode 0)           ;; No line numbers for prose
-              (setq buffer-face-mode-face '(:family "iA Writer Mono S"))
+              (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
