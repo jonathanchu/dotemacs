@@ -74,14 +74,14 @@
 
 (setq org-tags-column -80)
 
-(setq org-capture-templates '(("t" "Todo [inbox]" entry
-                               (file+headline "~/Dropbox/org/gtd/inbox.org" "Tasks")
-                               "* TODO %i%?
+(defvar org-capture-templates '(("t" "Todo [inbox]" entry
+                                 (file+headline "~/Dropbox/org/gtd/inbox.org" "Tasks")
+                                 "* TODO %i%?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:"
-                               )
-                              ))
+                                 )
+                                ))
 
 (require 'org-habit)
 
