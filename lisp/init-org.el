@@ -1,4 +1,4 @@
-;; dot-org.el --- My personal org-mode setup.
+;; init-org.el --- My personal org-mode setup.
 ;;
 ;; Copyright (c) 2019, 2020
 ;;
@@ -208,5 +208,5 @@
   :config
   (org-super-agenda-mode t))
 
-(provide 'dot-org)
-;;; dot-org.el ends here
+(provide 'init-org)
+;;; init-org.el ends here

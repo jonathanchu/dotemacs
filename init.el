@@ -1190,14 +1190,34 @@
               (setq org-fontify-quote-and-verse-blocks t)
               (setq org-fontify-done-headline t))))
 
-;; (add-to-list 'load-path "~/.emacs.d/lisp")
-(setq load-path
-      (append '(~/.emacs.d)
-              (delete-dups load-path)
-              '("~/.emacs.d/lisp")))
+;; ;; (add-to-list 'load-path "~/.emacs.d/lisp")
+;; (setq load-path
+;;       (append '(~/.emacs.d)
+;;               (delete-dups load-path)
+;;               '("~/.emacs.d/lisp")))
 
-(use-package dot-org
-  :load-path "lisp/dot-org")
+;; (use-package dot-org
+;;   :load-path "lisp/dot-org")
+
+;; Load path
+;; Optimize: Force "lisp"" and "site-lisp" at the head to reduce the startup time.
+(defun update-load-path (&rest _)
+  "Update `load-path'."
+  (push (expand-file-name "site-lisp" user-emacs-directory) load-path)
+  (push (expand-file-name "lisp" user-emacs-directory) load-path))
+
+(defun add-subdirs-to-load-path (&rest _)
+  "Add subdirectories to `load-path'."
+  (let ((default-directory
+          (expand-file-name "site-lisp" user-emacs-directory)))
+    (normal-top-level-add-subdirs-to-load-path)))
+
+(advice-add #'package-initialize :after #'update-load-path)
+(advice-add #'package-initialize :after #'add-subdirs-to-load-path)
+
+(update-load-path)
+
+(require 'init-org)
 
 ;; (load "org-settings")
 
