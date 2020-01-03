@@ -94,6 +94,8 @@
 (require 'init-ui)
 (require 'init-doom)
 
+(require 'init-window)
+
 (require 'init-org)
 
 ;;----------------------------------------------------------------------------
@@ -160,13 +162,6 @@
 ;;----------------------------------------------------------------------------
 ;; Packages
 ;;----------------------------------------------------------------------------
-
-(use-package ace-window
-  :ensure t
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
-  :bind
-  ("C-x C-o" . ace-window))
 
 (use-package add-node-modules-path
   ;; :load-path "vendor/"
