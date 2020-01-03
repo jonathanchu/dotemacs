@@ -1,0 +1,141 @@
+;; init-editor.el --- My personal editor setup.
+;;
+;; Copyright (c) 2019-2020
+;;
+;; Author: Jonathan Chu <me@jonathanchu.is>
+;; URL: https://github.com/jonathanchu/dotemacs
+;; Version: 1.0
+
+;; This file is not part of GNU Emacs.
+
+;;; Commentary:
+
+;; This is the whole #!
+
+;;; License:
+
+;; This program is free software; you can redistribute it and/or
+;; modify it under the terms of the GNU General Public License
+;; as published by the Free Software Foundation; either version 3
+;; of the License, or (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
+
+;;; Code:
+
+;;----------------------------------------------------------------------------
+;; Editor Config
+;;----------------------------------------------------------------------------
+
+;; Warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
+;; M-q
+(setq fill-column 80)
+
+;; no word wrap
+(setq-default truncate-lines t)
+
+(setq-default line-spacing 4)
+
+;; no tabs
+(setq-default indent-tabs-mode nil)
+
+(setq ring-bell-function 'ignore)
+
+;; show extra whitespace
+(setq show-trailing-whitespace t)
+
+;; ensure last line is a return
+(setq require-final-newline t)
+
+;; show file size
+(size-indication-mode t)
+
+;; make sure looking at most recent changes
+(global-auto-revert-mode t)
+
+(setq window-combination-resize t)
+
+;;keep cursor at same position when scrolling
+(setq scroll-preserve-screen-position t)
+
+;; scroll one line at a time
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+(setq scroll-conservatively 10000)
+(setq scroll-margin 3)
+
+;; open with in original frame, not new window
+(setq ns-pop-up-frames nil)
+
+;; sentences end with single space
+(setq sentence-end-double-space nil)
+
+;; useful for camelCase
+(subword-mode t)
+
+;; delete selection, insert text
+(delete-selection-mode t)
+
+;; prevent active process query on quit
+(require 'cl-lib)
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent active process query on quit."
+  (cl-flet ((process-list ())) ad-do-it))
+
+;; instantly display current key sequence in mini buffer
+(setq echo-keystrokes 0.02)
+
+;; desktop save mode
+(desktop-save-mode t)
+(defvar desktop-restore-eager 5)
+(defvar desktop-save t)
+
+(setq initial-major-mode 'emacs-lisp-mode)
+
+;; improve filename completion
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+(mapc (lambda (x)
+        (add-to-list 'completion-ignored-extensions x))
+      '(".gz" ".pyc" ".elc" ".exe"))
+
+;; Suppress warnings for functions redefined with defadvice
+(setq ad-redefinition-action 'accept)
+
+(setq tab-always-indent 'complete)
+
+;; try to improve handling of long lines
+(setq bidi-display-reordering nil)
+
+;; delete trailing whitespace in all modes
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
+;; javascript
+(defvar js-indent-level 2)
+
+;; css
+(defvar css-indent-offset 2)
+
+;; cua mode
+;; (cua-mode t)
+;; (setq cua-enable-cua-keys nil)
+
+;; variable pitch mode
+(add-hook 'text-mode-hook
+          (lambda ()
+            (variable-pitch-mode 1)))
+
+(provide 'init-editor)
+;;; init-editor.el ends here

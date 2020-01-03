@@ -90,6 +90,7 @@
 ;;----------------------------------------------------------------------------
 
 (require 'init-core)
+(require 'init-editor)
 (require 'init-org)
 
 ;;----------------------------------------------------------------------------
@@ -144,112 +145,6 @@
  ;; If there is more than one, they won't work right.
  '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar))))
  '(org-ellipsis ((t (:foreground nil)))))
-
-;;----------------------------------------------------------------------------
-;; Editor Config
-;;----------------------------------------------------------------------------
-
-;; Warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
-
-;; M-q
-(setq fill-column 80)
-
-;; no word wrap
-(setq-default truncate-lines t)
-
-(setq-default line-spacing 4)
-
-;; no tabs
-(setq-default indent-tabs-mode nil)
-
-(setq ring-bell-function 'ignore)
-
-;; show extra whitespace
-(setq show-trailing-whitespace t)
-
-;; ensure last line is a return
-(setq require-final-newline t)
-
-;; show file size
-(size-indication-mode t)
-
-;; make sure looking at most recent changes
-(global-auto-revert-mode t)
-
-(setq window-combination-resize t)
-
-;;keep cursor at same position when scrolling
-(setq scroll-preserve-screen-position t)
-
-;; scroll one line at a time
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(setq scroll-conservatively 10000)
-(setq scroll-margin 3)
-
-;; open with in original frame, not new window
-(setq ns-pop-up-frames nil)
-
-;; sentences end with single space
-(setq sentence-end-double-space nil)
-
-;; useful for camelCase
-(subword-mode t)
-
-;; delete selection, insert text
-(delete-selection-mode t)
-
-;; prevent active process query on quit
-(require 'cl-lib)
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent active process query on quit."
-  (cl-flet ((process-list ())) ad-do-it))
-
-;; instantly display current key sequence in mini buffer
-(setq echo-keystrokes 0.02)
-
-;; desktop save mode
-(desktop-save-mode t)
-(defvar desktop-restore-eager 5)
-(defvar desktop-save t)
-
-(setq initial-major-mode 'emacs-lisp-mode)
-
-;; improve filename completion
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-(mapc (lambda (x)
-        (add-to-list 'completion-ignored-extensions x))
-      '(".gz" ".pyc" ".elc" ".exe"))
-
-;; Suppress warnings for functions redefined with defadvice
-(setq ad-redefinition-action 'accept)
-
-(setq tab-always-indent 'complete)
-
-;; try to improve handling of long lines
-(setq bidi-display-reordering nil)
-
-;; delete trailing whitespace in all modes
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-
-;; javascript
-(defvar js-indent-level 2)
-
-;; css
-(defvar css-indent-offset 2)
-
-;; cua mode
-;; (cua-mode t)
-;; (setq cua-enable-cua-keys nil)
-
-;; variable pitch mode
-(add-hook 'text-mode-hook
-          (lambda ()
-            (variable-pitch-mode 1)))
 
 ;;----------------------------------------------------------------------------
 ;; UI
@@ -319,31 +214,31 @@
     (propertize
      (f-dirname
       (let ((buffer-path (file-relative-name buffer-file-name (doom/project-root)))
-            (max-length (truncate (/ (window-body-width) 1.75))))
-        (concat (projectile-project-name) "/"
-                (if (> (length buffer-path) max-length)
-                    (let ((path (reverse (split-string buffer-path "/" t)))
-                          (output ""))
-                      (when (and path (equal "" (car path)))
-                        (setq path (cdr path)))
-                      (while (and path (<= (length output) (- max-length 4)))
-                        (setq output (concat (car path) "/" output))
-                        (setq path (cdr path)))
-                      (when path
-                        (setq output (concat "../" output)))
-                      (when (string-suffix-p "/" output)
-                        (setq output (substring output 0 -1)))
-                      output)
-                  buffer-path))))
+	    (max-length (truncate (/ (window-body-width) 1.75))))
+	(concat (projectile-project-name) "/"
+		(if (> (length buffer-path) max-length)
+		    (let ((path (reverse (split-string buffer-path "/" t)))
+			  (output ""))
+		      (when (and path (equal "" (car path)))
+			(setq path (cdr path)))
+		      (while (and path (<= (length output) (- max-length 4)))
+			(setq output (concat (car path) "/" output))
+			(setq path (cdr path)))
+		      (when path
+			(setq output (concat "../" output)))
+		      (when (string-suffix-p "/" output)
+			(setq output (substring output 0 -1)))
+		      output)
+		  buffer-path))))
      'face (if active 'mode-line-buffer-path))))
 
 (defun *buffer-state ()
   (when buffer-file-name
     (propertize
      (concat (if (not (file-exists-p buffer-file-name))
-                 "∄"
-               (if (buffer-modified-p) "✱"))
-             (if buffer-read-only ""))
+		 "∄"
+	       (if (buffer-modified-p) "✱"))
+	     (if buffer-read-only ""))
      'face 'mode-line-is-modified)))
 
 (defun *buffer-name ()
@@ -359,11 +254,11 @@
 (defun *major-mode ()
   "The major mode, including process, environment and text-scale info."
   (concat (format-mode-line mode-name)
-          (if (stringp mode-line-process) mode-line-process)
-          (if doom--env-version (concat " " doom--env-version))
-          (and (featurep 'face-remap)
-               (/= text-scale-mode-amount 0)
-               (format " (%+d)" text-scale-mode-amount))))
+	  (if (stringp mode-line-process) mode-line-process)
+	  (if doom--env-version (concat " " doom--env-version))
+	  (and (featurep 'face-remap)
+	       (/= text-scale-mode-amount 0)
+	       (format " (%+d)" text-scale-mode-amount))))
 
 ;;----------------------------------------------------------------------------
 ;; Libraries
@@ -523,14 +418,14 @@
     (list
      (cond
       ((or (string-equal "*" (substring (buffer-name) 0 1))
-           (memq major-mode '(magit-process-mode
-                              magit-status-mode
-                              magit-diff-mode
-                              magit-log-mode
-                              magit-file-mode
-                              magit-blob-mode
-                              magit-blame-mode
-                              )))
+	   (memq major-mode '(magit-process-mode
+			      magit-status-mode
+			      magit-diff-mode
+			      magit-log-mode
+			      magit-file-mode
+			      magit-blob-mode
+			      magit-blame-mode
+			      )))
        "Emacs")
       (t
        (centaur-tabs-get-group-name (current-buffer))))))
@@ -604,10 +499,10 @@
   :disabled
   :ensure t
   :bind (("M-x" . counsel-M-x)
-         ;; ("C-x C-f" . counsel-find-file)
-         ("C-c g" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x C-r" . counsel-recentf)))
+	 ;; ("C-x C-f" . counsel-find-file)
+	 ("C-c g" . counsel-git-grep)
+	 ("C-c k" . counsel-ag)
+	 ("C-x C-r" . counsel-recentf)))
 
 (use-package counsel-projectile
   :disabled
@@ -698,7 +593,7 @@
   :defer t
   :config
   (add-hook 'fish-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'fish_indent-before-save))))
+			      (add-hook 'before-save-hook 'fish_indent-before-save))))
 
 (use-package fix-word
   :ensure t
@@ -804,11 +699,11 @@
   :ensure t
   :diminish helm-mode
   :bind (
-         ;; ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-r" . helm-recentf)
-         ("C-x b" . helm-buffers-list)
-         ("C-c i" . helm-imenu))
+	 ;; ("M-x" . helm-M-x)
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x C-r" . helm-recentf)
+	 ("C-x b" . helm-buffers-list)
+	 ("C-c i" . helm-imenu))
   :config
   (helm-mode 1)
   (helm-autoresize-mode 1)
@@ -846,10 +741,10 @@
   :defer t
   :init
   (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-vc-set-filter-groups-by-vc-root)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic)))))
+	    (lambda ()
+	      (ibuffer-vc-set-filter-groups-by-vc-root)
+	      (unless (eq ibuffer-sorting-mode 'alphabetic)
+		(ibuffer-do-sort-by-alphabetic)))))
 
 (use-package ido
   :config
@@ -886,8 +781,8 @@
     (setq ivy-initial-inputs-alist nil)
     (setq ivy-format-function #'ivy-format-function-arrow)
     (setq ivy-re-builders-alist
-          '((swiper . ivy--regex-plus)
-            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
+	  '((swiper . ivy--regex-plus)
+	    (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
     )
   :bind
   ("C-c C-r" . ivy-resume)
@@ -919,15 +814,15 @@
     (add-hook 'js2-mode-hook 'prettier-js-mode)
     ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
     (add-hook 'js2-mode-hook
-              (defun my-js2-mode-setup ()
-                (flycheck-select-checker 'javascript-eslint)))
+	      (defun my-js2-mode-setup ()
+		(flycheck-select-checker 'javascript-eslint)))
     ;; (add-hook 'after-save-hook 'flow-save-hook)
     ))
 
 (defun flow-save-hook ()
   "Invoke flow-status after save when in js2-mode."
   (when (and (eq major-mode 'js2-mode)
-             (executable-find "flow"))
+	     (executable-find "flow"))
     (flow-status)))
 
 (use-package js2-refactor
@@ -1013,7 +908,7 @@
     (setq magit-completing-read-function #'ivy-completing-read)
     (setq magit-diff-refine-hunk t)
     (setq magit-status-margin
-          '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+	  '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
     (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18)))
   :bind
   ("C-x g" . magit-status)
@@ -1057,12 +952,12 @@
   :ensure t
   :config
   (setq neo-window-fixed-size nil
-        neo-create-file-auto-open t
-        neo-banner-message nil
-        neo-mode-line-type 'none
-        neo-smart-open t
-        neo-show-hidden-files t
-        neo-auto-indent-point t)
+	neo-create-file-auto-open t
+	neo-banner-message nil
+	neo-mode-line-type 'none
+	neo-smart-open t
+	neo-show-hidden-files t
+	neo-auto-indent-point t)
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   :bind
   ("C-c n" . neotree-toggle)
@@ -1135,41 +1030,41 @@
   (setq org-src-tab-acts-natively t)
   (setq org-src-preserve-indentation t)
   (add-hook 'org-mode-hook
-            (lambda ()
-              (make-variable-buffer-local 'yas/trigger-key)
-              (defvar yas/trigger-key [tab])
-              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-              (define-key yas/keymap [tab] 'yas/next-field)
-              ;; (olivetti-mode 1)        ;; Centers text in the buffer
-              (setq olivetti-body-width 100)
-              (flyspell-mode 1)        ;; Catch Spelling mistakes
-              (typo-mode 1)            ;; Good for symbols like em-dash
-              (blink-cursor-mode 0)    ;; Reduce visual noise
-              (linum-mode 0)           ;; No line numbers for prose
-              (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
-              (buffer-face-mode)
-              (require 'org-indent)
-              (org-indent-mode)
-              (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings
-              (setq org-fontify-quote-and-verse-blocks t)
-              (setq org-fontify-done-headline t))))
+	    (lambda ()
+	      (make-variable-buffer-local 'yas/trigger-key)
+	      (defvar yas/trigger-key [tab])
+	      (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+	      (define-key yas/keymap [tab] 'yas/next-field)
+	      ;; (olivetti-mode 1)        ;; Centers text in the buffer
+	      (setq olivetti-body-width 100)
+	      (flyspell-mode 1)        ;; Catch Spelling mistakes
+	      (typo-mode 1)            ;; Good for symbols like em-dash
+	      (blink-cursor-mode 0)    ;; Reduce visual noise
+	      (linum-mode 0)           ;; No line numbers for prose
+	      (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
+	      (buffer-face-mode)
+	      (require 'org-indent)
+	      (org-indent-mode)
+	      (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings
+	      (setq org-fontify-quote-and-verse-blocks t)
+	      (setq org-fontify-done-headline t))))
 
 (use-package org-present
   :ensure t
   :init
   (add-hook 'org-present-mode-hook
-            (lambda ()
-              (setq org-image-actual-width nil)
-              (org-present-big)
-              (org-display-inline-images)
-              (org-present-hide-cursor)
-              (org-present-read-only)))
+	    (lambda ()
+	      (setq org-image-actual-width nil)
+	      (org-present-big)
+	      (org-display-inline-images)
+	      (org-present-hide-cursor)
+	      (org-present-read-only)))
   (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (org-present-small)
-              (org-remove-inline-images)
-              (org-present-show-cursor)
-              (org-present-read-write))))
+	    (lambda ()
+	      (org-present-small)
+	      (org-remove-inline-images)
+	      (org-present-show-cursor)
+	      (org-present-read-write))))
 
 (use-package origami
   :ensure t
@@ -1210,7 +1105,7 @@
   (add-hook 'clojure-mode-hook #'enable-paredit-mode)
   (add-hook 'org-mode-hook #'enable-paredit-mode)
   (add-hook 'python-mode-hook
-            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
+	    (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
 
 (use-package paren
   :config
@@ -1271,8 +1166,8 @@
   :ensure t
   :config
   (add-hook 'python-mode-hook
-            '(lambda ()
-               (setq fill-column 80)))
+	    '(lambda ()
+	       (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode))
   )
 
@@ -1289,18 +1184,18 @@
 (use-package recentf
   :config
   (setq recentf-max-saved-items 250
-        recentf-max-menu-items 15
-        ;; Cleanup recent files only when Emacs is idle, but not when the mode
-        ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
-        ;; idles often enough to have the recent files list clean up regularly
-        recentf-auto-cleanup 300
-        recentf-exclude (list "^/var/folders\\.*"
-                              "COMMIT_EDITMSG\\'"
-                              ".*-autoloads\\.el\\'"
-                              "[/\\]\\.elpa/"
-                              "/\\.git/.*\\'"
-                              "ido.last"
-                              ".emacs.d"))
+	recentf-max-menu-items 15
+	;; Cleanup recent files only when Emacs is idle, but not when the mode
+	;; is enabled, because that unnecessarily slows down Emacs. My Emacs
+	;; idles often enough to have the recent files list clean up regularly
+	recentf-auto-cleanup 300
+	recentf-exclude (list "^/var/folders\\.*"
+			      "COMMIT_EDITMSG\\'"
+			      ".*-autoloads\\.el\\'"
+			      "[/\\]\\.elpa/"
+			      "/\\.git/.*\\'"
+			      "ido.last"
+			      ".emacs.d"))
   (recentf-mode))
 
 (use-package restclient
@@ -1314,8 +1209,8 @@
     (add-hook 'rjsx-mode-hook 'prettier-js-mode)
     ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
     (add-hook 'rjsx-mode-hook
-              (defun my-rjsx-mode-setup ()
-                (flycheck-select-checker 'javascript-eslint)))
+	      (defun my-rjsx-mode-setup ()
+		(flycheck-select-checker 'javascript-eslint)))
 
     )
   )
@@ -1446,7 +1341,7 @@
   (progn
     (yas-global-mode 1)
     (setq yas-snippet-dirs (append yas-snippet-dirs
-                                   '("~/.emacs.d/snippets")))))
+				   '("~/.emacs.d/snippets")))))
 
 ;;----------------------------------------------------------------------------
 ;; Functions
@@ -1496,7 +1391,7 @@ The CHAR is replaced and the point is put before CHAR."
 (setq backup-by-copying t)
 (setq backup-directory-alist
       `(("." . ,user-temporary-file-directory)
-        (,tramp-file-name-regexp nil)))
+	(,tramp-file-name-regexp nil)))
 (setq auto-save-list-file-prefix
       (concat user-temporary-file-directory ".auto-saves-"))
 (setq auto-save-file-name-transforms
@@ -1524,10 +1419,10 @@ The CHAR is replaced and the point is put before CHAR."
   "If you have two windows, it swaps them."
   (interactive)
   (let ((this-buffer (window-buffer (selected-window)))
-        (other-buffer (prog2
-                          (other-window +1)
-                          (window-buffer (selected-window))
-                        (other-window -1))))
+	(other-buffer (prog2
+			  (other-window +1)
+			  (window-buffer (selected-window))
+			(other-window -1))))
     (switch-to-buffer other-buffer)
     (switch-to-buffer-other-window this-buffer)
     (other-window -1)))
@@ -1538,12 +1433,12 @@ The CHAR is replaced and the point is put before CHAR."
   (interactive)
   (and (= ?w (char-syntax (char-before)))
        (save-excursion
-         (and (if (called-interactively-p 1)
-                  (skip-syntax-backward "w")
-                (= -3 (skip-syntax-backward "w")))
-              (let (case-fold-search)
-                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
-              (capitalize-word 1)))))
+	 (and (if (called-interactively-p 1)
+		  (skip-syntax-backward "w")
+		(= -3 (skip-syntax-backward "w")))
+	      (let (case-fold-search)
+		(looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+	      (capitalize-word 1)))))
 
 (add-hook 'post-self-insert-hook #'dcaps-to-scaps)
 
@@ -1552,16 +1447,16 @@ The CHAR is replaced and the point is put before CHAR."
   "Copy the buffer-file-name to the kill-ring."
   (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
   (let ((new-kill-string)
-        (name (if (eq major-mode 'dired-mode)
-                  (dired-get-filename)
-                (or (buffer-file-name) ""))))
+	(name (if (eq major-mode 'dired-mode)
+		  (dired-get-filename)
+		(or (buffer-file-name) ""))))
     (cond ((eq choice ?f)
-           (setq new-kill-string name))
-          ((eq choice ?p)
-           (setq new-kill-string (file-name-directory name)))
-          ((eq choice ?n)
-           (setq new-kill-string (file-name-nondirectory name)))
-          (t (message "Quit")))
+	   (setq new-kill-string name))
+	  ((eq choice ?p)
+	   (setq new-kill-string (file-name-directory name)))
+	  ((eq choice ?n)
+	   (setq new-kill-string (file-name-nondirectory name)))
+	  (t (message "Quit")))
     (when new-kill-string
       (message "%s copied" new-kill-string)
       (kill-new new-kill-string))))
@@ -1577,26 +1472,26 @@ The CHAR is replaced and the point is put before CHAR."
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
+	     (next-win-buffer (window-buffer (next-window)))
+	     (this-win-edges (window-edges (selected-window)))
+	     (next-win-edges (window-edges (next-window)))
+	     (this-win-2nd (not (and (<= (car this-win-edges)
+					 (car next-win-edges))
+				     (<= (cadr this-win-edges)
+					 (cadr next-win-edges)))))
+	     (splitter
+	      (if (= (car this-win-edges)
+		     (car (window-edges (next-window))))
+		  'split-window-horizontally
+		'split-window-vertically)))
+	(delete-other-windows)
+	(let ((first-win (selected-window)))
+	  (funcall splitter)
+	  (if this-win-2nd (other-window 1))
+	  (set-window-buffer (selected-window) this-win-buffer)
+	  (set-window-buffer (next-window) next-win-buffer)
+	  (select-window first-win)
+	  (if this-win-2nd (other-window 1))))))
 
 ;; When popping the mark, continue popping until the cursor actually moves
 ;; Also, if the last command was a copy - skip past all the expand-region cruft.
@@ -1698,15 +1593,15 @@ The CHAR is replaced and the point is put before CHAR."
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
-                                            emacs-start-time))))
+					    emacs-start-time))))
     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
 
   (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed
-                      (float-time
-                       (time-subtract (current-time) emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed))) t))
+	    `(lambda ()
+	       (let ((elapsed
+		      (float-time
+		       (time-subtract (current-time) emacs-start-time))))
+		 (message "Loading %s...done (%.3fs) [after-init]"
+			  ,load-file-name elapsed))) t))
 
 ;;; init.el ends here
