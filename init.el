@@ -163,13 +163,6 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-(use-package beginend
-  :ensure t
-  :config
-  (beginend-global-mode))
-(use-package cask-mode
-  :ensure t)
-
 (use-package centaur-tabs
   :ensure t
   :config

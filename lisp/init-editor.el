@@ -167,5 +167,10 @@
 
 ;; TODO add back in highlight-tail?
 
+(use-package beginend
+  :ensure t
+  :config
+  (beginend-global-mode))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here
