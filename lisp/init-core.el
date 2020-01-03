@@ -58,5 +58,19 @@
 ;; turn on visual line mode
 (global-visual-line-mode t)
 
+;; set paths from shell
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
+;; Start up emacs server
+(when (display-graphic-p)
+  (require 'server)
+  (message "Starting up server...")
+  (unless (server-running-p)
+    (server-start)))
+
 (provide 'init-core)
 ;;; init-core.el ends here

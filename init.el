@@ -51,37 +51,6 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;;----------------------------------------------------------------------------
-;; Core
-;;----------------------------------------------------------------------------
-
-;; set encoding
-(prefer-coding-system 'utf-8)
-
-;; and tell emacs to play nice with encoding
-(define-coding-system-alias 'UTF-8 'utf-8)
-(define-coding-system-alias 'utf8 'utf-8)
-
-;; save nothing
-(setq auto-save-default nil
-      create-lockfiles nil)
-
-;; no splash screen
-(setq inhibit-splash-screen t)
-
-;; no message on startup
-(setq initial-scratch-message nil)
-
-(require 'cl-lib)
-
-;; Reduce the frequency of garbage collection by making it happen on
-;; each 25MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 25000000)
-(setq gc-cons-percentage 0.6)
-
-;; turn on visual line mode
-(global-visual-line-mode t)
-
-;;----------------------------------------------------------------------------
 ;; Packages
 ;;----------------------------------------------------------------------------
 
@@ -93,8 +62,8 @@
       package-user-dir (concat user-emacs-directory "elpa")
       package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+	("melpa" . "https://melpa.org/packages/")
+	("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (package-initialize)
 
@@ -105,8 +74,8 @@
 
 ;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
-              use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
+	      use-package-expand-minimally t  ; make the expanded code as minimal as possible
+	      use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
 (eval-when-compile
   (require 'use-package))
 
@@ -175,19 +144,6 @@
  ;; If there is more than one, they won't work right.
  '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar))))
  '(org-ellipsis ((t (:foreground nil)))))
-
-;; set paths from shell
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
-(when (display-graphic-p)
-  (require 'server)
-  (message "Starting up server...")
-  (unless (server-running-p)
-    (server-start)))
 
 ;;----------------------------------------------------------------------------
 ;; Editor Config
