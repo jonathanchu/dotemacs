@@ -92,6 +92,8 @@
 (require 'init-core)
 (require 'init-editor)
 (require 'init-ui)
+(require 'init-doom)
+
 (require 'init-org)
 
 ;;----------------------------------------------------------------------------
@@ -154,66 +156,6 @@
 (use-package f
   :ensure t
   :defer t)
-
-;;----------------------------------------------------------------------------
-;; Doom Stuff
-;;----------------------------------------------------------------------------
-
-(use-package dash
-  :ensure t)
-
-(use-package all-the-icons
-  :ensure t)
-
-(use-package popup
-  :ensure t)
-
-(load-file "~/.emacs.d/doom.el")
-
-(use-package doom-themes
-  ;; :ensure t
-  :load-path "vendor/emacs-doom-themes-modified")
-
-(use-package doom-modeline
-  :ensure t
-  :hook
-  (after-init . doom-modeline-mode))
-
-(setq-default frame-title-format '(""))
-
-;; Global settings (defaults)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-
-;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-;; may have their own settings.
-;; (load-theme 'doom-nord-light t)
-(load-theme 'doom-one-light t)
-;; (load-theme 'zaiste t)
-;; (load-theme 'doom-city-lights t)
-;; (use-package atom-one-dark-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'atom-one-dark t))
-
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-
-;; Enable custom neotree theme
-;; (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
-
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
-
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/vendor/emacs-horizon-theme")
-;; (load-file "~/.emacs.d/vendor/emacs-horizon-theme/horizon-themes.el")
-;; (require 'horizon-themes)
-;; (load-theme 'horizon t)
-;; (use-package horizon-themes
-;;   :load-path "vendor/emacs-horizon-theme"
-;;   :config
-;;   (load-theme 'horizon t))
 
 ;;----------------------------------------------------------------------------
 ;; Packages
