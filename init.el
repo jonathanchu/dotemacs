@@ -873,14 +873,6 @@
   ;; (bind-key "s-P" #'helm-projectile-switch-project)
   )
 
-(use-package highlight-tail
-  :load-path "vendor/"
-  ;; :ensure t
-  :config
-  (progn
-    (setq highlight-tail-steps 8)
-    (setq highlight-tail-timer 0.05)))
-
 (use-package ibuffer
   :bind
   ("C-x C-b" . ibuffer))
