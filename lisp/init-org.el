@@ -35,8 +35,7 @@
   (require 'cl-lib)
   (require 'use-package)
   (setq use-package-verbose nil)
-  (setq use-package-expand-minimally t)
-  (load "~/.emacs.d/lisp/org-settings"))
+  (setq use-package-expand-minimally t))
 
 (eval-when-compile
   (require 'cl)
