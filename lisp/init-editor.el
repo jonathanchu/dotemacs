@@ -137,5 +137,35 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
+(use-package aggressive-indent
+  :ensure t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
+
+(use-package anzu
+  :ensure t
+  :config
+  (progn
+    (global-anzu-mode t)
+    (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
+  :bind
+  ("M-%" . anzu-query-replace)
+  ("C-M-%" . anzu-query-replace-regexp))
+
+(use-package avy
+  :ensure t
+  :init
+  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
+  :config
+  (progn
+    (avy-setup-default)
+    (setq avy-background t)
+    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
+    (setq avy-styles-alist '((avy-got-char-2 . post)))
+    (setq avy-all-windows nil)))
+
+;; TODO add back in highlight-tail?
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

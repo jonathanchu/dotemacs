@@ -163,43 +163,6 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-(use-package add-node-modules-path
-  ;; :load-path "vendor/"
-  :ensure t
-  :config
-  (add-hook 'js2-mode-hook #'add-node-modules-path)
-  (add-hook 'js-mode-hook #'add-node-modules-path)
-  (add-hook 'rjsx-mode-hook #'add-node-modules-path)
-  )
-
-(use-package aggressive-indent
-  :ensure t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-  (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
-
-(use-package anzu
-  :ensure t
-  :config
-  (progn
-    (global-anzu-mode t)
-    (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
-  :bind
-  ("M-%" . anzu-query-replace)
-  ("C-M-%" . anzu-query-replace-regexp))
-
-(use-package avy
-  :ensure t
-  :init
-  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
-  :config
-  (progn
-    (avy-setup-default)
-    (setq avy-background t)
-    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
-    (setq avy-styles-alist '((avy-got-char-2 . post)))
-    (setq avy-all-windows nil)))
-
 (use-package beginend
   :ensure t
   :config
