@@ -145,5 +145,64 @@
                (/= text-scale-mode-amount 0)
                (format " (%+d)" text-scale-mode-amount))))
 
+(use-package centaur-tabs
+  :ensure t
+  :config
+  (setq centaur-tabs-background-color (face-background 'default))
+  ;; (centaur-tabs-inherit-tabbar-faces)
+  (setq centaur-tabs-style "bar")
+  (setq centaur-tabs-height 32)
+  (setq centaur-tabs-set-icons t)
+  (setq centaur-tabs-set-bar t)
+  (setq centaur-tabs-set-modified-marker t)
+  (setq centaur-tabs-modified-marker "*")
+  (setq centaur-tabs-set-close-button nil)
+  (setq centaur-tabs-gray-out-icons 'buffer)
+  (setq centaur-tabs-set-bar 'left)
+  (centaur-tabs-mode t)
+  (centaur-tabs-headline-match)
+  (set-face-attribute 'centaur-tabs-modified-marker-selected nil :foreground (face-background 'doom-modeline-bar))
+  (set-face-attribute 'centaur-tabs-modified-marker-unselected nil :foreground (face-background 'doom-modeline-bar))
+  (defun centaur-tabs-buffer-groups ()
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+ Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+ All buffer name start with * will group to \"Emacs\".
+ Other buffer group by `centaur-tabs-get-group-name' with project name."
+    (list
+     (cond
+      ((or (string-equal "*" (substring (buffer-name) 0 1))
+           (memq major-mode '(magit-process-mode
+                              magit-status-mode
+                              magit-diff-mode
+                              magit-log-mode
+                              magit-file-mode
+                              magit-blob-mode
+                              magit-blame-mode
+                              )))
+       "Emacs")
+      (t
+       (centaur-tabs-get-group-name (current-buffer))))))
+  :hook
+  (dashboard-mode . centaur-tabs-local-mode)
+  (term-mode . centaur-tabs-local-mode)
+  (calendar-mode . centaur-tabs-local-mode)
+  (dired-mode . centaur-tabs-local-mode)
+  (org-agenda-mode . centaur-tabs-local-mode)
+  (magit-log-mode . centaur-tabs-local-mode)
+  (magit-diff-mode . centaur-tabs-local-mode)
+  (magit-status-mode . centaur-tabs-local-mode)
+  (magit-process-mode . centaur-tabs-local-mode)
+  (magit-stashes-mode . centaur-tabs-local-mode)
+  (helpful-mode . centaur-tabs-local-mode)
+  (help-mode . centaur-tabs-local-mode)
+  (fundamental-mode . centaur-tabs-local-mode)
+  (lisp-interaction-mode . centaur-tabs-local-mode)
+  :bind
+  ("s-{" . centaur-tabs-backward)
+  ("s-}" . centaur-tabs-forward)
+  :custom-face
+  (centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
