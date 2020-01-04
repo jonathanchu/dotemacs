@@ -146,6 +146,7 @@
                (format " (%+d)" text-scale-mode-amount))))
 
 (use-package centaur-tabs
+  :disabled
   :ensure t
   :config
   (setq centaur-tabs-background-color (face-background 'default))

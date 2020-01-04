@@ -115,43 +115,45 @@
 
 (require 'org-habit)
 
-(setq jc/org-agenda-todo-view
-      `(" " "Agenda"
-        ((agenda ""
-                 ((org-agenda-span 'day)
-                  (org-deadline-warning-days 365)))
-         (todo "TODO"
-               ((org-agenda-overriding-header "To Refile")
-                (org-agenda-files '(,(concat jc/org-agenda-directory "inbox.org")))))
-         (todo "TODO"
-               ((org-agenda-overriding-header "Emails")
-                (org-agenda-files '(,(concat jc/org-agenda-directory "emails.org")))))
-         (todo "NEXT"
-               ((org-agenda-overriding-header "In Progress")
-                (org-agenda-files '(,(concat jc/org-agenda-directory "someday.org")
-                                    ,(concat jc/org-agenda-directory "projects.org")
-                                    ,(concat jc/org-agenda-directory "next.org")))
-                ))
-         (todo "TODO"
-               ((org-agenda-overriding-header "Projects")
-                (org-agenda-files '(,(concat jc/org-agenda-directory "projects.org")))
-                ))
-         (todo "TODO"
-               ((org-agenda-overriding-header "One-off Tasks")
-                (org-agenda-files '(,(concat jc/org-agenda-directory "next.org")))
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
-         nil)))
+(defvar jc/org-agenda-todo-view
+  `(" " "Agenda"
+    ((agenda ""
+             ((org-agenda-span 'day)
+              (org-deadline-warning-days 365)))
+     (todo "TODO"
+           ((org-agenda-overriding-header "To Refile")
+            (org-agenda-files '(,(concat jc/org-agenda-directory "inbox.org")))))
+     (todo "TODO"
+           ((org-agenda-overriding-header "Emails")
+            (org-agenda-files '(,(concat jc/org-agenda-directory "emails.org")))))
+     (todo "NEXT"
+           ((org-agenda-overriding-header "In Progress")
+            (org-agenda-files '(,(concat jc/org-agenda-directory "someday.org")
+                                ,(concat jc/org-agenda-directory "projects.org")
+                                ,(concat jc/org-agenda-directory "next.org")))
+            ))
+     (todo "TODO"
+           ((org-agenda-overriding-header "Projects")
+            (org-agenda-files '(,(concat jc/org-agenda-directory "projects.org")))
+            ))
+     (todo "TODO"
+           ((org-agenda-overriding-header "One-off Tasks")
+            (org-agenda-files '(,(concat jc/org-agenda-directory "next.org")))
+            (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+     nil)))
 
 (add-to-list 'org-agenda-custom-commands `,jc/org-agenda-todo-view)
+
+(use-package org-ql
+  :ensure t)
 
 (use-package org-super-agenda
   :disabled
   ;; :after org-agenda
   :init
   ;; (setq org-super-agenda-groups '((:name "To Refile"
-  ;;                                        :and (:scheduled nil :deadline nil)
+  ;;                                        :and (:deadline nil :scheduled nil)
   ;;                                        )))
-
   ;; (setq org-super-agenda-groups '((:name "Today"
   ;;                                        ;; :time-grid t
   ;;                                        ;; :todo "TODAY"
