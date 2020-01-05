@@ -93,8 +93,8 @@
 (require 'init-editor)
 (require 'init-ui)
 (require 'init-doom)
-
 (require 'init-window)
+(require 'init-lsp)
 
 (require 'init-org)
 
@@ -165,13 +165,6 @@
 
 (use-package command-log-mode
   :ensure t)
-
-(use-package company-lsp
-  :disabled
-  :ensure t
-  :config
-  (push 'company-lsp company-backends)
-  )
 
 (use-package company
   :ensure t
