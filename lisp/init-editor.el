@@ -172,5 +172,10 @@
   :config
   (beginend-global-mode))
 
+(use-package expand-region
+  :ensure t
+  :bind
+  ("C-=" . er/expand-region))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

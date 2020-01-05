@@ -1,4 +1,4 @@
-;; init-javascript.el --- My custom YavaScripts config.
+;; init-fish.el --- My personal Fish setup.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,22 +31,12 @@
 
 ;;; Code:
 
-;;----------------------------------------------------------------------------
-;; YavaScripts
-;;----------------------------------------------------------------------------
-
-(use-package add-node-modules-path
+(use-package fish-mode
   :ensure t
+  :defer t
   :config
-  (add-hook 'js2-mode-hook #'add-node-modules-path)
-  (add-hook 'js-mode-hook #'add-node-modules-path)
-  (add-hook 'rjsx-mode-hook #'add-node-modules-path))
+  (add-hook 'fish-mode-hook (lambda ()
+                              (add-hook 'before-save-hook 'fish_indent-before-save))))
 
-(use-package flow-minor-mode
-  :ensure t
-  :config
-  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
-  (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically))
-
-(provide 'init-javascript)
-;;; init-javascript.el ends here
+(provide 'init-fish)
+;;; init-fish.el ends here

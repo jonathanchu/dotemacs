@@ -72,5 +72,11 @@
   (unless (server-running-p)
     (server-start)))
 
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
 (provide 'init-core)
 ;;; init-core.el ends here

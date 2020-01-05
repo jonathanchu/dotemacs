@@ -103,6 +103,7 @@
 (require 'init-elm)
 (require 'init-python)
 (require 'init-utils)
+(require 'init-fish)
 
 (require 'init-org)
 
@@ -185,44 +186,8 @@
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
-(use-package expand-region
-  :ensure t
-  :bind
-  ("C-=" . er/expand-region))
-
 (use-package fireplace
   :ensure t)
-
-(use-package fish-mode
-  :ensure t
-  :defer t
-  :config
-  (add-hook 'fish-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'fish_indent-before-save))))
-
-(use-package fix-word
-  :ensure t
-  :bind
-  ("M-u" . fix-word-upcase)
-  ("M-l" . fix-word-downcase)
-  ("M-c" . fix-word-capitalize))
-
-;; BIG FAT TODO!
-;; (load-file "~/.emacs.d/vendor/flow.el")
-;; (load-file "~/.emacs.d/vendor/my-flow.el")
-
-(use-package flow-minor-mode
-  :ensure t
-  :config
-  (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
-  (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically)
-  )
 
 (use-package flx-ido
   :ensure t)
