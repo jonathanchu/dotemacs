@@ -99,6 +99,9 @@
 (require 'init-ivy)
 (require 'init-package)
 (require 'init-dired)
+(require 'init-prog)
+(require 'init-elm)
+(require 'init-python)
 
 (require 'init-org)
 
@@ -180,43 +183,6 @@
     (setq deft-org-mode-title-prefix t)
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
-
-(use-package dumb-jump
-  :ensure t
-  :bind
-  (("M-g o" . dumb-jump-go-other-window)
-   ("M-g j" . dumb-jump-go)
-   ("M-g i" . dumb-jump-go-prompt)
-   ("M-g x" . dumb-jump-go-prefer-external)
-   ("M-g z" . dumb-jump-go-prefer-external-other-window))
-  :config
-  (setq dumb-jump-selector 'ivy)
-  )
-
-(use-package easy-kill
-  :ensure t
-  :config
-  (global-set-key [remap kill-ring-save] 'easy-kill))
-
-(use-package edit-indirect
-  :ensure t)
-
-(use-package elm-mode
-  :ensure t
-  :config
-  (progn
-    (setq elm-format-on-save t)  ;; elm-format needs to be installed
-    (add-to-list 'company-backends 'company-elm)))
-
-(use-package elpy
-  :disabled
-  :ensure t
-  :config
-  (elpy-enable)
-  (setq elpy-rpc-python-command "python3"))
-
-(use-package esup
-  :ensure t)
 
 (use-package evil :ensure t)
 
