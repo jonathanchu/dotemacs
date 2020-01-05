@@ -105,6 +105,7 @@
 (require 'init-utils)
 (require 'init-fish)
 (require 'init-flycheck)
+(require 'init-vcs)
 
 (require 'init-org)
 
@@ -188,44 +189,6 @@
     (setq deft-auto-save-interval 0)))
 
 (use-package fireplace
-  :ensure t)
-
-(use-package flyspell
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode))
-
-(use-package forge
-  :ensure t
-  :after magit)
-
-(use-package fullframe
-  :ensure t
-  :config
-  (progn
-    (fullframe magit-status magit-mode-quit-window)
-    (fullframe ibuffer ibuffer-quit)
-    (fullframe paradox-list-packages paradox-quit-and-close)))
-
-(use-package git-messenger
-  :ensure t
-  :defer t
-  :bind
-  ("C-x v m" . git-messenger:popup-message))
-
-(use-package git-timemachine
-  :ensure t)
-
-(use-package git-undo
-  :load-path "vendor/git-undo-el"
-  :bind ("C-. C-/" . git-undo))
-
-(use-package gitconfig-mode
-  :ensure t)
-
-(use-package github-browse-file
-  :ensure t)
-
-(use-package gitignore-mode
   :ensure t)
 
 (use-package go-mode

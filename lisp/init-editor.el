@@ -177,5 +177,17 @@
   :bind
   ("C-=" . er/expand-region))
 
+(use-package flyspell
+  :config
+  (add-hook 'text-mode-hook #'flyspell-mode))
+
+(use-package fullframe
+  :ensure t
+  :config
+  (progn
+    (fullframe magit-status magit-mode-quit-window)
+    (fullframe ibuffer ibuffer-quit)
+    (fullframe paradox-list-packages paradox-quit-and-close)))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here
