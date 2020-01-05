@@ -97,6 +97,8 @@
 (require 'init-lsp)
 (require 'init-company)
 (require 'init-ivy)
+(require 'init-package)
+(require 'init-dired)
 
 (require 'init-org)
 
@@ -178,16 +180,6 @@
     (setq deft-org-mode-title-prefix t)
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
-
-(use-package diminish
-  :ensure t)
-
-(use-package dired+
-  :load-path "vendor/"
-  )
-
-(use-package dired-single
-  :ensure t)
 
 (use-package dumb-jump
   :ensure t
