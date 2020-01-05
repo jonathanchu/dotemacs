@@ -95,6 +95,7 @@
 (require 'init-doom)
 (require 'init-window)
 (require 'init-lsp)
+(require 'init-company)
 
 (require 'init-org)
 
@@ -165,11 +166,6 @@
 
 (use-package command-log-mode
   :ensure t)
-
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'company-mode))
 
 (use-package counsel
   :disabled
