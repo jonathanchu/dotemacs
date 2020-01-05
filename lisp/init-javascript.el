@@ -48,5 +48,50 @@
   (add-hook 'js2-mode-hook 'flow-minor-enable-automatically)
   (add-hook 'rjsx-mode-hook 'flow-minor-enable-automatically))
 
+(use-package indium
+  :ensure t)
+
+(use-package js2-mode
+  :ensure t
+  :mode
+  "\\.js$"
+  "\\.jsx$"
+  :commands js2-mode
+  :config
+  (progn
+    (setq-default
+     js2-auto-indent-flag nil
+     js2-basic-offset 2
+     js2-electric-keys nil
+     js2-mirror-mode nil
+     js2-mode-show-parse-errors nil
+     js2-mode-show-strict-warnings nil
+     js2-strict-missing-semi-warning nil
+     js2-strict-trailing-comma-warning nil
+     js2-highlight-external-variables nil)
+    (add-hook 'js2-mode-hook 'prettier-js-mode)
+    ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
+    (add-hook 'js2-mode-hook
+              (defun my-js2-mode-setup ()
+                (flycheck-select-checker 'javascript-eslint)))
+    ;; (add-hook 'after-save-hook 'flow-save-hook)
+    ))
+
+(defun flow-save-hook ()
+  "Invoke flow-status after save when in js2-mode."
+  (when (and (eq major-mode 'js2-mode)
+             (executable-find "flow"))
+    (flow-status)))
+
+(use-package js2-refactor
+  :ensure t
+  :init
+  (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
+(use-package json-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
+
 (provide 'init-javascript)
 ;;; init-javascript.el ends here

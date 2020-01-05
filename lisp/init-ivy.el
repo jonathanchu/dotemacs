@@ -31,10 +31,6 @@
 
 ;;; Code:
 
-;;----------------------------------------------------------------------------
-;; Ivy
-;;----------------------------------------------------------------------------
-
 (use-package counsel
   :disabled
   :ensure t
@@ -53,6 +49,23 @@
   (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
   :config
   (counsel-projectile-mode 1))
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (progn
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d)")
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-format-function #'ivy-format-function-arrow)
+    (setq ivy-re-builders-alist
+          '((swiper . ivy--regex-plus)
+            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
+    )
+  :bind
+  ("C-c C-r" . ivy-resume))
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

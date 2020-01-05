@@ -195,5 +195,48 @@
   ("C-c b ," . goto-last-change)
   ("C-c b ." . goto-last-change-reverse))
 
+(use-package key-chord
+  :ensure t
+  :init
+  (progn
+    (key-chord-mode 1)
+    (key-chord-define-global "hj" 'undo)
+    (key-chord-define-global ",." "<>\C-b")
+    (key-chord-define-global "--" 'my/insert-underscore)
+    (key-chord-define-global "jj" 'avy-goto-word-1)
+    (key-chord-define-global "jl" 'avy-goto-line)
+    (key-chord-define-global "jk" 'avy-goto-char)
+    ))
+
+(use-package move-text
+  :ensure t
+  :bind
+  (("M-p" . move-text-up)
+   ("M-n" . move-text-down))
+  )
+
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  ("C-c m c" . mc/edit-lines))
+
+(use-package neotree
+  :ensure t
+  :config
+  (setq neo-window-fixed-size nil
+        neo-create-file-auto-open t
+        neo-banner-message nil
+        neo-mode-line-type 'none
+        neo-smart-open t
+        neo-show-hidden-files t
+        neo-auto-indent-point t)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  :bind
+  ("C-c n" . neotree-toggle)
+  )
+
+(use-package olivetti
+  :ensure t)
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

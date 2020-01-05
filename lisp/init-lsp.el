@@ -42,5 +42,48 @@
   (push 'company-lsp company-backends)
   )
 
+(use-package lsp-mode
+  ;; :disabled
+  :commands lsp-mode
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'lsp-mode)
+  :config
+  (add-hook 'js-mode-hook #'lsp)
+  (use-package lsp-ui
+    :ensure t
+    :commands lsp-ui-mode
+    :init
+    (add-hook 'lsp-mode-hook 'flycheck-mode)
+    :config
+    (progn
+      (add-hook 'js-mode-hook #'flycheck-mode)
+      (add-hook 'js2-mode-hook #'flycheck-mode) ;; for js2-mode support
+      (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
+      (setq lsp-ui-sideline-ignore-duplicate t)
+      (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+      ;; (add-hook 'js-mode-hook #'lsp)
+      )
+    :after flycheck
+    )
+  (use-package company-lsp
+    :ensure t
+    :commands company-lsp
+    :config
+    (push 'company-lsp company-backends))
+  )
+
+(use-package lsp-javascript-flow
+  :disabled
+  :ensure t
+  :after lsp-mode
+  :config
+  (progn
+    (add-hook 'js-mode-hook #'lsp-javascript-flow-enable)
+    (add-hook 'js2-mode-hook #'lsp-javascript-flow-enable) ;; for js2-mode support
+    (add-hook 'rjsx-mode #'lsp-javascript-flow-enable) ;; for rjsx-mode support
+    )
+  )
+
 (provide 'init-lsp)
 ;;; init-lsp.el ends here

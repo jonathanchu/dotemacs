@@ -57,5 +57,32 @@
 (use-package gitignore-mode
   :ensure t)
 
+(use-package magit
+  :ensure t
+  :config
+  (progn
+    (setq magit-completing-read-function #'ivy-completing-read)
+    (setq magit-diff-refine-hunk t)
+    (setq magit-status-margin
+          '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+    (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18)))
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c C-a" . magit-commit-amend)
+  ("C-c g" . magit-file-dispatch)
+  )
+
+(setq magit-repository-directories '(("\~/projects" . 3)))
+(defun magit-status-with-prefix-arg ()
+  "Call `magit-status` with a prefix."
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively #'magit-status)))
+(global-set-key (kbd "s-P") 'magit-status-with-prefix-arg)
+
+
+(use-package magit-git-toolbelt
+  :load-path "vendor/")
+
 (provide 'init-vcs)
 ;;; init-vcs.el ends here

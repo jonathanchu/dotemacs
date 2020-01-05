@@ -1,4 +1,4 @@
-;; init-python.el --- My custom Python config.
+;; init-web.el --- My personal web setup.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,17 +31,10 @@
 
 ;;; Code:
 
-(use-package elpy
-  :disabled
+(use-package less-css-mode
   :ensure t
   :config
-  (elpy-enable)
-  (setq elpy-rpc-python-command "python3"))
+  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
 
-(use-package jinja2-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
-
-(provide 'init-python)
-;;; init-python.el ends here
+(provide 'init-web)
+;;; init-web.el ends here

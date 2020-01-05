@@ -1,4 +1,4 @@
-;; init-python.el --- My custom Python config.
+;; init-markdown.el --- My custom Markdown config.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,17 +31,9 @@
 
 ;;; Code:
 
-(use-package elpy
-  :disabled
+(use-package markdown-mode
   :ensure t
-  :config
-  (elpy-enable)
-  (setq elpy-rpc-python-command "python3"))
+  :mode "\\.md\\'")
 
-(use-package jinja2-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
-
-(provide 'init-python)
-;;; init-python.el ends here
+(provide 'init-markdown)
+;;; init-markdown.el ends here

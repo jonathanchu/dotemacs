@@ -48,6 +48,103 @@
 
 (message "hello!")
 
+(use-package org
+  :custom-face (org-ellipsis ((t (:foreground nil))))
+  :preface
+  :bind
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda)
+  ("C-c l" . org-store-link)
+  :mode
+  (("\\.org$" . org-mode))
+  :init
+  (setq org-log-done 'time)
+  (setq  org-catch-invisible-edits 'smart)
+  (setq  org-startup-indented t)
+  ;; (setq  org-ellipsis (if (char-displayable-p ?) " " nil))
+  (setq  org-pretty-entities nil)
+  :config
+  ;; (setq org-directory "~/Dropbox/org")
+  (setq org-log-done 'time)
+  ;; Always showall by default
+  ;; (setq org-startup-folded nil)
+  (setq org-use-speed-commands t)       ; n, p, l, r
+  (setq org-goto-interface 'outline-path-completion) ; C-c C-j
+  (setq org-goto-max-level 10)
+  ;;;;;
+  (setq header-line-format " ")
+  (setq org-hide-emphasis-markers t)
+  (use-package org-bullets
+    :disabled
+    :ensure t
+    :if (char-displayable-p ?⚫)
+    ;; :hook (org-mode . org-bullets-mode)
+    :init (setq org-bullets-bullet-list '("⚫" "⚫" "⚫" "⚫")))
+
+  ;; (require 'org)
+
+  (use-package org-journal
+    :ensure t
+    :defer t
+    :custom
+    (org-journal-dir "~/Dropbox/org/journal/")
+    (org-journal-date-format "%A, %d %B %Y"))
+
+  ;;;;;
+  (setq org-default-notes-file "~/Dropbox/org/gtd/inbox.org")
+
+  ;; (setq org-agenda-window-setup (quote current-window))
+
+  ;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  ;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+  ;; (setq org-agenda-todo-ignore-deadlines (quote all))
+  ;; (setq org-agenda-todo-ignore-scheduled (quote all))
+  ;; (setq org-agenda-sorting-strategy
+  ;;       (quote
+  ;;        ((agenda deadline-up priority-down)
+  ;;         (todo priority-down category-keep)
+  ;;         (tags priority-down category-keep)
+  ;;         (search category-keep))))
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation t)
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (make-variable-buffer-local 'yas/trigger-key)
+              (defvar yas/trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+              (define-key yas/keymap [tab] 'yas/next-field)
+              ;; (olivetti-mode 1)        ;; Centers text in the buffer
+              (setq olivetti-body-width 100)
+              (flyspell-mode 1)        ;; Catch Spelling mistakes
+              (typo-mode 1)            ;; Good for symbols like em-dash
+              (blink-cursor-mode 0)    ;; Reduce visual noise
+              (linum-mode 0)           ;; No line numbers for prose
+              (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
+              (buffer-face-mode)
+              (require 'org-indent)
+              (org-indent-mode)
+              (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings
+              (setq org-fontify-quote-and-verse-blocks t)
+              (setq org-fontify-done-headline t))))
+
+(use-package org-present
+  :ensure t
+  :init
+  (add-hook 'org-present-mode-hook
+            (lambda ()
+              (setq org-image-actual-width nil)
+              (org-present-big)
+              (org-display-inline-images)
+              (org-present-hide-cursor)
+              (org-present-read-only)))
+  (add-hook 'org-present-mode-quit-hook
+            (lambda ()
+              (org-present-small)
+              (org-remove-inline-images)
+              (org-present-show-cursor)
+              (org-present-read-write))))
+
 ;; Setup my org agenda files
 (require 'find-lisp)
 (defvar jc/org-agenda-directory "~/Dropbox/org/gtd/")
