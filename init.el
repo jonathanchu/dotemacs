@@ -96,6 +96,7 @@
 (require 'init-window)
 (require 'init-lsp)
 (require 'init-company)
+(require 'init-ivy)
 
 (require 'init-org)
 
@@ -166,25 +167,6 @@
 
 (use-package command-log-mode
   :ensure t)
-
-(use-package counsel
-  :disabled
-  :ensure t
-  :bind (("M-x" . counsel-M-x)
-         ;; ("C-x C-f" . counsel-find-file)
-         ("C-c g" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x C-r" . counsel-recentf)))
-
-(use-package counsel-projectile
-  :disabled
-  :ensure t
-  :init
-  (bind-key "s-F" #'counsel-projectile-ag)
-  (bind-key "s-t" #'counsel-projectile-find-file)
-  (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
-  :config
-  (counsel-projectile-mode 1))
 
 (use-package deft
   :ensure t
