@@ -104,6 +104,7 @@
 (require 'init-python)
 (require 'init-utils)
 (require 'init-fish)
+(require 'init-flycheck)
 
 (require 'init-org)
 
@@ -188,32 +189,6 @@
 
 (use-package fireplace
   :ensure t)
-
-(use-package flycheck-pos-tip
-  :ensure t
-  :config
-  (setq flycheck-pos-tip-timeout 10)
-  (setq flycheck-display-errors-delay 0.5)
-  (flycheck-pos-tip-mode +1))
-
-(use-package flycheck
-  :ensure t
-  :commands
-  (flycheck-mode flycheck-list-errors flycheck-buffer)
-  :defer 2
-  :init
-  (progn
-    (setq flycheck-indication-mode 'right-fringe)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (setq flycheck-highlighting-mode 'symbols)
-    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint)))
-  :config
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
-  (global-flycheck-mode 1)
-  )
-
-(load-file "~/.emacs.d/vendor/flycheck-flow.el")
 
 (use-package flyspell
   :config
