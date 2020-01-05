@@ -78,5 +78,20 @@
   :config
   (exec-path-from-shell-initialize))
 
+(use-package ido
+  :config
+  (progn
+    (ido-mode t)
+    ;; (flx-ido-mode t)
+    (setq ido-enable-flex-matching t)
+    (setq ido-use-faces nil)))
+
+(use-package ido-vertical-mode
+  :ensure t
+  :config
+  (progn
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
+
 (provide 'init-core)
 ;;; init-core.el ends here

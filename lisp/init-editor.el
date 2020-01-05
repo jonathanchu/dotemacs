@@ -189,5 +189,11 @@
     (fullframe ibuffer ibuffer-quit)
     (fullframe paradox-list-packages paradox-quit-and-close)))
 
+(use-package goto-chg
+  :ensure t
+  :bind
+  ("C-c b ," . goto-last-change)
+  ("C-c b ." . goto-last-change-reverse))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

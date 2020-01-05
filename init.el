@@ -106,6 +106,8 @@
 (require 'init-fish)
 (require 'init-flycheck)
 (require 'init-vcs)
+(require 'init-go)
+(require 'init-helm)
 
 (require 'init-org)
 
@@ -191,58 +193,6 @@
 (use-package fireplace
   :ensure t)
 
-(use-package go-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
-
-(use-package gnus
-  :config
-  (setq gnus-select-method '(nntp "ger.gmane.org")))
-
-(use-package goto-chg
-  :ensure t
-  :bind
-  ("C-c b ," . goto-last-change)
-  ("C-c b ." . goto-last-change-reverse))
-
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :bind (
-         ;; ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-r" . helm-recentf)
-         ("C-x b" . helm-buffers-list)
-         ("C-c i" . helm-imenu))
-  :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (defvar helm-M-x-fuzzy-match t)
-  (defvar helm-M-x-always-save-history t)
-  (defvar helm-recentf-fuzzy-match t)
-  (defvar lm-buffers-fuzzy-matching t)
-  (defvar helm-imenu-fuzzy-match t)
-  (defvar helm-display-header-line nil)
-  ;; (defvar helm-completion-in-region-fuzzy-match t)
-  ;; (defvar helm-mode-fuzzy-match t)
-  (setq helm-candidate-number-limit 30))
-
-(use-package helm-ag
-  :ensure t
-  :bind ("s-F" . helm-do-ag-project-root)
-  :config
-  ;; (helm-ag-use-agignore t)
-  )
-
-(use-package helm-projectile
-  :ensure t
-  :init
-  (helm-projectile-on)
-  (bind-key "s-t" #'helm-projectile-find-file)
-  ;; (bind-key "s-P" #'helm-projectile-switch-project)
-  )
-
 (use-package ibuffer
   :bind
   ("C-x C-b" . ibuffer))
@@ -256,21 +206,6 @@
               (ibuffer-vc-set-filter-groups-by-vc-root)
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic)))))
-
-(use-package ido
-  :config
-  (progn
-    (ido-mode t)
-    (flx-ido-mode t)
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil)))
-
-(use-package ido-vertical-mode
-  :ensure t
-  :config
-  (progn
-    (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
 
 (use-package imenu-anywhere
   :ensure t
