@@ -67,5 +67,13 @@
   :bind
   ("C-c C-r" . ivy-resume))
 
+(use-package swiper
+  :ensure t
+  :bind
+  ("C-s" . counsel-grep-or-swiper)
+  ("C-r" . swiper)
+  :config
+  (advice-add 'swiper :after 'recenter))
+
 (provide 'init-ivy)
 ;;; init-ivy.el ends here

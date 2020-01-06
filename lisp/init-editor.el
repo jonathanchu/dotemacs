@@ -238,5 +238,47 @@
 (use-package olivetti
   :ensure t)
 
+(use-package origami
+  :ensure t
+  :config
+  (global-origami-mode t)
+  :bind
+  ("s-[" . origami-close-node-recursively)
+  ("s-]" . origami-open-node-recursively)
+  ("M-[" . origami-close-all-nodes)
+  ("M-]" . origami-open-all-nodes))
+
+(use-package paren
+  :config
+  (show-paren-mode t))
+
+(use-package popwin
+  :ensure t
+  :config
+  (popwin-mode t))
+
+(use-package undo-tree
+  :ensure t
+  :config
+  (progn
+    (global-undo-tree-mode t)
+    (setq undo-tree-visualizer-diff t)
+    (setq undo-tree-visualizer-timestamps t)))
+
+(use-package uniquify
+  :config
+  (progn
+    (setq uniquify-buffer-name-style 'reverse)
+    (setq uniquify-separator " • ")
+    (setq uniquify-after-kill-buffer-p t)
+    (setq uniquify-ignore-buffers-re "^\\*")))
+
+(use-package whitespace
+  :config
+  (progn
+    (global-whitespace-mode t)
+    (setq whitespace-action '(auto-cleanup))
+    (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

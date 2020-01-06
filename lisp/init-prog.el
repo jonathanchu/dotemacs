@@ -55,5 +55,40 @@
   :config
   (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
 
+(use-package scratch
+  :ensure t
+  :config
+  (autoload 'scratch "scratch" nil t))
+
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+
+(use-package smart-comment
+  :ensure t
+  :bind
+  ("s-/" . smart-comment))
+
+(use-package smartparens
+  :ensure t
+  :init
+  (smartparens-global-mode t)
+  :config
+  (progn
+    (sp-local-pair 'web-mode "{%" "%}")
+    (use-package smartparens-config)
+    (setq sp-autoskip-closing-pair 'always)
+    (setq sp-hybrid-kill-entire-symbol nil)))
+
+(use-package toml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
+
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
 (provide 'init-prog)
 ;;; init-prog.el ends here

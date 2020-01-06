@@ -41,5 +41,20 @@
   ("M-l" . fix-word-downcase)
   ("M-c" . fix-word-capitalize))
 
+(use-package uuidgen
+  :ensure t
+  :defer t)
+
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (setq which-key-use-C-h-commands nil)
+  ;; Prevent
+  ;; https://github.com/justbur/emacs-which-key/issues/130
+  (setq inhibit-compacting-font-caches nil)
+  (setq which-key-allow-imprecise-window-fit t)
+  (which-key-mode))
+
 (provide 'init-utils)
 ;;; init-utils.el ends here

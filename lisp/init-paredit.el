@@ -1,4 +1,4 @@
-;; init-web.el --- My personal web setup.
+;; init-paredit.el --- My personal Paredit setup.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,28 +31,20 @@
 
 ;;; Code:
 
-(use-package less-css-mode
+(use-package paredit
   :ensure t
   :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+  (autoload 'enable-paredit-mode "paredit" t)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook #'enable-paredit-mode)
+  (add-hook 'clojure-mode-hook #'enable-paredit-mode)
+  (add-hook 'org-mode-hook #'enable-paredit-mode)
+  (add-hook 'python-mode-hook
+            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
 
-(use-package restclient
-  :ensure t)
-
-(use-package web-mode
-  :ensure t
-  :config
-  (progn
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
-
-(provide 'init-web)
-;;; init-web.el ends here
+(provide 'init-paredit)
+;;; init-paredit.el ends here

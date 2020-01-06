@@ -1,4 +1,4 @@
-;; init-web.el --- My personal web setup.
+;; init-highlight.el --- My custom highlighting config.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,28 +31,20 @@
 
 ;;; Code:
 
-(use-package less-css-mode
+(use-package rainbow-delimiters
   :ensure t
   :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-(use-package restclient
-  :ensure t)
-
-(use-package web-mode
+(use-package rainbow-mode
   :ensure t
   :config
-  (progn
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
+  (add-hook 'css-mode-hook #'rainbow-mode))
 
-(provide 'init-web)
-;;; init-web.el ends here
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode t))
+
+(provide 'init-highlight)
+;;; init-highlight.el ends here

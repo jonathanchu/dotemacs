@@ -1,4 +1,4 @@
-;; init-web.el --- My personal web setup.
+;; init-smex.el --- My custom smex config.
 ;;
 ;; Copyright (c) 2019-2020
 ;;
@@ -31,28 +31,10 @@
 
 ;;; Code:
 
-(use-package less-css-mode
+(use-package smex
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
+  :init
+  (smex-initialize))
 
-(use-package restclient
-  :ensure t)
-
-(use-package web-mode
-  :ensure t
-  :config
-  (progn
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
-
-(provide 'init-web)
-;;; init-web.el ends here
+(provide 'init-smex)
+;;; init-smex.el ends here

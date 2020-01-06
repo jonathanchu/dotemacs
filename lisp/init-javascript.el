@@ -93,5 +93,21 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
 
+(defun prettier-js-save-hook ()
+  "Invoke prettier-js hook if prettier executable is found."
+  (when (executable-find "prettier")
+    (prettier-js-mode)))
+
+(use-package rjsx-mode
+  :ensure t
+  :config
+  (progn
+    (add-to-list 'auto-mode-alist '("\\/components\\/.*\\.js\\'" . rjsx-mode))
+    (add-hook 'rjsx-mode-hook 'prettier-js-mode)
+    ;; (add-hook 'js2-mode-hook 'prettier-js-save-hook)
+    (add-hook 'rjsx-mode-hook
+              (defun my-rjsx-mode-setup ()
+                (flycheck-select-checker 'javascript-eslint)))))
+
 (provide 'init-javascript)
 ;;; init-javascript.el ends here

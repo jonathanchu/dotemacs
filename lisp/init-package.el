@@ -38,5 +38,10 @@
 (use-package diminish
   :ensure t)
 
+(use-package paradox
+  :ensure t
+  :config
+  (setq paradox-execute-asynchronously t))
+
 (provide 'init-package)
 ;;; init-package.el ends here
