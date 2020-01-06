@@ -43,10 +43,7 @@
             (use-package-plist-delete
              (symbol-plist 'string-to-multibyte) 'byte-obsolete-info)))
 
-(require 'org)
 (require 'org-agenda)
-
-(message "hello!")
 
 (use-package org
   :custom-face (org-ellipsis ((t (:foreground nil))))
@@ -115,7 +112,7 @@
               (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
               (define-key yas/keymap [tab] 'yas/next-field)
               ;; (olivetti-mode 1)        ;; Centers text in the buffer
-              (setq olivetti-body-width 100)
+              ;; (setq olivetti-body-width 100)
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               ;; (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
@@ -150,11 +147,6 @@
 (defvar jc/org-agenda-directory "~/Dropbox/org/gtd/")
 (setq org-agenda-files
       (find-lisp-find-files jc/org-agenda-directory "\.org$"))
-
-;; (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-;;                          "~/Dropbox/org/todo.org"
-;;                          "~/Dropbox/org/gtd.org"
-;;                          "~/Dropbox/org/simplehealth.org"))
 
 (setq org-refile-targets '(("~/Dropbox/org/gtd/next.org" :level . 0)
                            ("~/Dropbox/org/gtd/someday.org" :level . 0)
@@ -305,6 +297,22 @@
   ;;   (org-agenda-list))
   :config
   (org-super-agenda-mode t))
+
+(defun org-archive-done-tasks ()
+  "Archive all DONE and CANCELED tasks."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward "\* \\(DONE\\|CANCELED\\) " nil t)
+      (if (save-restriction
+            (save-excursion
+              (org-narrow-to-subtree)
+              (search-forward ":LOGBOOK:" nil t)))
+          (forward-line)
+        (org-archive-subtree)
+        (goto-char (line-beginning-position))))))
+
+(defalias 'archive-done-tasks 'org-archive-done-tasks)
 
 (provide 'init-org)
 ;;; init-org.el ends here
