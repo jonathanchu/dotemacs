@@ -51,5 +51,9 @@
 (use-package edit-indirect
   :ensure t)
 
+(use-package make-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+
 (provide 'init-prog)
 ;;; init-prog.el ends here
