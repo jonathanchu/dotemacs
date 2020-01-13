@@ -31,46 +31,35 @@
 
 ;;; Code:
 
-;;----------------------------------------------------------------------------
-;; LSP
-;;----------------------------------------------------------------------------
-
 (use-package company-lsp
-  :disabled
   :ensure t
+  :commands company-lsp
   :config
-  (push 'company-lsp company-backends)
-  )
+  (push 'company-lsp company-backends))
 
 (use-package lsp-mode
-  ;; :disabled
   :commands lsp-mode
   :ensure t
   :init
   (add-hook 'prog-mode-hook 'lsp-mode)
   :config
-  (add-hook 'js-mode-hook #'lsp)
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode
-    :init
-    (add-hook 'lsp-mode-hook 'flycheck-mode)
-    :config
-    (progn
-      (add-hook 'js-mode-hook #'flycheck-mode)
-      (add-hook 'js2-mode-hook #'flycheck-mode) ;; for js2-mode support
-      (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
-      (setq lsp-ui-sideline-ignore-duplicate t)
-      (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-      ;; (add-hook 'js-mode-hook #'lsp)
-      )
-    :after flycheck
+  (add-hook 'js-mode-hook #'lsp))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :init
+  (add-hook 'lsp-mode-hook 'flycheck-mode)
+  :config
+  (progn
+    (add-hook 'js-mode-hook #'flycheck-mode)
+    (add-hook 'js2-mode-hook #'flycheck-mode) ;; for js2-mode support
+    (add-hook 'rjsx-mode #'flycheck-mode) ;; for rjsx-mode support
+    (setq lsp-ui-sideline-ignore-duplicate t)
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+    ;; (add-hook 'js-mode-hook #'lsp)
     )
-  (use-package company-lsp
-    :ensure t
-    :commands company-lsp
-    :config
-    (push 'company-lsp company-backends))
+  :after flycheck
   )
 
 (use-package lsp-javascript-flow
