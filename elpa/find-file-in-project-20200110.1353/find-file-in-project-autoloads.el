@@ -260,6 +260,11 @@ If REVERSE is t, applied patch is reverted.
 
 ;;;***
 
+;;;### (autoloads nil nil ("find-file-in-project-pkg.el") (0 0 0
+;;;;;;  0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t

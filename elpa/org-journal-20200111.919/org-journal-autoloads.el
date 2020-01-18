@@ -140,6 +140,10 @@ Search for a string within all future entries.
 
 ;;;***
 
+;;;### (autoloads nil nil ("org-journal-pkg.el") (0 0 0 0))
+
+;;;***
+
 ;; Local Variables:
 ;; version-control: never
 ;; no-byte-compile: t
