@@ -1,0 +1,2 @@
+;;; -*- no-byte-compile: t -*-
+(define-package "olivetti" "20200125.439" "Minor mode for a nice writing environment" '((emacs "24.5")) :stars '(#("275" 0 3 (font-lock-face paradox-star-face))) :commit "b42a08ad8e61ce3b38319ca3b40fe3deeace23c0" :keywords '("wp" "text") :authors '(("Paul W. Rankin" . "code@paulwrankin.com")) :maintainer '("Paul W. Rankin" . "code@paulwrankin.com") :url "https://gthub.com/rnkn/olivetti")
