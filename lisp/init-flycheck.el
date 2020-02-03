@@ -54,7 +54,7 @@
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode 1))
 
-(load-file "~/.emacs.d/vendor/flycheck-flow.el")
+;; (load-file "~/.emacs.d/vendor/flycheck-flow.el")
 
 (provide 'init-flycheck)
 ;;; init-flycheck.el ends here

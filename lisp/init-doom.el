@@ -45,10 +45,13 @@
   :ensure t)
 
 (load-file "~/.emacs.d/doom.el")
+;; (load-file "~/.config/emacs/doom.el")
 
-(use-package doom-themes
-  ;; :ensure t
-  :load-path "vendor/emacs-doom-themes-modified")
+;; (use-package doom-themes
+;;   ;; :ensure t
+;;   :load-path "vendor/emacs-doom-themes-modified")
+;; ;; (load-theme 'doom-one-light t)
+(use-package doom-themes)
 
 (use-package doom-modeline
   :ensure t
@@ -65,8 +68,8 @@
 ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;; may have their own settings.
 ;; (load-theme 'doom-nord-light t)
-(load-theme 'doom-one-light t)
-;; (load-theme 'zaiste t)
+;; (load-theme 'doom-one-light t)
+(load-theme 'doom-outrun-electric t)
 ;; (load-theme 'doom-city-lights t)
 ;; (use-package atom-one-dark-theme
 ;;   :ensure t

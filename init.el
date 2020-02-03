@@ -139,7 +139,7 @@
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
    (quote
-    (org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
+    (vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons)))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -225,7 +225,7 @@
     (setq paperless-capture-directory "~/Dropbox/ScanSnap Inbox")
     (setq paperless-root-directory "~/Dropbox/Documents")))
 
-(add-to-list 'load-path "~/.emacs.d/vendor")
+;; (add-to-list 'load-path "~/.emacs.d/vendor")
 ;; (require 'prettier-js)
 ;; (setq prettier-js-args '("--print-width" "120"
 ;;                          "--tab-width" "2"
@@ -235,8 +235,10 @@
 
 
 (use-package white-christmas
-  :load-path "vendor/"
-  )
+  :load-path "vendor/")
+
+(use-package vterm
+  :ensure t)
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
