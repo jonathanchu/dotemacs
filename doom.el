@@ -118,7 +118,8 @@ Examples:
   (add-hook 'evil-visual-state-entry-hook 'doom|hl-line-off)
   (add-hook 'evil-visual-state-exit-hook  'doom|hl-line-on))
 
-(set-default-font "-*-DejaVu Sans Mono for Powerline-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
+
+;; (set-default-font "-*-DejaVu Sans Mono for Powerline-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 (defvar doom-unicode-font
   (font-spec :family "DejaVu Sans Mono" :size 13)

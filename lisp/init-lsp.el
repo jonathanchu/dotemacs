@@ -50,6 +50,7 @@
   (setq lsp-keep-workspace-alive nil)  ;; Auto-kill LSP server
   (setq lsp-prefer-flymake nil)  ;; Use lsp-ui and flycheck
   (setq flymake-fringe-indicator-position 'right-fringe)
+  (setq lsp-print-performance t)
   :config
   ;; Configure LSP clients
   (use-package lsp-clients

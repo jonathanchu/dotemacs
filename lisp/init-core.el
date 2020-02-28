@@ -51,9 +51,10 @@
 (require 'cl-lib)
 
 ;; Reduce the frequency of garbage collection by making it happen on
-;; each 25MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 25000000)
-(setq gc-cons-percentage 0.6)
+;; each 100MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 100000000)
+;; (setq gc-cons-percentage 0.6)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; turn on visual line mode
 (global-visual-line-mode t)
