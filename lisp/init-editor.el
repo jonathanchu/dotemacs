@@ -280,5 +280,10 @@
     (setq whitespace-action '(auto-cleanup))
     (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
 
+(use-package vi-tilde-fringe
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'vi-tilde-fringe-mode))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

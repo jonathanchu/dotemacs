@@ -109,5 +109,10 @@
               (defun my-rjsx-mode-setup ()
                 (flycheck-select-checker 'javascript-eslint)))))
 
+(use-package flow-js2-mode
+  :ensure t
+  :config
+  (add-hook 'js2-mode-hook #'flow-js2-mode))
+
 (provide 'init-javascript)
 ;;; init-javascript.el ends here
