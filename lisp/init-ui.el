@@ -205,5 +205,10 @@
   :custom-face
   (centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
 
+(use-package modus-operandi-theme
+  :ensure t
+  :config
+  (load-theme 'modus-operandi t))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
