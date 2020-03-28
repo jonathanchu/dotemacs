@@ -6,7 +6,7 @@
 ;; Keywords: convenience, tools
 ;; Homepage: https://github.com/purcell/reformatter.el
 ;; Package-Requires: ((emacs "24.3"))
-;; Package-Version: 20200304.2250
+;; Package-Version: 20200327.2358
 ;; Package-X-Original-Version: 0
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -189,10 +189,7 @@ DISPLAY-ERRORS, shows a buffer if the formatting fails."
                        ;; disruption to marker positions and the
                        ;; undo list
                        (narrow-to-region beg end)
-                       (reformatter-replace-buffer-contents-from-file out-file)
-                       ;; In future this might be made optional, or a user-provided
-                       ;; ":after" form could be inserted for execution
-                       (delete-trailing-whitespace))
+                       (reformatter-replace-buffer-contents-from-file out-file))
                    (if display-errors
                        (display-buffer error-buffer)
                      (message ,(concat (symbol-name name) " failed: see %s") (buffer-name error-buffer)))))

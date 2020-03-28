@@ -4277,15 +4277,9 @@ Also, additional data to attached to each candidate can be passed via PLIST."
        :company-require-match 'never
        :company-prefix-length
        (save-excursion
-         (or (and (eq bounds-start (point))
-                  (- bounds-start
-                     (-if-let* ((bol (point-at-bol))
-                                (w-point (re-search-backward (rx whitespace) bol 'noerror)))
-                         (+ 1 w-point)
-                       bol)))
-             (and (goto-char bounds-start)
-                  (lsp--looking-back-trigger-characters-p trigger-chars)
-                  t)))
+         (and (goto-char bounds-start)
+              (lsp--looking-back-trigger-characters-p trigger-chars)
+              t))
        :company-match #'lsp--capf-company-match
        :company-doc-buffer (-compose #'company-doc-buffer
                                      #'lsp--capf-get-documentation)
@@ -6264,7 +6258,7 @@ process listening for TCP connections on the provided port."
                      (process-environment
                       (lsp--compute-process-environment environment-fn))
                      (proc (make-process :name name :connection-type 'pipe :coding 'no-conversion
-                                         :command final-command :sentinel sentinel :stderr name :noquery t))
+                                         :command final-command :sentinel sentinel :stderr (format "*%s::stderr*" name) :noquery t))
                      (tcp-proc (lsp--open-network-stream host port (concat name "::tcp"))))
 
                 ;; TODO: Same :noquery issue (see above)

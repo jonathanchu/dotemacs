@@ -4,7 +4,7 @@
 
 ;; Author: Syohei YOSHIDA <syohex@gmail.com>
 ;; URL: https://github.com/syohex/emacs-helm-ag
-;; Package-Version: 20200327.201
+;; Package-Version: 20200328.533
 ;; Version: 0.59
 ;; Package-Requires: ((emacs "24.4") (helm "2.0"))
 
@@ -347,7 +347,8 @@ Default behaviour shows finish and result in mode-line."
       (forward-line (1- (string-to-number line))))
     (ignore-errors
       (and (re-search-forward helm-ag--last-query (line-end-position) t)
-           (goto-char (match-beginning 0))))))
+           ;; `helm-goto-char' expands folded headings/outlines if needed
+           (helm-goto-char (match-beginning 0))))))
 
 (defun helm-ag--open-file-with-temp-buffer (filename)
   "Not documented."

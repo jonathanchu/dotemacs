@@ -1,4 +1,4 @@
-(define-package "doom-themes" "20200325.1249" "an opinionated pack of modern color-themes"
+(define-package "doom-themes" "20200327.1325" "an opinionated pack of modern color-themes"
   '((emacs "25.1")
     (cl-lib "0.5"))
   :keywords
