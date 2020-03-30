@@ -1,3 +1,4 @@
+
 ;; init-ui.el --- My personal UI setup.
 ;;
 ;; Copyright (c) 2019-2020
@@ -209,6 +210,16 @@
   :ensure t
   :config
   (load-theme 'modus-operandi t))
+
+;; Reduce the clutter in the fringes; we'd like to reserve that space for more
+;; useful information, like git-gutter and flycheck.
+(setq indicate-buffer-boundaries nil
+      indicate-empty-lines nil)
+
+;; Doesn't exist in terminal Emacs, so we define it to prevent void-function
+;; errors emitted from packages use it without checking for it first.
+(unless (fboundp 'define-fringe-bitmap)
+  (fset 'define-fringe-bitmap #'ignore))
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

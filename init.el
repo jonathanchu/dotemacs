@@ -238,6 +238,20 @@
 (use-package vterm
   :ensure t)
 
+;;
+;;; Line numbers
+
+(global-display-line-numbers-mode 1)
+
+;; Explicitly define a width to reduce computation
+(setq-default display-line-numbers-width 3)
+
+;; Show absolute line numbers for narrowed regions makes it easier to tell the
+;; buffer is narrowed, and where you are, exactly.
+(setq-default display-line-numbers-widen t)
+
+(fringe-mode '4)
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------

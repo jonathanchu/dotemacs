@@ -1,13 +1,13 @@
-(defconst doom-fringe-size '3 "Default fringe width")
+;; (defconst doom-fringe-size '3 "Default fringe width")
 
 ;;; Setting up the fringe
 ;; switches order of fringe and margin
 (setq-default fringes-outside-margins t)
 
 ;; standardize fringe width
-(fringe-mode doom-fringe-size)
-(push `(left-fringe  . ,doom-fringe-size) default-frame-alist)
-(push `(right-fringe . ,doom-fringe-size) default-frame-alist)
+;; (fringe-mode doom-fringe-size)
+;; (push `(left-fringe  . ,doom-fringe-size) default-frame-alist)
+;; (push `(right-fringe . ,doom-fringe-size) default-frame-alist)
 
 (defmacro add-hook! (hook &rest func-or-forms)
   "A convenience macro for `add-hook'.
@@ -60,48 +60,48 @@ Examples:
            'with-no-warnings)
         (with-eval-after-load ',feature ,@forms)))
 
-(defun doom/nlinum-toggle ()
-  (interactive)
-  (if (bound-and-true-p nlinum-mode)
-      (doom|nlinum-disable)
-    (doom|nlinum-enable)))
+;; (defun doom/nlinum-toggle ()
+;;   (interactive)
+;;   (if (bound-and-true-p nlinum-mode)
+;;       (doom|nlinum-disable)
+;;     (doom|nlinum-enable)))
 
-(defun doom|nlinum-enable (&rest _)
-  (nlinum-mode +1)
-  (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
-  (doom--nlinum-unhl-line))
+;; (defun doom|nlinum-enable (&rest _)
+;;   (nlinum-mode +1)
+;;   (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
+;;   (doom--nlinum-unhl-line))
 
-;;;###autoload
-(defun doom|nlinum-disable (&rest _)
-  (nlinum-mode -1)
-  (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)
-  (doom--nlinum-unhl-line))
+;; ;;;###autoload
+;; (defun doom|nlinum-disable (&rest _)
+;;   (nlinum-mode -1)
+;;   (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)
+;;   (doom--nlinum-unhl-line))
 
-(defun doom--nlinum-unhl-line ()
-  "Unhighlight line number"
-  (when doom--hl-nlinum-overlay
-    (let* ((disp (get-text-property
-                  0 'display (overlay-get doom--hl-nlinum-overlay 'before-string)))
-           (str (nth 1 disp)))
-      (put-text-property 0 (length str) 'face 'linum str)
-      (setq doom--hl-nlinum-overlay nil)
-      disp)))
+;; (defun doom--nlinum-unhl-line ()
+;;   "Unhighlight line number"
+;;   (when doom--hl-nlinum-overlay
+;;     (let* ((disp (get-text-property
+;;                   0 'display (overlay-get doom--hl-nlinum-overlay 'before-string)))
+;;            (str (nth 1 disp)))
+;;       (put-text-property 0 (length str) 'face 'linum str)
+;;       (setq doom--hl-nlinum-overlay nil)
+;;       disp)))
 
-(defun doom|nlinum-hl-line (&rest _)
-  "Highlight line number"
-  (let* ((pbol (line-beginning-position))
-         (peol (1+ pbol))
-         (max (point-max)))
-    ;; Handle EOF case
-    (when (>= peol max)
-      (setq peol max))
-    (jit-lock-fontify-now pbol peol)
-    (let ((ov (--first (overlay-get it 'nlinum) (overlays-in pbol peol))))
-      (doom--nlinum-unhl-line)
-      (when ov
-        (let ((str (nth 1 (get-text-property 0 'display (overlay-get ov 'before-string)))))
-          (put-text-property 0 (length str) 'face 'doom-nlinum-highlight str)
-          (setq doom--hl-nlinum-overlay ov))))))
+;; (defun doom|nlinum-hl-line (&rest _)
+;;   "Highlight line number"
+;;   (let* ((pbol (line-beginning-position))
+;;          (peol (1+ pbol))
+;;          (max (point-max)))
+;;     ;; Handle EOF case
+;;     (when (>= peol max)
+;;       (setq peol max))
+;;     (jit-lock-fontify-now pbol peol)
+;;     (let ((ov (--first (overlay-get it 'nlinum) (overlays-in pbol peol))))
+;;       (doom--nlinum-unhl-line)
+;;       (when ov
+;;         (let ((str (nth 1 (get-text-property 0 'display (overlay-get ov 'before-string)))))
+;;           (put-text-property 0 (length str) 'face 'doom-nlinum-highlight str)
+;;           (setq doom--hl-nlinum-overlay ov))))))
 
 (use-package hl-line
   :init (add-hook 'prog-mode-hook 'hl-line-mode)
@@ -133,76 +133,99 @@ Examples:
 (use-package fringe-helper
   :ensure t)
 
-(use-package git-gutter-fringe
-  :ensure t
-  :config
-  (progn
-    (setq-default fringes-outside-margins t)
-    ;; thin fringe bitmaps
-    (fringe-helper-define 'git-gutter-fr:added '(center repeated)
-      "XXX.....")
-    (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
-      "XXX.....")
-    (fringe-helper-define 'git-gutter-fr:deleted 'bottom
-      "X......."
-      "XX......"
-      "XXX....."
-      "XXXX....")
-    ))
+;; (use-package git-gutter-fringe
+;;   :ensure t
+;;   :config
+;;   (progn
+;;     (setq-default fringes-outside-margins t)
+;;     ;; thin fringe bitmaps
+;;     (fringe-helper-define 'git-gutter-fr:added '(center repeated)
+;;       "XXX.....")
+;;     (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
+;;       "XXX.....")
+;;     (fringe-helper-define 'git-gutter-fr:deleted 'bottom
+;;       "X......."
+;;       "XX......"
+;;       "XXX....."
+;;       "XXXX....")
+;;     ))
 
 (use-package git-gutter
   :ensure t
   :config
   (require 'git-gutter-fringe)
   (global-git-gutter-mode +1)
-  (define-fringe-bitmap 'git-gutter-fr:added
-    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-    nil nil 'center)
-  (define-fringe-bitmap 'git-gutter-fr:modified
-    [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-    nil nil 'center)
-  (define-fringe-bitmap 'git-gutter-fr:deleted
-    [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-    nil nil 'center)
+  ;; (define-fringe-bitmap 'git-gutter-fr:added
+  ;;   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+  ;;   nil nil 'center)
+  ;; (define-fringe-bitmap 'git-gutter-fr:modified
+  ;;   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
+  ;;   nil nil 'center)
+  ;; (define-fringe-bitmap 'git-gutter-fr:deleted
+  ;;   [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+  ;;   nil nil 'center)
+      (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
 
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
 
-(use-package nlinum
+(defvar +vc-gutter-default-style t
+  "If non-nil, enable the default look of the vc gutter.
+This means subtle thin bitmaps on the left, an arrow bitmap for flycheck, and
+flycheck indicators moved to the right fringe.")
+
+  ;; subtle diff indicators in the fringe
+(use-package git-gutter-fringe
   :ensure t
-  :commands nlinum-mode
-  :preface
-  (setq linum-format "%3d ")
-  (defvar nlinum-format "%4d ")
-  (defvar doom--hl-nlinum-overlay nil)
-  (defvar doom--hl-nlinum-line nil)
-  :init
-  (add-hook!
-    (markdown-mode prog-mode scss-mode web-mode conf-mode groovy-mode
-                   nxml-mode snippet-mode php-mode python-mode)
-    'nlinum-mode)
-  ;; FIXME This only works if hl-line is active!
-  (add-hook! nlinum-mode
-    (if nlinum-mode-hook
-        (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
-      (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)))
   :config
-  ;; Calculate line number column width
-  (add-hook! nlinum-mode
-    (setq nlinum--width (length (save-excursion (goto-char (point-max))
-                                                (format-mode-line "%l")))))
+  (when +vc-gutter-default-style
+    ;; standardize default fringe width
+    (if (fboundp 'fringe-mode) (fringe-mode '4))
 
-  ;; Disable nlinum when making frames, otherwise we get linum face error
-  ;; messages that prevent frame creation.
-  (add-hook 'before-make-frame-hook 'doom|nlinum-disable)
-  (add-hook 'after-make-frame-functions 'doom|nlinum-enable))
+    ;; places the git gutter outside the margins.
+    (setq-default fringes-outside-margins t)
+    ;; thin fringe bitmaps
+    (define-fringe-bitmap 'git-gutter-fr:added [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:modified [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+      nil nil 'bottom)))
+
+;; (use-package nlinum
+;;   :ensure t
+;;   :commands nlinum-mode
+;;   :preface
+;;   (setq linum-format "%3d ")
+;;   (defvar nlinum-format "%4d ")
+;;   (defvar doom--hl-nlinum-overlay nil)
+;;   (defvar doom--hl-nlinum-line nil)
+;;   :init
+;;   (add-hook!
+;;     (markdown-mode prog-mode scss-mode web-mode conf-mode groovy-mode
+;;                    nxml-mode snippet-mode php-mode python-mode)
+;;     'nlinum-mode)
+;;   ;; FIXME This only works if hl-line is active!
+;;   (add-hook! nlinum-mode
+;;     (if nlinum-mode-hook
+;;         (add-hook 'post-command-hook 'doom|nlinum-hl-line nil t)
+;;       (remove-hook 'post-command-hook 'doom|nlinum-hl-line t)))
+;;   :config
+;;   ;; Calculate line number column width
+;;   (add-hook! nlinum-mode
+;;     (setq nlinum--width (length (save-excursion (goto-char (point-max))
+;;                                                 (format-mode-line "%l")))))
+
+;;   ;; Disable nlinum when making frames, otherwise we get linum face error
+;;   ;; messages that prevent frame creation.
+;;   (add-hook 'before-make-frame-hook 'doom|nlinum-disable)
+;;   (add-hook 'after-make-frame-functions 'doom|nlinum-enable))
 
 ;; (use-package powerline)
 
 (setq-default fringes-outside-margins t
               highlight-nonselected-windows nil)
 
-(define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-  [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+;; (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+;;   [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
 
 ;; Custom line number stuff
 ;;(set-face-attribute 'fringe nil)
