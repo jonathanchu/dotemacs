@@ -84,5 +84,38 @@
 (use-package magit-git-toolbelt
   :load-path "vendor/")
 
+(use-package git-gutter
+  :ensure t
+  :config
+  (require 'git-gutter-fringe)
+  (global-git-gutter-mode +1)
+  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
+
+(defvar +vc-gutter-default-style t
+  "If non-nil, enable the default look of the vc gutter.
+This means subtle thin bitmaps on the left, an arrow bitmap for flycheck, and
+flycheck indicators moved to the right fringe.")
+
+;; subtle diff indicators in the fringe
+(use-package git-gutter-fringe
+  :ensure t
+  :config
+  (when +vc-gutter-default-style
+    ;; standardize default fringe width
+    (if (fboundp 'fringe-mode) (fringe-mode '4))
+
+    ;; places the git gutter outside the margins.
+    (setq-default fringes-outside-margins t)
+    ;; thin fringe bitmaps
+    (define-fringe-bitmap 'git-gutter-fr:added [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:modified [224]
+      nil nil '(center repeated))
+    (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
+      nil nil 'bottom)))
+
+(setq-default fringes-outside-margins t
+              highlight-nonselected-windows nil)
+
 (provide 'init-vcs)
 ;;; init-vcs.el ends here

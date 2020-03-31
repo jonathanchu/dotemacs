@@ -1,4 +1,3 @@
-
 ;; init-ui.el --- My personal UI setup.
 ;;
 ;; Copyright (c) 2019-2020
@@ -220,6 +219,14 @@
 ;; errors emitted from packages use it without checking for it first.
 (unless (fboundp 'define-fringe-bitmap)
   (fset 'define-fringe-bitmap #'ignore))
+
+(use-package hl-line
+  :init (add-hook 'prog-mode-hook 'hl-line-mode)
+  :config
+  ;; Doesn't seem to play nice in emacs 25+
+  (setq hl-line-sticky-flag nil
+        global-hl-line-sticky-flag nil))
+
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

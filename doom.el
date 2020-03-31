@@ -46,19 +46,19 @@ Examples:
           (-list hook)))) funcs)
     `(progn ,@forms)))
 
-    (defmacro after! (feature &rest forms)
-      "A smart wrapper around `with-eval-after-load', that supresses warnings
+(defmacro after! (feature &rest forms)
+  "A smart wrapper around `with-eval-after-load', that supresses warnings
     during compilation."
-      (declare (indent defun) (debug t))
-      `(,(if (or (not (boundp 'byte-compile-current-file))
-                 (not byte-compile-current-file)
-                 (if (symbolp feature)
-                     (require feature nil :no-error)
-                   (load feature :no-message :no-error)))
-             'progn
-           (message "after: cannot find %s" feature)
-           'with-no-warnings)
-        (with-eval-after-load ',feature ,@forms)))
+  (declare (indent defun) (debug t))
+  `(,(if (or (not (boundp 'byte-compile-current-file))
+             (not byte-compile-current-file)
+             (if (symbolp feature)
+                 (require feature nil :no-error)
+               (load feature :no-message :no-error)))
+         'progn
+       (message "after: cannot find %s" feature)
+       'with-no-warnings)
+    (with-eval-after-load ',feature ,@forms)))
 
 ;; (defun doom/nlinum-toggle ()
 ;;   (interactive)
@@ -103,22 +103,6 @@ Examples:
 ;;           (put-text-property 0 (length str) 'face 'doom-nlinum-highlight str)
 ;;           (setq doom--hl-nlinum-overlay ov))))))
 
-(use-package hl-line
-  :init (add-hook 'prog-mode-hook 'hl-line-mode)
-  :config
-  ;; Doesn't seem to play nice in emacs 25+
-  (setq hl-line-sticky-flag nil
-        global-hl-line-sticky-flag nil)
-
-  (defvar-local doom--hl-line-mode nil)
-  (defun doom|hl-line-on ()  (if doom--hl-line-mode (hl-line-mode +1)))
-  (defun doom|hl-line-off () (if doom--hl-line-mode (hl-line-mode -1)))
-  (add-hook! hl-line-mode (if hl-line-mode (setq doom--hl-line-mode t)))
-  ;; Disable line highlight in visual mode
-  (add-hook 'evil-visual-state-entry-hook 'doom|hl-line-off)
-  (add-hook 'evil-visual-state-exit-hook  'doom|hl-line-on))
-
-
 ;; (set-default-font "-*-DejaVu Sans Mono for Powerline-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")
 
 (defvar doom-unicode-font
@@ -130,8 +114,8 @@ Examples:
 (use-package f
   :ensure t)
 
-(use-package fringe-helper
-  :ensure t)
+;; (use-package fringe-helper
+;;   :ensure t)
 
 ;; (use-package git-gutter-fringe
 ;;   :ensure t
@@ -149,46 +133,6 @@ Examples:
 ;;       "XXX....."
 ;;       "XXXX....")
 ;;     ))
-
-(use-package git-gutter
-  :ensure t
-  :config
-  (require 'git-gutter-fringe)
-  (global-git-gutter-mode +1)
-  ;; (define-fringe-bitmap 'git-gutter-fr:added
-  ;;   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-  ;;   nil nil 'center)
-  ;; (define-fringe-bitmap 'git-gutter-fr:modified
-  ;;   [224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224 224]
-  ;;   nil nil 'center)
-  ;; (define-fringe-bitmap 'git-gutter-fr:deleted
-  ;;   [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
-  ;;   nil nil 'center)
-      (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
-
-
-(defvar +vc-gutter-default-style t
-  "If non-nil, enable the default look of the vc gutter.
-This means subtle thin bitmaps on the left, an arrow bitmap for flycheck, and
-flycheck indicators moved to the right fringe.")
-
-  ;; subtle diff indicators in the fringe
-(use-package git-gutter-fringe
-  :ensure t
-  :config
-  (when +vc-gutter-default-style
-    ;; standardize default fringe width
-    (if (fboundp 'fringe-mode) (fringe-mode '4))
-
-    ;; places the git gutter outside the margins.
-    (setq-default fringes-outside-margins t)
-    ;; thin fringe bitmaps
-    (define-fringe-bitmap 'git-gutter-fr:added [224]
-      nil nil '(center repeated))
-    (define-fringe-bitmap 'git-gutter-fr:modified [224]
-      nil nil '(center repeated))
-    (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
-      nil nil 'bottom)))
 
 ;; (use-package nlinum
 ;;   :ensure t
@@ -220,9 +164,6 @@ flycheck indicators moved to the right fringe.")
 ;;   (add-hook 'after-make-frame-functions 'doom|nlinum-enable))
 
 ;; (use-package powerline)
-
-(setq-default fringes-outside-margins t
-              highlight-nonselected-windows nil)
 
 ;; (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
 ;;   [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
