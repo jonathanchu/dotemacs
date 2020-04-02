@@ -55,7 +55,7 @@
 
 (use-package helm-ag
   :ensure t
-  :bind ("s-F" . helm-do-ag-project-root)
+  ;; :bind ("s-F" . helm-do-ag-project-root)
   :config
   ;; (helm-ag-use-agignore t)
   )
