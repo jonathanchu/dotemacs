@@ -1,2 +1,0 @@
-;;; Generated package description from /Users/jonathan/.emacs.d/elpa/anzu-20200328.2019/anzu.el  -*- no-byte-compile: t -*-
-(define-package "anzu" "20200328.2019" "Show number of matches in mode-line while searching" '((emacs "24.3")) :stars '(#("272" 0 3 (font-lock-face paradox-star-face))) :commit "61cb32aa61f9bd088c519ea3cc96b81e241efed7" :authors '(("Syohei YOSHIDA" . "syohex@gmail.com")) :maintainer '("Neil Okamoto" . "neil.okamoto+melpa@gmail.com") :url "https://github.com/emacsorphanage/anzu")
