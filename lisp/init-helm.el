@@ -64,7 +64,7 @@
   :ensure t
   :init
   (helm-projectile-on)
-  (bind-key "s-t" #'helm-projectile-find-file)
+  ;; (bind-key "s-t" #'helm-projectile-find-file)
   ;; (bind-key "s-P" #'helm-projectile-switch-project)
   )
 
