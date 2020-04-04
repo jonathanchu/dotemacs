@@ -58,7 +58,10 @@
   :hook
   (after-init . doom-modeline-mode))
 
-(setq-default frame-title-format '(""))
+(setq frame-title-format '("%b - " (:eval (f-filename (locate-dominating-file default-directory ".git"))
+                                          )
+                           ))
+(setq icon-title-format frame-title-format)
 
 ;; Global settings (defaults)
 (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled

@@ -288,17 +288,20 @@
   :ensure t
   :bind ("s-t" . find-file-in-project))
 
-;; (use-package ivy-posframe
-;;   :ensure t
-;;   :after ivy
-;;   :diminish
-;;   :config
-;;   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
-;;         ivy-posframe-height-alist '((t . 20))
-;;         ivy-posframe-parameters '((internal-border-width . 10)))
-;;   (setq ivy-posframe-width 70)
-;;   (setq posframe-mouse-banish t)
-;;   (ivy-posframe-mode +1))
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :diminish
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-height-alist '((t . 20))
+        ivy-posframe-parameters '((internal-border-width . 10)))
+  (setq ivy-posframe-width 70)
+  (setq posframe-mouse-banish t)
+  (ivy-posframe-mode +1))
+
+  (setq-default mac-option-modifier 'meta)
+  (setq-default mac-command-modifier 'super)
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
