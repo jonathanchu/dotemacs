@@ -32,11 +32,12 @@
 ;;; Code:
 
 (use-package counsel
-  :disabled
+  ;; :disabled
   :ensure t
-  :bind (("M-x" . counsel-M-x)
-         ;; ("C-x C-f" . counsel-find-file)
-         ("C-c g" . counsel-git-grep)
+  :bind (
+         ;; ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ;; ("C-c g" . counsel-git-grep)
          ("C-c k" . counsel-ag)
          ("C-x C-r" . counsel-recentf)))
 

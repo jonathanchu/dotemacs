@@ -36,8 +36,8 @@
   :diminish helm-mode
   :bind (
          ;; ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-r" . helm-recentf)
+         ;; ("C-x C-f" . helm-find-files)
+         ;; ("C-x C-r" . helm-recentf)
          ("C-x b" . helm-buffers-list)
          ("C-c i" . helm-imenu))
   :config
