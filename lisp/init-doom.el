@@ -58,9 +58,8 @@
   :hook
   (after-init . doom-modeline-mode))
 
-(setq frame-title-format '("%b - " (:eval (f-filename (locate-dominating-file default-directory ".git"))
-                                          )
-                           ))
+(setq frame-title-format '("%b"))
+;; (setq frame-title-format '("%b - " (:eval (f-filename (locate-dominating-file default-directory ".git")))))
 (setq icon-title-format frame-title-format)
 
 ;; Global settings (defaults)
