@@ -1,2 +1,0 @@
-;;; Generated package description from /Users/jonathan/.emacs.d/elpa/modus-operandi-theme-20200403.1336/modus-operandi-theme.el  -*- no-byte-compile: t -*-
-(define-package "modus-operandi-theme" "20200403.1336" "Accessible light theme (WCAG AAA)" '((emacs "26.1")) :stars '("") :commit "2f77706fa95b990d4e2541be6b542ff931fa6190" :keywords '("faces" "theme" "accessibility") :authors '(("Protesilaos Stavrou" . "info@protesilaos.com")) :maintainer '("Protesilaos Stavrou" . "info@protesilaos.com") :url "https://gitlab.com/protesilaos/modus-themes")
