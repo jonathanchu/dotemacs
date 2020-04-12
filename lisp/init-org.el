@@ -327,5 +327,16 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
 
+(defvar load-language-list '((emacs-lisp . t)
+                             (python . t)
+                             (js . t)
+                             (css . t)
+                             (C . t)
+                             (java . t)
+                             (shell . t)))
+
+(org-babel-do-load-languages 'org-babel-load-languages
+                             load-language-list)
+
 (provide 'init-org)
 ;;; init-org.el ends here
