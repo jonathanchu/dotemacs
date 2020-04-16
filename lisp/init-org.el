@@ -116,14 +116,16 @@
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               ;; (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
-              (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
               ;; (linum-mode 0)           ;; No line numbers for prose
+              (setq buffer-face-mode-face '(:family "iA Writer Duospace"))
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
               (setq org-fontify-whole-heading-line t)  ;; Changes to appearance via font settings
               (setq org-fontify-quote-and-verse-blocks t)
-              (setq org-fontify-done-headline t))))
+              (setq org-fontify-done-headline t)
+              ))
+  )
 
 (use-package org-present
   :ensure t
