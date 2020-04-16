@@ -116,8 +116,8 @@
               (flyspell-mode 1)        ;; Catch Spelling mistakes
               ;; (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
-              (linum-mode 0)           ;; No line numbers for prose
               (defvar buffer-face-mode-face '(:family "iA Writer Duospace"))
+              ;; (linum-mode 0)           ;; No line numbers for prose
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
