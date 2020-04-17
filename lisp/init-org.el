@@ -84,8 +84,10 @@
     :ensure t
     :defer t
     :custom
-    (org-journal-dir "~/Dropbox/org/journal/")
-    (org-journal-date-format "%A, %d %B %Y"))
+    (org-journal-dir "~/Dropbox/org/braindump/org/")
+    (org-journal-file-format "private-%Y-%m-%d.org")
+    (org-journal-date-format "%B %d, %Y")
+    (org-journal-carryover-items nil))
 
   ;;;;;
   (setq org-default-notes-file "~/Dropbox/org/gtd/inbox.org")
