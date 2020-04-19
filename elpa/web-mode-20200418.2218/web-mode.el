@@ -3,8 +3,8 @@
 
 ;; Copyright 2011-2020 François-Xavier Bois
 
-;; Version: 16.0.29
-;; Package-Version: 20200406.759
+;; Version: 16.0.31
+;; Package-Version: 20200418.2218
 ;; Author: François-Xavier Bois <fxbois AT Google Mail Service>
 ;; Maintainer: François-Xavier Bois
 ;; Package-Requires: ((emacs "23.1"))
@@ -25,7 +25,7 @@
 
 ;;---- CONSTS ------------------------------------------------------------------
 
-(defconst web-mode-version "16.0.29"
+(defconst web-mode-version "16.0.31"
   "Web Mode version.")
 
 ;;---- GROUPS ------------------------------------------------------------------
@@ -207,6 +207,11 @@ See web-mode-block-face."
   :type 'boolean
   :group 'web-mode)
 
+(defcustom web-mode-enable-literal-interpolation t
+  "Enable template literal fontification. e.g. css` `."
+  :type 'boolean
+  :group 'web-mode)
+
 (defcustom web-mode-enable-sql-detection nil
   "Enable fontification and indentation of sql queries in strings."
   :type 'boolean
@@ -331,7 +336,14 @@ See web-mode-block-face."
   :group 'web-mode)
 
 (defcustom web-mode-script-template-types
-  '("text/x-handlebars" "text/x-jquery-tmpl" "text/x-jsrender" "text/html" "text/ng-template" "text/x-template" "text/mustache" "text/x-dust-template")
+  '("text/x-handlebars"
+    "text/x-jquery-tmpl"
+    "text/x-jsrender"
+    "text/html"
+    "text/ng-template"
+    "text/x-template"
+    "text/mustache"
+    "text/x-dust-template")
   "<script> block types that are interpreted as HTML."
   :type '(repeat string)
   :group 'web-mode)
@@ -534,6 +546,21 @@ See web-mode-block-face."
 (defface web-mode-javascript-string-face
   '((t :inherit web-mode-string-face))
   "Face for javascript strings."
+  :group 'web-mode-faces)
+
+(defface web-mode-interpolate-color1-face
+  '((t :inherit web-mode-string-face))
+  "Face for element interpolation strings."
+  :group 'web-mode-faces)
+
+(defface web-mode-interpolate-color2-face
+  '((t :inherit web-mode-string-face))
+  "Face for element interpolation strings."
+  :group 'web-mode-faces)
+
+(defface web-mode-interpolate-color3-face
+  '((t :inherit web-mode-string-face))
+  "Face for element interpolation strings."
   :group 'web-mode-faces)
 
 (defface web-mode-css-string-face
@@ -3036,7 +3063,7 @@ another auto-completion with different ac-sources (e.g. ac-php)")
             (setq closing-string ")"
                   delim-open "@"))
            ((string= sub1 "@")
-            (setq closing-string "EOL"
+            (setq closing-string "EOB"
                   delim-open "@"))
            )
           ) ;blade
@@ -3367,6 +3394,11 @@ another auto-completion with different ac-sources (e.g. ac-php)")
               ) ;when
             )
 
+           ((string= closing-string "EOB")
+            (web-mode-blade-skip open)
+            (setq close (point)
+                  pos (point)))
+
            ((string= closing-string "EOL")
             (end-of-line)
             (setq close (point)
@@ -3569,6 +3601,11 @@ another auto-completion with different ac-sources (e.g. ac-php)")
        ) ;cond
       ) ;while
     pos))
+
+(defun web-mode-blade-skip (pos)
+  (goto-char pos)
+  (forward-char)
+  (skip-chars-forward "a-zA-Z0-9_-"))
 
 (defun web-mode-velocity-skip (pos)
   (goto-char pos)
@@ -6531,6 +6568,7 @@ another auto-completion with different ac-sources (e.g. ac-php)")
          ((and (eq depth 0) (get-text-property beg 'jsx-depth))
           (setq pos (or (next-single-property-change beg 'jsx-depth) (point-max))))
          (t
+          ;;(message "%c" (char-after beg))
           (setq token-type (get-text-property beg 'part-token))
           (setq face (cond
                       ((eq token-type 'string)  string-face)
@@ -6552,9 +6590,18 @@ another auto-completion with different ac-sources (e.g. ac-php)")
              ((< (- end beg) 6)
               )
              ((eq token-type 'string)
-              (when (and web-mode-enable-string-interpolation
-                         (member content-type '("javascript" "jsx")))
-                (web-mode-interpolate-javascript-string beg end)))
+              (cond
+               ((and (eq (char-after beg) ?\`)
+                     web-mode-enable-literal-interpolation
+                     (member content-type '("javascript" "jsx")))
+                (web-mode-interpolate-javascript-literal beg end)
+                )
+               ((and (eq (char-after beg) ?\")
+                     web-mode-enable-string-interpolation
+                     (member content-type '("javascript" "jsx")))
+                (web-mode-interpolate-javascript-string beg end))
+               ) ;cond
+              ) ;case string
              ((eq token-type 'comment)
               (when web-mode-enable-comment-interpolation
                 (web-mode-interpolate-comment beg end t))
@@ -6763,6 +6810,35 @@ another auto-completion with different ac-sources (e.g. ac-php)")
                          'font-lock-face
                          'web-mode-variable-name-face)
       )
+    ))
+
+(defun web-mode-interpolate-javascript-literal (beg end)
+  (save-excursion
+    (goto-char (1+ beg))
+    (setq end (1- end))
+    (while (re-search-forward "${.*?}" end t)
+      (put-text-property (match-beginning 0) (match-end 0)
+                         'font-lock-face
+                         'web-mode-variable-name-face)
+      )
+    (cond
+     ((web-mode-looking-back "\\(css\\|styled[[:alnum:].]+\\)" beg)
+      (goto-char (1+ beg))
+      (while (re-search-forward ".*?:" end t)
+        (put-text-property (match-beginning 0) (match-end 0)
+                           'font-lock-face
+                           'web-mode-interpolate-color1-face)
+        )
+      ) ;case css
+     ((web-mode-looking-back "\\(template\\|html\\)" beg)
+      (goto-char (1+ beg))
+      (while (re-search-forward web-mode-tag-regexp end t)
+        (put-text-property (match-beginning 1) (match-end 1)
+                           'font-lock-face
+                           'web-mode-interpolate-color1-face)
+        )
+      ) ;case html
+     ) ;cond
     ))
 
 ;; todo : parsing plus compliqué: {$obj->values[3]->name}
@@ -7830,8 +7906,9 @@ another auto-completion with different ac-sources (e.g. ac-php)")
             (setq offset (web-mode-relayql-indentation pos "graphql"))
             )
            ((and is-js
-                 (web-mode-is-styled-component-string pos))
-            (setq offset (web-mode-styled-component-indentation pos))
+                 (web-mode-is-css-string pos))
+            (when debug (message "I127(%S) css string" pos))
+            (setq offset (web-mode-token-css-indentation pos))
             )
            ((and is-js
                  (web-mode-is-html-string pos))
@@ -8606,7 +8683,7 @@ another auto-completion with different ac-sources (e.g. ac-php)")
        ) ;cond
       offset)))
 
-(defun web-mode-styled-component-indentation (pos)
+(defun web-mode-token-css-indentation (pos)
   (save-excursion
     (let (offset)
       (goto-char pos)
@@ -12851,12 +12928,12 @@ Prompt user if TAG-NAME isn't provided."
     (if (null pos) pos (cons pos dot-pos))
     ))
 
-(defun web-mode-is-styled-component-string (pos)
+(defun web-mode-is-css-string (pos)
   (let (beg)
     (cond
      ((and (setq beg (web-mode-part-token-beginning-position pos))
            (web-mode-looking-at-p "`" beg)
-           (web-mode-looking-back "styled[[:alnum:].]+" beg))
+           (web-mode-looking-back "\\(styled[[:alnum:].]+\\|css\\)" beg))
       beg)
      (t
       nil)

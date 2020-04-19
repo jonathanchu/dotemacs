@@ -62,6 +62,14 @@ This uses the templates defined at `org-roam-capture-templates'." t nil)
 
 ;;;***
 
+;;;### (autoloads nil "org-roam-compat" "org-roam-compat.el" (0 0
+;;;;;;  0 0))
+;;; Generated autoloads from org-roam-compat.el
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-roam-compat" '("org-roam-graph-node-shape")))
+
+;;;***
+
 ;;;### (autoloads nil "org-roam-completion" "org-roam-completion.el"
 ;;;;;;  (0 0 0 0))
 ;;; Generated autoloads from org-roam-completion.el
@@ -89,6 +97,19 @@ This uses the templates defined at `org-roam-capture-templates'." t nil)
 ;;;;;;  0))
 ;;; Generated autoloads from org-roam-graph.el
 
+(autoload 'org-roam-graph "org-roam-graph" "\
+Build and possibly display a graph for FILE from NODE-QUERY.
+If FILE is nil, default to current buffer's file name.
+ARG may be any of the following values:
+  - nil       show the graph.
+  - `\\[universal-argument]'     show the graph for FILE.
+  - `\\[universal-argument]' N   show the graph for FILE limiting nodes to N steps.
+  - `\\[universal-argument] \\[universal-argument]' build the graph.
+  - `\\[universal-argument]' -   build the graph for FILE.
+  - `\\[universal-argument]' -N  build the graph for FILE limiting nodes to N steps.
+
+\(fn &optional ARG FILE NODE-QUERY)" t nil)
+
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "org-roam-graph" '("org-roam-graph-")))
 
 ;;;***
@@ -108,8 +129,7 @@ This uses the templates defined at `org-roam-capture-templates'." t nil)
 
 ;;;***
 
-;;;### (autoloads nil nil ("org-roam-compat.el" "org-roam-pkg.el")
-;;;;;;  (0 0 0 0))
+;;;### (autoloads nil nil ("org-roam-pkg.el") (0 0 0 0))
 
 ;;;***
 

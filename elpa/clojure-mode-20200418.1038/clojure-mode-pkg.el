@@ -1,2 +1,0 @@
-;;; Generated package description from /Users/jonathan/.emacs.d/elpa/clojure-mode-20200418.1038/clojure-mode.el  -*- no-byte-compile: t -*-
-(define-package "clojure-mode" "20200418.1038" "Major mode for Clojure code" '((emacs "25.1")) :stars '(#("695" 0 3 (font-lock-face paradox-star-face))) :commit "673c27249d509e9cd93ee19cd6a3e5bbcb1aa90d" :keywords '("languages" "clojure" "clojurescript" "lisp") :url "http://github.com/clojure-emacs/clojure-mode")
