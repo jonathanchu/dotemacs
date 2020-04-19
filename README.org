@@ -21,12 +21,10 @@
    Although Emacs has support for many programming languages, this
    config is geared towards the following languages and workflows:
 
+- Emacs Lisp
 - Python
-- CSS / LESS
+- LSP support
 - JavaScript
-- Markdown
-- Clojure
-
 
 ** Installation
 
@@ -47,7 +45,8 @@
    My current Emacs distro of choice is:
 
    #+BEGIN_SRC shell
-   $ brew install emacs --with-cocoa --with-imagemagick@6 --with-gnutls --with-librsvg --with-mailutils --with-modules --devel
+   $ brew tap daviderestivo/emacs-head
+   $ brew install emacs-head --HEAD --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
    #+END_SRC
 
    Please note, this requires [[http://brew.sh][Homebrew]] to be installed.
@@ -55,20 +54,21 @@
 ** Requirements
 
    There are a few requirements needed for this config to properly run.
-   All of these prerequisites can be installed via =homebrew= and =npm=.
+   All of these pre-requisites can be installed via =homebrew= and =npm=.
 
    #+BEGIN_SRC shell
    $ brew install gpg
    $ brew install ag
+   $ brew install ripgrep
    $ brew install node
    $ npm install -g eslint
+   $ npm install -g bash-language-server
    #+END_SRC
 
    For using =python-mode= and =elpy=, you'll need to have =pip=
    installed and install the following packages:
 
    #+BEGIN_SRC shell
-   $ pip install rope
    $ pip install flake8
    #+END_SRC
 
