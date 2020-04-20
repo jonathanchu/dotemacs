@@ -53,7 +53,7 @@ smex-items
 /persp-confs
 bookmarks
 transient
-elpa/archives
+elpa
 *__pycache__
 .lsp-*
 /*.sqlite
