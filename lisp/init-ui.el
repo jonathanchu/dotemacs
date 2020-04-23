@@ -208,7 +208,14 @@
 (use-package modus-operandi-theme
   :ensure t
   :config
-  (load-theme 'modus-operandi t))
+  ;; (load-theme 'modus-operandi t)
+  )
+
+(use-package leuven-theme
+  :ensure t
+  :config
+  (load-theme 'leuven t)
+  )
 
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
