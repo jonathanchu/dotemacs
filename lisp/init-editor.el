@@ -202,7 +202,6 @@
     (key-chord-mode 1)
     (key-chord-define-global "hj" 'undo)
     (key-chord-define-global ",." "<>\C-b")
-    (key-chord-define-global "--" 'my/insert-underscore)
     (key-chord-define-global "jj" 'avy-goto-word-1)
     (key-chord-define-global "jl" 'avy-goto-line)
     (key-chord-define-global "jk" 'avy-goto-char)

@@ -31,11 +31,6 @@
 
 ;;; Code:
 
-(defun my/insert-underscore ()
-  "Insert an underscore."
-  (interactive)
-  (insert "_"))
-
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
