@@ -268,30 +268,30 @@ e.g. (doom-fix-unicode \"DejaVu Sans\" ?⚠ ?★ ?λ)"
                                                    'doom-flycheck-warning
                                                  'mode-line))))))))))
 
-(defun *selection-info ()
-  "Information about the current selection, such as how many characters and
-lines are selected, or the NxM dimensions of a block selection."
-  (when (and active (evil-visual-state-p))
-    (propertize
-     (let ((reg-beg (region-beginning))
-           (reg-end (region-end))
-           (evil (eq 'visual evil-state)))
-       (let ((lines (count-lines reg-beg (min (1+ reg-end) (point-max))))
-             (chars (- (1+ reg-end) reg-beg))
-             (cols (1+ (abs (- (evil-column reg-end)
-                               (evil-column reg-beg))))))
-         (cond
-          ;; rectangle selection
-          ((or (bound-and-true-p rectangle-mark-mode)
-               (and evil (eq 'block evil-visual-selection)))
-           (format " %dx%dB " lines (if evil cols (1- cols))))
-          ;; line selection
-          ((or (> lines 1) (eq 'line evil-visual-selection))
-           (if (and (eq evil-state 'visual) (eq evil-this-type 'line))
-               (format " %dL " lines)
-             (format " %dC %dL " chars lines)))
-          (t (format " %dC " (if evil chars (1- chars)))))))
-     'face 'mode-line-highlight)))
+;; (defun *selection-info ()
+;;   "Information about the current selection, such as how many characters and
+;; lines are selected, or the NxM dimensions of a block selection."
+;;   (when (and active (evil-visual-state-p))
+;;     (propertize
+;;      (let ((reg-beg (region-beginning))
+;;            (reg-end (region-end))
+;;            (evil (eq 'visual evil-state)))
+;;        (let ((lines (count-lines reg-beg (min (1+ reg-end) (point-max))))
+;;              (chars (- (1+ reg-end) reg-beg))
+;;              (cols (1+ (abs (- (evil-column reg-end)
+;;                                (evil-column reg-beg))))))
+;;          (cond
+;;           ;; rectangle selection
+;;           ((or (bound-and-true-p rectangle-mark-mode)
+;;                (and evil (eq 'block evil-visual-selection)))
+;;            (format " %dx%dB " lines (if evil cols (1- cols))))
+;;           ;; line selection
+;;           ((or (> lines 1) (eq 'line evil-visual-selection))
+;;            (if (and (eq evil-state 'visual) (eq evil-this-type 'line))
+;;                (format " %dL " lines)
+;;              (format " %dC %dL " chars lines)))
+;;           (t (format " %dC " (if evil chars (1- chars)))))))
+;;      'face 'mode-line-highlight)))
 
 (defun *macro-recording ()
   "Show when recording macro."
@@ -335,29 +335,29 @@ to be enabled."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun doom-mode-line (&optional id)
-  `(:eval
-    (let* ((active (eq (selected-window) mode-line-selected-window))
-           (lhs (list (propertize " " 'display (if active mode-line-bar mode-line-inactive-bar))
-                      (*flycheck)
-                      (*macro-recording)
-                      (*selection-info)
-                      (*anzu)
-                      " "
-                      (*buffer-path)
-                      (*buffer-name)
-                      " "
-                      (*buffer-state)
-                      ,(if (eq id 'scratch) '(*buffer-pwd))))
-           (rhs (list (*vc)
-                      "  " (*major-mode) "  "
-                      "  " (*pyenv-name) "  "
-                      (propertize
-                       (concat "(%l,%c) " (*buffer-position))
-                       'face (if active 'mode-line-2))))
-           (middle (propertize
-                    " " 'display `((space :align-to (- (+ right right-fringe right-margin)
-                                                       ,(1+ (string-width (format-mode-line rhs)))))))))
-      (list lhs middle rhs))))
+;; (defun doom-mode-line (&optional id)
+;;   `(:eval
+;;     (let* ((active (eq (selected-window) mode-line-selected-window))
+;;            (lhs (list (propertize " " 'display (if active mode-line-bar mode-line-inactive-bar))
+;;                       (*flycheck)
+;;                       (*macro-recording)
+;;                       (*selection-info)
+;;                       (*anzu)
+;;                       " "
+;;                       (*buffer-path)
+;;                       (*buffer-name)
+;;                       " "
+;;                       (*buffer-state)
+;;                       ,(if (eq id 'scratch) '(*buffer-pwd))))
+;;            (rhs (list (*vc)
+;;                       "  " (*major-mode) "  "
+;;                       "  " (*pyenv-name) "  "
+;;                       (propertize
+;;                        (concat "(%l,%c) " (*buffer-position))
+;;                        'face (if active 'mode-line-2))))
+;;            (middle (propertize
+;;                     " " 'display `((space :align-to (- (+ right right-fringe right-margin)
+;;                                                        ,(1+ (string-width (format-mode-line rhs)))))))))
+;;       (list lhs middle rhs))))
 
-(setq-default mode-line-format (doom-mode-line))
+;; (setq-default mode-line-format (doom-mode-line))
