@@ -217,6 +217,12 @@
   (load-theme 'leuven t)
   )
 
+(use-package acme-theme
+  :load-path "themes"
+  :config
+  ;; (load-theme 'acme t)
+  )
+
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
 (setq indicate-buffer-boundaries nil
