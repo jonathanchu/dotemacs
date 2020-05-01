@@ -285,6 +285,7 @@
     :flags ("--hidden -g !.git -g !node_modules -g !elpa")))
 
 (use-package find-file-in-project
+  :disabled
   :ensure t
   :bind ("s-t" . find-file-in-project))
 

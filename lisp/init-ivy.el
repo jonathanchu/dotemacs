@@ -42,12 +42,12 @@
          ("C-x C-r" . counsel-recentf)))
 
 (use-package counsel-projectile
-  :disabled
+  ;; :disabled
   :ensure t
   :init
-  (bind-key "s-F" #'counsel-projectile-ag)
+  ;; (bind-key "s-F" #'counsel-projectile-ag)
   (bind-key "s-t" #'counsel-projectile-find-file)
-  (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
+  ;; (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
   :config
   (counsel-projectile-mode 1))
 
@@ -74,7 +74,8 @@
   ("C-s" . counsel-grep-or-swiper)
   ("C-r" . swiper)
   :config
-  (advice-add 'swiper :after 'recenter))
+  ;; (advice-add 'swiper :after 'recenter)
+  )
 
 (provide 'init-ivy)
 ;;; init-ivy.el ends here
