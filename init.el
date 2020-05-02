@@ -137,7 +137,7 @@
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(package-selected-packages
-   '(ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
+   '(deadgrep ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
  '(paradox-github-token t)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
@@ -251,38 +251,38 @@
 (setq-default display-line-numbers-widen t)
 
 ;; Fast search tool `ripgrep'
-(use-package rg
-  :ensure t
-  :defines projectile-command-map
-  :hook (after-init . rg-enable-default-bindings)
-  :bind
-  ;; ("s-F" . rg-project)
-  ("s-F" . jc/grep-vc-or-dir)
-  :init (setq rg-group-result t
-              rg-show-columns t)
-  :config
-  (cl-pushnew '("tmpl" . "*.tmpl") rg-custom-type-aliases)
+;; (use-package rg
+;;   :ensure t
+;;   :defines projectile-command-map
+;;   :hook (after-init . rg-enable-default-bindings)
+;;   :bind
+;;   ;; ("s-F" . rg-project)
+;;   ("s-F" . jc/grep-vc-or-dir)
+;;   :init (setq rg-group-result t
+;;               rg-show-columns t)
+;;   :config
+;;   (cl-pushnew '("tmpl" . "*.tmpl") rg-custom-type-aliases)
 
-  (with-eval-after-load 'projectile
-    (defalias 'projectile-ripgrep #'rg-project)
-    (bind-key "s-R" #'rg-project projectile-command-map))
+;;   (with-eval-after-load 'projectile
+;;     (defalias 'projectile-ripgrep #'rg-project)
+;;     (bind-key "s-R" #'rg-project projectile-command-map))
 
-  (with-eval-after-load 'counsel
-    (bind-keys
-     :map rg-global-map
-     ("R" . counsel-rg)
-     ("F" . counsel-fzf)))
+;;   (with-eval-after-load 'counsel
+;;     (bind-keys
+;;      :map rg-global-map
+;;      ("R" . counsel-rg)
+;;      ("F" . counsel-fzf)))
 
-  (rg-define-search jc/grep-vc-or-dir
-    :query ask
-    :format regexp
-    :files "everything"
-    :dir (let ((vc (vc-root-dir)))
-           (if vc
-               vc
-             default-directory))
-    :confirm prefix
-    :flags ("--hidden -g !.git -g !node_modules -g !elpa")))
+;;   (rg-define-search jc/grep-vc-or-dir
+;;     :query ask
+;;     :format regexp
+;;     :files "everything"
+;;     :dir (let ((vc (vc-root-dir)))
+;;            (if vc
+;;                vc
+;;              default-directory))
+;;     :confirm prefix
+;;     :flags ("--hidden -g !.git -g !node_modules -g !elpa")))
 
 (use-package find-file-in-project
   :disabled
@@ -296,13 +296,21 @@
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
         ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 10)))
+        ivy-posframe-parameters '((internal-border-width . 10)
+                                  (internal-border-color . "black")
+                                  ))
   (setq ivy-posframe-width 70)
   (setq posframe-mouse-banish t)
+  (setq ivy-posframe-border-width 1)
   (ivy-posframe-mode +1))
 
-  (setq-default mac-option-modifier 'meta)
-  (setq-default mac-command-modifier 'super)
+(setq-default mac-option-modifier 'meta)
+(setq-default mac-command-modifier 'super)
+
+(use-package deadgrep
+  :ensure t
+  :bind
+  ("s-F" . deadgrep))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
