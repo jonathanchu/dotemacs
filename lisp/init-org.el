@@ -59,7 +59,8 @@
   (setq  org-catch-invisible-edits 'smart)
   (setq  org-startup-indented t)
   ;; (setq  org-ellipsis (if (char-displayable-p ?) " " nil))
-  (setq  org-pretty-entities nil)
+  (setq org-pretty-entities t)
+  (setq org-odd-levels-only t)
   :config
   ;; (setq org-directory "~/Dropbox/org")
   (setq org-log-done 'time)
