@@ -79,13 +79,13 @@
 ;;   (load-theme 'atom-one-dark t))
 
 ;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
+;; (doom-themes-visual-bell-config)
 
 ;; Enable custom neotree theme
 ;; (doom-themes-neotree-config)  ; all-the-icons fonts must be installed!
 
 ;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
+;; (doom-themes-org-config)
 
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/vendor/emacs-horizon-theme")
 ;; (load-file "~/.emacs.d/vendor/emacs-horizon-theme/horizon-themes.el")
