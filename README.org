@@ -2,7 +2,7 @@
 #+TITLE:     My Emacs Configuration
 #+AUTHOR:    Jonathan Chu
 #+EMAIL:     me@jonathanchu.is
-#+DATE:      2016-01-02
+#+DATE:      2020-06-14
 
 #+CAPTION: doom-modeline, centaur-tabs, doom-city-lights color theme, Operator Mono font
 #+NAME: Screenshot
@@ -46,7 +46,7 @@
 
    #+BEGIN_SRC shell
    $ brew tap daviderestivo/emacs-head
-   $ brew install emacs-head --HEAD --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
+   $ brew install emacs-head@28 --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
    #+END_SRC
 
    Please note, this requires [[http://brew.sh][Homebrew]] to be installed.
