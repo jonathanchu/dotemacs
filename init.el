@@ -324,6 +324,11 @@
   :config
   (nav-flash-show))
 
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (elpy-enable))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
