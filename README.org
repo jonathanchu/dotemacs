@@ -83,3 +83,13 @@
    paradox-list-packages@@html:</kbd>@@, then
    @@html:<kbd>@@U@@html:</kbd>@@ followed by
    @@html:<kbd>@@x@@html:</kbd>@@.
+
+** Email
+
+There are a few requirements needed to receive and send email with this config.
+
+#+BEGIN_SRC shell
+$ brew install isync
+$ brew install msmtp
+$ brew install notmuch
+#+END_SRC

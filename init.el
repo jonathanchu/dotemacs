@@ -117,6 +117,7 @@
 (require 'init-funcs)
 
 (require 'init-org)
+(require 'init-email)
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -136,9 +137,18 @@
  '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
+ '(notmuch-saved-searches
+   '((:name "inbox" :query "tag:inbox" :key "i" :sort-order newest-first)
+     (:name "unread" :query "tag:unread" :key "u" :sort-order newest-first)
+     (:name "flagged" :query "tag:flagged" :key "f" :sort-order newest-first)
+     (:name "sent" :query "tag:sent" :key "t" :sort-order newest-first)
+     (:name "drafts" :query "tag:draft" :key "d" :sort-order newest-first)
+     (:name "all mail" :query "*" :key "a" :sort-order newest-first)))
  '(package-selected-packages
-   '(nav-flash dired-narrow deadgrep ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
+   '(notmuch nav-flash dired-narrow deadgrep ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
  '(paradox-github-token t)
+ '(smtpmail-smtp-server "smtp.fastmail.com")
+ '(smtpmail-smtp-service 587)
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
    (list
@@ -329,6 +339,10 @@
   :defer t
   :init
   (elpy-enable))
+
+(use-package notmuch
+  :ensure t
+  :defer t)
 
 ;;----------------------------------------------------------------------------
 ;; Finalization

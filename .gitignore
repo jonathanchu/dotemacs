@@ -35,6 +35,9 @@ flycheck_*.el
 # server auth directory
 /server/
 
+# python
+elpy
+
 # misc
 helm-adaptive-history
 session*
@@ -58,3 +61,4 @@ elpa
 .lsp-*
 /*.sqlite
 /*.cache
+network-security.data
