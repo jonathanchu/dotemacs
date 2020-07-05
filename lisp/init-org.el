@@ -120,7 +120,7 @@
               ;; (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
               ;; (linum-mode 0)           ;; No line numbers for prose
-              (setq buffer-face-mode-face '(:family "iA Writer Duospace"))
+              (setq buffer-face-mode-face '(:family "Operator Mono"))
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)
