@@ -68,7 +68,7 @@
   :commands lsp-ui-mode
   :init
   ;; (add-hook 'lsp-mode-hook 'flycheck-mode)
-  (setq lsp-ui-doc-enable t
+  (setq lsp-ui-doc-enable nil
         lsp-ui-doc-use-webkit nil
         lsp-ui-doc-delay 0.2
         lsp-ui-doc-include-signature t
