@@ -214,7 +214,7 @@
 (use-package leuven-theme
   :ensure t
   :config
-  (load-theme 'leuven t)
+  ;; (load-theme 'leuven t)
   )
 
 (use-package acme-theme
@@ -222,6 +222,12 @@
   :config
   ;; (load-theme 'acme t)
   )
+
+(use-package doom-themes
+  :ensure t
+  :config
+  (load-theme 'doom-one-light t))
+
 
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.

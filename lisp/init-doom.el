@@ -47,12 +47,6 @@
 (load-file "~/.emacs.d/doom.el")
 ;; (load-file "~/.config/emacs/doom.el")
 
-;; (use-package doom-themes
-;;   ;; :ensure t
-;;   :load-path "vendor/emacs-doom-themes-modified")
-;; ;; (load-theme 'doom-one-light t)
-;; (use-package doom-themes)
-
 (use-package doom-modeline
   :ensure t
   :hook
