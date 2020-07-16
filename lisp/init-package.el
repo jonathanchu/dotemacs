@@ -41,7 +41,9 @@
 (use-package paradox
   :ensure t
   :config
-  (setq paradox-execute-asynchronously t))
+  (setq paradox-execute-asynchronously t)
+  :bind
+  ("C-x p" . paradox-list-packages))
 
 (provide 'init-package)
 ;;; init-package.el ends here

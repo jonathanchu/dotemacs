@@ -133,7 +133,7 @@
  '(ansi-color-names-vector
    ["#1B2229" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#DFDFDF"])
  '(custom-safe-themes
-   '("6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default))
+   '("99ea831ca79a916f1bd789de366b639d09811501e8c092c85b2cb7d697777f93" "6b2636879127bf6124ce541b1b2824800afc49c6ccd65439d6eb987dbf200c36" default))
  '(fci-rule-color "#5B6268")
  '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
