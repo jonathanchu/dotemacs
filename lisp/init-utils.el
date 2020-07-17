@@ -56,5 +56,9 @@
   (setq which-key-allow-imprecise-window-fit t)
   (which-key-mode))
 
+(use-package crux
+  :ensure t
+  :defer t)
+
 (provide 'init-utils)
 ;;; init-utils.el ends here
