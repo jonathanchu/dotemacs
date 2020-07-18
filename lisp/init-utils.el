@@ -58,7 +58,10 @@
 
 (use-package crux
   :ensure t
-  :defer t)
+  :defer t
+  :bind
+  ("C-c s" . crux-find-shell-init-file)
+  ("C-c e" . crux-find-user-init-file))
 
 (provide 'init-utils)
 ;;; init-utils.el ends here
