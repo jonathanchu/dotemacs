@@ -43,7 +43,76 @@
 
 (use-package notmuch
   :ensure t
-  :defer t)
+  :defer t
+  :bind
+  ("C-c m" . notmuch))
+
+(add-hook 'message-setup-hook
+          (lambda ()
+            (gnus-alias-determine-identity)
+            (define-key message-mode-map (kbd "C-c f")
+              (lambda ()
+                (interactive)
+                (message-remove-header "Fcc")
+                (message-remove-header "Organization")
+                (gnus-alias-select-identity)
+                (notmuch-fcc-header-setup)))
+            (flyspell-mode)))
+
+(use-package gnus-alias
+  :ensure t
+  :defer t
+  :config
+  (setq gnus-alias-identity-alist
+        '(("personal"
+           nil ;; Does not refer to any other identity
+           "Jonathan Chu <me@jonathanchu.is>"
+           nil ;; No organization header
+           nil ;; No extra headers
+           nil ;; No extra body text
+           nil)
+          ("simplehealth"
+           nil
+           "Jonathan Chu <jchu@simplehealth.com>"
+           nil ;; No organization header
+           nil ;; No extra headers
+           nil ;; No extra body text
+           nil)
+          ("me.com"
+           nil
+           "Jonathan Chu <jonathan.chu@me.com>"
+           nil ;; No organization header
+           nil ;; No extra headers
+           nil ;; No extra body text
+           nil)
+          ("fastmail"
+           nil
+           "Jonathan Chu <jonathanchu@fastmail.com>"
+           nil ;; No organization header
+           nil ;; No extra headers
+           nil ;; No extra body text
+           nil)
+          ("3atmospheres"
+           nil
+           "Jonathan Chu <jc@3atmospheres.com>"
+           nil ;; No organization header
+           nil ;; No extra headers
+           nil ;; No extra body text
+           nil)
+          ))
+  (setq gnus-alias-default-identity "personal")
+  (setq gnus-alias-identity-rules
+        '(("@simplehealth.com" ("any" "@simplehealth\\.com" both) "simplehealth")
+          ("@jonathanchu.is" ("any" "@jonathanchu\\.is" both) "personal")
+          ("@3atmospheres.com" ("any" "@3atmospheres\\.com" both) "3atmospheres")
+          ("@fastmail.com" ("any" "@fastmail\\.com" both) "fastmail")
+          ("@me.com" ("any" "@me\\.com" both) "me.com")
+          ))
+  )
+
+
+
+
 
 (provide 'init-email)
 ;;; init-email.el ends here
