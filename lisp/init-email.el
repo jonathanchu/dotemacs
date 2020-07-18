@@ -41,5 +41,9 @@
       message-sendmail-envelope-from 'header
       mail-envelope-from 'header)
 
+(use-package notmuch
+  :ensure t
+  :defer t)
+
 (provide 'init-email)
 ;;; init-email.el ends here
