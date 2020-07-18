@@ -117,5 +117,8 @@
     (setq-default save-place t)
     (setq save-place-file "~/.emacs.d/saved-places")))
 
+;; Automatically kill running processes on exit
+(setq confirm-kill-processes nil)
+
 (provide 'init-core)
 ;;; init-core.el ends here
