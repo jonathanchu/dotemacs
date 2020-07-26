@@ -4,13 +4,35 @@
 
 * Overview
 * Base settings
+
+This section contains core configuration changes needed prior the setup of everything else.
+
 ** Reload configuration
+
+After making changes to the Emacs configuration, this provides a convenience function to reload the config files.
+
 #+begin_src emacs-lisp
 (defun reload-config()
-"Reload Emacs configuration"
-(interactive)
-(load-file "~/.emacs.d/init.el")
-)
+  "Reload Emacs configuration"
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
 #+end_src
 
-*
+** Put customization settings in a "custom.el" file
+
+When you install a package or use various customization interfaces to tweak things to your liking, Emacs will append a piece of elips to your init file. I prefer to have that stored in a separate file.
+
+#+begin_src emacs-lisp
+(use-package cus-edit
+  :ensure t
+  :config
+  (setq custom-file "~/.emacs.d/custom.el")
+
+  (unless (file-exists-p custom-file)
+    (write-region "" nil custom-file))
+
+  (load custom-file))
+#+end_src
+
+* Text Editor
+* Windows
