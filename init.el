@@ -1,6 +1,6 @@
 ;; init.el --- My personal Emacs configuration.
 ;;
-;; Copyright (c) 2015, 2016, 2017, 2018, 2019
+;; Copyright (c) 2015-2020
 ;;
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
@@ -360,6 +360,12 @@ current window."
                         " " mode-line-misc-info)))))
 
 (setq frame-resize-pixelwise t)
+
+;;----------------------------------------------------------------------------
+;; Literate Config
+;;----------------------------------------------------------------------------
+
+(org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
