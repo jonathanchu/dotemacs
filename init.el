@@ -341,6 +341,26 @@
   :init
   (elpy-enable))
 
+(add-to-list 'default-frame-alist '(internal-border-width . 20))
+(defun mode-line-align (left right)
+  "Return a string with LEFT and RIGHT at the edges of the
+current window."
+  (format (format "%%s %%%ds" (- (window-total-width) (length left) 2))
+          left right))
+
+(setq-default mode-line-format
+              '(:eval
+                (mode-line-align
+                 (format-mode-line
+                  (list " " mode-line-buffer-identification
+                        " " mode-line-modified
+                        " " mode-name))
+                 (format-mode-line
+                  (list minor-mode-alist
+                        " " mode-line-misc-info)))))
+
+(setq frame-resize-pixelwise t)
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
