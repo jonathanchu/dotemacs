@@ -24,7 +24,7 @@ When you install a package or use various customization interfaces to tweak thin
 
 #+begin_src emacs-lisp
 (use-package cus-edit
-  :ensure t
+  :defer t
   :config
   (setq custom-file "~/.emacs.d/custom.el")
 

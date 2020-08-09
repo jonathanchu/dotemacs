@@ -220,13 +220,13 @@
 (use-package acme-theme
   :load-path "themes"
   :config
-  ;; (load-theme 'acme t)
+  (load-theme 'acme t)
   )
 
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-one-light t)
+  ;; (load-theme 'doom-one-light t)
   )
 
 

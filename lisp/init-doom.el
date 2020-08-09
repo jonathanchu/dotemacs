@@ -48,7 +48,7 @@
 ;; (load-file "~/.config/emacs/doom.el")
 
 (use-package doom-modeline
-  :disabled
+  ;; :disabled
   :ensure t
   :hook
   (after-init . doom-modeline-mode))
