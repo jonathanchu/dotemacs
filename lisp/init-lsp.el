@@ -53,15 +53,16 @@
   (setq lsp-print-performance t)
   :config
   ;; Configure LSP clients
-  (use-package lsp-clients
-    :ensure nil
-    :functions (lsp-format-buffer lsp-organize-imports)
-    :hook (go-mode . (lambda ()
-                       "Format and add/delete imports."
-                       (add-hook 'before-save-hook #'lsp-format-buffer t t)
-                       (add-hook 'before-save-hook #'lsp-organize-imports t t)))
-    :init
-    (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/"))))
+  ;; (use-package lsp-clients
+  ;;   :ensure nil
+  ;;   :functions (lsp-format-buffer lsp-organize-imports)
+  ;;   :hook (go-mode . (lambda ()
+  ;;                      "Format and add/delete imports."
+  ;;                      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  ;;                      (add-hook 'before-save-hook #'lsp-organize-imports t t)))
+  ;;   :init
+  ;;   (setq lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
+    )
 
 (use-package lsp-ui
   :ensure t

@@ -246,8 +246,6 @@
 (use-package white-christmas
   :load-path "vendor/")
 
-(use-package vterm
-  :ensure t)
 
 ;;
 ;;; Line numbers
