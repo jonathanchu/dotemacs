@@ -339,6 +339,9 @@
   :init
   (elpy-enable))
 
+(use-package vterm
+  :ensure t)
+
 (add-to-list 'default-frame-alist '(internal-border-width . 20))
 (defun mode-line-align (left right)
   "Return a string with LEFT and RIGHT at the edges of the
