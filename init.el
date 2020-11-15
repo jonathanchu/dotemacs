@@ -305,7 +305,7 @@
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
         ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 10)
+        ivy-posframe-parameters '((internal-border-width . 1)
                                   (internal-border-color . "black")
                                   ))
   (setq ivy-posframe-width 70)
