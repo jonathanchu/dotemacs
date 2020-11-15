@@ -34,5 +34,26 @@ When you install a package or use various customization interfaces to tweak thin
   (load custom-file))
 #+end_src
 
+** Initialization
+
+#+begin_src emacs-lisp
+(defconst emacs-start-time (current-time))
+
+(setq user-full-name "Jonathan Chu"
+      user-mail-address "me@jonathanchu.is")
+
+(add-to-list 'exec-path "/usr/local/bin")
+
+(defvar current-user
+  (getenv
+   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+
+(message "Your Emacs is powering up... Be patient, Master %s!" current-user)
+
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+#+end_src
+
+
 * Text Editor
 * Windows
