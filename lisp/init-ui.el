@@ -214,13 +214,13 @@
 (use-package leuven-theme
   :ensure t
   :config
-  ;; (load-theme 'leuven t)
+  (load-theme 'leuven t)
   )
 
 (use-package acme-theme
   :load-path "themes"
   :config
-  (load-theme 'acme t)
+  ;; (load-theme 'acme t)
   )
 
 (use-package doom-themes
