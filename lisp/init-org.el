@@ -120,7 +120,8 @@
               ;; (typo-mode 1)            ;; Good for symbols like em-dash
               (blink-cursor-mode 0)    ;; Reduce visual noise
               ;; (linum-mode 0)           ;; No line numbers for prose
-              (setq buffer-face-mode-face '(:family "Operator Mono"))
+              ;; (setq buffer-face-mode-face '(:family "Operator Mono"))
+              (setq buffer-face-mode-face '(:family "IBM Plex Mono"))
               (buffer-face-mode)
               (require 'org-indent)
               (org-indent-mode)

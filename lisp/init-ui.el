@@ -73,7 +73,8 @@
 ;; (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Code-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
-(add-to-list 'default-frame-alist '(font . "Operator Mono-14"))
+;; (add-to-list 'default-frame-alist '(font . "Operator Mono-14"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono-14"))
 
 ;; mode line modifications based on powerline
 ;; (defvar mode-line-height 30)
@@ -214,7 +215,7 @@
 (use-package leuven-theme
   :ensure t
   :config
-  (load-theme 'leuven t)
+  ;; (load-theme 'leuven t)
   )
 
 (use-package acme-theme
@@ -229,6 +230,11 @@
   ;; (load-theme 'doom-one-light t)
   )
 
+(use-package elegant-light-theme
+  :load-path "themes"
+  :config
+  ;; (load-theme 'acme t)
+  )
 
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
