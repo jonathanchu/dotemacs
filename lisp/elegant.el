@@ -945,7 +945,7 @@ background color that is barely perceptible."
   (with-eval-after-load 'cus-edit (set-button-faces)))
 
 ;; Set theme
-(elegance-dark)
+(elegance-light)
 
 ;; Structural
 (set-face 'bold                                          'face-strong)
