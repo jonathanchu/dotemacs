@@ -230,12 +230,6 @@
   ;; (load-theme 'doom-one-light t)
   )
 
-(use-package elegant-light-theme
-  :load-path "themes"
-  :config
-  ;; (load-theme 'acme t)
-  )
-
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
 (setq indicate-buffer-boundaries nil
