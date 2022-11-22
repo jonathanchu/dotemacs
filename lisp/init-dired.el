@@ -35,9 +35,9 @@
 ;; Dired
 ;;----------------------------------------------------------------------------
 
-(use-package dired+
-  :load-path "vendor/"
-  )
+;; (use-package dired+
+;;   :load-path "vendor/"
+;;   )
 
 (use-package dired-single
   :ensure t)
