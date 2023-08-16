@@ -93,7 +93,7 @@
 (require 'init-core)
 (require 'init-editor)
 (require 'init-ui)
-(require 'init-doom)
+;; (require 'init-doom)
 (require 'init-window)
 (require 'init-lsp)
 (require 'init-company)
@@ -120,7 +120,7 @@
 (require 'init-org)
 (require 'init-email)
 
-(require 'elegant)
+;; (require 'elegant)
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -344,6 +344,11 @@
 (use-package vterm
   :ensure t)
 
+;; mode line stuff
+;; (setq-default header-line-format mode-line-format)
+;; (setq-default mode-line-format'(""))
+
+
 (add-to-list 'default-frame-alist '(internal-border-width . 20))
 (defun mode-line-align (left right)
   "Return a string with LEFT and RIGHT at the edges of the
@@ -361,6 +366,53 @@ current window."
                  (format-mode-line
                   (list minor-mode-alist
                         " " mode-line-misc-info)))))
+
+;;; When we set a face, we take care of removing any previous settings
+;;; -------------------------------------------------------------------
+(defun set-face (face style)
+  "Reset a FACE and make it inherit STYLE."
+  (set-face-attribute face nil
+                      :foreground 'unspecified :background 'unspecified
+                      :family     'unspecified :slant      'unspecified
+                      :weight     'unspecified :height     'unspecified
+                      :underline  'unspecified :overline   'unspecified
+                      :box        'unspecified :inherit    style))
+;;; -------------------------------------------------------------------
+
+;; (defun set-modeline-faces ()
+
+;; (set-face 'mode-line
+;;    ((((type tty)) (:inverse-video t))
+;;     (default (:overline t))))
+
+;; (set-face 'mode-line-inactive ((((type tty)) (:inherit (shadow)))
+;;     (default (:inherit (mode-line shadow)))))
+;; )
+
+(defun set-modeline-faces ()
+  "Mode line at top."
+  (set-face 'header-line                                 'face-strong)
+  (set-face-attribute 'header-line nil
+                      :underline (face-foreground 'default))
+  (set-face-attribute 'mode-line nil
+                      :height 10
+                      :underline (face-foreground 'default)
+                      :overline nil
+                      :box nil
+                      :foreground (face-background 'default)
+                      :background (face-background 'default))
+  (set-face 'mode-line-inactive                            'mode-line)
+  (set-face-attribute 'cursor nil
+                      :background (face-foreground 'default))
+  (set-face-attribute 'window-divider nil
+                      :foreground (face-background 'mode-line))
+  (set-face-attribute 'window-divider-first-pixel nil
+                      :foreground (face-background 'default))
+  (set-face-attribute 'window-divider-last-pixel nil
+                      :foreground (face-background 'default)))
+
+
+(set-modeline-faces)
 
 (setq frame-resize-pixelwise t)
 
