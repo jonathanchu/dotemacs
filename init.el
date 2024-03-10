@@ -117,10 +117,10 @@
 (require 'init-yasnippet)
 (require 'init-funcs)
 
-(require 'init-org)
+;; (require 'init-org)
 (require 'init-email)
 
-;; (require 'elegant)
+(require 'elegant)
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -180,7 +180,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar))))
- '(org-ellipsis ((t (:foreground nil)))))
+ '(org-ellipsis ((t (:foreground unspecified)))))
 
 ;;----------------------------------------------------------------------------
 ;; Libraries

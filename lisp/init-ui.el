@@ -206,11 +206,11 @@
   :custom-face
   (centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar)))))
 
-(use-package modus-operandi-theme
-  :ensure t
-  :config
-  ;; (load-theme 'modus-operandi t)
-  )
+;; (use-package modus-operandi-theme
+;;   :ensure t
+;;   :config
+;;   ;; (load-theme 'modus-operandi t)
+;;   )
 
 (use-package leuven-theme
   :ensure t

@@ -131,22 +131,22 @@
               ))
   )
 
-(use-package org-present
-  :ensure t
-  :init
-  (add-hook 'org-present-mode-hook
-            (lambda ()
-              (setq org-image-actual-width nil)
-              (org-present-big)
-              (org-display-inline-images)
-              (org-present-hide-cursor)
-              (org-present-read-only)))
-  (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (org-present-small)
-              (org-remove-inline-images)
-              (org-present-show-cursor)
-              (org-present-read-write))))
+;; (use-package org-present
+;;   :ensure t
+;;   :init
+;;   (add-hook 'org-present-mode-hook
+;;             (lambda ()
+;;               (setq org-image-actual-width nil)
+;;               (org-present-big)
+;;               (org-display-inline-images)
+;;               (org-present-hide-cursor)
+;;               (org-present-read-only)))
+;;   (add-hook 'org-present-mode-quit-hook
+;;             (lambda ()
+;;               (org-present-small)
+;;               (org-remove-inline-images)
+;;               (org-present-show-cursor)
+;;               (org-present-read-write))))
 
 ;; Setup my org agenda files
 (require 'find-lisp)
@@ -335,6 +335,8 @@
               (("C-c n i" . org-roam-insert))))
 
 (defvar load-language-list '((emacs-lisp . t)
+                             :PROPERTIES:
+                             :END:
                              (python . t)
                              (js . t)
                              (css . t)

@@ -350,7 +350,7 @@ background color that is barely perceptible."
 
 ;; Bookmarks
 ;;; -------------------------------------------------------------------
-'(bookmark-menu-heading                       'face-strong)
+;; '(bookmark-menu-heading                       'face-strong)
 '(bookmark-menu-bookmark                    'face-salient)
 ;;; -------------------------------------------------------------------
 
@@ -715,7 +715,7 @@ function is a convenience wrapper used by `describe-package-1'."
 (show-paren-mode t)
 
 ;; No fringe but nice glyphs for truncated and wrapped lines
-(fringe-mode '(0 . 0))
+;; (fringe-mode '(0 . 0))
 (defface fallback '((t :family "Fira Code Light"
                        :inherit 'face-faded)) "Fallback")
 (set-display-table-slot standard-display-table 'truncation
@@ -1001,7 +1001,7 @@ background color that is barely perceptible."
 
 ;; Bookmarks
 (with-eval-after-load 'bookmark
-  (set-face 'bookmark-menu-heading                       'face-strong)
+  ;; (set-face 'bookmark-menu-heading                       'face-strong)
   (set-face 'bookmark-menu-bookmark                    'face-salient))
 
 ;; Message

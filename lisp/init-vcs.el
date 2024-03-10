@@ -48,14 +48,14 @@
   :load-path "vendor/git-undo-el"
   :bind ("C-. C-/" . git-undo))
 
-(use-package gitconfig-mode
-  :ensure t)
+;; (use-package gitconfig-mode
+;;   :ensure t)
 
 (use-package github-browse-file
   :ensure t)
 
-(use-package gitignore-mode
-  :ensure t)
+;; (use-package gitignore-mode
+;;   :ensure t)
 
 (use-package magit
   :ensure t

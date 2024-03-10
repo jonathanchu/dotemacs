@@ -31,11 +31,11 @@
 
 ;;; Code:
 
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp
-  :config
-  (push 'company-lsp company-backends))
+;; (use-package company-lsp
+;;   :ensure t
+;;   :commands company-lsp
+;;   :config
+;;   (push 'company-lsp company-backends))
 
 (use-package lsp-mode
   :commands lsp-mode
