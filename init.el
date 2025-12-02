@@ -90,6 +90,10 @@
 ;; Bootstrapping
 ;;----------------------------------------------------------------------------
 
+;; (setq package-check-signature nil)
+;; (setq package-check-signature "allow-unsigned")
+
+
 (require 'init-core)
 (require 'init-editor)
 (require 'init-ui)
