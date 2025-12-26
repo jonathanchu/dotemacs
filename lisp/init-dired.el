@@ -39,8 +39,5 @@
 ;;   :load-path "vendor/"
 ;;   )
 
-(use-package dired-single
-  :ensure t)
-
 (provide 'init-dired)
 ;;; init-dired.el ends here
