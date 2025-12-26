@@ -53,13 +53,6 @@
   ;; (defvar helm-mode-fuzzy-match t)
   (setq helm-candidate-number-limit 30))
 
-(use-package helm-ag
-  :ensure t
-  ;; :bind ("s-F" . helm-do-ag-project-root)
-  :config
-  ;; (helm-ag-use-agignore t)
-  )
-
 (use-package helm-projectile
   :ensure t
   :init
