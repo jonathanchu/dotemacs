@@ -170,8 +170,8 @@
   `(helm-grep-match ((t (:foreground nil :background nil :inherit helm-match))))
 
   ;; git-commit
-  `(git-commit-comment-action  ((t (:foreground ,atom-one-light-green :weight bold))))
-  `(git-commit-comment-branch  ((t (:foreground ,atom-one-light-blue :weight bold))))
+  ;; `(git-commit-comment-action  ((t (:foreground ,atom-one-light-green :weight bold))))
+  ;; `(git-commit-comment-branch  ((t (:foreground ,atom-one-light-blue :weight bold))))
   `(git-commit-comment-heading ((t (:foreground ,atom-one-light-orange-2 :weight bold))))
 
   ;; magit
