@@ -35,18 +35,18 @@
 ;; Initialization
 ;;----------------------------------------------------------------------------
 
-(defconst emacs-start-time (current-time))
+;; (defconst emacs-start-time (current-time))
 
-(setq user-full-name "Jonathan Chu"
-      user-mail-address "me@jonathanchu.is")
+;; (setq user-full-name "Jonathan Chu"
+;;       user-mail-address "me@jonathanchu.is")
 
-(add-to-list 'exec-path "/usr/local/bin")
+;; (add-to-list 'exec-path "/usr/local/bin")
 
-(defvar current-user
-  (getenv
-   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+;; (defvar current-user
+;;   (getenv
+;;    (if (equal system-type 'windows-nt) "USERNAME" "USER")))
 
-(message "Your Emacs is powering up... Be patient, Master %s!" current-user)
+;; (message "Your Emacs is powering up... Be patient, Master %s!" current-user)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -54,37 +54,37 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-(defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; (defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
-(require 'package)
-(setq load-prefer-newer t
-      package-enable-at-startup nil
-      package-user-dir (concat user-emacs-directory "elpa")
-      package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
+;; (require 'package)
+;; (setq load-prefer-newer t
+;;       package-enable-at-startup nil
+;;       package-user-dir (concat user-emacs-directory "elpa")
+;;       package-archives
+;;       '(("gnu" . "https://elpa.gnu.org/packages/")
+;;         ("melpa" . "https://melpa.org/packages/")
+;;         ("melpa-stable" . "https://stable.melpa.org/packages/")))
+;; (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
-(package-initialize)
+;; (package-initialize)
 
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; ;; Bootstrap `use-package'
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 
-;; Bootstrap `use-package'
-(setq-default use-package-verbose nil ; Don't report loading details
-              use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
-(eval-when-compile
-  (require 'use-package))
+;; ;; Bootstrap `use-package'
+;; (setq-default use-package-verbose nil ; Don't report loading details
+;;               use-package-expand-minimally t  ; make the expanded code as minimal as possible
+;;               use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
+;; (eval-when-compile
+;;   (require 'use-package))
 
-(require 'bind-key)
+;; (require 'bind-key)
 
 ;; Install Powerline early for doom
-(use-package powerline
-  :ensure t)
+;; (use-package powerline
+;;   :ensure t)
 
 ;;----------------------------------------------------------------------------
 ;; Bootstrapping
@@ -292,8 +292,8 @@
 ;;     :query ask
 ;;     :format regexp
 ;;     :files "everything"
-;;     :dir (let ((vc (vc-root-dir)))
-;;            (if vc
+;;     :dir (let ((vc (vc-root-if)))
+;;            (dir vc
 ;;                vc
 ;;              default-directory))
 ;;     :confirm prefix
