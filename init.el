@@ -103,7 +103,6 @@
 (require 'init-company)
 (require 'init-ivy)
 (require 'init-package)
-(require 'init-dired)
 (require 'init-prog)
 (require 'init-elm)
 (require 'init-python)
@@ -120,8 +119,6 @@
 (require 'init-smex)
 (require 'init-yasnippet)
 (require 'init-funcs)
-
-;; (require 'init-email)
 
 (require 'elegant)
 
