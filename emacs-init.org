@@ -588,5 +588,17 @@ TODO - This could be moved somewhere else and not have its own section
     (setq lsp-python-ms-python-executable-cmd "python3")))
 #+end_src
 
+
+* Company config
+
+This could also be moved into another section since this is a single configuration item.
+
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'company-mode))
+#+end_src
+
 * Text Editor
 * Windows

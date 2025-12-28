@@ -527,3 +527,8 @@
   :init
   (when (executable-find "python3")
     (setq lsp-python-ms-python-executable-cmd "python3")))
+
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'company-mode))
