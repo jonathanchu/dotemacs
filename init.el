@@ -121,7 +121,7 @@
 (require 'init-yasnippet)
 (require 'init-funcs)
 
-(require 'init-email)
+;; (require 'init-email)
 
 (require 'elegant)
 
