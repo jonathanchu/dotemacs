@@ -451,3 +451,10 @@
   ;; Doesn't seem to play nice in emacs 25+
   (setq hl-line-sticky-flag nil
         global-hl-line-sticky-flag nil))
+
+(use-package ace-window
+  :ensure t
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+  :bind
+  ("C-x C-o" . ace-window))

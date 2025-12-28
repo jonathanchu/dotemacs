@@ -500,5 +500,20 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
         global-hl-line-sticky-flag nil))
 #+end_src
 
+
+* Window config
+
+TODO - This could be moved somewhere else and not have its own section
+
+#+begin_src emacs-lisp
+(use-package ace-window
+  :ensure t
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
+  :bind
+  ("C-x C-o" . ace-window))
+#+end_src
+
+
 * Text Editor
 * Windows
