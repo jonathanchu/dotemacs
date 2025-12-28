@@ -32,67 +32,10 @@
 ;;; Code:
 
 ;;----------------------------------------------------------------------------
-;; Initialization
-;;----------------------------------------------------------------------------
-
-;; (defconst emacs-start-time (current-time))
-
-;; (setq user-full-name "Jonathan Chu"
-;;       user-mail-address "me@jonathanchu.is")
-
-;; (add-to-list 'exec-path "/usr/local/bin")
-
-;; (defvar current-user
-;;   (getenv
-;;    (if (equal system-type 'windows-nt) "USERNAME" "USER")))
-
-;; (message "Your Emacs is powering up... Be patient, Master %s!" current-user)
-
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-
-;;----------------------------------------------------------------------------
-;; Packages
-;;----------------------------------------------------------------------------
-
-;; (defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
-;; (require 'package)
-;; (setq load-prefer-newer t
-;;       package-enable-at-startup nil
-;;       package-user-dir (concat user-emacs-directory "elpa")
-;;       package-archives
-;;       '(("gnu" . "https://elpa.gnu.org/packages/")
-;;         ("melpa" . "https://melpa.org/packages/")
-;;         ("melpa-stable" . "https://stable.melpa.org/packages/")))
-;; (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-
-;; (package-initialize)
-
-;; ;; Bootstrap `use-package'
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-
-;; ;; Bootstrap `use-package'
-;; (setq-default use-package-verbose nil ; Don't report loading details
-;;               use-package-expand-minimally t  ; make the expanded code as minimal as possible
-;;               use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
-;; (eval-when-compile
-;;   (require 'use-package))
-
-;; (require 'bind-key)
-
-;; Install Powerline early for doom
-;; (use-package powerline
-;;   :ensure t)
-
-;;----------------------------------------------------------------------------
 ;; Bootstrapping
 ;;----------------------------------------------------------------------------
 
-;; (setq package-check-signature nil)
-;; (setq package-check-signature "allow-unsigned")
-
+;; load literate config first
 (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 (require 'init-core)
@@ -226,54 +169,6 @@
   :ensure t
   :after ox)
 
-
-
-;;
-;;; Line numbers
-
-;; (global-display-line-numbers-mode 1)
-
-;; Explicitly define a width to reduce computation
-;; (setq-default display-line-numbers-width 3)
-
-;; Show absolute line numbers for narrowed regions makes it easier to tell the
-;; buffer is narrowed, and where you are, exactly.
-;; (setq-default display-line-numbers-widen t)
-
-;; Fast search tool `ripgrep'
-;; (use-package rg
-;;   :ensure t
-;;   :defines projectile-command-map
-;;   :hook (after-init . rg-enable-default-bindings)
-;;   :bind
-;;   ;; ("s-F" . rg-project)
-;;   ("s-F" . jc/grep-vc-or-dir)
-;;   :init (setq rg-group-result t
-;;               rg-show-columns t)
-;;   :config
-;;   (cl-pushnew '("tmpl" . "*.tmpl") rg-custom-type-aliases)
-
-;;   (with-eval-after-load 'projectile
-;;     (defalias 'projectile-ripgrep #'rg-project)
-;;     (bind-key "s-R" #'rg-project projectile-command-map))
-
-;;   (with-eval-after-load 'counsel
-;;     (bind-keys
-;;      :map rg-global-map
-;;      ("R" . counsel-rg)
-;;      ("F" . counsel-fzf)))
-
-;;   (rg-define-search jc/grep-vc-or-dir
-;;     :query ask
-;;     :format regexp
-;;     :files "everything"
-;;     :dir (let ((vc (vc-root-if)))
-;;            (dir vc
-;;                vc
-;;              default-directory))
-;;     :confirm prefix
-;;     :flags ("--hidden -g !.git -g !node_modules -g !elpa")))
-
 (use-package find-file-in-project
   :disabled
   :ensure t
@@ -323,10 +218,6 @@
 (use-package vterm
   :ensure t)
 
-;; mode line stuff
-;; (setq-default header-line-format mode-line-format)
-;; (setq-default mode-line-format'(""))
-
 
 (add-to-list 'default-frame-alist '(internal-border-width . 20))
 (defun mode-line-align (left right)
@@ -358,15 +249,6 @@ current window."
                       :box        'unspecified :inherit    style))
 ;;; -------------------------------------------------------------------
 
-;; (defun set-modeline-faces ()
-
-;; (set-face 'mode-line
-;;    ((((type tty)) (:inverse-video t))
-;;     (default (:overline t))))
-
-;; (set-face 'mode-line-inactive ((((type tty)) (:inherit (shadow)))
-;;     (default (:inherit (mode-line shadow)))))
-;; )
 
 (defun set-modeline-faces ()
   "Mode line at top."
@@ -394,12 +276,6 @@ current window."
 (set-modeline-faces)
 
 (setq frame-resize-pixelwise t)
-
-;;----------------------------------------------------------------------------
-;; Literate Config
-;;----------------------------------------------------------------------------
-
-;; (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
