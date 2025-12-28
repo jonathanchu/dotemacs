@@ -1,6 +1,6 @@
 ;; init.el --- My personal Emacs configuration.
 ;;
-;; Copyright (c) 2015-2020
+;; Copyright (c) 2015, 2016, 2017, 2018, 2019
 ;;
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
@@ -90,14 +90,10 @@
 ;; Bootstrapping
 ;;----------------------------------------------------------------------------
 
-;; (setq package-check-signature nil)
-;; (setq package-check-signature "allow-unsigned")
-
-
 (require 'init-core)
 (require 'init-editor)
 (require 'init-ui)
-;; (require 'init-doom)
+(require 'init-doom)
 (require 'init-window)
 (require 'init-lsp)
 (require 'init-company)
@@ -121,10 +117,8 @@
 (require 'init-yasnippet)
 (require 'init-funcs)
 
-;; (require 'init-org)
+(require 'init-org)
 (require 'init-email)
-
-(require 'elegant)
 
 ;;----------------------------------------------------------------------------
 ;; Global Config
@@ -152,7 +146,7 @@
      (:name "drafts" :query "tag:draft" :key "d" :sort-order newest-first)
      (:name "all mail" :query "*" :key "a" :sort-order newest-first)))
  '(package-selected-packages
-   '(cus-edit notmuch nav-flash dired-narrow deadgrep ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
+   '(notmuch nav-flash dired-narrow deadgrep ivy-posframe rg vterm org-ql uuidgen elpy forge org-present org-plus-contrib clj-refactor cider org org-bullets org-journal cask-mode centaur-tabs go-mode toml-mode helm-projectile projectile edit-indirect typo-mode indium olivetti ox-hugo-auto-export ox-hugo which-key counsel-projectile beginend jinja2-mode company-lsp lsp-javascript-flow lsp-ui lsp-javascript lsp-mode all-the-icons-dired yaml-mode web-mode volatile-highlights smex smartparens smart-comment scratch rjsx-mode restclient rainbow-mode rainbow-delimiters python-mode popwin paredit paradox paperless origami neotree move-text markdown-mode magit key-chord json-mode js2-refactor js2-mode ido-vertical-mode ibuffer-vc helm-ag helm gitignore-mode github-browse-file gitconfig-mode git-timemachine git-messenger fullframe flycheck-pos-tip flow-minor-mode fix-word fish-mode fireplace expand-region esup elm-mode easy-kill dumb-jump dired-single deft counsel company command-log-mode clojure-mode anzu aggressive-indent add-node-modules-path ace-window doom-themes use-package powerline popup nlinum git-gutter-fringe f exec-path-from-shell diminish all-the-icons))
  '(paradox-github-token t)
  '(smtpmail-smtp-server "smtp.fastmail.com")
  '(smtpmail-smtp-service 587)
@@ -184,7 +178,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(centaur-tabs-active-bar-face ((t (:inherit doom-modeline-bar))))
- '(org-ellipsis ((t (:foreground unspecified)))))
+ '(org-ellipsis ((t (:foreground nil)))))
 
 ;;----------------------------------------------------------------------------
 ;; Libraries
@@ -252,18 +246,20 @@
 (use-package white-christmas
   :load-path "vendor/")
 
+(use-package vterm
+  :ensure t)
 
 ;;
 ;;; Line numbers
 
-;; (global-display-line-numbers-mode 1)
+(global-display-line-numbers-mode 1)
 
 ;; Explicitly define a width to reduce computation
-;; (setq-default display-line-numbers-width 3)
+(setq-default display-line-numbers-width 3)
 
 ;; Show absolute line numbers for narrowed regions makes it easier to tell the
 ;; buffer is narrowed, and where you are, exactly.
-;; (setq-default display-line-numbers-widen t)
+(setq-default display-line-numbers-widen t)
 
 ;; Fast search tool `ripgrep'
 ;; (use-package rg
@@ -311,7 +307,7 @@
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
         ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 1)
+        ivy-posframe-parameters '((internal-border-width . 10)
                                   (internal-border-color . "black")
                                   ))
   (setq ivy-posframe-width 70)
@@ -345,14 +341,6 @@
   :init
   (elpy-enable))
 
-(use-package vterm
-  :ensure t)
-
-;; mode line stuff
-;; (setq-default header-line-format mode-line-format)
-;; (setq-default mode-line-format'(""))
-
-
 (add-to-list 'default-frame-alist '(internal-border-width . 20))
 (defun mode-line-align (left right)
   "Return a string with LEFT and RIGHT at the edges of the
@@ -371,60 +359,7 @@ current window."
                   (list minor-mode-alist
                         " " mode-line-misc-info)))))
 
-;;; When we set a face, we take care of removing any previous settings
-;;; -------------------------------------------------------------------
-(defun set-face (face style)
-  "Reset a FACE and make it inherit STYLE."
-  (set-face-attribute face nil
-                      :foreground 'unspecified :background 'unspecified
-                      :family     'unspecified :slant      'unspecified
-                      :weight     'unspecified :height     'unspecified
-                      :underline  'unspecified :overline   'unspecified
-                      :box        'unspecified :inherit    style))
-;;; -------------------------------------------------------------------
-
-;; (defun set-modeline-faces ()
-
-;; (set-face 'mode-line
-;;    ((((type tty)) (:inverse-video t))
-;;     (default (:overline t))))
-
-;; (set-face 'mode-line-inactive ((((type tty)) (:inherit (shadow)))
-;;     (default (:inherit (mode-line shadow)))))
-;; )
-
-(defun set-modeline-faces ()
-  "Mode line at top."
-  (set-face 'header-line                                 'face-strong)
-  (set-face-attribute 'header-line nil
-                      :underline (face-foreground 'default))
-  (set-face-attribute 'mode-line nil
-                      :height 10
-                      :underline (face-foreground 'default)
-                      :overline nil
-                      :box nil
-                      :foreground (face-background 'default)
-                      :background (face-background 'default))
-  (set-face 'mode-line-inactive                            'mode-line)
-  (set-face-attribute 'cursor nil
-                      :background (face-foreground 'default))
-  (set-face-attribute 'window-divider nil
-                      :foreground (face-background 'mode-line))
-  (set-face-attribute 'window-divider-first-pixel nil
-                      :foreground (face-background 'default))
-  (set-face-attribute 'window-divider-last-pixel nil
-                      :foreground (face-background 'default)))
-
-
-(set-modeline-faces)
-
 (setq frame-resize-pixelwise t)
-
-;;----------------------------------------------------------------------------
-;; Literate Config
-;;----------------------------------------------------------------------------
-
-(org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization

@@ -61,7 +61,6 @@
    $ brew install ag
    $ brew install ripgrep
    $ brew install node
-   $ brew install libvterm
    $ npm install -g eslint
    $ npm install -g bash-language-server
    #+END_SRC
