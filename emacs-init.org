@@ -515,5 +515,78 @@ TODO - This could be moved somewhere else and not have its own section
 #+end_src
 
 
+* LSP mode config
+
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :commands lsp-mode
+  :ensure t
+  :hook (prog-mode . (lambda ()
+                       (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode)
+                         (lsp-deferred))))
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . lsp-describe-thing-at-point))
+  :init
+  (setq lsp-auto-guess-root t)  ;; Detect project root
+  (setq lsp-keep-workspace-alive nil)  ;; Auto-kill LSP server
+  (setq lsp-prefer-flymake nil)  ;; Use lsp-ui and flycheck
+  (setq flymake-fringe-indicator-position 'right-fringe)
+  (setq lsp-print-performance t)
+  :config
+    )
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :init
+  ;; (add-hook 'lsp-mode-hook 'flycheck-mode)
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-doc-use-webkit nil
+        lsp-ui-doc-delay 0.2
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-border (face-foreground 'default)
+        lsp-eldoc-enable-hover nil ; Disable eldoc displays in minibuffer
+
+        lsp-ui-imenu-enable t
+        lsp-ui-imenu-colors `(,(face-foreground 'font-lock-keyword-face)
+                              ,(face-foreground 'font-lock-string-face)
+                              ,(face-foreground 'font-lock-constant-face)
+                              ,(face-foreground 'font-lock-variable-name-face))
+
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-sideline-show-diagnostics nil
+        lsp-ui-sideline-ignore-duplicate t)
+  :config
+  (add-to-list 'lsp-ui-doc-frame-parameters '(right-fringe . 8))
+
+  ;; `C-g'to close doc
+  (advice-add #'keyboard-quit :before #'lsp-ui-doc-hide)
+
+  ;; Reset `lsp-ui-doc-background' after loading theme
+  (add-hook 'after-load-theme-hook
+            (lambda ()
+              (setq lsp-ui-doc-border (face-foreground 'default))
+              (set-face-background 'lsp-ui-doc-background
+                                   (face-background 'tooltip))))
+
+  ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+  ;; @see https://github.com/emacs-lsp/lsp-ui/issues/243
+  (defun my-lsp-ui-imenu-hide-mode-line ()
+    "Hide the mode-line in lsp-ui-imenu."
+    (setq mode-line-format nil))
+  (advice-add #'lsp-ui-imenu :after #'my-lsp-ui-imenu-hide-mode-line)
+  )
+
+;; Microsoft python-language-server support
+(use-package lsp-python-ms
+  :ensure t
+  :hook (python-mode . (lambda () (require 'lsp-python-ms)))
+  :init
+  (when (executable-find "python3")
+    (setq lsp-python-ms-python-executable-cmd "python3")))
+#+end_src
+
 * Text Editor
 * Windows
