@@ -393,3 +393,61 @@
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'vi-tilde-fringe-mode))
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . light))
+
+;; only type 'y' or 'n' instead of 'yes' or 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; no menu bar
+(menu-bar-mode -1)
+
+;; no toolbar
+(when (functionp 'tool-bar-mode)
+  (tool-bar-mode -1))  ;; no toolbar
+
+;; disable scroll bars
+(if window-system
+    (progn
+      (scroll-bar-mode -1)
+      ;;(set-frame-font "Inconsolata 15"))) ;; set font
+      ))
+
+(setq-default cursor-type 'bar)
+
+;; nice fonts in OS X
+(setq mac-allow-anti-aliasing t)
+
+;; show line number in mode line
+(line-number-mode 1)
+
+;; show column number in the mode line
+(column-number-mode 1)
+
+;; highlight current line
+;; (global-hl-line-mode +1)
+
+;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono for Powerline-13"))
+;; (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-13"))
+;; (add-to-list 'default-frame-alist '(font . "Fira Code-13"))
+;; (add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
+;; (add-to-list 'default-frame-alist '(font . "Operator Mono-14"))
+(add-to-list 'default-frame-alist '(font . "IBM Plex Mono-14"))
+
+;; Reduce the clutter in the fringes; we'd like to reserve that space for more
+;; useful information, like git-gutter and flycheck.
+(setq indicate-buffer-boundaries nil
+      indicate-empty-lines nil)
+
+;; Doesn't exist in terminal Emacs, so we define it to prevent void-function
+;; errors emitted from packages use it without checking for it first.
+(unless (fboundp 'define-fringe-bitmap)
+  (fset 'define-fringe-bitmap #'ignore))
+
+(use-package hl-line
+  :init (add-hook 'prog-mode-hook 'hl-line-mode)
+  :config
+  ;; Doesn't seem to play nice in emacs 25+
+  (setq hl-line-sticky-flag nil
+        global-hl-line-sticky-flag nil))
