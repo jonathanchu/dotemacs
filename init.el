@@ -120,7 +120,6 @@
 (require 'init-yasnippet)
 (require 'init-funcs)
 
-;; (require 'init-org)
 (require 'init-email)
 
 (require 'elegant)
