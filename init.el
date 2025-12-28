@@ -210,9 +210,6 @@
     (setq deft-use-filename-as-title t)
     (setq deft-auto-save-interval 0)))
 
-(use-package fireplace
-  :ensure t)
-
 (use-package ibuffer
   :bind
   ("C-x C-b" . ibuffer))
@@ -231,24 +228,6 @@
   :ensure t
   :after ox)
 
-(use-package paperless
-  :ensure t
-  :config
-  (progn
-    (setq paperless-capture-directory "~/Dropbox/ScanSnap Inbox")
-    (setq paperless-root-directory "~/Dropbox/Documents")))
-
-;; (add-to-list 'load-path "~/.emacs.d/vendor")
-;; (require 'prettier-js)
-;; (setq prettier-js-args '("--print-width" "120"
-;;                          "--tab-width" "2"
-;;                          "--single-quote" "true"
-;;                          "--trailing-comma" "all"
-;;                          "--jsx-bracket-same-line" "false"))
-
-
-(use-package white-christmas
-  :load-path "vendor/")
 
 
 ;;
