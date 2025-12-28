@@ -55,5 +55,3 @@
   (require 'use-package))
 
 (require 'bind-key)
-
-(message "Loaded OKEH")

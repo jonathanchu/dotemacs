@@ -97,7 +97,6 @@
 (require 'init-core)
 (require 'init-editor)
 (require 'init-ui)
-;; (require 'init-doom)
 (require 'init-window)
 (require 'init-lsp)
 (require 'init-company)
