@@ -93,6 +93,7 @@
 ;; (setq package-check-signature nil)
 ;; (setq package-check-signature "allow-unsigned")
 
+(org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 (require 'init-core)
 (require 'init-editor)
@@ -401,7 +402,7 @@ current window."
 ;; Literate Config
 ;;----------------------------------------------------------------------------
 
-(org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
+;; (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
