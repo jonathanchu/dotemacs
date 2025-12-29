@@ -760,10 +760,6 @@ The CHAR is replaced and the point is put before CHAR."
 (use-package git-timemachine
   :ensure t)
 
-(use-package git-undo
-  :load-path "vendor/git-undo-el"
-  :bind ("C-. C-/" . git-undo))
-
 (use-package github-browse-file
   :ensure t)
 
