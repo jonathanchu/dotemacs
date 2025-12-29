@@ -693,6 +693,36 @@ flycheck indicators moved to the right fringe.")
   ;; (advice-add 'swiper :after 'recenter)
   )
 
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :bind (
+         ;; ("M-x" . helm-M-x)
+         ;; ("C-x C-f" . helm-find-files)
+         ;; ("C-x C-r" . helm-recentf)
+         ;; ("C-x b" . helm-buffers-list)
+         ("C-c i" . helm-imenu))
+  :config
+  (helm-mode 1)
+  (helm-autoresize-mode 1)
+  (defvar helm-M-x-fuzzy-match t)
+  (defvar helm-M-x-always-save-history t)
+  (defvar helm-recentf-fuzzy-match t)
+  (defvar lm-buffers-fuzzy-matching t)
+  (defvar helm-imenu-fuzzy-match t)
+  (defvar helm-display-header-line nil)
+  ;; (defvar helm-completion-in-region-fuzzy-match t)
+  ;; (defvar helm-mode-fuzzy-match t)
+  (setq helm-candidate-number-limit 30))
+
+(use-package helm-projectile
+  :ensure t
+  :init
+  (helm-projectile-on)
+  ;; (bind-key "s-t" #'helm-projectile-find-file)
+  ;; (bind-key "s-P" #'helm-projectile-switch-project)
+  )
+
 (use-package dumb-jump
   :ensure t
   :bind
