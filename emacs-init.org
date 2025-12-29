@@ -796,5 +796,53 @@ This is specific to helpful utilities for coding and also includes some miscella
 #+end_src
 
 
-* Text Editor
-* Windows
+
+
+Example
+;; Core/Foundation
+(require 'init-core)
+(require 'init-package)
+(require 'init-funcs)
+
+;; UI & Appearance
+(require 'init-ui)
+(require 'init-doom)
+(require 'init-highlight)
+
+;; Window & Navigation
+(require 'init-window)
+(require 'init-dired)
+
+;; Completion & Search
+(require 'init-ivy)
+(require 'init-helm)     ; Note: ivy and helm overlap - consider choosing one
+(require 'init-smex)
+(require 'init-company)
+
+;; Editor Enhancements
+(require 'init-editor)
+(require 'init-paredit)
+(require 'init-yasnippet)
+
+;; Development Tools
+(require 'init-lsp)
+(require 'init-flycheck)
+(require 'init-vcs)
+(require 'init-prog)
+
+;; Language-Specific
+(require 'init-python)
+(require 'init-elm)
+(require 'init-go)
+(require 'init-fish)
+(require 'init-web)
+(require 'init-markdown)
+
+;; Productivity
+(require 'init-org)
+(require 'init-email)
+
+;; Utilities
+(require 'init-utils)
+
+
