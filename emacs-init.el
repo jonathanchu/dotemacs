@@ -774,6 +774,11 @@ flycheck indicators moved to the right fringe.")
   (add-hook 'fish-mode-hook (lambda ()
                               (add-hook 'before-save-hook 'fish_indent-before-save))))
 
+(use-package go-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+
 (use-package esup
   :ensure t)
 

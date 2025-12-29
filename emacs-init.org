@@ -893,6 +893,15 @@ This is specific to helpful utilities for coding and also includes some miscella
                               (add-hook 'before-save-hook 'fish_indent-before-save))))
 #+end_src
 
+** Go mode
+
+#+begin_src emacs-lisp
+(use-package go-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+#+end_src
+
 
 * Utilities config
 
