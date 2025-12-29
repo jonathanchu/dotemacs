@@ -532,3 +532,49 @@
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'company-mode))
+
+(use-package counsel
+  ;; :disabled
+  :ensure t
+  :bind (
+         ;; ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ;; ("C-c g" . counsel-git-grep)
+         ("C-c k" . counsel-ag)
+         ("C-x C-r" . counsel-recentf)))
+
+(use-package counsel-projectile
+  ;; :disabled
+  :ensure t
+  :init
+  ;; (bind-key "s-F" #'counsel-projectile-ag)
+  (bind-key "s-t" #'counsel-projectile-find-file)
+  ;; (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
+  :config
+  (counsel-projectile-mode 1))
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (progn
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d)")
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-format-function #'ivy-format-function-arrow)
+    (setq ivy-re-builders-alist
+          '((swiper . ivy--regex-plus)
+            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
+    )
+  :bind
+  ("C-c C-r" . ivy-resume))
+
+(use-package swiper
+  :ensure t
+  :bind
+  ("C-s" . counsel-grep-or-swiper)
+  ("C-r" . swiper)
+  :config
+  ;; (advice-add 'swiper :after 'recenter)
+  )
