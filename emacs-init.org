@@ -963,6 +963,14 @@ This is specific to helpful utilities for coding and also includes some miscella
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 #+end_src
 
+** Markdown mode
+
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :mode "\\.md\\'")
+#+end_src
+
 
 * Utilities config
 

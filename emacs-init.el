@@ -832,6 +832,10 @@ flycheck indicators moved to the right fringe.")
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 
+(use-package markdown-mode
+  :ensure t
+  :mode "\\.md\\'")
+
 (use-package esup
   :ensure t)
 
