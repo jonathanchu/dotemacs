@@ -667,5 +667,71 @@ These are useful for working within projects, so perhaps this section would be b
   )
 #+end_src
 
+
+* Programming config
+
+This is specific to helpful utilities for coding and also includes some miscellaneous modes. This could be combined with another section for readability.
+
+#+begin_src emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :bind
+  (("M-g o" . dumb-jump-go-other-window)
+   ("M-g j" . dumb-jump-go)
+   ("M-g i" . dumb-jump-go-prompt)
+   ("M-g x" . dumb-jump-go-prefer-external)
+   ("M-g z" . dumb-jump-go-prefer-external-other-window))
+  :config
+  (setq dumb-jump-selector 'ivy)
+  )
+
+(use-package easy-kill
+  :ensure t
+  :config
+  (global-set-key [remap kill-ring-save] 'easy-kill))
+
+(use-package edit-indirect
+  :ensure t)
+
+(use-package make-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+
+(use-package scratch
+  :ensure t
+  :config
+  (autoload 'scratch "scratch" nil t))
+
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+
+(use-package smart-comment
+  :ensure t
+  :bind
+  ("s-/" . smart-comment))
+
+(use-package smartparens
+  :ensure t
+  :init
+  (smartparens-global-mode t)
+  :config
+  (progn
+    (sp-local-pair 'web-mode "{%" "%}")
+    (use-package smartparens-config)
+    (setq sp-autoskip-closing-pair 'always)
+    (setq sp-hybrid-kill-entire-symbol nil)))
+
+(use-package toml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
+
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+end_src
+
 * Text Editor
 * Windows
