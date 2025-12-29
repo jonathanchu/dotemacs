@@ -686,6 +686,13 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
+(use-package fish-mode
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'fish-mode-hook (lambda ()
+                              (add-hook 'before-save-hook 'fish_indent-before-save))))
+
 (use-package esup
   :ensure t)
 
