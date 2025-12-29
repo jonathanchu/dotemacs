@@ -39,7 +39,6 @@
 (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
 (require 'init-fish)
-(require 'init-flycheck)
 (require 'init-vcs)
 (require 'init-go)
 (require 'init-helm)

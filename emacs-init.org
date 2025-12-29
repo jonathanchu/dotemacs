@@ -197,7 +197,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 #+end_src
 
 
-* Editor config
+* Core/Foundation
 
 #+begin_src emacs-lisp
 ;; Warn when opening files bigger than 100MB
@@ -452,7 +452,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 #+end_src
 
 
-* UI config
+* UI & Appearance
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
@@ -529,7 +529,36 @@ TODO - This could be moved somewhere else and not have its own section
 #+end_src
 
 
-* LSP mode config
+* Development Tools
+
+** Flycheck
+
+#+begin_src emacs-lisp
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  (setq flycheck-pos-tip-timeout 10)
+  (setq flycheck-display-errors-delay 0.5)
+  (flycheck-pos-tip-mode +1))
+
+(use-package flycheck
+  :ensure t
+  :commands
+  (flycheck-mode flycheck-list-errors flycheck-buffer)
+  :defer 2
+  :init
+  (progn
+    (setq flycheck-indication-mode 'right-fringe)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (setq flycheck-highlighting-mode 'symbols)
+    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint)))
+  :config
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+  (global-flycheck-mode 1))
+#+end_src
+
+** LSP mode config
 
 #+begin_src emacs-lisp
 (use-package lsp-mode
@@ -603,9 +632,9 @@ TODO - This could be moved somewhere else and not have its own section
 #+end_src
 
 
-* Company config
+* Completion & Search
 
-This could also be moved into another section since this is a single configuration item.
+** Company config
 
 #+begin_src emacs-lisp
 (use-package company
@@ -615,9 +644,7 @@ This could also be moved into another section since this is a single configurati
 #+end_src
 
 
-* Ivy config
-
-These are useful for working within projects, so perhaps this section would be better served in there.
+** Ivy config
 
 #+begin_src emacs-lisp
 (use-package counsel
@@ -668,7 +695,7 @@ These are useful for working within projects, so perhaps this section would be b
 #+end_src
 
 
-* Programming config
+* Editor Enhancements
 
 This is specific to helpful utilities for coding and also includes some miscellaneous modes. This could be combined with another section for readability.
 
@@ -692,19 +719,6 @@ This is specific to helpful utilities for coding and also includes some miscella
 
 (use-package edit-indirect
   :ensure t)
-
-(use-package make-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
-
-(use-package scratch
-  :ensure t
-  :config
-  (autoload 'scratch "scratch" nil t))
-
-(use-package sh-script
-  :config
-  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
 (use-package smart-comment
   :ensure t
@@ -768,6 +782,22 @@ This is specific to helpful utilities for coding and also includes some miscella
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+end_src
 
+** Make mode
+
+#+begin_src emacs-lisp
+(use-package make-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+#+end_src
+
+** Shell script mode
+
+#+begin_src emacs-lisp
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+#+end_src
+
 
 * Utilities config
 
@@ -803,6 +833,11 @@ This is specific to helpful utilities for coding and also includes some miscella
   :bind
   ("C-c s" . crux-find-shell-init-file)
   ("C-c e" . crux-find-user-init-file))
+
+(use-package scratch
+  :ensure t
+  :config
+  (autoload 'scratch "scratch" nil t))
 #+end_src
 
 

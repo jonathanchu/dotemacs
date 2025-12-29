@@ -469,6 +469,29 @@
   :bind
   ("C-x C-o" . ace-window))
 
+(use-package flycheck-pos-tip
+  :ensure t
+  :config
+  (setq flycheck-pos-tip-timeout 10)
+  (setq flycheck-display-errors-delay 0.5)
+  (flycheck-pos-tip-mode +1))
+
+(use-package flycheck
+  :ensure t
+  :commands
+  (flycheck-mode flycheck-list-errors flycheck-buffer)
+  :defer 2
+  :init
+  (progn
+    (setq flycheck-indication-mode 'right-fringe)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (setq flycheck-highlighting-mode 'symbols)
+    (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint)))
+  :config
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+  (global-flycheck-mode 1))
+
 (use-package lsp-mode
   :commands lsp-mode
   :ensure t
@@ -609,19 +632,6 @@
 (use-package edit-indirect
   :ensure t)
 
-(use-package make-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
-
-(use-package scratch
-  :ensure t
-  :config
-  (autoload 'scratch "scratch" nil t))
-
-(use-package sh-script
-  :config
-  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
-
 (use-package smart-comment
   :ensure t
   :bind
@@ -637,16 +647,6 @@
     (use-package smartparens-config)
     (setq sp-autoskip-closing-pair 'always)
     (setq sp-hybrid-kill-entire-symbol nil)))
-
-(use-package toml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
-
-(use-package yaml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
 (use-package elpy
   :disabled
@@ -667,6 +667,24 @@
             '(lambda ()
                (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+
+(use-package toml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
+
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+(use-package make-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+
+(use-package sh-script
+  :config
+  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
 
 (use-package esup
   :ensure t)
@@ -699,3 +717,8 @@
   :bind
   ("C-c s" . crux-find-shell-init-file)
   ("C-c e" . crux-find-user-init-file))
+
+(use-package scratch
+  :ensure t
+  :config
+  (autoload 'scratch "scratch" nil t))
