@@ -721,20 +721,12 @@ This is specific to helpful utilities for coding and also includes some miscella
     (use-package smartparens-config)
     (setq sp-autoskip-closing-pair 'always)
     (setq sp-hybrid-kill-entire-symbol nil)))
-
-(use-package toml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
-
-(use-package yaml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+end_src
 
 
-* Python config
+* Language-Specific
+
+** Python
 
 #+begin_src emacs-lisp
 (use-package elpy
@@ -756,6 +748,24 @@ This is specific to helpful utilities for coding and also includes some miscella
             '(lambda ()
                (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+#+end_src
+
+** TOML mode
+
+#+begin_src emacs-lisp
+(use-package toml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
+#+end_src
+
+** YAML mode
+
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+end_src
 
 
