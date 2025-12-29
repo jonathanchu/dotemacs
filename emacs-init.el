@@ -462,6 +462,21 @@
   (setq hl-line-sticky-flag nil
         global-hl-line-sticky-flag nil))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (add-hook 'css-mode-hook #'rainbow-mode))
+
+(use-package volatile-highlights
+  :ensure t
+  :config
+  (volatile-highlights-mode t))
+
 (use-package ace-window
   :ensure t
   :init
