@@ -736,6 +736,18 @@ flycheck indicators moved to the right fringe.")
     (setq lsp-python-ms-python-executable-cmd "python3")))
 #+end_src
 
+** YASnippet
+
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config
+  (progn
+    (yas-global-mode 1)
+    (setq yas-snippet-dirs (append yas-snippet-dirs
+                                   '("~/.emacs.d/snippets")))))
+#+end_src
+
 
 * Completion & Search
 
