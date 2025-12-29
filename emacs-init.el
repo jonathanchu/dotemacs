@@ -1114,6 +1114,36 @@ flycheck indicators moved to the right fringe.")
   :ensure t
   :mode "\\.md\\'")
 
+(use-package cider
+  :ensure t
+  :config
+  (progn
+    (setq nrepl-log-messages t)
+    (setq nrepl-hide-special-buffers t)
+    (add-hook 'cider-mode-hook #'eldoc-mode)))
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+
+(use-package clojure-mode
+  :ensure t
+  :config
+  (define-clojure-indent
+    (defroutes 'defun)
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (HEAD 2)
+    (ANY 2)
+    (context 2)))
+
 (use-package esup
   :ensure t)
 
