@@ -667,3 +667,35 @@
             '(lambda ()
                (setq fill-column 80)))
   (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
+
+(use-package esup
+  :ensure t)
+
+(use-package fix-word
+  :ensure t
+  :bind
+  ("M-u" . fix-word-upcase)
+  ("M-l" . fix-word-downcase)
+  ("M-c" . fix-word-capitalize))
+
+(use-package uuidgen
+  :ensure t
+  :defer t)
+
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (setq which-key-use-C-h-commands nil)
+  ;; Prevent
+  ;; https://github.com/justbur/emacs-which-key/issues/130
+  (setq inhibit-compacting-font-caches nil)
+  (setq which-key-allow-imprecise-window-fit t)
+  (which-key-mode))
+
+(use-package crux
+  :ensure t
+  :defer t
+  :bind
+  ("C-c s" . crux-find-shell-init-file)
+  ("C-c e" . crux-find-user-init-file))

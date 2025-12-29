@@ -759,5 +759,42 @@ This is specific to helpful utilities for coding and also includes some miscella
 #+end_src
 
 
+* Utilities config
+
+#+begin_src emacs-lisp
+(use-package esup
+  :ensure t)
+
+(use-package fix-word
+  :ensure t
+  :bind
+  ("M-u" . fix-word-upcase)
+  ("M-l" . fix-word-downcase)
+  ("M-c" . fix-word-capitalize))
+
+(use-package uuidgen
+  :ensure t
+  :defer t)
+
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (setq which-key-use-C-h-commands nil)
+  ;; Prevent
+  ;; https://github.com/justbur/emacs-which-key/issues/130
+  (setq inhibit-compacting-font-caches nil)
+  (setq which-key-allow-imprecise-window-fit t)
+  (which-key-mode))
+
+(use-package crux
+  :ensure t
+  :defer t
+  :bind
+  ("C-c s" . crux-find-shell-init-file)
+  ("C-c e" . crux-find-user-init-file))
+#+end_src
+
+
 * Text Editor
 * Windows
