@@ -1144,6 +1144,11 @@ flycheck indicators moved to the right fringe.")
     (ANY 2)
     (context 2)))
 
+(use-package json-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
+
 (use-package esup
   :ensure t)
 
