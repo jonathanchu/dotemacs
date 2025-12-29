@@ -38,7 +38,6 @@
 ;; load literate config first
 (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
-(require 'init-paredit)
 (require 'init-highlight)
 (require 'init-smex)
 (require 'init-yasnippet)
