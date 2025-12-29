@@ -1293,6 +1293,14 @@ This is specific to helpful utilities for coding and also includes some miscella
     (context 2)))
 #+end_src
 
+** JSON mode
+#+begin_src emacs-lisp
+(use-package json-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
+#+end_src
+
 
 * Utilities config
 
