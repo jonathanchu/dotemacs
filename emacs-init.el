@@ -380,13 +380,14 @@
   :config
   (popwin-mode t))
 
-(use-package undo-tree
-  :ensure t
-  :config
-  (progn
-    (global-undo-tree-mode t)
-    (setq undo-tree-visualizer-diff t)
-    (setq undo-tree-visualizer-timestamps t)))
+  (use-package undo-tree
+    :ensure t
+    :config
+    (progn
+      (global-undo-tree-mode t)
+      (setq undo-tree-visualizer-diff t)
+      (setq undo-tree-visualizer-timestamps t))
+      (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 
 (use-package uniquify
   :config
@@ -788,8 +789,8 @@ The CHAR is replaced and the point is put before CHAR."
 
 
 (use-package magit-git-toolbelt
-  :disabled
-  :load-path "vendor/")
+  ;; :disabled
+  :load-path "lisp/")
 
 (defvar +vc-gutter-default-style t
   "If non-nil, enable the default look of the vc gutter.

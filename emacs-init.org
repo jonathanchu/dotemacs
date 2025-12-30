@@ -864,8 +864,8 @@ TODO - This could be moved somewhere else and not have its own section
 
 
 (use-package magit-git-toolbelt
-  :disabled
-  :load-path "vendor/")
+  ;; :disabled
+  :load-path "lisp/")
 
 (defvar +vc-gutter-default-style t
   "If non-nil, enable the default look of the vc gutter.
