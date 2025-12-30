@@ -1,6 +1,6 @@
 ;; init.el --- My personal Emacs configuration.
 ;;
-;; Copyright (c) 2015-2020
+;; Copyright (c) 2015, 2016, 2017, 2018, 2019
 ;;
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
@@ -37,8 +37,6 @@
 
 ;; load literate config first
 (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
-
-(require 'elegant)
 
 ;;----------------------------------------------------------------------------
 ;; Libraries
@@ -96,7 +94,7 @@
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
         ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 1)
+        ivy-posframe-parameters '((internal-border-width . 10)
                                   (internal-border-color . "black")
                                   ))
   (setq ivy-posframe-width 70)
