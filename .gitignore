@@ -65,3 +65,4 @@ network-security.data
 .vscode
 eln-cache
 undo
+custom.el
