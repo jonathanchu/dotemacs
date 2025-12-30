@@ -835,10 +835,6 @@ TODO - This could be moved somewhere else and not have its own section
 (use-package git-timemachine
   :ensure t)
 
-(use-package git-undo
-  :load-path "vendor/git-undo-el"
-  :bind ("C-. C-/" . git-undo))
-
 (use-package github-browse-file
   :ensure t)
 
