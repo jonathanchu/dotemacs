@@ -1,5 +1,0 @@
-# -*- coding: utf-8 -*-
-# name: {% url '...' %}
-# key: url
-# --
-{% url '$1' %}

@@ -1,7 +1,0 @@
-# -*- coding: utf-8 -*-
-# name: {% if ... %} ... {% endif %}
-# key: if
-# --
-{% if $1 %}
-  $0
-{% endif %}
