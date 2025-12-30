@@ -772,7 +772,7 @@ The CHAR is replaced and the point is put before CHAR."
 (use-package volatile-highlights
   :ensure t
   :config
-  (volatile-highlights-mode t))        
+  (volatile-highlights-mode t))
 #+end_src
 
 
@@ -980,13 +980,18 @@ flycheck indicators moved to the right fringe.")
 ** YASnippet
 
 #+begin_src emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :config
-  (progn
-    (yas-global-mode 1)
-    (setq yas-snippet-dirs (append yas-snippet-dirs
-                                   '("~/.emacs.d/snippets")))))
+  (use-package yasnippet
+    :ensure t
+    :config
+    (progn
+      (yas-global-mode 1)
+      ;; (setq yas-snippet-dirs (append yas-snippet-dirs
+                                     ;; '("~/.emacs.d/snippets")))
+  ))
+
+
+    (use-package yasnippet-snippets
+      :ensure t)
 #+end_src
 
 
@@ -1141,7 +1146,7 @@ This is specific to helpful utilities for coding and also includes some miscella
   (add-hook 'clojure-mode-hook #'enable-paredit-mode)
   ;; (add-hook 'org-mode-hook #'enable-paredit-mode)
   (add-hook 'python-mode-hook
-            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))    
+            (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
 #+end_src
 
 
@@ -1392,5 +1397,3 @@ Example
 
 ;; Utilities
 (require 'init-utils)
-
-
