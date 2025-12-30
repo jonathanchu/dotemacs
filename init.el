@@ -4,7 +4,7 @@
 ;;
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/dotemacs
-;; Version: 1.0
+;; Version: 2.0
 
 ;; This file is not part of GNU Emacs.
 
