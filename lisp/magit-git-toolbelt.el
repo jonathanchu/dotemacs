@@ -54,26 +54,53 @@
 ;;; Transient Menu
 
 ;;;###autoload (autoload 'magit-git-toolbelt "magit-git-toolbelt" nil t)
-(transient-define-prefix magit-git-toolbelt ()
-  "Git toolbelt commands."
-  ["Branch Commands"
-   ("c" "Cleanup merged branches" magit-git-toolbelt-cleanup)
-   ("r" "Recent branches" magit-git-toolbelt-recent-branches)
-   ("l" "Local branches" magit-git-toolbelt-local-branches)
-   ("R" "Remote branches" magit-git-toolbelt-remote-branches)]
+;; Define the submenus
+(transient-define-prefix magit-git-toolbelt-commit-info ()
+  "Commit info commands."
   ["Commit Info"
    ("i" "Initial commit" magit-git-toolbelt-initial-commit)
+   ("s" "Current SHA" magit-git-toolbelt-sha)
+   ])
+
+(transient-define-prefix magit-git-toolbelt-merge-status ()
+  "Merge status commands."
+  ["Merge Status"
+   ("m" "Merged" magit-git-toolbelt-merged)
+   ("u" "Unmerged" magit-git-toolbelt-unmerged)
+   ])
+
+(transient-define-prefix magit-git-toolbelt-branches ()
+  "Branches"
+  ["Branches"
+   ("l" "Local branches" magit-git-toolbelt-local-branches)
    ("b" "Current branch" magit-git-toolbelt-current-branch)
-   ("s" "Current SHA" magit-git-toolbelt-sha)]
+   ("m" "Main branch" magit-git-toolbelt-main-branch)
+   ("r" "Remote branches" magit-git-toolbelt-remote-branches)
+   ])
+
+(transient-define-prefix magit-git-toolbelt-diff-inspection ()
+  "Diff & Inspection"
   ["Diff & Inspection"
-   ("d" "Deltas (commits ahead/behind)" magit-git-toolbelt-deltas)
-   ("m" "Merged branches" magit-git-toolbelt-merged)
-   ("u" "Unmerged branches" magit-git-toolbelt-unmerged)]
-  ["File Status"
-   ("M" "Modified files" magit-git-toolbelt-modified)
-   ("U" "Untracked files" magit-git-toolbelt-untracked)]
+   ("d" "Deltas (commits ahead/behind" magit-git-toolbelt-deltas)
+   ("m" "Modified files" magit-git-toolbelt-modified)
+   ("u" "Untracked files" magit-git-toolbelt-untracked)
+   ])
+
+;; Main menu references the submenu
+(transient-define-prefix magit-git-toolbelt ()
+  "Git toolbelt commands."
+  ["Quick Commands"
+   ("c" "Cleanup merged branches" magit-git-toolbelt-cleanup)
+   ("r" "Recent branches" magit-git-toolbelt-recent-branches)]
+  ["Submenus"
+   ("C" "Commit Info..." magit-git-toolbelt-commit-info)
+   ("M" "Merge Status..." magit-git-toolbelt-merge-status)
+   ("B" "Branches..." magit-git-toolbelt-branches)
+   ("D" "Diff & Inspection..." magit-git-toolbelt-diff-inspection)
+   ]
   ["Actions"
-   ("z" "Undo last commit" magit-git-toolbelt-undo-commit)])
+   ("z" "Undo last commit" magit-git-toolbelt-undo-commit)]
+  )
 
 ;;; Branch Commands
 
@@ -130,6 +157,14 @@
           (kill-new sha)
           (message "SHA: %s (copied to kill ring)" sha))
       (message "Could not get SHA"))))
+
+(defun magit-git-toolbelt-main-branch ()
+  "Show the main branch name."
+  (interactive)
+  (let ((branch (magit-git-string "main-branch")))
+    (if branch
+        (message "Main branch: %s" branch)
+      (message "No main branch found"))))
 
 ;;; Diff & Inspection Commands
 
