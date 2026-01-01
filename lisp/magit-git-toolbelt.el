@@ -76,6 +76,7 @@
    ("b" "Current branch" magit-git-toolbelt-current-branch)
    ("m" "Main branch" magit-git-toolbelt-main-branch)
    ("r" "Remote branches" magit-git-toolbelt-remote-branches)
+   ("t" "Remote tracking branch" magit-git-toolbelt-remote-tracking-branch)
    ])
 
 (transient-define-prefix magit-git-toolbelt-diff-inspection ()
@@ -91,7 +92,9 @@
   "Git toolbelt commands."
   ["Quick Commands"
    ("c" "Cleanup merged branches" magit-git-toolbelt-cleanup)
-   ("r" "Recent branches" magit-git-toolbelt-recent-branches)]
+   ("r" "Recent branches" magit-git-toolbelt-recent-branches)
+   ("a" "Active branches" magit-git-toolbelt-active-branches)
+   ]
   ["Submenus"
    ("C" "Commit Info..." magit-git-toolbelt-commit-info)
    ("M" "Merge Status..." magit-git-toolbelt-merge-status)
@@ -130,6 +133,34 @@
   (let ((output (shell-command-to-string "git remote-branches")))
     (magit-git-toolbelt--display-output "Remote Branches" output)))
 
+(defun magit-git-toolbelt-remote-tracking-branch ()
+  "Print the name of the remote tracking branch."
+  (interactive)
+  (let ((output (shell-command-to-string "git remote-tracking-branch")))
+    (magit-git-toolbelt--display-output "Remote Tracking Branch" output)))
+
+(defun magit-git-toolbelt-active-branches ()
+  "Returns a list of local or remote branches."
+  (interactive)
+  (let ((output (shell-command-to-string "git active-branches")))
+    (magit-git-toolbelt--display-output "Active Branches" output)))
+
+(defun magit-git-toolbelt-current-branch ()
+  "Show the current branch name."
+  (interactive)
+  (let ((branch (magit-git-string "current-branch")))
+    (if branch
+        (message "Current branch: %s" branch)
+      (message "Not on any branch"))))
+
+(defun magit-git-toolbelt-main-branch ()
+  "Show the main branch name."
+  (interactive)
+  (let ((branch (magit-git-string "main-branch")))
+    (if branch
+        (message "Main branch: %s" branch)
+      (message "No main branch found"))))
+
 ;;; Commit Info Commands
 
 (defun magit-git-toolbelt-initial-commit ()
@@ -139,14 +170,6 @@
     (if commit
         (magit-show-commit commit)
       (message "Could not find initial commit"))))
-
-(defun magit-git-toolbelt-current-branch ()
-  "Show the current branch name."
-  (interactive)
-  (let ((branch (magit-git-string "current-branch")))
-    (if branch
-        (message "Current branch: %s" branch)
-      (message "Not on any branch"))))
 
 (defun magit-git-toolbelt-sha ()
   "Show the current commit SHA."
@@ -158,13 +181,6 @@
           (message "SHA: %s (copied to kill ring)" sha))
       (message "Could not get SHA"))))
 
-(defun magit-git-toolbelt-main-branch ()
-  "Show the main branch name."
-  (interactive)
-  (let ((branch (magit-git-string "main-branch")))
-    (if branch
-        (message "Main branch: %s" branch)
-      (message "No main branch found"))))
 
 ;;; Diff & Inspection Commands
 
