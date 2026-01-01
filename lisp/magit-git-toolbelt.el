@@ -84,7 +84,6 @@
 (transient-define-prefix magit-git-toolbelt-diff-inspection ()
   "Diff & Inspection"
   ["Diff & Inspection"
-   ("d" "Deltas (commits ahead/behind" magit-git-toolbelt-deltas)
    ("m" "Modified files" magit-git-toolbelt-modified)
    ("u" "Untracked files" magit-git-toolbelt-untracked)
    ])
@@ -213,7 +212,7 @@
   (let ((output (shell-command-to-string "git merge-status")))
     (magit-git-toolbelt--display-output "Merge Status" output)))
 
-;;; File Status Commands
+;;; Diff & Inspection
 
 (defun magit-git-toolbelt-modified ()
   "Show modified files."
