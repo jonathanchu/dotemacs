@@ -98,12 +98,13 @@
    ]
   ["Submenus"
    ("C" "Commit Info..." magit-git-toolbelt-commit-info)
-   ("M" "Merge Status..." magit-git-toolbelt-merge)
    ("B" "Branches..." magit-git-toolbelt-branches)
+   ("M" "Merge Status..." magit-git-toolbelt-merge)
    ("D" "Diff & Inspection..." magit-git-toolbelt-diff-inspection)
    ]
   ["Actions"
-   ("z" "Undo last commit" magit-git-toolbelt-undo-commit)]
+   ("z" "Undo last commit" magit-git-toolbelt-undo-commit)
+   ]
   )
 
 ;;; Branch Commands
