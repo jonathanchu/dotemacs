@@ -63,11 +63,12 @@
    ("l" "Local commits" magit-git-toolbelt-local-commits)
    ])
 
-(transient-define-prefix magit-git-toolbelt-merge-status ()
+(transient-define-prefix magit-git-toolbelt-merge ()
   "Merge status commands."
   ["Merge Status"
    ("m" "Merged" magit-git-toolbelt-merged)
    ("u" "Unmerged" magit-git-toolbelt-unmerged)
+   ("s" "Merge status" magit-git-toolbelt-merge-status)
    ])
 
 (transient-define-prefix magit-git-toolbelt-branches ()
@@ -98,7 +99,7 @@
    ]
   ["Submenus"
    ("C" "Commit Info..." magit-git-toolbelt-commit-info)
-   ("M" "Merge Status..." magit-git-toolbelt-merge-status)
+   ("M" "Merge Status..." magit-git-toolbelt-merge)
    ("B" "Branches..." magit-git-toolbelt-branches)
    ("D" "Diff & Inspection..." magit-git-toolbelt-diff-inspection)
    ]
@@ -188,15 +189,7 @@
   (let ((output (shell-command-to-string "git local-commits")))
     (magit-git-toolbelt--display-output "Local Commits" output)))
 
-;;; Diff & Inspection Commands
-
-(defun magit-git-toolbelt-deltas ()
-  "Show commits ahead/behind of upstream."
-  (interactive)
-  (let ((output (shell-command-to-string "git deltas")))
-    (if (string-empty-p (string-trim output))
-        (message "No deltas (branch is in sync)")
-      (message "Deltas: %s" (string-trim output)))))
+;;; Merge Status
 
 (defun magit-git-toolbelt-merged ()
   "Show branches that have been merged."
@@ -213,6 +206,12 @@
     (if (string-empty-p (string-trim output))
         (message "No unmerged branches found")
       (magit-git-toolbelt--display-output "Unmerged Branches" output))))
+
+(defun magit-git-toolbelt-merge-status ()
+  "Shows merge status of all local branches against main branch."
+  (interactive)
+  (let ((output (shell-command-to-string "git merge-status")))
+    (magit-git-toolbelt--display-output "Merge Status" output)))
 
 ;;; File Status Commands
 
