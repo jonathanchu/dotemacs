@@ -60,6 +60,7 @@
   ["Commit Info"
    ("i" "Initial commit" magit-git-toolbelt-initial-commit)
    ("s" "Current SHA" magit-git-toolbelt-sha)
+   ("l" "Local commits" magit-git-toolbelt-local-commits)
    ])
 
 (transient-define-prefix magit-git-toolbelt-merge-status ()
@@ -181,6 +182,11 @@
           (message "SHA: %s (copied to kill ring)" sha))
       (message "Could not get SHA"))))
 
+(defun magit-git-toolbelt-local-commits ()
+  "Returns a list of commits that are still in local, but not yet pushed."
+  (interactive)
+  (let ((output (shell-command-to-string "git local-commits")))
+    (magit-git-toolbelt--display-output "Local Commits" output)))
 
 ;;; Diff & Inspection Commands
 
