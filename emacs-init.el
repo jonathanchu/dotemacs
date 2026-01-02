@@ -55,9 +55,9 @@
 (require 'bind-key)
 
 ;; for now
-;; (setq package-check-signature nil)
-;; (setq package-check-signature 'allow-unsigned)
-;; (setq package-unsigned-archives '("gnu" "nongnu"))
+(setq package-check-signature nil)
+(setq package-check-signature 'allow-unsigned)
+(setq package-unsigned-archives '("gnu" "nongnu"))
 
 ;; set encoding
 (prefer-coding-system 'utf-8)

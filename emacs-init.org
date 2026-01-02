@@ -87,9 +87,9 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 (require 'bind-key)
 
 ;; for now
-;; (setq package-check-signature nil)
-;; (setq package-check-signature 'allow-unsigned)
-;; (setq package-unsigned-archives '("gnu" "nongnu"))
+(setq package-check-signature nil)
+(setq package-check-signature 'allow-unsigned)
+(setq package-unsigned-archives '("gnu" "nongnu"))
 #+end_src
 
 
