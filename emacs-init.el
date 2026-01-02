@@ -635,6 +635,9 @@ The CHAR is replaced and the point is put before CHAR."
 ;; kill the current buffer
 (global-set-key (kbd "C-x C-k") #'kill-current-buffer)
 
+;; list packages
+(global-set-key (kbd "C-x p") #'list-packages)
+
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
 
