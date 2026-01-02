@@ -102,12 +102,6 @@
   (unless (server-running-p)
     (server-start)))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package ido
   :config
   (progn
@@ -212,7 +206,6 @@
 (delete-selection-mode t)
 
 ;; prevent active process query on quit
-(require 'cl-lib)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent active process query on quit."
   (cl-flet ((process-list ())) ad-do-it))
@@ -284,7 +277,6 @@
   (progn
     (avy-setup-default)
     (setq avy-background t)
-    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
     (setq avy-styles-alist '((avy-got-char-2 . post)))
     (setq avy-all-windows nil)))
 
@@ -824,7 +816,6 @@ The CHAR is replaced and the point is put before CHAR."
 
 
 (use-package magit-git-toolbelt
-  ;; :disabled
   :load-path "lisp/")
 
 (defvar +vc-gutter-default-style t
@@ -841,7 +832,8 @@ flycheck indicators moved to the right fringe.")
     (if (fboundp 'fringe-mode) (fringe-mode '4))
 
     ;; places the git gutter outside the margins.
-    (setq-default fringes-outside-margins t)
+    (setq-default fringes-outside-margins t
+              highlight-nonselected-windows nil)
     ;; thin fringe bitmaps
     (define-fringe-bitmap 'git-gutter-fr:added [224]
       nil nil '(center repeated))
@@ -849,9 +841,6 @@ flycheck indicators moved to the right fringe.")
       nil nil '(center repeated))
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)))
-
-(setq-default fringes-outside-margins t
-              highlight-nonselected-windows nil)
 
 (use-package git-gutter
   :ensure t
