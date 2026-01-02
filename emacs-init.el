@@ -288,8 +288,6 @@
     (setq avy-styles-alist '((avy-got-char-2 . post)))
     (setq avy-all-windows nil)))
 
-;; TODO add back in highlight-tail?
-
 (use-package beginend
   :ensure t
   :config
@@ -394,11 +392,56 @@
     (setq whitespace-action '(auto-cleanup))
     (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))))
 
-(use-package vi-tilde-fringe
+(use-package ibuffer
+  :bind
+  ("C-x C-b" . ibuffer))
+
+(use-package ibuffer-vc
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic)))))
+
+(use-package find-file-in-project
   :disabled
   :ensure t
+  :bind ("s-t" . find-file-in-project))
+
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :diminish
   :config
-  (add-hook 'prog-mode-hook #'vi-tilde-fringe-mode))
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-height-alist '((t . 20))
+        ivy-posframe-parameters '((internal-border-width . 10)
+                                  (internal-border-color . "black")
+                                  ))
+  (setq ivy-posframe-width 70)
+  (setq posframe-mouse-banish t)
+  (setq ivy-posframe-border-width 1)
+  (ivy-posframe-mode +1))
+
+(use-package deadgrep
+  :ensure t
+  :bind
+  ("s-F" . deadgrep))
+
+;; narrow dired to match filter
+(use-package dired-narrow
+  :ensure t
+  :bind
+  (:map dired-mode-map
+        ("/" . dired-narrow)))
+
+(use-package nav-flash
+  :ensure t
+  :config
+  (nav-flash-show))
 
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
@@ -598,6 +641,10 @@ The CHAR is replaced and the point is put before CHAR."
 ;;----------------------------------------------------------------------------
 ;; Key bindings
 ;;----------------------------------------------------------------------------
+
+;; Mac-specific
+(setq-default mac-option-modifier 'meta)
+(setq-default mac-command-modifier 'super)
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
@@ -887,8 +934,8 @@ flycheck indicators moved to the right fringe.")
   :config
   (yas-global-mode 1))
 
-  (use-package yasnippet-snippets
-    :ensure t)
+(use-package yasnippet-snippets
+  :ensure t)
 
 (use-package company
   :ensure t
@@ -1023,7 +1070,6 @@ flycheck indicators moved to the right fringe.")
             (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
 
 (use-package elpy
-  :disabled
   :ensure t
   :config
   (elpy-enable)
@@ -1133,6 +1179,13 @@ flycheck indicators moved to the right fringe.")
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
+
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+
+(use-package vterm
+  :ensure t)
 
 (use-package esup
   :ensure t)
