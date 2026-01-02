@@ -741,15 +741,7 @@ The CHAR is replaced and the point is put before CHAR."
 ;; show column number in the mode line
 (column-number-mode 1)
 
-;; highlight current line
-;; (global-hl-line-mode +1)
-
-;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono for Powerline-13"))
-;; (add-to-list 'default-frame-alist '(font . "Fira Mono for Powerline-13"))
-;; (add-to-list 'default-frame-alist '(font . "Fira Code-13"))
-;; (add-to-list 'default-frame-alist '(font . "Fira Mono-13"))
-;; (add-to-list 'default-frame-alist '(font . "Operator Mono-14"))
-(add-to-list 'default-frame-alist '(font . "IBM Plex Mono-14"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
 
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
