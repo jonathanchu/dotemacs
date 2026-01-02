@@ -4,7 +4,7 @@
 
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/magit-git-toolbelt
-;; Version: 0.2.0
+;; Version: 0.1.0
 ;; Package-Requires: ((emacs "26.1") (magit "3.0.0") (transient "0.3.0"))
 ;; Keywords: git tools vc
 
@@ -72,7 +72,7 @@
    ])
 
 (transient-define-prefix magit-git-toolbelt-branches ()
-  "Branches"
+  "Branches."
   ["Branches"
    ("l" "Local branches" magit-git-toolbelt-local-branches)
    ("b" "Current branch" magit-git-toolbelt-current-branch)
@@ -82,7 +82,7 @@
    ])
 
 (transient-define-prefix magit-git-toolbelt-diff-inspection ()
-  "Diff & Inspection"
+  "Diff & Inspection."
   ["Diff & Inspection"
    ("m" "Modified files" magit-git-toolbelt-modified)
    ("u" "Untracked files" magit-git-toolbelt-untracked)
@@ -104,8 +104,7 @@
    ]
   ["Actions"
    ("z" "Undo last commit" magit-git-toolbelt-undo-commit)
-   ]
-  )
+   ])
 
 ;;; Branch Commands
 
@@ -255,11 +254,9 @@
 
 ;;; Integration with Magit
 
-;;;###autoload
-(with-eval-after-load 'magit
-  (transient-append-suffix 'magit-dispatch "!"
-    '("@" "Git Toolbelt" magit-git-toolbelt))
-  (define-key magit-mode-map "@" #'magit-git-toolbelt))
+(transient-append-suffix 'magit-dispatch "!"
+  '("@" "Git Toolbelt" magit-git-toolbelt))
+(define-key magit-mode-map "@" #'magit-git-toolbelt)
 
 (provide 'magit-git-toolbelt)
 
