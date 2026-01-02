@@ -379,15 +379,6 @@
   :config
   (popwin-mode t))
 
-  (use-package undo-tree
-    :ensure t
-    :config
-    (progn
-      (global-undo-tree-mode t)
-      (setq undo-tree-visualizer-diff t)
-      (setq undo-tree-visualizer-timestamps t))
-      (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
-
 (use-package uniquify
   :config
   (progn
@@ -706,11 +697,6 @@ The CHAR is replaced and the point is put before CHAR."
   :ensure t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
-(use-package rainbow-mode
-  :ensure t
-  :config
-  (add-hook 'css-mode-hook #'rainbow-mode))
 
 (use-package volatile-highlights
   :ensure t
