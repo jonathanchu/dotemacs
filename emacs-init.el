@@ -56,9 +56,10 @@
 
 (require 'bind-key)
 
-(use-package diminish
-  :ensure t)
-
+;; for now
+;; (setq package-check-signature nil)
+;; (setq package-check-signature 'allow-unsigned)
+;; (setq package-unsigned-archives '("gnu" "nongnu"))
 
 ;; set encoding
 (prefer-coding-system 'utf-8)
@@ -152,6 +153,10 @@
 
 ;; Automatically kill running processes on exit
 (setq confirm-kill-processes nil)
+
+;; require diminish mode for some packages
+ (use-package diminish
+    :ensure t)
 
 ;; Warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)

@@ -87,14 +87,11 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (require 'use-package))
 
 (require 'bind-key)
-#+end_src
 
-** Paradox for package install UI
-
-#+begin_src emacs-lisp
-(use-package diminish
-  :ensure t)
-
+;; for now
+;; (setq package-check-signature nil)
+;; (setq package-check-signature 'allow-unsigned)
+;; (setq package-unsigned-archives '("gnu" "nongnu"))
 #+end_src
 
 
@@ -193,6 +190,10 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 
 ;; Automatically kill running processes on exit
 (setq confirm-kill-processes nil)
+
+;; require diminish mode for some packages
+ (use-package diminish
+    :ensure t)
 #+end_src
 
 
