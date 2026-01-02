@@ -95,12 +95,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 (use-package diminish
   :ensure t)
 
-(use-package paradox
-  :ensure t
-  :config
-  (setq paradox-execute-asynchronously t)
-  :bind
-  ("C-x p" . paradox-list-packages))
 #+end_src
 
 

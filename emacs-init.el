@@ -59,12 +59,6 @@
 (use-package diminish
   :ensure t)
 
-(use-package paradox
-  :ensure t
-  :config
-  (setq paradox-execute-asynchronously t)
-  :bind
-  ("C-x p" . paradox-list-packages))
 
 ;; set encoding
 (prefer-coding-system 'utf-8)
