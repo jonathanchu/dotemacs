@@ -440,11 +440,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package find-file-in-project
-  :disabled
-  :ensure t
-  :bind ("s-t" . find-file-in-project))
-
 (use-package ivy-posframe
   :ensure t
   :after ivy

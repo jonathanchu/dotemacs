@@ -398,11 +398,6 @@
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package find-file-in-project
-  :disabled
-  :ensure t
-  :bind ("s-t" . find-file-in-project))
-
 (use-package ivy-posframe
   :ensure t
   :after ivy
@@ -434,9 +429,6 @@
   :ensure t
   :config
   (nav-flash-show))
-
-(defun yas/org-very-safe-expand ()
-  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
 ;; make zap-to-char act like zap-up-to-char
 (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
