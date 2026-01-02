@@ -100,21 +100,6 @@
   (unless (server-running-p)
     (server-start)))
 
-(use-package ido
-  :config
-  (progn
-    (ido-mode t)
-    ;; (flx-ido-mode t)
-    (setq ido-enable-flex-matching t)
-    (setq ido-use-faces nil)))
-
-(use-package ido-vertical-mode
-  :ensure t
-  :config
-  (progn
-    (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys #'C-n-and-C-p-only)))
-
 (use-package smex
   :ensure t
   :init
