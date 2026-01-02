@@ -28,20 +28,18 @@
  '(package-selected-packages
    '(ace-window aggressive-indent anzu beginend clj-refactor
                 command-log-mode counsel-projectile crux deadgrep deft
-                diminish dired-narrow doom-themes dumb-jump easy-kill
-                edit-indirect elm-mode elpy esup exec-path-from-shell
+                diminish dired-narrow dumb-jump easy-kill
+                edit-indirect elpy esup exec-path-from-shell
                 expand-region fish-mode fix-word flycheck-pos-tip
                 forge fullframe git-gutter-fringe git-messenger
-                git-timemachine github-browse-file gnus-alias go-mode
-                goto-chg helm-projectile ibuffer-vc ido-vertical-mode
+                git-timemachine github-browse-file go-mode goto-chg
+                helm-projectile ibuffer-vc ido-vertical-mode
                 ivy-posframe jinja2-mode json-mode key-chord
-                leuven-theme lsp-python-ms lsp-ui move-text
-                nano-modeline nano-theme nav-flash neotree notmuch
-                olivetti origami ox-hugo package-lint paradox popwin
-                python-mode rainbow-delimiters rainbow-mode restclient
-                scratch smart-comment smartparens smex toml-mode
-                undo-tree uuidgen volatile-highlights vterm web-mode
-                yaml-mode yasnippet-snippets))
+                lsp-python-ms lsp-ui move-text nav-flash neotree
+                olivetti origami ox-hugo popwin python-mode
+                rainbow-delimiters restclient scratch smart-comment
+                smartparens smex toml-mode uuidgen volatile-highlights
+                vterm web-mode yaml-mode yasnippet-snippets))
  '(paradox-github-token t)
  '(smtpmail-smtp-server "smtp.fastmail.com")
  '(smtpmail-smtp-service 587)
