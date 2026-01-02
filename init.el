@@ -44,9 +44,6 @@
 ;; Packages
 ;;----------------------------------------------------------------------------
 
-(use-package command-log-mode
-  :ensure t)
-
 (use-package deft
   :ensure t
   :config
