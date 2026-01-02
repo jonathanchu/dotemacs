@@ -248,7 +248,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 (delete-selection-mode t)
 
 ;; prevent active process query on quit
-(require 'cl-lib)
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent active process query on quit."
   (cl-flet ((process-list ())) ad-do-it))
