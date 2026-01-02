@@ -885,12 +885,7 @@ flycheck indicators moved to the right fringe.")
 (use-package yasnippet
   :ensure t
   :config
-  (progn
-    (yas-global-mode 1)
-    ;; (setq yas-snippet-dirs (append yas-snippet-dirs
-                                   ;; '("~/.emacs.d/snippets")))
-))
-
+  (yas-global-mode 1))
 
   (use-package yasnippet-snippets
     :ensure t)
