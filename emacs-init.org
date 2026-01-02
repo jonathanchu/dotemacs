@@ -319,7 +319,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (progn
     (avy-setup-default)
     (setq avy-background t)
-    (setq avy-styles-alist '((avy-goto-word-or-subword-1 . de-brujin)))
     (setq avy-styles-alist '((avy-got-char-2 . post)))
     (setq avy-all-windows nil)))
 
