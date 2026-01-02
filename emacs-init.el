@@ -244,10 +244,6 @@
 ;; css
 (defvar css-indent-offset 2)
 
-;; cua mode
-;; (cua-mode t)
-;; (setq cua-enable-cua-keys nil)
-
 ;; variable pitch mode
 (add-hook 'text-mode-hook
           (lambda ()
