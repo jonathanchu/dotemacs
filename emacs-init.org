@@ -139,12 +139,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (unless (server-running-p)
     (server-start)))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package ido
   :config
   (progn
