@@ -377,21 +377,6 @@
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package ivy-posframe
-  :ensure t
-  :after ivy
-  :diminish
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
-        ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 10)
-                                  (internal-border-color . "black")
-                                  ))
-  (setq ivy-posframe-width 70)
-  (setq posframe-mouse-banish t)
-  (setq ivy-posframe-border-width 1)
-  (ivy-posframe-mode +1))
-
 (use-package deadgrep
   :ensure t
   :bind
@@ -922,6 +907,21 @@ flycheck indicators moved to the right fringe.")
     )
   :bind
   ("C-c C-r" . ivy-resume))
+
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :diminish
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-height-alist '((t . 20))
+        ivy-posframe-parameters '((internal-border-width . 10)
+                                  (internal-border-color . "black")
+                                  ))
+  (setq ivy-posframe-width 70)
+  (setq posframe-mouse-banish t)
+  (setq ivy-posframe-border-width 1)
+  (ivy-posframe-mode +1))  
 
 (use-package swiper
   :ensure t
