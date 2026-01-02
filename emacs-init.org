@@ -60,8 +60,6 @@ When you install a package or use various customization interfaces to tweak thin
 Set defaults for the package sources and bootstrap usage of `use-package`so it can be leveraged during third-party package installs.
 
 #+begin_src emacs-lisp
-(defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
 (require 'package)
 (setq load-prefer-newer t
       package-enable-at-startup nil

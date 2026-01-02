@@ -28,8 +28,6 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(defvar gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
 (require 'package)
 (setq load-prefer-newer t
       package-enable-at-startup nil
