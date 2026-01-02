@@ -904,7 +904,8 @@ flycheck indicators moved to the right fringe.")
     (if (fboundp 'fringe-mode) (fringe-mode '4))
 
     ;; places the git gutter outside the margins.
-    (setq-default fringes-outside-margins t)
+    (setq-default fringes-outside-margins t
+              highlight-nonselected-windows nil)
     ;; thin fringe bitmaps
     (define-fringe-bitmap 'git-gutter-fr:added [224]
       nil nil '(center repeated))
@@ -912,9 +913,6 @@ flycheck indicators moved to the right fringe.")
       nil nil '(center repeated))
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)))
-
-(setq-default fringes-outside-margins t
-              highlight-nonselected-windows nil)
 
 (use-package git-gutter
   :ensure t
