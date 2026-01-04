@@ -925,7 +925,7 @@ flycheck indicators moved to the right fringe.")
   (setq ivy-posframe-width 70)
   (setq posframe-mouse-banish t)
   (setq ivy-posframe-border-width 1)
-  (ivy-posframe-mode +1))  
+  (ivy-posframe-mode +1))
 
 (use-package swiper
   :ensure t
