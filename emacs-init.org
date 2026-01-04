@@ -275,7 +275,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 (use-package aggressive-indent
   :ensure t
   :init
-  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
 
 (use-package anzu
