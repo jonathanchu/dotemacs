@@ -37,8 +37,6 @@ When you install a package or use various customization interfaces to tweak thin
 ** Initialization
 
 #+begin_src emacs-lisp
-(defconst emacs-start-time (current-time))
-
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 

@@ -13,8 +13,6 @@
 
   (load custom-file))
 
-(defconst emacs-start-time (current-time))
-
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 

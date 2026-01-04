@@ -35,6 +35,8 @@
 ;; Bootstrapping
 ;;----------------------------------------------------------------------------
 
+(defconst emacs-start-time (current-time))
+
 ;; load literate config first
 (org-babel-load-file (expand-file-name "~/.emacs.d/emacs-init.org"))
 
