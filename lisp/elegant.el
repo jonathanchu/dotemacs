@@ -603,11 +603,6 @@ function is a convenience wrapper used by `describe-package-1'."
 
 ;;; Buttons
 
-(message "ELEGANT ENDS")
-
-
-(message "ELEGANCE BEGINS")
-
 ;; -------------------------------------------------------------------
 ;; A very minimal but elegant and consistent theme
 ;; Copyright 2020 Nicolas P. Rougier
