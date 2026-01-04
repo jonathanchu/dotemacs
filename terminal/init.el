@@ -83,6 +83,13 @@
   :bind
   ("C-x C-b" . ibuffer))
 
+(use-package catppuccin-theme
+  :ensure t
+  :config
+  ;; 'latte, 'macchiato, or 'mocha
+  (setq catppuccin-flavor 'latte)
+  (load-theme 'catppuccin t))
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
