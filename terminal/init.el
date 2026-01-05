@@ -102,6 +102,9 @@
 ;; no cowbell
 (setq ring-bell-function 'ignore)
 
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
 ;; Magit
 (use-package magit
   :ensure t
