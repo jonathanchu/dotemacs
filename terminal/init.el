@@ -117,6 +117,14 @@
   ("C-c C-a" . magit-commit-amend)
   ("C-c g" . magit-file-dispatch))
 
+;; Full frame buffers
+(use-package fullframe
+  :ensure t
+  :config
+  (progn
+    (fullframe magit-status magit-mode-quit-window)
+    (fullframe ibuffer ibuffer-quit)))
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
