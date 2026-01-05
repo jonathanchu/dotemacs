@@ -66,7 +66,7 @@
 ;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
               use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-always-ensure t) 
+              use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
 
@@ -110,7 +110,7 @@
   :ensure t
   :config
   (progn
-    (setq magit-completing-read-function #'ivy-completing-read)
+    (setq magit-completing-read-function #'completing-read-default)
     (setq magit-diff-refine-hunk t)
     (setq magit-status-margin
           '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
@@ -128,64 +128,57 @@
     (fullframe magit-status magit-mode-quit-window)
     (fullframe ibuffer ibuffer-quit)))
 
-(use-package counsel
-  :ensure t
-  :bind (
-         ;; ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
-         ;; ("C-c g" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x C-r" . counsel-recentf)))
-
-(use-package counsel-projectile
-  ;; :disabled
+;; Vertico - Vertical completion UI
+(use-package vertico
   :ensure t
   :init
-  ;; (bind-key "s-F" #'counsel-projectile-ag)
-  (bind-key "s-t" #'counsel-projectile-find-file)
-  ;; (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
+  (vertico-mode)
   :config
-  (counsel-projectile-mode 1))
+  (setq vertico-cycle t)  ; Cycle from bottom to top
+  (setq vertico-count 20)) ; Number of candidates to display
 
-(use-package ivy
+;; Orderless - Flexible matching (replaces Ivy's fuzzy matching)
+(use-package orderless
   :ensure t
-  :config
-  (ivy-mode 1)
-  (progn
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d)")
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-format-function #'ivy-format-function-arrow)
-    (setq ivy-re-builders-alist
-          '((swiper . ivy--regex-plus)
-            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
-    )
-  :bind
-  ("C-c C-r" . ivy-resume))
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package ivy-posframe
+;; Marginalia - Rich annotations in minibuffer
+(use-package marginalia
   :ensure t
-  :after ivy
-  :diminish
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
-        ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 10)
-                                  (internal-border-color . "black")
-                                  ))
-  (setq ivy-posframe-width 70)
-  (setq posframe-mouse-banish t)
-  (setq ivy-posframe-border-width 1)
-  (ivy-posframe-mode +1))
+  :init
+  (marginalia-mode))
 
-(use-package swiper
+;; Consult - Enhanced commands (replaces Counsel)
+(use-package consult
   :ensure t
-  :bind
-  ("C-s" . counsel-grep-or-swiper)
-  ("C-r" . swiper)
+  :bind (("C-x C-f" . find-file)  ; Keep default or use consult-find
+         ("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
+         ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
+         ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
+         ("C-r" . consult-line)  ; Replaces swiper
+         ("C-c C-r" . consult-history))
   :config
-  (advice-add 'swiper :after 'recenter))
+  (setq consult-narrow-key "<"))
+
+;; Embark - Context actions on completion candidates
+(use-package embark
+  :ensure t
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)))
+
+;; Embark-Consult integration
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
+
+;; Consult-Projectile (optional, for projectile integration)
+(use-package consult-projectile
+  :ensure t
+  :after (consult projectile)
+  :bind (("s-t" . consult-projectile-find-file)))
 
 
 ;;----------------------------------------------------------------------------
