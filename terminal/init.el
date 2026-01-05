@@ -125,6 +125,66 @@
     (fullframe magit-status magit-mode-quit-window)
     (fullframe ibuffer ibuffer-quit)))
 
+(use-package counsel
+  :ensure t
+  :bind (
+         ;; ("M-x" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ;; ("C-c g" . counsel-git-grep)
+         ("C-c k" . counsel-ag)
+         ("C-x C-r" . counsel-recentf)))
+
+(use-package counsel-projectile
+  ;; :disabled
+  :ensure t
+  :init
+  ;; (bind-key "s-F" #'counsel-projectile-ag)
+  (bind-key "s-t" #'counsel-projectile-find-file)
+  ;; (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
+  :config
+  (counsel-projectile-mode 1))
+
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1)
+  (progn
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d)")
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-format-function #'ivy-format-function-arrow)
+    (setq ivy-re-builders-alist
+          '((swiper . ivy--regex-plus)
+            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
+    )
+  :bind
+  ("C-c C-r" . ivy-resume))
+
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :diminish
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-height-alist '((t . 20))
+        ivy-posframe-parameters '((internal-border-width . 10)
+                                  (internal-border-color . "black")
+                                  ))
+  (setq ivy-posframe-width 70)
+  (setq posframe-mouse-banish t)
+  (setq ivy-posframe-border-width 1)
+  (ivy-posframe-mode +1))
+
+(use-package swiper
+  :ensure t
+  :bind
+  ("C-s" . counsel-grep-or-swiper)
+  ("C-r" . swiper)
+  :config
+  (advice-add 'swiper :after 'recenter))
+
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
@@ -143,3 +203,15 @@
                           ,load-file-name elapsed))) t))
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
