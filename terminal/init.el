@@ -66,7 +66,7 @@
 ;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
               use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
+              use-package-always-ensure t) 
 (eval-when-compile
   (require 'use-package))
 
