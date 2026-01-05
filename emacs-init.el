@@ -46,7 +46,7 @@
 ;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
               use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-enable-imenu-support t) ; Let imenu finds use-package definitions
+              use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
 
@@ -186,6 +186,9 @@
 ;; delete selection, insert text
 (delete-selection-mode t)
 
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
 ;; prevent active process query on quit
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent active process query on quit."
@@ -234,27 +237,6 @@
   :ensure t
   :init
   (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
-
-(use-package anzu
-  :ensure t
-  :config
-  (progn
-    (global-anzu-mode t)
-    (set-face-attribute 'anzu-mode-line nil :foreground "yellow" :weight 'bold))
-  :bind
-  ("M-%" . anzu-query-replace)
-  ("C-M-%" . anzu-query-replace-regexp))
-
-(use-package avy
-  :ensure t
-  :init
-  (setq avy-keys '(?a ?s ?d ?e ?f ?h ?j ?k ?l ?n ?m ?v ?r ?u))
-  :config
-  (progn
-    (avy-setup-default)
-    (setq avy-background t)
-    (setq avy-styles-alist '((avy-got-char-2 . post)))
-    (setq avy-all-windows nil)))
 
 (use-package beginend
   :ensure t
@@ -689,13 +671,6 @@ The CHAR is replaced and the point is put before CHAR."
   :config
   (volatile-highlights-mode t))
 
-(use-package ace-window
-  :ensure t
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l))
-  :bind
-  ("C-x C-o" . ace-window))
-
 (use-package flycheck-pos-tip
   :ensure t
   :config
@@ -739,7 +714,7 @@ The CHAR is replaced and the point is put before CHAR."
   :ensure t
   :config
   (progn
-    (setq magit-completing-read-function #'ivy-completing-read)
+    (setq magit-completing-read-function #'completing-read-default)
     (setq magit-diff-refine-hunk t)
     (setq magit-status-margin
           '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
@@ -875,66 +850,53 @@ flycheck indicators moved to the right fringe.")
   :config
   (add-hook 'prog-mode-hook #'company-mode))
 
-(use-package counsel
-  ;; :disabled
-  :ensure t
-  :bind (
-         ;; ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
-         ;; ("C-c g" . counsel-git-grep)
-         ("C-c k" . counsel-ag)
-         ("C-x C-r" . counsel-recentf)))
-
-(use-package counsel-projectile
-  ;; :disabled
-  :ensure t
+;; Vertico - Vertical completion UI
+(use-package vertico
   :init
-  ;; (bind-key "s-F" #'counsel-projectile-ag)
-  (bind-key "s-t" #'counsel-projectile-find-file)
-  ;; (bind-key "C-x b" #'counsel-projectile-switch-to-buffer)
+  (vertico-mode)
   :config
-  (counsel-projectile-mode 1))
+  (setq vertico-cycle t)  ; Cycle from bottom to top
+  (setq vertico-count 20)) ; Number of candidates to display
 
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode 1)
-  (progn
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d)")
-    (setq enable-recursive-minibuffers t)
-    (setq ivy-initial-inputs-alist nil)
-    (setq ivy-format-function #'ivy-format-function-arrow)
-    (setq ivy-re-builders-alist
-          '((swiper . ivy--regex-plus)
-            (t      . ivy--regex-fuzzy)))  ;; enable fuzzy search everywhere except for Swiper
-    )
-  :bind
-  ("C-c C-r" . ivy-resume))
+;; Orderless - Flexible matching (replaces Ivy's fuzzy matching)
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package ivy-posframe
-  :ensure t
-  :after ivy
-  :diminish
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
-        ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-parameters '((internal-border-width . 10)
-                                  (internal-border-color . "black")
-                                  ))
-  (setq ivy-posframe-width 70)
-  (setq posframe-mouse-banish t)
-  (setq ivy-posframe-border-width 1)
-  (ivy-posframe-mode +1))
+;; Marginalia - Rich annotations in minibuffer
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
-(use-package swiper
-  :ensure t
-  :bind
-  ("C-s" . counsel-grep-or-swiper)
-  ("C-r" . swiper)
+;; Consult - Enhanced commands (replaces Counsel)
+(use-package consult
+  :bind (("C-x C-f" . find-file)  ; Keep default or use consult-find
+         ("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
+         ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
+         ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
+         ("C-r" . consult-line)  ; Replaces swiper
+         ("C-c C-r" . consult-history)
+         ("C-x b" . consult-buffer))
   :config
-  ;; (advice-add 'swiper :after 'recenter)
-  )
+  (setq consult-narrow-key "<"))
+
+;; Embark - Context actions on completion candidates
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)))
+
+;; Embark-Consult integration
+(use-package embark-consult
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+;; Consult-Projectile (optional, for projectile integration)
+(use-package consult-projectile
+  :after (consult projectile)
+  :bind (("s-t" . consult-projectile-find-file)))
 
 (use-package dumb-jump
   :ensure t
