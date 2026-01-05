@@ -162,7 +162,8 @@
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
          ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
          ("C-r" . consult-line)  ; Replaces swiper
-         ("C-c C-r" . consult-history))
+         ("C-c C-r" . consult-history)
+         ("C-x b" . consult-buffer))
   :config
   (setq consult-narrow-key "<"))
 
