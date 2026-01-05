@@ -167,7 +167,9 @@
 
 ;; Embark-Consult integration
 (use-package embark-consult
-  :after (embark consult))
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
