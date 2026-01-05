@@ -105,6 +105,9 @@
 ;; consider all themes as safe
 (setq custom-safe-themes t)
 
+(recentf-mode 1)
+(setq recentf-max-saved-items 100)  ; Optional: increase history size
+
 ;; Magit
 (use-package magit
   :ensure t
