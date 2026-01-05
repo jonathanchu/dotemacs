@@ -84,7 +84,6 @@
   ("C-x C-b" . ibuffer))
 
 (use-package catppuccin-theme
-  :ensure t
   :config
   ;; 'latte, 'macchiato, or 'mocha
   (setq catppuccin-flavor 'latte)
@@ -110,7 +109,6 @@
 
 ;; Magit
 (use-package magit
-  :ensure t
   :config
   (progn
     (setq magit-completing-read-function #'completing-read-default)
@@ -125,7 +123,6 @@
 
 ;; Full frame buffers
 (use-package fullframe
-  :ensure t
   :config
   (progn
     (fullframe magit-status magit-mode-quit-window)
@@ -133,7 +130,6 @@
 
 ;; Vertico - Vertical completion UI
 (use-package vertico
-  :ensure t
   :init
   (vertico-mode)
   :config
@@ -142,7 +138,6 @@
 
 ;; Orderless - Flexible matching (replaces Ivy's fuzzy matching)
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -150,13 +145,11 @@
 
 ;; Marginalia - Rich annotations in minibuffer
 (use-package marginalia
-  :ensure t
   :init
   (marginalia-mode))
 
 ;; Consult - Enhanced commands (replaces Counsel)
 (use-package consult
-  :ensure t
   :bind (("C-x C-f" . find-file)  ; Keep default or use consult-find
          ("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
@@ -169,18 +162,15 @@
 
 ;; Embark - Context actions on completion candidates
 (use-package embark
-  :ensure t
   :bind (("C-." . embark-act)
          ("C-;" . embark-dwim)))
 
 ;; Embark-Consult integration
 (use-package embark-consult
-  :ensure t
   :after (embark consult))
 
 ;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
-  :ensure t
   :after (consult projectile)
   :bind (("s-t" . consult-projectile-find-file)))
 
