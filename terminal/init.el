@@ -90,6 +90,18 @@
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
 
+;; show extra whitespace
+(setq show-trailing-whitespace t)
+
+;; delete trailing whitespace in all modes
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
+;; ensure last line is a return
+(setq require-final-newline t)
+
+;; no cowbell
+(setq ring-bell-function 'ignore)
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
