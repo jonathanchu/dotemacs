@@ -102,6 +102,21 @@
 ;; no cowbell
 (setq ring-bell-function 'ignore)
 
+;; Magit
+(use-package magit
+  :ensure t
+  :config
+  (progn
+    (setq magit-completing-read-function #'ivy-completing-read)
+    (setq magit-diff-refine-hunk t)
+    (setq magit-status-margin
+          '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+    (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18)))
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c C-a" . magit-commit-amend)
+  ("C-c g" . magit-file-dispatch))
+
 ;;----------------------------------------------------------------------------
 ;; Finalization
 ;;----------------------------------------------------------------------------
