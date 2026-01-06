@@ -257,8 +257,7 @@
   :config
   (progn
     (fullframe magit-status magit-mode-quit-window)
-    (fullframe ibuffer ibuffer-quit)
-    (fullframe paradox-list-packages paradox-quit-and-close)))
+    (fullframe ibuffer ibuffer-quit)))
 
 (use-package goto-chg
   :ensure t
