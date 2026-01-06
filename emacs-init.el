@@ -98,11 +98,6 @@
   (unless (server-running-p)
     (server-start)))
 
-(use-package smex
-  :ensure t
-  :init
-  (smex-initialize))
-
 (use-package recentf
   :config
   (setq recentf-max-saved-items 250
