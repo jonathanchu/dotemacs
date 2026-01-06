@@ -768,11 +768,6 @@ flycheck indicators moved to the right fringe.")
 (use-package yasnippet-snippets
   :ensure t)
 
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'company-mode))
-
 ;; Vertico - Vertical completion UI
 (use-package vertico
   :init

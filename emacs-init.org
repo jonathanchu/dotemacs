@@ -845,16 +845,6 @@ flycheck indicators moved to the right fringe.")
 
 * Completion & Search
 
-** Company config
-
-#+begin_src emacs-lisp
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'company-mode))
-#+end_src
-
-
 ** Vertico, Orderless, Marginalia, Consult, and Embark config
 
 #+begin_src emacs-lisp
