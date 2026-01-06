@@ -326,14 +326,6 @@
   :config
   (popwin-mode t))
 
-(use-package uniquify
-  :config
-  (progn
-    (setq uniquify-buffer-name-style 'reverse)
-    (setq uniquify-separator " • ")
-    (setq uniquify-after-kill-buffer-p t)
-    (setq uniquify-ignore-buffers-re "^\\*")))
-
 (use-package whitespace
   :config
   (progn
