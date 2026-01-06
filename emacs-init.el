@@ -161,6 +161,7 @@
 ;; make sure looking at most recent changes
 (global-auto-revert-mode t)
 
+;; allow windows to resize evenly when closed
 (setq window-combination-resize t)
 
 ;;keep cursor at same position when scrolling
@@ -844,17 +845,6 @@ flycheck indicators moved to the right fringe.")
   :ensure t
   :bind
   ("s-/" . smart-comment))
-
-(use-package smartparens
-  :ensure t
-  :init
-  (smartparens-global-mode t)
-  :config
-  (progn
-    (sp-local-pair 'web-mode "{%" "%}")
-    (use-package smartparens-config)
-    (setq sp-autoskip-closing-pair 'always)
-    (setq sp-hybrid-kill-entire-symbol nil)))
 
 (use-package paredit
   :ensure t

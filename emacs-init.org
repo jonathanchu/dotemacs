@@ -202,6 +202,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 ;; make sure looking at most recent changes
 (global-auto-revert-mode t)
 
+;; allow windows to resize evenly when closed
 (setq window-combination-resize t)
 
 ;;keep cursor at same position when scrolling
@@ -936,17 +937,6 @@ This is specific to helpful utilities for coding and also includes some miscella
   :ensure t
   :bind
   ("s-/" . smart-comment))
-
-(use-package smartparens
-  :ensure t
-  :init
-  (smartparens-global-mode t)
-  :config
-  (progn
-    (sp-local-pair 'web-mode "{%" "%}")
-    (use-package smartparens-config)
-    (setq sp-autoskip-closing-pair 'always)
-    (setq sp-hybrid-kill-entire-symbol nil)))
 
 (use-package paredit
   :ensure t
