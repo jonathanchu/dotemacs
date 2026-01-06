@@ -816,25 +816,10 @@ flycheck indicators moved to the right fringe.")
   :after (consult projectile)
   :bind (("s-t" . consult-projectile-find-file)))
 
-(use-package dumb-jump
-  :ensure t
-  :bind
-  (("M-g o" . dumb-jump-go-other-window)
-   ("M-g j" . dumb-jump-go)
-   ("M-g i" . dumb-jump-go-prompt)
-   ("M-g x" . dumb-jump-go-prefer-external)
-   ("M-g z" . dumb-jump-go-prefer-external-other-window))
-  :config
-  (setq dumb-jump-selector 'ivy)
-  )
-
 (use-package easy-kill
   :ensure t
   :config
   (global-set-key [remap kill-ring-save] 'easy-kill))
-
-(use-package edit-indirect
-  :ensure t)
 
 (use-package smart-comment
   :ensure t
@@ -847,11 +832,9 @@ flycheck indicators moved to the right fringe.")
   (autoload 'enable-paredit-mode "paredit" t)
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook #'enable-paredit-mode)
   (add-hook 'lisp-mode-hook #'enable-paredit-mode)
   (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
   (add-hook 'scheme-mode-hook #'enable-paredit-mode)
-  (add-hook 'clojure-mode-hook #'enable-paredit-mode)
   ;; (add-hook 'org-mode-hook #'enable-paredit-mode)
   (add-hook 'python-mode-hook
             (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
@@ -905,14 +888,6 @@ flycheck indicators moved to the right fringe.")
   :config
   (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
 
-(use-package less-css-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.less\\'" . less-css-mode)))
-
-(use-package restclient
-  :ensure t)
-
 (use-package web-mode
   :ensure t
   :config
@@ -932,36 +907,6 @@ flycheck indicators moved to the right fringe.")
   :ensure t
   :mode "\\.md\\'")
 
-(use-package cider
-  :ensure t
-  :config
-  (progn
-    (setq nrepl-log-messages t)
-    (setq nrepl-hide-special-buffers t)
-    (add-hook 'cider-mode-hook #'eldoc-mode)))
-
-(use-package clj-refactor
-  :ensure t
-  :config
-  (defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
-
-(use-package clojure-mode
-  :ensure t
-  :config
-  (define-clojure-indent
-    (defroutes 'defun)
-    (GET 2)
-    (POST 2)
-    (PUT 2)
-    (DELETE 2)
-    (HEAD 2)
-    (ANY 2)
-    (context 2)))
-
 (use-package json-mode
   :ensure t
   :config
@@ -970,40 +915,3 @@ flycheck indicators moved to the right fringe.")
 (use-package ox-hugo
   :ensure t
   :after ox)
-
-(use-package esup
-  :ensure t)
-
-(use-package fix-word
-  :ensure t
-  :bind
-  ("M-u" . fix-word-upcase)
-  ("M-l" . fix-word-downcase)
-  ("M-c" . fix-word-capitalize))
-
-(use-package uuidgen
-  :ensure t
-  :defer t)
-
-(use-package which-key
-  :ensure t
-  :diminish which-key-mode
-  :config
-  (setq which-key-use-C-h-commands nil)
-  ;; Prevent
-  ;; https://github.com/justbur/emacs-which-key/issues/130
-  (setq inhibit-compacting-font-caches nil)
-  (setq which-key-allow-imprecise-window-fit t)
-  (which-key-mode))
-
-(use-package crux
-  :ensure t
-  :defer t
-  :bind
-  ("C-c s" . crux-find-shell-init-file)
-  ("C-c e" . crux-find-user-init-file))
-
-(use-package scratch
-  :ensure t
-  :config
-  (autoload 'scratch "scratch" nil t))
