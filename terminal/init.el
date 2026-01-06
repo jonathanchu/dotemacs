@@ -46,6 +46,9 @@
 ;; no message on startup
 (setq initial-scratch-message nil)
 
+;; reload the file in buffer when they change on disk
+(global-auto-revert-mode t)
+
 (require 'package)
 (setq load-prefer-newer t
       package-enable-at-startup nil
