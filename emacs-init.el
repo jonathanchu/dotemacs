@@ -995,9 +995,6 @@ flycheck indicators moved to the right fringe.")
   :ensure t
   :after ox)
 
-(use-package vterm
-  :ensure t)
-
 (use-package esup
   :ensure t)
 

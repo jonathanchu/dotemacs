@@ -1136,9 +1136,6 @@ This is specific to helpful utilities for coding and also includes some miscella
 (use-package ox-hugo
   :ensure t
   :after ox)
-
-(use-package vterm
-  :ensure t)
 #+end_src
 
 
