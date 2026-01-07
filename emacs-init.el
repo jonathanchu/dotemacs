@@ -281,21 +281,6 @@
   :bind
   ("C-c m c" . mc/edit-lines))
 
-(use-package neotree
-  :ensure t
-  :config
-  (setq neo-window-fixed-size nil
-        neo-create-file-auto-open t
-        neo-banner-message nil
-        neo-mode-line-type 'none
-        neo-smart-open t
-        neo-show-hidden-files t
-        neo-auto-indent-point t)
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-  :bind
-  ("C-c n" . neotree-toggle)
-  )
-
 (use-package olivetti
   :ensure t)
 
