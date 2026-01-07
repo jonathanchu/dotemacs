@@ -285,10 +285,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   :bind
   ("C-=" . er/expand-region))
 
-(use-package flyspell
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode))
-
 (use-package fullframe
   :ensure t
   :config

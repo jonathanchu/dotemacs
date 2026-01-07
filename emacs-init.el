@@ -244,10 +244,6 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package flyspell
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode))
-
 (use-package fullframe
   :ensure t
   :config
