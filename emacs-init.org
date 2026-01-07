@@ -731,10 +731,6 @@ The CHAR is replaced and the point is put before CHAR."
 ** VCS tooling
 
 #+begin_src emacs-lisp
-(use-package forge
-  :ensure t
-  :after magit)
-
 (use-package git-messenger
   :ensure t
   :defer t

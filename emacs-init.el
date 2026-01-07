@@ -662,10 +662,6 @@ The CHAR is replaced and the point is put before CHAR."
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode 1))
 
-(use-package forge
-  :ensure t
-  :after magit)
-
 (use-package git-messenger
   :ensure t
   :defer t
