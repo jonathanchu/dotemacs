@@ -889,7 +889,8 @@ flycheck indicators moved to the right fringe.")
   :after ox)
 
 (use-package denote
-  :hook (dired-mode . denote-dired-mode)
+  :hook
+  (dired-mode . denote-dired-mode)
   :bind
   (("C-c n n" . denote)
    ("C-c n r" . denote-rename-file)
@@ -904,7 +905,10 @@ flycheck indicators moved to the right fringe.")
   ;; instead of their long file name they have, for example, a literal
   ;; "[D]" followed by the file's title.  Read the doc string of
   ;; `denote-rename-buffer-format' for how to modify this.
-  (denote-rename-buffer-mode 1))
+  (denote-rename-buffer-mode 1)
+
+  ;; Do not read keywords from files.  The only source is the `denote-known-keywords'.
+  (setq denote-infer-keywords nil))
 
 (use-package consult-denote
   :ensure t
