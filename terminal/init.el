@@ -116,6 +116,13 @@
                              user-emacs-directory))
 (load custom-file :no-error-if-file-is-missing)
 
+;; smartparens mode
+(use-package smartparens
+  :hook ((emacs-lisp-mode . smartparens-strict-mode)
+         (org-mode . smartparens-mode))
+  :config
+  (require 'smartparens-config))
+
 ;; Magit
 (use-package magit
   :config
