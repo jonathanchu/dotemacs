@@ -110,6 +110,12 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 100)  ; Optional: increase history size
 
+;; custom settings in a separate file and load the custom settings
+(setq-default custom-file (expand-file-name
+                             "custom.el"
+                             user-emacs-directory))
+(load custom-file :no-error-if-file-is-missing)
+
 ;; Magit
 (use-package magit
   :config
@@ -198,15 +204,3 @@
                           ,load-file-name elapsed))) t))
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
