@@ -3,16 +3,6 @@
   (interactive)
   (load-file "~/.emacs.d/init.el"))
 
-(use-package cus-edit
-  :defer t
-  :config
-  (setq custom-file "~/.emacs.d/custom.el")
-
-  (unless (file-exists-p custom-file)
-    (write-region "" nil custom-file))
-
-  (load custom-file))
-
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 
@@ -340,6 +330,10 @@
   :ensure t
   :config
   (nav-flash-show))
+
+(use-package cus-edit
+  :custom
+  (custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package catppuccin-theme
   :ensure t

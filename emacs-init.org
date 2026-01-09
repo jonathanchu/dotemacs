@@ -18,22 +18,6 @@ After making changes to the Emacs configuration, this provides a convenience fun
   (load-file "~/.emacs.d/init.el"))
 #+end_src
 
-** Put customization settings in a "custom.el" file
-
-When you install a package or use various customization interfaces to tweak things to your liking, Emacs will append a piece of elips to your init file. I prefer to have that stored in a separate file.
-
-#+begin_src emacs-lisp
-(use-package cus-edit
-  :defer t
-  :config
-  (setq custom-file "~/.emacs.d/custom.el")
-
-  (unless (file-exists-p custom-file)
-    (write-region "" nil custom-file))
-
-  (load custom-file))
-#+end_src
-
 ** Initialization
 
 #+begin_src emacs-lisp
@@ -383,6 +367,15 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (nav-flash-show))
 #+end_src
 
+** Put customization settings in a "custom.el" file
+
+When you install a package or use various customization interfaces to tweak things to your liking, Emacs will append a piece of elips to your init file. I prefer to have that stored in a separate file.
+
+#+begin_src emacs-lisp
+  (use-package cus-edit
+    :custom
+    (custom-file (expand-file-name "custom.el" user-emacs-directory)))
+#+end_src
 
 ** Color Theme
 
@@ -394,7 +387,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
 #+end_src
-
 
 ** Functions
 
