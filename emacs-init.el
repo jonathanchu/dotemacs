@@ -903,8 +903,6 @@ flycheck indicators moved to the right fringe.")
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1)
 
-  (setq denote-infer-keywords t)
-  (setq denote-known-keywords '("emacs" "personal" "work" "ibm"))
   (setq denote-sort-keywords t))
 
 (use-package consult-denote
