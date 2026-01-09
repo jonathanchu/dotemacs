@@ -220,8 +220,8 @@
 ;; css
 (defvar css-indent-offset 2)
 
-;; turn off all auto-indenting
-(electric-indent-mode -1)
+;; conservative indention for org src blocks
+(setq org-src-preserve-indentation t)
 
 ;; variable pitch mode
 (add-hook 'text-mode-hook
