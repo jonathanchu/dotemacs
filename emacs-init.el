@@ -806,6 +806,13 @@ flycheck indicators moved to the right fringe.")
   (add-hook 'python-mode-hook
             (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
 
+(use-package smartparens
+  :ensure t
+  :hook ((emacs-lisp-mode . smartparens-strict-mode)
+         (org-mode . smartparens-mode))
+  :config
+  (require 'smartparens-config))
+
 (use-package elpy
   :ensure t
   :config

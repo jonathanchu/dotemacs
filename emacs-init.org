@@ -885,6 +885,13 @@ This is specific to helpful utilities for coding and also includes some miscella
   ;; (add-hook 'org-mode-hook #'enable-paredit-mode)
   (add-hook 'python-mode-hook
             (lambda () (local-set-key (kbd "C-k") #'paredit-kill))))
+
+(use-package smartparens
+  :ensure t
+  :hook ((emacs-lisp-mode . smartparens-strict-mode)
+         (org-mode . smartparens-mode))
+  :config
+  (require 'smartparens-config))
 #+end_src
 
 
