@@ -113,6 +113,7 @@
 ;; Automatically kill running processes on exit
 (setq confirm-kill-processes nil)
 
+
 ;; require diminish mode for some packages
  (use-package diminish
     :ensure t)
@@ -176,8 +177,8 @@
 
 ;; custom settings in a separate file and load the custom settings
 (setq-default custom-file (expand-file-name
-			     "custom.el"
-			     user-emacs-directory))
+                             "custom.el"
+                             user-emacs-directory))
 (load custom-file :no-error-if-file-is-missing)
 
 ;; prevent active process query on quit
@@ -218,6 +219,9 @@
 
 ;; css
 (defvar css-indent-offset 2)
+
+;; turn off all auto-indenting
+(electric-indent-mode -1)
 
 ;; variable pitch mode
 (add-hook 'text-mode-hook
