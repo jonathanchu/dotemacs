@@ -210,6 +210,12 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 ;; consider all themes as safe
 (setq custom-safe-themes t)
 
+;; custom settings in a separate file and load the custom settings
+(setq-default custom-file (expand-file-name
+			     "custom.el"
+			     user-emacs-directory))
+(load custom-file :no-error-if-file-is-missing)
+
 ;; prevent active process query on quit
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent active process query on quit."
@@ -367,15 +373,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (nav-flash-show))
 #+end_src
 
-** Put customization settings in a "custom.el" file
-
-When you install a package or use various customization interfaces to tweak things to your liking, Emacs will append a piece of elips to your init file. I prefer to have that stored in a separate file.
-
-#+begin_src emacs-lisp
-  (use-package cus-edit
-    :custom
-    (custom-file (expand-file-name "custom.el" user-emacs-directory)))
-#+end_src
 
 ** Color Theme
 

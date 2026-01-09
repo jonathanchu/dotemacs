@@ -175,6 +175,12 @@
 ;; consider all themes as safe
 (setq custom-safe-themes t)
 
+;; custom settings in a separate file and load the custom settings
+(setq-default custom-file (expand-file-name
+			     "custom.el"
+			     user-emacs-directory))
+(load custom-file :no-error-if-file-is-missing)
+
 ;; prevent active process query on quit
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent active process query on quit."
@@ -330,10 +336,6 @@
   :ensure t
   :config
   (nav-flash-show))
-
-(use-package cus-edit
-  :custom
-  (custom-file (expand-file-name "custom.el" user-emacs-directory)))
 
 (use-package catppuccin-theme
   :ensure t
