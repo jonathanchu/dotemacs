@@ -40,8 +40,6 @@
 (eval-when-compile
   (require 'use-package))
 
-(require 'bind-key)
-
 ;; for now
 (setq package-check-signature nil)
 (setq package-check-signature 'allow-unsigned)
@@ -65,6 +63,7 @@
 (setq initial-scratch-message nil)
 
 (require 'cl-lib)
+(require 'bind-key)
 
 ;; Reduce the frequency of garbage collection by making it happen on
 ;; each 100MB of allocated data (the default is on every 0.76MB)
