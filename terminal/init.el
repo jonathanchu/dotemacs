@@ -110,6 +110,9 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 100)  ; Optional: increase history size
 
+;; turn off all auto-indenting
+(electric-indent-mode -1)
+
 ;; custom settings in a separate file and load the custom settings
 (setq-default custom-file (expand-file-name
                              "custom.el"
