@@ -110,13 +110,13 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 100)  ; Optional: increase history size
 
-;; turn off all auto-indenting
-(electric-indent-mode -1)
+;; conservative indention for org src blocks
+(setq org-src-preserve-indentation t)
 
 ;; custom settings in a separate file and load the custom settings
 (setq-default custom-file (expand-file-name
-                             "custom.el"
-                             user-emacs-directory))
+                           "custom.el"
+                           user-emacs-directory))
 (load custom-file :no-error-if-file-is-missing)
 
 ;; smartparens mode
