@@ -396,12 +396,6 @@ The CHAR is replaced and the point is put before CHAR."
   (forward-line 1)
   (yank))
 
-;; use ido selection for recentf
-(defun ido-choose-from-recentf ()
-  "Use ido to select a recently visited file from the `recentf-list'."
-  (interactive)
-  (find-file (ido-completing-read "Open file: " recentf-list nil t)))
-
 ;; swaps windows
 (defun transpose-windows ()
   "If you have two windows, it swaps them."
