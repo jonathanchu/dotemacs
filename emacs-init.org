@@ -72,7 +72,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 #+end_src
 
 
-* Core setup
+* Core/Foundation
 
 #+begin_src emacs-lisp
 ;; set encoding
@@ -148,9 +148,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
  (use-package diminish
     :ensure t)
 #+end_src
-
-
-* Core/Foundation
 
 #+begin_src emacs-lisp
 ;; Warn when opening files bigger than 100MB
