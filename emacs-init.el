@@ -572,6 +572,18 @@ The CHAR is replaced and the point is put before CHAR."
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
 
+(use-package display-line-numbers
+  :defer
+  :custom
+    (display-line-numbers-width-start t)
+  :hook
+    (prog-mode . display-line-numbers-mode)
+    (TeX-mode . display-line-numbers-mode)
+    (markdown-mode . display-line-numbers-mode)
+    (conf-mode . display-line-numbers-mode)
+    (org-mode . display-line-numbers-mode)
+  )
+
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
 
