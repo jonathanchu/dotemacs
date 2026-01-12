@@ -340,13 +340,6 @@
   :config
   (nav-flash-show))
 
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  ;; 'latte, 'macchiato, or 'mocha
-  (setq catppuccin-flavor 'latte)
-  (load-theme 'catppuccin t))
-
 ;; make zap-to-char act like zap-up-to-char
 (defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
   "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
@@ -571,6 +564,13 @@ The CHAR is replaced and the point is put before CHAR."
 
 ;; list packages
 (global-set-key (kbd "C-x p") #'list-packages)
+
+(use-package catppuccin-theme
+  :ensure t
+  :config
+  ;; 'latte, 'macchiato, or 'mocha
+  (setq catppuccin-flavor 'latte)
+  (load-theme 'catppuccin t))
 
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))

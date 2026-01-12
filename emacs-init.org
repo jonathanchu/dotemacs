@@ -373,18 +373,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (nav-flash-show))
 #+end_src
 
-
-** Color Theme
-
-#+begin_src emacs-lisp
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  ;; 'latte, 'macchiato, or 'mocha
-  (setq catppuccin-flavor 'latte)
-  (load-theme 'catppuccin t))
-#+end_src
-
 ** Functions
 
 TODO need to organize this better
@@ -618,6 +606,15 @@ The CHAR is replaced and the point is put before CHAR."
 
 
 * UI & Appearance
+
+#+begin_src emacs-lisp
+(use-package catppuccin-theme
+  :ensure t
+  :config
+  ;; 'latte, 'macchiato, or 'mocha
+  (setq catppuccin-flavor 'latte)
+  (load-theme 'catppuccin t))
+#+end_src
 
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
