@@ -259,18 +259,6 @@
   ("C-c b ," . goto-last-change)
   ("C-c b ." . goto-last-change-reverse))
 
-(use-package key-chord
-  :ensure t
-  :init
-  (progn
-    (key-chord-mode 1)
-    (key-chord-define-global "hj" 'undo)
-    (key-chord-define-global ",." "<>\C-b")
-    (key-chord-define-global "jj" 'avy-goto-word-1)
-    (key-chord-define-global "jl" 'avy-goto-line)
-    (key-chord-define-global "jk" 'avy-goto-char)
-    ))
-
 (use-package move-text
   :ensure t
   :bind
@@ -282,9 +270,6 @@
   :ensure t
   :bind
   ("C-c m c" . mc/edit-lines))
-
-(use-package olivetti
-  :ensure t)
 
 (use-package origami
   :ensure t
