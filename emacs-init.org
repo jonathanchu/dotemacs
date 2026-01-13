@@ -603,9 +603,7 @@ The CHAR is replaced and the point is put before CHAR."
   ;; 'latte, 'macchiato, or 'mocha
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
-#+end_src
 
-#+begin_src emacs-lisp
 (use-package display-line-numbers
   :defer
   :custom
@@ -617,9 +615,7 @@ The CHAR is replaced and the point is put before CHAR."
     (conf-mode . display-line-numbers-mode)
     (org-mode . display-line-numbers-mode)
   )
-#+end_src
 
-#+begin_src emacs-lisp
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
 
