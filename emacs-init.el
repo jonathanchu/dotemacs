@@ -220,6 +220,9 @@
 ;; css
 (defvar css-indent-offset 2)
 
+;; only type 'y' or 'n' instead of 'yes' or 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;; conservative indention for org src blocks
 (setq org-src-preserve-indentation t)
 
