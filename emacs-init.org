@@ -543,25 +543,16 @@ The CHAR is replaced and the point is put before CHAR."
   (interactive)
   (kill-buffer (buffer-name)))
 
-;; transpose the last two words when at end of line
-(defadvice transpose-words
-    (before my/transpose-words)
-  "Transpose the last two words when at the end of line."
-  (if (looking-at "$")
-      (backward-word 1)))
-
 ;; Kill the minibuffer when you use the mouse in another window
 ;; http://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
 (defun stop-using-minibuffer ()
   "kill the minibuffer"
   (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
     (abort-recursive-edit)))
-
 (add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
 
 (defun my-org-config/after-org-archive ()
   (org-save-all-org-buffers))
-
 (add-hook 'org-archive-hook 'my-org-config/after-org-archive)
 
 ;;----------------------------------------------------------------------------
