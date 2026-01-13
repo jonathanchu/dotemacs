@@ -1026,5 +1026,3 @@ This is specific to helpful utilities for coding and also includes some miscella
   (("C-c n s" . consult-denote-find)
    ("C-c n g" . consult-denote-grep)))
 #+end_src
-
-* Utilities config
