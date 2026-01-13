@@ -92,6 +92,9 @@
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
 
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
 ;; show extra whitespace
 (setq show-trailing-whitespace t)
 
@@ -104,14 +107,18 @@
 ;; no cowbell
 (setq ring-bell-function 'ignore)
 
-;; consider all themes as safe
-(setq custom-safe-themes t)
-
+;; recent files mode
 (recentf-mode 1)
-(setq recentf-max-saved-items 100)  ; Optional: increase history size
+(setq recentf-max-saved-items 100)
+
+;; only type 'y' or 'n' instead of 'yes' or 'no'
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; conservative indention for org src blocks
 (setq org-src-preserve-indentation t)
+
+;; allow windows to resize evenly when closed
+(setq window-combination-resize t)
 
 ;; custom settings in a separate file and load the custom settings
 (setq-default custom-file (expand-file-name
