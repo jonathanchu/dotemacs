@@ -404,6 +404,7 @@
 
 (use-package flycheck-pos-tip
   :ensure t
+  :after flycheck
   :config
   (setq flycheck-pos-tip-timeout 10)
   (setq flycheck-display-errors-delay 0.5)
