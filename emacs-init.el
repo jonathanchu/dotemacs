@@ -503,7 +503,8 @@ flycheck indicators moved to the right fringe.")
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :ensure t)
+  :ensure t
+  :after yasnippet)
 
 ;; Vertico - Vertical completion UI
 (use-package vertico
