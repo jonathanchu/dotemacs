@@ -237,7 +237,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 (setq tab-always-indent 'complete)
 
 ;; try to improve handling of long lines
-(setq bidi-display-reordering nil)
+(setq bidi-inhibit-bpa t)
 
 ;; delete trailing whitespace in all modes
 (add-hook 'before-save-hook #'delete-trailing-whitespace)

@@ -207,7 +207,7 @@
 (setq tab-always-indent 'complete)
 
 ;; try to improve handling of long lines
-(setq bidi-display-reordering nil)
+(setq bidi-inhibit-bpa t)
 
 ;; delete trailing whitespace in all modes
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
