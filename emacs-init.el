@@ -189,8 +189,8 @@
 
 ;; desktop save mode
 (desktop-save-mode t)
-(defvar desktop-restore-eager 5)
-(defvar desktop-save t)
+(setq desktop-restore-eager 5)
+(setq desktop-save t)
 
 (setq initial-major-mode 'emacs-lisp-mode)
 
@@ -213,10 +213,10 @@
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
 ;; javascript
-(defvar js-indent-level 2)
+(setq js-indent-level 2)
 
 ;; css
-(defvar css-indent-offset 2)
+(setq css-indent-offset 2)
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
