@@ -449,7 +449,7 @@
   ("C-c g" . magit-file-dispatch)
   )
 
-(setq magit-repository-directories '(("\~/projects" . 3)))
+(setq magit-repository-directories '(("~/projects" . 3)))
 (defun magit-status-with-prefix-arg ()
   "Call `magit-status` with a prefix."
   (interactive)
