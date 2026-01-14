@@ -61,7 +61,8 @@
 ;; no message on startup
 (setq initial-scratch-message nil)
 
-(require 'cl-lib)
+(eval-when-compile
+  (require 'cl-lib))
 (require 'bind-key)
 
 ;; Reduce the frequency of garbage collection by making it happen on
