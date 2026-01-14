@@ -483,10 +483,13 @@ flycheck indicators moved to the right fringe.")
     (setq-default fringes-outside-margins t
               highlight-nonselected-windows nil)
     ;; thin fringe bitmaps
+    ;; thin green vertical line, 3px wide on left side
     (define-fringe-bitmap 'git-gutter-fr:added [224]
       nil nil '(center repeated))
+    ;; thin red vertical line, 3px wide on left side
     (define-fringe-bitmap 'git-gutter-fr:modified [224]
       nil nil '(center repeated))
+    ;; red triangular wedge pointing down
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)))
 
