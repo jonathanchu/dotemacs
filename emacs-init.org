@@ -479,7 +479,8 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   ("C-x v m" . git-messenger:popup-message))
 
 (use-package github-browse-file
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package magit
   :ensure t

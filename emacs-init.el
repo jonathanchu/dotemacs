@@ -433,7 +433,8 @@
   ("C-x v m" . git-messenger:popup-message))
 
 (use-package github-browse-file
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package magit
   :ensure t
