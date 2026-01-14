@@ -6,8 +6,6 @@
 (setq user-full-name "Jonathan Chu"
       user-mail-address "me@jonathanchu.is")
 
-(add-to-list 'exec-path "/usr/local/bin")
-
 (defvar current-user
   (getenv
    (if (equal system-type 'windows-nt) "USERNAME" "USER")))
