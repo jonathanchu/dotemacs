@@ -114,7 +114,8 @@
 
 ;; require diminish mode for some packages
  (use-package diminish
-    :ensure t)
+    :ensure t
+    :defer t)
 
 ;; Warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
