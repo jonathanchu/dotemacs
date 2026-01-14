@@ -482,9 +482,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   :bind
   ("C-x v m" . git-messenger:popup-message))
 
-(use-package git-timemachine
-  :ensure t)
-
 (use-package github-browse-file
   :ensure t)
 

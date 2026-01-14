@@ -436,9 +436,6 @@
   :bind
   ("C-x v m" . git-messenger:popup-message))
 
-(use-package git-timemachine
-  :ensure t)
-
 (use-package github-browse-file
   :ensure t)
 
