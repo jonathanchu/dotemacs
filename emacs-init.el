@@ -235,7 +235,7 @@
 
 (use-package aggressive-indent
   :ensure t
-  :hook (clojure-mode-hook . aggressive-indent-mode))
+  :hook (clojure-mode . aggressive-indent-mode))
 
 (use-package beginend
   :ensure t
@@ -384,7 +384,7 @@
   (fset 'define-fringe-bitmap #'ignore))
 
 (use-package hl-line
-  :hook (prog-mode-hook . hl-line-mode)
+  :hook (prog-mode . hl-line-mode)
   :config
   ;; Doesn't seem to play nice in emacs 25+
   (setq hl-line-sticky-flag nil
@@ -392,7 +392,7 @@
 
 (use-package rainbow-delimiters
   :ensure t
-  :hook (prog-mode-hook . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package volatile-highlights
   :ensure t
@@ -492,7 +492,7 @@ flycheck indicators moved to the right fringe.")
   :config
   (require 'git-gutter-fringe)
   (global-git-gutter-mode +1)
-  :hook (focus-in-hook . git-gutter:update-all-windows))
+  :hook (focus-in . git-gutter:update-all-windows))
 
 (use-package yasnippet
   :ensure t
