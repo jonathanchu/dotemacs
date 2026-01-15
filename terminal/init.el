@@ -227,10 +227,25 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package projectile
+  :defer t
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :bind
+  (:map projectile-command-map
+        ("f" . consult-projectile-find-file)
+        ("p" . consult-projectile-switch-project)
+        ("b" . consult-projectile-switch-to-buffer))
+  :init
+  (setq projectile-completion-system 'default)
+  :config
+  (setq projectile-project-search-path '("~/projects/"))
+  (setq projectile-switch-project-action #'projectile-dired)
+  (projectile-mode +1))
+
 ;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
-  :after (consult projectile)
-  :bind (("C-c p f" . consult-projectile-find-file)))
+  :after (consult projectile))
 
 
 ;;----------------------------------------------------------------------------
