@@ -164,17 +164,32 @@
 
 ;; Magit
 (use-package magit
-  :config
-  (progn
-    (setq magit-completing-read-function #'completing-read-default)
-    (setq magit-diff-refine-hunk t)
-    (setq magit-status-margin
-          '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-    (setq magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18)))
+  :ensure t
   :bind
-  ("C-x g" . magit-status)
-  ("C-c C-a" . magit-commit-amend)
-  ("C-c g" . magit-file-dispatch))
+  (("C-x g" . magit-status)
+   ("C-c C-a" . magit-commit-amend)
+   ("C-c g" . magit-file-dispatch)
+   ("s-P" . magit-status-with-prefix-arg))
+  :custom
+  (magit-diff-refine-hunk t)
+  (magit-repository-directories '(("~/projects" . 3)))
+  (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+  (magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+  ;; Visibility
+  (magit-section-initial-visibility-alist
+   '((stashes . hide)
+     (unpulled . hide)
+     (unpushed . show)))
+  ;; Performance
+  (magit-revision-insert-related-refs nil)
+  (magit-refresh-status-buffer nil)
+  (magit-section-cache-visibility t)
+  :config
+  (defun magit-status-with-prefix-arg ()
+    "Call `magit-status` with a prefix."
+    (interactive)
+    (let ((current-prefix-arg '(4)))
+      (call-interactively #'magit-status))))
 
 ;; Full frame buffers
 (use-package fullframe
