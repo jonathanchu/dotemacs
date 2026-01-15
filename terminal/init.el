@@ -37,6 +37,8 @@
 
 (defconst emacs-start-time (current-time))
 
+(prefer-coding-system 'utf-8)
+
 ;; GC thresholds
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
@@ -59,6 +61,12 @@
 
 ;; reload the file in buffer when they change on disk
 (global-auto-revert-mode t)
+
+;; misc useful settings
+(setq-default indent-tabs-mode nil)
+(setq sentence-end-double-space nil)
+(setq scroll-conservatively 10000)
+(delete-selection-mode t)
 
 (require 'package)
 (setq load-prefer-newer t
@@ -142,7 +150,7 @@
     (display-line-numbers-width-start t)
   :hook
     (prog-mode . display-line-numbers-mode)
-    (TeX-mode . display-line-numbers-mode)
+    (tex-mode . display-line-numbers-mode)
     (markdown-mode . display-line-numbers-mode)
     (conf-mode . display-line-numbers-mode)
     (org-mode . display-line-numbers-mode))
