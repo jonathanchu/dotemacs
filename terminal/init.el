@@ -197,7 +197,7 @@
 
 ;; Consult - Enhanced commands (replaces Counsel)
 (use-package consult
-  :bind (("C-x C-f" . find-file)  ; Keep default or use consult-find
+  :bind (("C-x C-f" . consult-find)  ; Keep default or use consult-find
          ("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
          ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
