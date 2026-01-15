@@ -42,6 +42,10 @@
 (setq package-check-signature 'allow-unsigned)
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
+;; native compile settings
+(when (featurep 'native-compile)
+  (setq native-comp-async-report-warnings-errors nil))
+
 ;; set encoding
 (prefer-coding-system 'utf-8)
 

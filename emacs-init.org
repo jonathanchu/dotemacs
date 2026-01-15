@@ -72,6 +72,10 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 * Core/Foundation
 
 #+begin_src emacs-lisp
+;; native compile settings
+(when (featurep 'native-compile)
+  (setq native-comp-async-report-warnings-errors nil))
+
 ;; set encoding
 (prefer-coding-system 'utf-8)
 
