@@ -37,6 +37,17 @@
 
 (defconst emacs-start-time (current-time))
 
+;; GC thresholds
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024))
+
+;; native compile settings
+(when (featurep 'native-compile)
+    (setq native-comp-async-report-warnings-errors nil))
+
+;; long line handling
+(setq bidi-inhibit-bpa t)
+
 ;; no menu bar
 (menu-bar-mode -1)
 
