@@ -321,11 +321,6 @@
   (:map dired-mode-map
         ("/" . dired-narrow)))
 
-(use-package nav-flash
-  :ensure t
-  :config
-  (nav-flash-show))
-
 (use-package catppuccin-theme
   :ensure t
   :config

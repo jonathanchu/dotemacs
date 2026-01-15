@@ -350,11 +350,6 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   :bind
   (:map dired-mode-map
         ("/" . dired-narrow)))
-
-(use-package nav-flash
-  :ensure t
-  :config
-  (nav-flash-show))
 #+end_src
 
 
