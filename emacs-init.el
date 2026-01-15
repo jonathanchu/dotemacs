@@ -765,7 +765,7 @@ The CHAR is replaced and the point is put before CHAR."
 (global-set-key (kbd "C-x C-k") #'kill-current-buffer)
 
 ;; list packages
-(global-set-key (kbd "C-x p") #'list-packages)
+(global-set-key (kbd "C-c p l") #'list-packages)
 
 (use-package easy-kill
   :ensure t
