@@ -786,22 +786,15 @@ The CHAR is replaced and the point is put before CHAR."
 
 (use-package elpy
   :ensure t
+  :defer t
+  :init (advice-add 'python-mode :before 'elpy-enable)
   :config
-  (elpy-enable)
   (setq elpy-rpc-python-command "python3"))
 
 (use-package jinja2-mode
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
-
-(use-package python-mode
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook
-            '(lambda ()
-               (setq fill-column 80)))
-  (add-to-list 'auto-mode-alist '("\\.py" . python-mode)))
 
 (use-package toml-mode
   :ensure t
