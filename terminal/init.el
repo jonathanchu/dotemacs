@@ -170,6 +170,7 @@
 
 ;; Full frame buffers
 (use-package fullframe
+  :after magit
   :config
   (progn
     (fullframe magit-status magit-mode-quit-window)
