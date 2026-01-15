@@ -143,7 +143,7 @@
                            user-emacs-directory))
 (load custom-file :no-error-if-file-is-missing)
 
-;; line numbers in left gutter
+;; line numbers in left fringe
 (use-package display-line-numbers
   :defer
   :custom
@@ -154,6 +154,14 @@
     (markdown-mode . display-line-numbers-mode)
     (conf-mode . display-line-numbers-mode)
     (org-mode . display-line-numbers-mode))
+
+(use-package diff-hl
+  :ensure t
+  :init
+  (global-diff-hl-mode 1)
+  :hook
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; smartparens mode
 (use-package smartparens
