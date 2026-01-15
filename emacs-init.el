@@ -232,8 +232,7 @@
 
 (use-package aggressive-indent
   :ensure t
-  :init
-  (add-hook 'clojure-mode-hook #'aggressive-indent-mode))
+  :hook (clojure-mode-hook . aggressive-indent-mode))
 
 (use-package beginend
   :ensure t
