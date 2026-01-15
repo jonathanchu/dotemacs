@@ -546,6 +546,17 @@ flycheck indicators moved to the right fringe.")
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package projectile
+  :defer t
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (setq projectile-completion-system 'default)  ; Uses vertico via completing-read
+  :config
+  (setq projectile-project-search-path '("~/projects/"))
+  (setq projectile-switch-project-action #'projectile-dired)
+  (projectile-mode +1))
+
 ;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
   :after (consult projectile)
@@ -765,7 +776,7 @@ The CHAR is replaced and the point is put before CHAR."
 (global-set-key (kbd "C-x C-k") #'kill-current-buffer)
 
 ;; list packages
-(global-set-key (kbd "C-c p l") #'list-packages)
+;; (global-set-key (kbd "C-c p l") #'list-packages)
 
 (use-package easy-kill
   :ensure t
