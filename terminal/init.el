@@ -222,7 +222,7 @@
 ;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
   :after (consult projectile)
-  :bind (("s-t" . consult-projectile-find-file)))
+  :bind (("C-c p f" . consult-projectile-find-file)))
 
 
 ;;----------------------------------------------------------------------------
