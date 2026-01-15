@@ -166,7 +166,7 @@
 (setq sentence-end-double-space nil)
 
 ;; useful for camelCase
-(subword-mode t)
+(add-hook 'prog-mode-hook #'subword-mode)
 
 ;; delete selection, insert text
 (delete-selection-mode t)
