@@ -117,8 +117,8 @@
 (setq ring-bell-function 'ignore)
 
 ;; recent files mode
-(recentf-mode 1)
 (setq recentf-max-saved-items 100)
+(recentf-mode 1)
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 (fset 'yes-or-no-p 'y-or-n-p)
