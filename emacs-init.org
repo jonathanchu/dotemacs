@@ -369,7 +369,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
     (display-line-numbers-width-start t)
   :hook
     (prog-mode . display-line-numbers-mode)
-    (TeX-mode . display-line-numbers-mode)
+    (tex-mode . display-line-numbers-mode)
     (markdown-mode . display-line-numbers-mode)
     (conf-mode . display-line-numbers-mode)
     (org-mode . display-line-numbers-mode)
@@ -416,7 +416,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
   (fset 'define-fringe-bitmap #'ignore))
 
 (use-package hl-line
-  :init (add-hook 'prog-mode-hook 'hl-line-mode)
+  :hook (prog-mode-hook . hl-line-mode)
   :config
   ;; Doesn't seem to play nice in emacs 25+
   (setq hl-line-sticky-flag nil
@@ -424,8 +424,7 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 
 (use-package rainbow-delimiters
   :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode-hook . rainbow-delimiters-mode))
 
 (use-package volatile-highlights
   :ensure t
@@ -536,7 +535,7 @@ flycheck indicators moved to the right fringe.")
   :config
   (require 'git-gutter-fringe)
   (global-git-gutter-mode +1)
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows))
+  :hook (focus-in-hook . git-gutter:update-all-windows))
 #+end_src
 
 ** YASnippet
