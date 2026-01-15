@@ -38,7 +38,6 @@
   (require 'use-package))
 
 ;; for now
-(setq package-check-signature nil)
 (setq package-check-signature 'allow-unsigned)
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
