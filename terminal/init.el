@@ -95,14 +95,14 @@
   :bind
   ("C-x C-b" . ibuffer))
 
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
 (use-package catppuccin-theme
   :config
   ;; 'latte, 'macchiato, or 'mocha
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
-
-;; consider all themes as safe
-(setq custom-safe-themes t)
 
 ;; show extra whitespace
 (setq show-trailing-whitespace t)
