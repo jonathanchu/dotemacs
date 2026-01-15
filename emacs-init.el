@@ -459,7 +459,9 @@
     "Call `magit-status` with a prefix."
     (interactive)
     (let ((current-prefix-arg '(4)))
-      (call-interactively #'magit-status))))
+      (call-interactively #'magit-status)))
+  :hook
+  (magit-mode . (lambda () (setq-local left-fringe-width 16))))
 
 
 (use-package magit-git-toolbelt
