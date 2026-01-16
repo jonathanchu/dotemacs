@@ -441,19 +441,23 @@
    ("C-c g" . magit-file-dispatch)
    ("s-P" . magit-status-with-prefix-arg))
   :custom
-  (magit-diff-refine-hunk t)
+  (magit-diff-refine-hunk 'all)
   (magit-repository-directories '(("~/projects" . 3)))
   (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   ;; Visibility
   (magit-section-initial-visibility-alist
    '((stashes . hide)
-     (unpulled . hide)
-     (unpushed . show)))
+     (untracked . show)
+     (unpulled . show)
+     (unpushed . show)
+     (recent . show)))
   ;; Performance
   (magit-revision-insert-related-refs nil)
   (magit-refresh-status-buffer nil)
   (magit-section-cache-visibility t)
+  (magit-log-section-commit-count 15)
+  (magit-status-show-hashes-in-headers t)
   :config
   (defun magit-status-with-prefix-arg ()
     "Call `magit-status` with a prefix."
