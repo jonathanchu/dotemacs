@@ -324,6 +324,15 @@
   (:map dired-mode-map
         ("/" . dired-narrow)))
 
+(use-package nerd-icons)
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 30)
+  (setq doom-modeline-indent-info t))
+
 (use-package catppuccin-theme
   :ensure t
   :config

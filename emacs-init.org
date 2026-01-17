@@ -359,6 +359,15 @@ Set defaults for the package sources and bootstrap usage of `use-package`so it c
 * UI & Appearance
 
 #+begin_src emacs-lisp
+(use-package nerd-icons)
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-height 30)
+  (setq doom-modeline-indent-info t))
+
 (use-package catppuccin-theme
   :ensure t
   :config
