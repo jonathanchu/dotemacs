@@ -172,9 +172,11 @@
   (recentf-mode))
 
 (use-package saveplace
+  :ensure nil  ; builtin
+  :init
+  (setq save-place-file (expand-file-name "saved-places" user-emacs-directory))
   :config
-  (setq-default save-place t)
-  (setq save-place-file "~/.emacs.d/saved-places"))
+  (save-place-mode t))
 
 ;; Automatically kill running processes on exit
 (setq confirm-kill-processes nil)
