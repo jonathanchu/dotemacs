@@ -209,9 +209,8 @@
 (use-package fullframe
   :after magit
   :config
-  (progn
-    (fullframe magit-status magit-mode-quit-window)
-    (fullframe ibuffer ibuffer-quit)))
+  (fullframe magit-status magit-mode-quit-window)
+  (fullframe ibuffer ibuffer-quit))
 
 ;; Vertico - Vertical completion UI
 (use-package vertico
