@@ -190,7 +190,7 @@
      (unpushed . show)
      (untracked . show)
      (recent . show)))
-  (magit-status-show-hashes-in-headers)
+  (magit-status-show-hashes-in-headers t)
   (magit-log-section-commit-count 15)
   ;; Performance
   (magit-revision-insert-related-refs nil)
