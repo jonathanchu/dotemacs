@@ -655,12 +655,10 @@ flycheck indicators moved to the right fringe.")
       nil nil 'bottom)))
 
 (use-package git-gutter
-  :ensure t
+  :after git-gutter-fringe
+  :hook (focus-in . git-gutter:update-all-windows)  ; this can cause a slowdown for big changesets
   :config
-  (require 'git-gutter-fringe)
-  (global-git-gutter-mode +1)
-  ;; Just a reminder that this can cause a slowdown for big changesets
-  :hook (focus-in . git-gutter:update-all-windows))
+  (global-git-gutter-mode +1))
 
 (use-package yasnippet
   :ensure t
