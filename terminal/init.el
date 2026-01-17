@@ -100,6 +100,7 @@
 ;;----------------------------------------------------------------------------
 
 (use-package ibuffer
+  :ensure nil  ; built-in
   :bind
   ("C-x C-b" . ibuffer))
 
@@ -146,6 +147,7 @@
 ;; line numbers in left fringe
 (use-package display-line-numbers
   :defer
+  :ensure nil  ; built-in
   :custom
     (display-line-numbers-width-start t)
   :hook
