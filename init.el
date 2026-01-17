@@ -691,11 +691,10 @@ flycheck indicators moved to the right fringe.")
 (use-package sh-script)
 
 (use-package fish-mode
-  :ensure t
   :defer t
-  :config
-  (add-hook 'fish-mode-hook (lambda ()
-                              (add-hook 'before-save-hook 'fish_indent-before-save))))
+  :hook
+  (fish-mode . (lambda ()
+                 (add-hook 'before-save-hook #'fish_indent-before-save nil t))))
 
 (use-package go-mode)
 
