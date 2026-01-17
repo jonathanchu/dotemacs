@@ -515,7 +515,7 @@
   :bind (("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
          ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
-         ("C-r" . consult-line)  ; Replaces swiper
+         ("C-r" . (lambda () (interactive) (consult-line nil t)))  ; search backwards
          ("C-c C-r" . consult-history)
          ("C-x b" . consult-buffer))
   :config
