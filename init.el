@@ -68,7 +68,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
               use-package-expand-minimally t  ; make the expanded code as minimal as possible
               use-package-always-ensure t)
@@ -677,14 +676,10 @@ flycheck indicators moved to the right fringe.")
   (setq elpy-rpc-python-command "python3"))
 
 (use-package jinja2-mode)
-
 (use-package toml-mode)
-
 (use-package yaml-mode)
-
-(use-package make-mode)
-
-(use-package sh-script)
+(use-package make-mode :ensure nil)
+(use-package sh-script :ensure nil)
 
 (use-package fish-mode
   :defer t
@@ -756,14 +751,6 @@ flycheck indicators moved to the right fringe.")
   "Reload Emacs configuration"
   (interactive)
   (load-file "~/.emacs.d/init.el"))
-
-;; make zap-to-char act like zap-up-to-char
-(defun my/zap-up-to-char (orig-fun arg char)
-  "Kill up to the ARG'th occurence of CHAR, and leave CHAR."
-  (funcall orig-fun arg char)
-  (insert char)
-  (forward-char -1))
-(advice-add 'zap-to-char :around #'my/zap-up-to-char)
 
 ;; smarter navigation to the beginning of a line
 (defun smarter-move-beginning-of-line (arg)
@@ -966,6 +953,9 @@ flycheck indicators moved to the right fringe.")
 
 ;; kill the current buffer
 (global-set-key (kbd "C-x C-k") #'kill-current-buffer)
+
+;; zap to char
+(global-set-key (kbd "M-z") #'zap-up-to-char)
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
