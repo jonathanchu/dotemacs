@@ -265,9 +265,11 @@
 (load custom-file :no-error-if-file-is-missing)
 
 ;; prevent active process query on quit
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+(defun my/no-query-kill-emacs (orig-fun &rest args)
   "Prevent active process query on quit."
-  (cl-flet ((process-list ())) ad-do-it))
+  (cl-letf (((symbol-function 'process-list) (lambda () nil)))
+    (apply orig-fun args)))
+(advice-add 'save-buffers-kill-emacs :around #'my/no-query-kill-emacs)
 
 ;; instantly display current key sequence in mini buffer
 (setq echo-keystrokes 0.02)
@@ -761,11 +763,12 @@ flycheck indicators moved to the right fringe.")
   (load-file "~/.emacs.d/init.el"))
 
 ;; make zap-to-char act like zap-up-to-char
-(defadvice zap-to-char (after my-zap-to-char-advice (arg char) activate)
-  "Kill up to the ARG'th occurence of CHAR, and leave CHAR.
-The CHAR is replaced and the point is put before CHAR."
+(defun my/zap-up-to-char (orig-fun arg char)
+  "Kill up to the ARG'th occurence of CHAR, and leave CHAR."
+  (funcall orig-fun arg char)
   (insert char)
   (forward-char -1))
+(advice-add 'zap-to-char :around #'my/zap-up-to-char)
 
 ;; smarter navigation to the beginning of a line
 (defun smarter-move-beginning-of-line (arg)
@@ -894,14 +897,14 @@ The CHAR is replaced and the point is put before CHAR."
 
 ;; When popping the mark, continue popping until the cursor actually moves
 ;; Also, if the last command was a copy - skip past all the expand-region cruft.
-(defadvice pop-to-mark-command (around ensure-new-position activate)
+(defun my/pop-to-mark-ensure-new-position (orig-fun &rest args)
+  "Continue popping until cursor moves. Skip expand-region cruft after copy."
   (let ((p (point)))
     (when (eq last-command #'kill-ring-save)
-      ad-do-it
-      ad-do-it
-      ad-do-it)
-    (dotimes (i 10)
-      (when (= p (point)) ad-do-it))))
+      (dotimes (_ 3) (apply orig-fun args)))
+    (dotimes (_ 10)
+      (when (= p (point)) (apply orig-fun args)))))
+(advice-add 'pop-to-mark-command :around #'my/pop-to-mark-ensure-new-position)
 
 (setq set-mark-command-repeat-pop t)
 
@@ -914,10 +917,8 @@ The CHAR is replaced and the point is put before CHAR."
       (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max)))
     (set-buffer-modified-p nil)))
 
-(defadvice dired-readin
-    (after dired-after-updating-hook first () activate)
-  "Sort dired listings with directories first before adding marks."
-  (mydired-sort))
+;; sort dired listings with directories first before adding marks
+(advice-add 'dired-readin :after #'mydired-sort)
 
 ;; Kill the minibuffer when you use the mouse in another window
 ;; http://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
