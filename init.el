@@ -316,9 +316,7 @@
 (global-so-long-mode 1)
 
 ;; variable pitch mode
-(add-hook 'text-mode-hook
-          (lambda ()
-            (variable-pitch-mode 1)))
+(add-hook 'text-mode-hook #'variable-pitch-mode)
 
 ;; Reduce the clutter in the fringes; we'd like to reserve that space for more
 ;; useful information, like git-gutter and flycheck.
