@@ -514,7 +514,6 @@
   :bind (("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
          ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
-         ("C-r" . (lambda () (interactive) (consult-line nil t)))  ; search backwards
          ("C-c C-r" . consult-history)
          ("C-x b" . consult-buffer))
   :config
@@ -779,9 +778,11 @@ flycheck indicators moved to the right fringe.")
   (concat temporary-file-directory user-login-name "/"))
 (make-directory user-temporary-file-directory t)
 (setq backup-by-copying t)
+(with-eval-after-load 'tramp
+  (add-to-list 'backup-directory-alist
+               `(,tramp-file-name-regexp nil)))
 (setq backup-directory-alist
-      `(("." . ,user-temporary-file-directory)
-        (,tramp-file-name-regexp nil)))
+      `(("." . ,user-temporary-file-directory)))
 (setq auto-save-list-file-prefix
       (concat user-temporary-file-directory ".auto-saves-"))
 (setq auto-save-file-name-transforms
