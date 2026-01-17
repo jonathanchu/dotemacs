@@ -1,4 +1,4 @@
-;; init.el --- My personal Emacs configuration.
+;; init.el --- My personal Emacs configuration. -*- lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2015 - 2026
 ;;
