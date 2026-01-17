@@ -477,9 +477,7 @@
   (volatile-highlights-mode t))
 
 (use-package easy-kill
-  :ensure t
-  :config
-  (global-set-key [remap kill-ring-save] 'easy-kill))
+  :bind ([remap kill-ring-save] . easy-kill))
 
 (use-package smart-comment
   :ensure t
