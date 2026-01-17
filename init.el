@@ -116,9 +116,6 @@
 
 (setq-default cursor-type 'bar)
 
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . light))
-
 (eval-when-compile
   (require 'cl-lib))
 (require 'bind-key)
@@ -886,7 +883,6 @@ flycheck indicators moved to the right fringe.")
       (forward-line 2) ;; beyond dir. header
       (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max)))
     (set-buffer-modified-p nil)))
-
 ;; sort dired listings with directories first before adding marks
 (advice-add 'dired-readin :after #'mydired-sort)
 
@@ -905,10 +901,6 @@ flycheck indicators moved to the right fringe.")
 ;;----------------------------------------------------------------------------
 ;; Key Bindings
 ;;----------------------------------------------------------------------------
-
-;; Mac-specific
-(setq-default mac-option-modifier 'meta)
-(setq-default mac-command-modifier 'super)
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
@@ -940,6 +932,18 @@ flycheck indicators moved to the right fringe.")
 
 ;; zap to char
 (global-set-key (kbd "M-z") #'zap-up-to-char)
+
+;;----------------------------------------------------------------------------
+;; MacOS Specific
+;;----------------------------------------------------------------------------
+
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta
+        mac-command-modifier 'super
+        mac-allow-anti-aliasing t
+        ns-pop-up-frames nil)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . light)))
 
 ;;----------------------------------------------------------------------------
 ;; Finalization
