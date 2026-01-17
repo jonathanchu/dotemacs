@@ -128,14 +128,19 @@
 ;; each 100MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+;; reset GC threshold after startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold 16777216))) ; 16MB
 
 ;; turn on visual line mode
 ;; (global-visual-line-mode t)
 (add-hook 'text-mode-hook #'visual-line-mode)
-(add-hook 'org-mode-hook #'visual-line-mode)
+;; (add-hook 'org-mode-hook #'visual-line-mode)
 
 ;; set paths from shell
 (use-package exec-path-from-shell
+  :defer 1  ; load after 1 second of idle time
   :ensure t
   :if (memq window-system '(mac ns))
   :config
@@ -168,9 +173,8 @@
 
 (use-package saveplace
   :config
-  (progn
-    (setq-default save-place t)
-    (setq save-place-file "~/.emacs.d/saved-places")))
+  (setq-default save-place t)
+  (setq save-place-file "~/.emacs.d/saved-places"))
 
 ;; Automatically kill running processes on exit
 (setq confirm-kill-processes nil)
@@ -220,6 +224,10 @@
 ;;keep cursor at same position when scrolling
 (setq scroll-preserve-screen-position t)
 
+;; for smoother scrolling
+(when (>= emacs-major-version 29)
+  (pixel-scroll-precision-mode 1))
+
 ;; scroll one line at a time
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -233,7 +241,7 @@
 (setq redisplay-skip-fontification-on-input t)
 (setq inhibit-compacting-font-caches t)
 (setq auto-window-vscroll nil)
-(setq jit-lock-defer-time 0)
+(setq jit-lock-defer-time 0.05)
 
 ;; open with in original frame, not new window
 (setq ns-pop-up-frames nil)
@@ -296,10 +304,13 @@
 (setq css-indent-offset 2)
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
-(fset 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 
 ;; conservative indention for org src blocks
 ;; (setq org-src-preserve-indentation t)
+
+;; protect against performance issues with minified files
+(global-so-long-mode 1)
 
 ;; variable pitch mode
 (add-hook 'text-mode-hook
@@ -407,9 +418,8 @@
 (use-package fullframe
   :ensure t
   :config
-  (progn
-    (fullframe magit-status magit-mode-quit-window)
-    (fullframe ibuffer ibuffer-quit)))
+  (fullframe magit-status magit-mode-quit-window)
+  (fullframe ibuffer ibuffer-quit))
 
 (use-package deadgrep
   :ensure t
@@ -545,14 +555,6 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package flycheck-pos-tip
-  :ensure t
-  :after flycheck
-  :config
-  (setq flycheck-pos-tip-timeout 10)
-  (setq flycheck-display-errors-delay 0.5)
-  (flycheck-pos-tip-mode +1))
-
 (use-package flycheck
   :ensure t
   :commands
@@ -568,6 +570,14 @@
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode 1))
+
+(use-package flycheck-pos-tip
+  :ensure t
+  :after flycheck
+  :config
+  (setq flycheck-pos-tip-timeout 10)
+  (setq flycheck-display-errors-delay 0.5)
+  (flycheck-pos-tip-mode +1))
 
 (use-package git-messenger
   :ensure t
@@ -667,28 +677,15 @@ flycheck indicators moved to the right fringe.")
   :config
   (setq elpy-rpc-python-command "python3"))
 
-(use-package jinja2-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.j2\\'" . jinja2-mode)))
+(use-package jinja2-mode)
 
-(use-package toml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.toml\\'" . toml-mode)))
+(use-package toml-mode)
 
-(use-package yaml-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+(use-package yaml-mode)
 
-(use-package make-mode
-  :config
-  (add-to-list 'auto-mode-alist '("\\Makefile\\'" . makefile-mode)))
+(use-package make-mode)
 
-(use-package sh-script
-  :config
-  (add-to-list 'auto-mode-alist '("\\.envrc\\'" . shell-script-mode)))
+(use-package sh-script)
 
 (use-package fish-mode
   :ensure t
@@ -697,10 +694,7 @@ flycheck indicators moved to the right fringe.")
   (add-hook 'fish-mode-hook (lambda ()
                               (add-hook 'before-save-hook 'fish_indent-before-save))))
 
-(use-package go-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode)))
+(use-package go-mode)
 
 (use-package web-mode
   :ensure t
@@ -717,14 +711,9 @@ flycheck indicators moved to the right fringe.")
     (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))))
 
-(use-package markdown-mode
-  :ensure t
-  :mode "\\.md\\'")
+(use-package markdown-mode)
 
-(use-package json-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode)))
+(use-package json-mode)
 
 ;;----------------------------------------------------------------------------
 ;; Productivity
@@ -929,12 +918,6 @@ The CHAR is replaced and the point is put before CHAR."
     (after dired-after-updating-hook first () activate)
   "Sort dired listings with directories first before adding marks."
   (mydired-sort))
-
-;; Kill the current buffer
-(defun kill-current-buffer ()
-  "Kills the current buffer"
-  (interactive)
-  (kill-buffer (buffer-name)))
 
 ;; Kill the minibuffer when you use the mouse in another window
 ;; http://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
