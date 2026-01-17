@@ -384,11 +384,11 @@
 
 (use-package whitespace
   :ensure nil  ; builtin
+  :hook
+  (prog-mode . whitespace-mode)
   :config
   (setq whitespace-action '(auto-cleanup))
-  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
-  :hook
-  (prog-mode . whitespace-mode))
+  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)))
 
 (use-package aggressive-indent
   :ensure t
