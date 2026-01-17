@@ -79,10 +79,11 @@
 
 (package-initialize)
 
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; Bootstrap `use-package' when emacs v < 29
+(when (< emacs-major-version 29)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package)))
 
 ;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
