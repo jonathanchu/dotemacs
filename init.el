@@ -786,18 +786,6 @@ flycheck indicators moved to the right fringe.")
 (setq auto-save-file-name-transforms
       `((".*" ,user-temporary-file-directory t)))
 
-;; duplicate the current line function
-(unless (fboundp 'duplicate-line)
-  (defun duplicate-line ()
-    "Duplicate the current line."
-    (interactive)
-    (move-beginning-of-line 1)
-    (kill-line)
-    (yank)
-    (open-line 1)
-    (forward-line 1)
-    (yank)))
-
 ;; swaps windows
 (defun transpose-windows ()
   "If you have two windows, it swaps them."
@@ -926,10 +914,7 @@ flycheck indicators moved to the right fringe.")
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
 ;; duplicate the current line
-(global-set-key (kbd "C-c d") #'duplicate-line)  ; works for both
-;; Or use the Emacs 29+ duplicate-dwim which is more flexible:
-(when (fboundp 'duplicate-dwim)
-  (global-set-key (kbd "C-c d") #'duplicate-dwim))
+(global-set-key (kbd "C-c d") #'duplicate-dwim)
 
 ;; switch to previous buffer
 (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
