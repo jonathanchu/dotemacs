@@ -31,9 +31,7 @@
 
 ;;; Code:
 
-;;----------------------------------------------------------------------------
-;; Bootstrapping
-;;----------------------------------------------------------------------------
+;;; Bootstrapping
 
 (defconst emacs-start-time (current-time))
 
@@ -68,6 +66,8 @@
 (setq scroll-conservatively 10000)
 (delete-selection-mode t)
 
+;;; Packaging
+
 (require 'package)
 (setq load-prefer-newer t
       package-enable-at-startup nil
@@ -85,7 +85,6 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
-;; Bootstrap `use-package'
 (setq-default use-package-verbose nil ; Don't report loading details
               use-package-expand-minimally t  ; make the expanded code as minimal as possible
               use-package-always-ensure t) ; make sure packages always installed
@@ -238,9 +237,9 @@
   :bind (("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
          ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
          ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
-         ("C-r" . consult-line)  ; Replaces swiper
          ("C-c C-r" . consult-history)
-         ("C-x b" . consult-buffer))
+         ("C-x b" . consult-buffer)
+         ("C-c o" . consult-outline))
   :config
   (setq consult-narrow-key "<"))
 
@@ -276,10 +275,14 @@
 (use-package consult-projectile
   :after (consult projectile))
 
+(use-package outline
+  :ensure nil
+  :hook (emacs-lisp-mode . outline-minor-mode)
+  :bind (:map outline-minor-mode-map
+              ("TAB" . outline-cycle)
+              ("<backtab>" . outline-cycle-buffer)))
 
-;;----------------------------------------------------------------------------
-;; Finalization
-;;----------------------------------------------------------------------------
+;;; Finalization
 
 (unless window-system
   (let ((elapsed (float-time (time-subtract (current-time)
