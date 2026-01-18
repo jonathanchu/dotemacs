@@ -1,4 +1,4 @@
-;; init.el --- My personal Emacs configuration for the terminal
+;;; init.el --- My personal Emacs configuration for the terminal -*- lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2026
 ;;
@@ -35,37 +35,6 @@
 
 (defconst emacs-start-time (current-time))
 
-(prefer-coding-system 'utf-8)
-
-;; GC thresholds
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024))
-
-;; native compile settings
-(when (featurep 'native-compile)
-    (setq native-comp-async-report-warnings-errors nil))
-
-;; long line handling
-(setq bidi-inhibit-bpa t)
-
-;; no menu bar
-(menu-bar-mode -1)
-
-;; no splash screen
-(setq inhibit-splash-screen t)
-
-;; no message on startup
-(setq initial-scratch-message nil)
-
-;; reload the file in buffer when they change on disk
-(global-auto-revert-mode t)
-
-;; misc useful settings
-(setq-default indent-tabs-mode nil)
-(setq sentence-end-double-space nil)
-(setq scroll-conservatively 10000)
-(delete-selection-mode t)
-
 ;;; Packaging
 
 (require 'package)
@@ -85,9 +54,9 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 
-(setq-default use-package-verbose nil ; Don't report loading details
-              use-package-expand-minimally t  ; make the expanded code as minimal as possible
-              use-package-always-ensure t) ; make sure packages always installed
+(setq-default use-package-verbose nil
+              use-package-expand-minimally t
+              use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
 
@@ -95,86 +64,204 @@
 (setq package-check-signature 'allow-unsigned)
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
-;;----------------------------------------------------------------------------
-;; Packages
-;;----------------------------------------------------------------------------
+;;; Core
 
-(use-package ibuffer
-  :ensure nil  ; built-in
-  :bind
-  ("C-x C-b" . ibuffer))
+;;;; Performance
 
-;; consider all themes as safe
-(setq custom-safe-themes t)
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024))
 
-(use-package catppuccin-theme
-  :config
-  ;; 'latte, 'macchiato, or 'mocha
-  (setq catppuccin-flavor 'latte)
-  (load-theme 'catppuccin t))
+;; native compile settings
+(when (featurep 'native-compile)
+  (setq native-comp-async-report-warnings-errors nil))
 
-;; show extra whitespace
-(setq show-trailing-whitespace t)
+;; long line handling
+(setq bidi-inhibit-bpa t)
 
-;; delete trailing whitespace in all modes
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
+;;;; Encoding
 
-;; ensure last line is a return
-(setq require-final-newline t)
+(prefer-coding-system 'utf-8)
 
-;; no cowbell
-(setq ring-bell-function 'ignore)
+;;;; Files & Backups
+
+;; custom settings in a separate file
+(setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file :no-error-if-file-is-missing)
 
 ;; recent files mode
 (setq recentf-max-saved-items 100)
 (recentf-mode 1)
 
+;;;; Editing Defaults
+
+(setq-default indent-tabs-mode nil)
+
+(setq sentence-end-double-space nil
+      require-final-newline t
+      show-trailing-whitespace t
+      ring-bell-function 'ignore
+      initial-scratch-message nil)
+
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 (setq use-short-answers t)
+
+;; delete selection, insert text
+(delete-selection-mode t)
+
+;; reload the file in buffer when they change on disk
+(global-auto-revert-mode t)
+
+;; delete trailing whitespace in all modes
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
+;;;; Scrolling
+
+(setq scroll-conservatively 10000)
+
+;;;; Windows & Frames
+
+(setq window-combination-resize t)
+
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
+;;;; Org
 
 ;; conservative indention for org src blocks
 (setq org-src-preserve-indentation t)
 
-;; allow windows to resize evenly when closed
-(setq window-combination-resize t)
+;;; UI & Appearance
 
-;; custom settings in a separate file and load the custom settings
-(setq-default custom-file (expand-file-name
-                           "custom.el"
-                           user-emacs-directory))
-(load custom-file :no-error-if-file-is-missing)
+;;;; Frame Defaults
 
-;; line numbers in left fringe
+(setq inhibit-splash-screen t)
+(menu-bar-mode -1)
+
+;;;; Theme
+
+(use-package catppuccin-theme
+  :config
+  (setq catppuccin-flavor 'latte)
+  (load-theme 'catppuccin t))
+
+;;; Completion Framework
+
+;;;; Vertico
+
+(use-package vertico
+  :init
+  (vertico-mode)
+  :config
+  (setq vertico-cycle t
+        vertico-count 20))
+
+;;;; Orderless
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+;;;; Marginalia
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;;;; Consult
+
+(use-package consult
+  :bind (("C-c k" . consult-ripgrep)
+         ("C-x C-r" . consult-recent-file)
+         ("C-s" . consult-line)
+         ("C-c C-r" . consult-history)
+         ("C-x b" . consult-buffer)
+         ("C-c o" . consult-outline))
+  :config
+  (setq consult-narrow-key "<"))
+
+;;;; Embark
+
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :demand t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+;;; Editor
+
+;;;; Line Numbers
+
 (use-package display-line-numbers
   :defer
-  :ensure nil  ; built-in
+  :ensure nil
   :custom
-    (display-line-numbers-width-start t)
+  (display-line-numbers-width-start t)
   :hook
-    (prog-mode . display-line-numbers-mode)
-    (tex-mode . display-line-numbers-mode)
-    (markdown-mode . display-line-numbers-mode)
-    (conf-mode . display-line-numbers-mode)
-    (org-mode . display-line-numbers-mode))
+  (prog-mode . display-line-numbers-mode)
+  (tex-mode . display-line-numbers-mode)
+  (markdown-mode . display-line-numbers-mode)
+  (conf-mode . display-line-numbers-mode)
+  (org-mode . display-line-numbers-mode))
 
-(use-package diff-hl
-  :ensure t
-  :init
-  (global-diff-hl-mode 1)
-  :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh))
+;;;; Parens & Delimiters
 
-;; smartparens mode
 (use-package smartparens
   :hook ((emacs-lisp-mode . smartparens-strict-mode)
          (org-mode . smartparens-mode))
   :config
   (require 'smartparens-config))
 
-;; Magit
+;;;; Navigation
+
+(use-package outline
+  :ensure nil
+  :hook (emacs-lisp-mode . outline-minor-mode)
+  :bind (:map outline-minor-mode-map
+              ("TAB" . outline-cycle)
+              ("<backtab>" . outline-cycle-buffer)))
+
+;;;; Windows & Buffers
+
+(use-package ibuffer
+  :ensure nil
+  :bind ("C-x C-b" . ibuffer))
+
+(use-package fullframe
+  :after magit
+  :config
+  (fullframe magit-status magit-mode-quit-window)
+  (fullframe ibuffer ibuffer-quit))
+
+;;; Project Management
+
+(use-package projectile
+  :defer t
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :bind (:map projectile-command-map
+              ("f" . consult-projectile-find-file)
+              ("p" . consult-projectile-switch-project)
+              ("b" . consult-projectile-switch-to-buffer))
+  :init
+  (setq projectile-completion-system 'default)
+  :config
+  (setq projectile-project-search-path '("~/projects/")
+        projectile-switch-project-action #'projectile-dired)
+  (projectile-mode +1))
+
+(use-package consult-projectile
+  :after (consult projectile))
+
+;;; Version Control
+
+;;;; Magit
+
 (use-package magit
-  :ensure t
   :bind
   (("C-x g" . magit-status)
    ("C-c C-a" . magit-commit-amend)
@@ -185,7 +272,6 @@
   (magit-repository-directories '(("~/projects" . 3)))
   (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-  ;; Visibility
   (magit-section-initial-visibility-alist
    '((stashes . hide)
      (unpulled . show)
@@ -194,7 +280,6 @@
      (recent . show)))
   (magit-status-show-hashes-in-headers t)
   (magit-log-section-commit-count 15)
-  ;; Performance
   (magit-revision-insert-related-refs nil)
   (magit-refresh-status-buffer nil)
   (magit-section-cache-visibility t)
@@ -205,82 +290,14 @@
     (let ((current-prefix-arg '(4)))
       (call-interactively #'magit-status))))
 
-;; Full frame buffers
-(use-package fullframe
-  :after magit
-  :config
-  (fullframe magit-status magit-mode-quit-window)
-  (fullframe ibuffer ibuffer-quit))
+;;;; Diff Highlighting
 
-;; Vertico - Vertical completion UI
-(use-package vertico
+(use-package diff-hl
   :init
-  (vertico-mode)
-  :config
-  (setq vertico-cycle t)  ; Cycle from bottom to top
-  (setq vertico-count 20)) ; Number of candidates to display
-
-;; Orderless - Flexible matching (replaces Ivy's fuzzy matching)
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
-
-;; Marginalia - Rich annotations in minibuffer
-(use-package marginalia
-  :init
-  (marginalia-mode))
-
-;; Consult - Enhanced commands (replaces Counsel)
-(use-package consult
-  :bind (("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
-         ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
-         ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
-         ("C-c C-r" . consult-history)
-         ("C-x b" . consult-buffer)
-         ("C-c o" . consult-outline))
-  :config
-  (setq consult-narrow-key "<"))
-
-;; Embark - Context actions on completion candidates
-(use-package embark
-  :bind (("C-." . embark-act)
-         ("C-;" . embark-dwim)))
-
-;; Embark-Consult integration
-(use-package embark-consult
-  :after (embark consult)
-  :demand t
+  (global-diff-hl-mode 1)
   :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-
-(use-package projectile
-  :defer t
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :bind
-  (:map projectile-command-map
-        ("f" . consult-projectile-find-file)
-        ("p" . consult-projectile-switch-project)
-        ("b" . consult-projectile-switch-to-buffer))
-  :init
-  (setq projectile-completion-system 'default)
-  :config
-  (setq projectile-project-search-path '("~/projects/"))
-  (setq projectile-switch-project-action #'projectile-dired)
-  (projectile-mode +1))
-
-;; Consult-Projectile (optional, for projectile integration)
-(use-package consult-projectile
-  :after (consult projectile))
-
-(use-package outline
-  :ensure nil
-  :hook (emacs-lisp-mode . outline-minor-mode)
-  :bind (:map outline-minor-mode-map
-              ("TAB" . outline-cycle)
-              ("<backtab>" . outline-cycle-buffer)))
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;;; Finalization
 
