@@ -673,6 +673,37 @@
 
 ;;; Productivity
 
+;;;; Org Mode
+
+(use-package org
+  :ensure nil
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture))
+  :config
+  (setq org-directory "~/Dropbox/Notes/"
+        org-default-notes-file (concat org-directory "inbox.org")
+        org-log-done 'time
+        org-log-into-drawer t
+        org-deadline-warning-days 7
+        org-agenda-span 'day)
+
+  ;; TODO states
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELLED(c@)")))
+
+  ;; Agenda files
+  (setq org-agenda-files (list org-directory))
+
+  ;; Refile to headings in agenda files
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil)
+
+  ;; Simple capture template
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
+           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"))))
+
 ;;;; Org Export
 
 (use-package ox-hugo
