@@ -1,4 +1,4 @@
-;; init.el --- My personal Emacs configuration. -*- lexical-binding: t -*-
+;;; init.el --- My personal Emacs configuration. -*- lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2015 - 2026
 ;;
@@ -31,9 +31,7 @@
 
 ;;; Code:
 
-;;----------------------------------------------------------------------------
-;; Bootstrapping
-;;----------------------------------------------------------------------------
+;;; Bootstrapping
 
 (defconst emacs-start-time (current-time))
 
@@ -48,9 +46,7 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-;;----------------------------------------------------------------------------
-;; Packaging
-;;----------------------------------------------------------------------------
+;;; Packaging
 
 (require 'package)
 (setq load-prefer-newer t
@@ -68,8 +64,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq-default use-package-verbose nil ; Don't report loading details
-              use-package-expand-minimally t  ; make the expanded code as minimal as possible
+(setq-default use-package-verbose nil
+              use-package-expand-minimally t
               use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
@@ -78,85 +74,73 @@
 (setq package-check-signature 'allow-unsigned)
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
-;;----------------------------------------------------------------------------
-;; Core
-;;----------------------------------------------------------------------------
+;;; Core
+
+;;;; Performance
+
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024))
+
+;; reset GC threshold after startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold 16777216)))
+
+;; Scroll performance
+(setq fast-but-imprecise-scrolling t
+      redisplay-skip-fontification-on-input t
+      inhibit-compacting-font-caches t
+      auto-window-vscroll nil
+      jit-lock-defer-time 0.05)
+
+;; try to improve handling of long lines
+(setq bidi-inhibit-bpa t)
+
+;; protect against performance issues with minified files
+(global-so-long-mode 1)
 
 ;; native compile settings
 (when (featurep 'native-compile)
   (setq native-comp-async-report-warnings-errors nil))
 
-;; set encoding
-(prefer-coding-system 'utf-8)
+;; Warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
 
-;; and tell emacs to play nice with encoding
+;;;; Encoding
+
+(prefer-coding-system 'utf-8)
 (define-coding-system-alias 'UTF-8 'utf-8)
 (define-coding-system-alias 'utf8 'utf-8)
 
-;; save nothing
+;;;; Files & Backups
+
 (setq auto-save-default nil
       create-lockfiles nil)
 
-;; no splash screen
-(setq inhibit-splash-screen t)
+;; Write temp files to directory to not clutter the filesystem
+(defvar user-temporary-file-directory
+  (concat temporary-file-directory user-login-name "/"))
+(make-directory user-temporary-file-directory t)
+(setq backup-by-copying t)
+(with-eval-after-load 'tramp
+  (add-to-list 'backup-directory-alist
+               `(,tramp-file-name-regexp nil)))
+(setq backup-directory-alist
+      `(("." . ,user-temporary-file-directory)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
 
-;; no message on startup
-(setq initial-scratch-message nil)
-
-;; no menu bar
-(menu-bar-mode -1)
-
-;; no toolbar
-(when (functionp 'tool-bar-mode)
-  (tool-bar-mode -1))  ;; no toolbar
-
-;; disable scroll bars
-(if window-system
-    (scroll-bar-mode -1))
-
-(setq-default cursor-type 'bar)
-
-(eval-when-compile
-  (require 'cl-lib))
-(require 'bind-key)
-
-;; Reduce the frequency of garbage collection by making it happen on
-;; each 100MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
-;; reset GC threshold after startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold 16777216))) ; 16MB
-
-;; turn on visual line mode
-;; (global-visual-line-mode t)
-(add-hook 'text-mode-hook #'visual-line-mode)
-;; (add-hook 'org-mode-hook #'visual-line-mode)
-
-;; set paths from shell
-(use-package exec-path-from-shell
-  :defer 1  ; load after 1 second of idle time
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
-;; Start up emacs server
-(when (display-graphic-p)
-  (require 'server)
-  (message "Starting up server...")
-  (unless (server-running-p)
-    (server-start)))
+;; custom settings in a separate file
+(setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file :no-error-if-file-is-missing)
 
 (use-package recentf
-  :ensure nil  ; builtin
+  :ensure nil
   :config
   (setq recentf-max-saved-items 250
         recentf-max-menu-items 15
-        ;; Cleanup recent files only when Emacs is idle, but not when the mode
-        ;; is enabled, because that unnecessarily slows down Emacs. My Emacs
-        ;; idles often enough to have the recent files list clean up regularly
         recentf-auto-cleanup 300
         recentf-exclude (list "^/var/folders\\.*"
                               "COMMIT_EDITMSG\\'"
@@ -168,233 +152,344 @@
   (recentf-mode))
 
 (use-package saveplace
-  :ensure nil  ; builtin
+  :ensure nil
   :init
   (setq save-place-file (expand-file-name "saved-places" user-emacs-directory))
   :config
   (save-place-mode t))
 
-;; Automatically kill running processes on exit
-(setq confirm-kill-processes nil)
+;; desktop save mode
+(desktop-save-mode t)
+(setq desktop-restore-eager 5
+      desktop-save t)
 
-;; require diminish mode for some packages
- (use-package diminish
-    :ensure t
-    :defer t)
+;;;; Scrolling
 
-;; Warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
+(setq scroll-preserve-screen-position t
+      mouse-wheel-scroll-amount '(1 ((shift) . 1))
+      mouse-wheel-progressive-speed nil
+      mouse-wheel-follow-mouse t
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-margin 3)
 
-;; M-q
-(setq fill-column 80)
-
-;; no word wrap
-(setq-default truncate-lines t)
-
-(setq-default line-spacing 4)
-
-;; show line number in mode line
-(line-number-mode 1)
-
-;; show column number in the mode line
-(column-number-mode 1)
-
-;; no tabs
-(setq-default indent-tabs-mode nil)
-
-(setq ring-bell-function 'ignore)
-
-;; show extra whitespace
-(setq show-trailing-whitespace t)
-
-;; ensure last line is a return
-(setq require-final-newline t)
-
-;; show file size
-(size-indication-mode t)
-
-;; make sure looking at most recent changes
-(global-auto-revert-mode t)
-
-;; allow windows to resize evenly when closed
-(setq window-combination-resize t)
-
-;;keep cursor at same position when scrolling
-(setq scroll-preserve-screen-position t)
-
-;; for smoother scrolling
 (when (>= emacs-major-version 29)
   (pixel-scroll-precision-mode 1))
 
-;; scroll one line at a time
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-(setq scroll-conservatively 10000)
-(setq scroll-margin 3)
+;;;; Editing Defaults
 
-;; Scroll performance
-(setq fast-but-imprecise-scrolling t)
-(setq redisplay-skip-fontification-on-input t)
-(setq inhibit-compacting-font-caches t)
-(setq auto-window-vscroll nil)
-(setq jit-lock-defer-time 0.05)
+(setq-default indent-tabs-mode nil
+              truncate-lines t
+              line-spacing 4
+              cursor-type 'bar)
 
-;; open with in original frame, not new window
-(setq ns-pop-up-frames nil)
-
-;; sentences end with single space
-(setq sentence-end-double-space nil)
-
-;; useful for camelCase
-(add-hook 'prog-mode-hook #'subword-mode)
-
-;; delete selection, insert text
-(delete-selection-mode t)
-
-;; consider all themes as safe
-(setq custom-safe-themes t)
-
-;; custom settings in a separate file and load the custom settings
-(setq-default custom-file (expand-file-name
-                             "custom.el"
-                             user-emacs-directory))
-(load custom-file :no-error-if-file-is-missing)
-
-;; prevent active process query on quit
-(defun my/no-query-kill-emacs (orig-fun &rest args)
-  "Prevent active process query on quit."
-  (cl-letf (((symbol-function 'process-list) (lambda () nil)))
-    (apply orig-fun args)))
-(advice-add 'save-buffers-kill-emacs :around #'my/no-query-kill-emacs)
-
-;; instantly display current key sequence in mini buffer
-(setq echo-keystrokes 0.02)
-
-;; desktop save mode
-(desktop-save-mode t)
-(setq desktop-restore-eager 5)
-(setq desktop-save t)
-
-(setq initial-major-mode 'emacs-lisp-mode)
-
-;; improve filename completion
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
-(mapc (lambda (x)
-        (add-to-list 'completion-ignored-extensions x))
-      '(".gz" ".pyc" ".elc" ".exe"))
-
-;; Suppress warnings for functions redefined with defadvice
-(setq ad-redefinition-action 'accept)
-
-(setq tab-always-indent 'complete)
-
-;; try to improve handling of long lines
-(setq bidi-inhibit-bpa t)
-
-;; delete trailing whitespace in all modes
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-
-;; javascript
-(setq js-indent-level 2)
-
-;; css
-(setq css-indent-offset 2)
+(setq fill-column 80
+      tab-always-indent 'complete
+      require-final-newline t
+      show-trailing-whitespace t
+      sentence-end-double-space nil
+      ring-bell-function 'ignore
+      echo-keystrokes 0.02
+      initial-major-mode 'emacs-lisp-mode
+      initial-scratch-message nil)
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
 (setq use-short-answers t)
 
-;; conservative indention for org src blocks
-;; (setq org-src-preserve-indentation t)
+;; show line and column in mode line
+(line-number-mode 1)
+(column-number-mode 1)
+(size-indication-mode t)
 
-;; protect against performance issues with minified files
-(global-so-long-mode 1)
+;; delete selection, insert text
+(delete-selection-mode t)
 
-;; variable pitch mode
+;; make sure looking at most recent changes
+(global-auto-revert-mode t)
+
+;; delete trailing whitespace in all modes
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
+;; useful for camelCase
+(add-hook 'prog-mode-hook #'subword-mode)
+
+;; turn on visual line mode for text
+(add-hook 'text-mode-hook #'visual-line-mode)
+
+;; variable pitch mode for text
 (add-hook 'text-mode-hook #'variable-pitch-mode)
 
-;; Reduce the clutter in the fringes; we'd like to reserve that space for more
-;; useful information, like git-gutter and flycheck.
+;;;; Completion Behavior
+
+(setq read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t)
+(mapc (lambda (x)
+        (add-to-list 'completion-ignored-extensions x))
+      '(".gz" ".pyc" ".elc" ".exe"))
+
+;;;; Windows & Frames
+
+(setq window-combination-resize t
+      confirm-kill-processes nil)
+
+;; consider all themes as safe
+(setq custom-safe-themes t)
+
+;; Suppress warnings for functions redefined with defadvice
+(setq ad-redefinition-action 'accept)
+
+;;;; Language Defaults
+
+(setq js-indent-level 2
+      css-indent-offset 2)
+
+;;;; Server
+
+(when (display-graphic-p)
+  (require 'server)
+  (message "Starting up server...")
+  (unless (server-running-p)
+    (server-start)))
+
+;;;; Required Libraries
+
+(eval-when-compile
+  (require 'cl-lib))
+(require 'bind-key)
+
+(use-package diminish
+  :defer t)
+
+(use-package exec-path-from-shell
+  :defer 1
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
+;;; macOS Specific
+
+(when (eq system-type 'darwin)
+  (setq mac-option-modifier 'meta
+        mac-command-modifier 'super
+        mac-allow-anti-aliasing t
+        ns-pop-up-frames nil)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . light)))
+
+;;; UI & Appearance
+
+;;;; Frame Defaults
+
+(setq inhibit-splash-screen t)
+(menu-bar-mode -1)
+(when (functionp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when window-system
+  (scroll-bar-mode -1))
+
+;; Reduce the clutter in the fringes
 (setq indicate-buffer-boundaries nil
       indicate-empty-lines nil)
 
-;; Doesn't exist in terminal Emacs, so we define it to prevent void-function
-;; errors emitted from packages use it without checking for it first.
+;; Doesn't exist in terminal Emacs
 (unless (fboundp 'define-fringe-bitmap)
   (fset 'define-fringe-bitmap #'ignore))
 
-;;----------------------------------------------------------------------------
-;; UI & Appearance
-;;----------------------------------------------------------------------------
-
-;; nice fonts in OS X
-(setq mac-allow-anti-aliasing t)
+;;;; Fonts
 
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
 
+;;;; Icons
+
 (use-package nerd-icons)
 
+;;;; Modeline
+
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1)
   :config
-  (setq doom-modeline-height 30)
-  (setq doom-modeline-indent-info t))
+  (setq doom-modeline-height 30
+        doom-modeline-indent-info t))
+
+;;;; Theme
 
 (use-package catppuccin-theme
-  :ensure t
   :config
-  ;; 'latte, 'macchiato, or 'mocha
   (setq catppuccin-flavor 'latte)
   (load-theme 'catppuccin t))
 
-;;----------------------------------------------------------------------------
-;; Editor
-;;----------------------------------------------------------------------------
+;;; Completion Framework
+
+;;;; Vertico
+
+(use-package vertico
+  :init
+  (vertico-mode)
+  :config
+  (setq vertico-cycle t
+        vertico-count 20))
+
+;;;; Orderless
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+;;;; Marginalia
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
+
+;;;; Consult
+
+(use-package consult
+  :bind (("C-c k" . consult-ripgrep)
+         ("C-x C-r" . consult-recent-file)
+         ("C-s" . consult-line)
+         ("C-c C-r" . consult-history)
+         ("C-x b" . consult-buffer)
+         ("C-c o" . consult-outline))
+  :config
+  (setq consult-narrow-key "<"))
+
+;;;; Embark
+
+(use-package embark
+  :bind (("C-." . embark-act)
+         ("C-;" . embark-dwim)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :demand t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+;;; Editor
+
+;;;; Line Numbers
 
 (use-package display-line-numbers
   :defer
-  :ensure nil  ; builtin
+  :ensure nil
   :custom
-    (display-line-numbers-width-start t)
+  (display-line-numbers-width-start t)
   :hook
-    (prog-mode . display-line-numbers-mode)
-    (tex-mode . display-line-numbers-mode)
-    (markdown-mode . display-line-numbers-mode)
-    (conf-mode . display-line-numbers-mode)
-    (org-mode . display-line-numbers-mode))
+  (prog-mode . display-line-numbers-mode)
+  (tex-mode . display-line-numbers-mode)
+  (markdown-mode . display-line-numbers-mode)
+  (conf-mode . display-line-numbers-mode)
+  (org-mode . display-line-numbers-mode))
+
+;;;; Parens & Delimiters
 
 (use-package paren
-  :ensure nil  ; built-in
+  :ensure nil
   :config
   (show-paren-mode t))
 
+(use-package smartparens
+  :hook ((emacs-lisp-mode . smartparens-strict-mode)
+         (org-mode . smartparens-mode))
+  :config
+  (require 'smartparens-config))
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;;;; Whitespace
+
+(use-package whitespace
+  :ensure nil
+  :hook (prog-mode . whitespace-mode)
+  :config
+  (setq whitespace-action '(auto-cleanup)
+        whitespace-style '(trailing space-before-tab indentation empty space-after-tab)))
+
+;;;; Highlighting
+
+(use-package hl-line
+  :hook (prog-mode . hl-line-mode)
+  :config
+  (setq hl-line-sticky-flag nil
+        global-hl-line-sticky-flag nil))
+
+(use-package volatile-highlights
+  :config
+  (volatile-highlights-mode t))
+
+;;;; Selection & Regions
+
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+
+(use-package easy-kill
+  :bind ([remap kill-ring-save] . easy-kill))
+
+;;;; Navigation
+
+(use-package outline
+  :ensure nil
+  :hook (emacs-lisp-mode . outline-minor-mode)
+  :bind (:map outline-minor-mode-map
+              ("TAB" . outline-cycle)
+              ("<backtab>" . outline-cycle-buffer)))
+
+(use-package beginend
+  :config
+  (beginend-global-mode))
+
+(use-package goto-chg
+  :bind
+  ("C-c b ," . goto-last-change)
+  ("C-c b ." . goto-last-change-reverse))
+
+;;;; Text Manipulation
+
+(use-package move-text
+  :bind
+  (("M-p" . move-text-up)
+   ("M-n" . move-text-down)))
+
+(use-package smart-comment
+  :bind ("s-/" . smart-comment))
+
+(use-package aggressive-indent
+  :hook (clojure-mode . aggressive-indent-mode))
+
+;;;; Folding
+
+(use-package origami
+  :hook (prog-mode . origami-mode)
+  :bind
+  ("s-[" . origami-close-node-recursively)
+  ("s-]" . origami-open-node-recursively)
+  ("M-[" . origami-close-all-nodes)
+  ("M-]" . origami-open-all-nodes))
+
+;;;; Multiple Cursors
+
+(use-package multiple-cursors
+  :bind ("C-c m c" . mc/edit-lines))
+
+;;;; Windows & Buffers
+
 (use-package popwin
-  :ensure t
   :config
   (popwin-mode t))
 
-(use-package whitespace
-  :ensure nil  ; builtin
-  :hook
-  (prog-mode . whitespace-mode)
+(use-package fullframe
   :config
-  (setq whitespace-action '(auto-cleanup))
-  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)))
-
-(use-package aggressive-indent
-  :ensure t
-  :hook (clojure-mode . aggressive-indent-mode))
+  (fullframe magit-status magit-mode-quit-window)
+  (fullframe ibuffer ibuffer-quit))
 
 (use-package ibuffer
-  :ensure nil  ; builtin
-  :bind
-  ("C-x C-b" . ibuffer))
+  :ensure nil
+  :bind ("C-x C-b" . ibuffer))
 
 (use-package ibuffer-vc
-  :ensure t
   :defer t
   :init
   (add-hook 'ibuffer-hook
@@ -403,188 +498,32 @@
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic)))))
 
-(use-package beginend
-  :ensure t
-  :config
-  (beginend-global-mode))
-
-(use-package expand-region
-  :ensure t
-  :bind
-  ("C-=" . er/expand-region))
-
-(use-package fullframe
-  :ensure t
-  :config
-  (fullframe magit-status magit-mode-quit-window)
-  (fullframe ibuffer ibuffer-quit))
+;;;; Search
 
 (use-package deadgrep
-  :ensure t
-  :bind
-  ("s-F" . deadgrep))
+  :bind ("s-F" . deadgrep))
 
-(use-package multiple-cursors
-  :ensure t
-  :bind
-  ("C-c m c" . mc/edit-lines))
-
-;; narrow dired to match filter
-(use-package dired-narrow
-  :ensure t
-  :bind
-  (:map dired-mode-map
-        ("/" . dired-narrow)))
-
-(use-package origami
-  :ensure t
-  :hook
-  (prog-mode . origami-mode)
-  :bind
-  ("s-[" . origami-close-node-recursively)
-  ("s-]" . origami-open-node-recursively)
-  ("M-[" . origami-close-all-nodes)
-  ("M-]" . origami-open-all-nodes))
-
-(use-package goto-chg
-  :ensure t
-  :bind
-  ("C-c b ," . goto-last-change)
-  ("C-c b ." . goto-last-change-reverse))
-
-(use-package move-text
-  :ensure t
-  :bind
-  (("M-p" . move-text-up)
-   ("M-n" . move-text-down)))
-
-(use-package hl-line
-  :hook (prog-mode . hl-line-mode)
-  :config
-  ;; Doesn't seem to play nice in emacs 25+
-  (setq hl-line-sticky-flag nil
-        global-hl-line-sticky-flag nil))
-
-(use-package volatile-highlights
-  :ensure t
-  :config
-  (volatile-highlights-mode t))
-
-(use-package easy-kill
-  :bind ([remap kill-ring-save] . easy-kill))
-
-(use-package smart-comment
-  :ensure t
-  :bind
-  ("s-/" . smart-comment))
-
-(use-package smartparens
-  :ensure t
-  :hook ((emacs-lisp-mode . smartparens-strict-mode)
-         (org-mode . smartparens-mode))
-  :config
-  (require 'smartparens-config))
-
-(use-package vertico
-  :init
-  (vertico-mode)
-  :config
-  (setq vertico-cycle t)  ; Cycle from bottom to top
-  (setq vertico-count 20)) ; Number of candidates to display
-
-;; Orderless - Flexible matching (replaces Ivy's fuzzy matching)
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
-
-;; Marginalia - Rich annotations in minibuffer
-(use-package marginalia
-  :init
-  (marginalia-mode))
-
-;; Consult - Enhanced commands (replaces Counsel)
-(use-package consult
-  :bind (("C-c k" . consult-ripgrep)  ; Replaces counsel-ag
-         ("C-x C-r" . consult-recent-file)  ; Replaces counsel-recentf
-         ("C-s" . consult-line)  ; Replaces counsel-grep-or-swiper
-         ("C-c C-r" . consult-history)
-         ("C-x b" . consult-buffer))
-  :config
-  (setq consult-narrow-key "<"))
-
-;; Embark - Context actions on completion candidates
-(use-package embark
-  :bind (("C-." . embark-act)
-         ("C-;" . embark-dwim)))
-
-;; Embark-Consult integration
-(use-package embark-consult
-  :after (embark consult)
-  :demand t
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+;;; Project Management
 
 (use-package projectile
   :defer t
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+  :bind-keymap ("C-c p" . projectile-command-map)
   :init
-  (setq projectile-completion-system 'default)  ; Uses vertico via completing-read
+  (setq projectile-completion-system 'default)
   :config
-  (setq projectile-project-search-path '("~/projects/"))
-  (setq projectile-switch-project-action #'projectile-dired)
+  (setq projectile-project-search-path '("~/projects/")
+        projectile-switch-project-action #'projectile-dired)
   (projectile-mode +1))
 
-;; Consult-Projectile (optional, for projectile integration)
 (use-package consult-projectile
   :after (consult projectile)
   :bind (("s-t" . consult-projectile-find-file)))
 
-;;----------------------------------------------------------------------------
-;; Programming Modes
-;;----------------------------------------------------------------------------
+;;; Version Control
 
-(use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-(use-package flycheck
-  :ensure t
-  :commands
-  (flycheck-mode flycheck-list-errors flycheck-buffer)
-  :defer 2
-  :init
-  (setq flycheck-indication-mode 'right-fringe)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-highlighting-mode 'symbols)
-  (setq flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint))
-  :config
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
-  (global-flycheck-mode 1))
-
-(use-package flycheck-pos-tip
-  :ensure t
-  :after flycheck
-  :config
-  (setq flycheck-pos-tip-timeout 10)
-  (setq flycheck-display-errors-delay 0.5)
-  (flycheck-pos-tip-mode +1))
-
-(use-package git-messenger
-  :ensure t
-  :defer t
-  :bind
-  ("C-x v m" . git-messenger:popup-message))
-
-(use-package github-browse-file
-  :ensure t
-  :defer t)
+;;;; Magit
 
 (use-package magit
-  :ensure t
   :bind
   (("C-x g" . magit-status)
    ("C-c C-a" . magit-commit-amend)
@@ -595,14 +534,12 @@
   (magit-repository-directories '(("~/projects" . 3)))
   (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-log-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-  ;; Visibility
   (magit-section-initial-visibility-alist
    '((stashes . hide)
      (untracked . show)
      (unpulled . show)
      (unpushed . show)
      (recent . show)))
-  ;; Performance
   (magit-revision-insert-related-refs nil)
   (magit-refresh-status-buffer nil)
   (magit-section-cache-visibility t)
@@ -620,74 +557,92 @@
 (use-package magit-git-toolbelt
   :load-path "lisp/")
 
-(defvar +vc-gutter-default-style t
-  "If non-nil, enable the default look of the vc gutter.
-This means subtle thin bitmaps on the left, an arrow bitmap for flycheck, and
-flycheck indicators moved to the right fringe.")
+;;;; Git Gutter
 
-;; subtle diff indicators in the fringe
+(defvar +vc-gutter-default-style t
+  "If non-nil, enable the default look of the vc gutter.")
+
 (use-package git-gutter-fringe
-  :ensure t
   :config
   (when +vc-gutter-default-style
-    ;; standardize default fringe width
     (if (fboundp 'fringe-mode) (fringe-mode '4))
-
-    ;; places the git gutter outside the margins.
     (setq-default fringes-outside-margins t
-              highlight-nonselected-windows nil)
-    ;; thin fringe bitmaps
-    ;; thin green vertical line, 3px wide on left side
+                  highlight-nonselected-windows nil)
     (define-fringe-bitmap 'git-gutter-fr:added [224]
       nil nil '(center repeated))
-    ;; thin red vertical line, 3px wide on left side
     (define-fringe-bitmap 'git-gutter-fr:modified [224]
       nil nil '(center repeated))
-    ;; red triangular wedge pointing down
     (define-fringe-bitmap 'git-gutter-fr:deleted [128 192 224 240]
       nil nil 'bottom)))
 
 (use-package git-gutter
   :after git-gutter-fringe
-  :hook (focus-in . git-gutter:update-all-windows)  ; this can cause a slowdown for big changesets
+  :hook (focus-in . git-gutter:update-all-windows)
   :config
   (global-git-gutter-mode +1))
 
+;;;; Git Utilities
+
+(use-package git-messenger
+  :defer t
+  :bind ("C-x v m" . git-messenger:popup-message))
+
+(use-package github-browse-file
+  :defer t)
+
+;;; Programming Languages
+
+;;;; Syntax Checking
+
+(use-package flycheck
+  :commands (flycheck-mode flycheck-list-errors flycheck-buffer)
+  :defer 2
+  :init
+  (setq flycheck-indication-mode 'right-fringe
+        flycheck-check-syntax-automatically '(save mode-enabled)
+        flycheck-highlighting-mode 'symbols
+        flycheck-disabled-checkers '(emacs-lisp emacs-lisp-checkdoc make javascript-jshint))
+  :config
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+  (global-flycheck-mode 1))
+
+(use-package flycheck-pos-tip
+  :after flycheck
+  :config
+  (setq flycheck-pos-tip-timeout 10
+        flycheck-display-errors-delay 0.5)
+  (flycheck-pos-tip-mode +1))
+
+;;;; Snippets
+
 (use-package yasnippet
-  :ensure t
   :config
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :ensure t
   :after yasnippet)
 
+;;;; Python
+
 (use-package elpy
-  :ensure t
   :defer t
   :init (advice-add 'python-mode :before 'elpy-enable)
   :config
   (setq elpy-rpc-python-command "python3"))
 
 (use-package jinja2-mode)
-(use-package toml-mode)
-(use-package yaml-mode)
-(use-package make-mode :ensure nil)
-(use-package sh-script :ensure nil)
 
-(use-package fish-mode
-  :defer t
-  :hook
-  (fish-mode . (lambda ()
-                 (add-hook 'before-save-hook #'fish_indent-before-save nil t))))
+;;;; Go
 
 (use-package go-mode)
 
+;;;; Web
+
 (use-package web-mode
-  :ensure t
   :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2)
   (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -697,21 +652,36 @@ flycheck indicators moved to the right fringe.")
   (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode)))
 
-(use-package markdown-mode)
-
 (use-package json-mode)
 
-;;----------------------------------------------------------------------------
-;; Productivity
-;;----------------------------------------------------------------------------
+;;;; Markup
+
+(use-package markdown-mode)
+(use-package yaml-mode)
+(use-package toml-mode)
+
+;;;; Shell & Config
+
+(use-package make-mode :ensure nil)
+(use-package sh-script :ensure nil)
+
+(use-package fish-mode
+  :defer t
+  :hook
+  (fish-mode . (lambda ()
+                 (add-hook 'before-save-hook #'fish_indent-before-save nil t))))
+
+;;; Productivity
+
+;;;; Org Export
 
 (use-package ox-hugo
-  :ensure t
   :after ox)
 
+;;;; Denote
+
 (use-package denote
-  :hook
-  (dired-mode . denote-dired-mode)
+  :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c n n" . denote)
    ("C-c n r" . denote-rename-file)
@@ -720,70 +690,51 @@ flycheck indicators moved to the right fringe.")
    ("C-c n d" . denote-dired)
    ("C-c n g" . denote-grep))
   :config
-  (setq denote-directory (expand-file-name "~/Dropbox/Notes/"))
-
-  ;; Automatically rename Denote buffers when opening them so that
-  ;; instead of their long file name they have, for example, a literal
-  ;; "[D]" followed by the file's title.  Read the doc string of
-  ;; `denote-rename-buffer-format' for how to modify this.
-  (denote-rename-buffer-mode 1)
-
-  (setq denote-sort-keywords t))
+  (setq denote-directory (expand-file-name "~/Dropbox/Notes/")
+        denote-sort-keywords t)
+  (denote-rename-buffer-mode 1))
 
 (use-package consult-denote
-  :ensure t
   :after (denote consult)
   :bind
   (("C-c n s" . consult-denote-find)
    ("C-c n g" . consult-denote-grep)))
 
-;;----------------------------------------------------------------------------
-;; Functions
-;;----------------------------------------------------------------------------
+;;;; Dired
 
-(defun reload-config()
-  "Reload Emacs configuration"
-  (interactive)
-  (load-file "~/.emacs.d/init.el"))
+(use-package dired-narrow
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
 
-;; smarter navigation to the beginning of a line
+;;; Custom Functions
+
+;;;; Navigation
+
 (defun smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
-     Move point to the first non-whitespace character on this line.
-     If point is already there, move to the beginning of the line.
-     Effectively toggle between the first non-whitespace character and
-     the beginning of the line.
-     If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-     point reaches the beginning or end of the buffer, stop there."
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
   (interactive "^p")
   (setq arg (or arg 1))
-
-  ;; Move lines first
   (when (/= arg 1)
     (let ((line-move-visual nil))
       (forward-line (1- arg))))
-
   (let ((orig-point (point)))
     (back-to-indentation)
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
 
-;; Write temp files to directory to not clutter the filesystem
-(defvar user-temporary-file-directory
-  (concat temporary-file-directory user-login-name "/"))
-(make-directory user-temporary-file-directory t)
-(setq backup-by-copying t)
-(with-eval-after-load 'tramp
-  (add-to-list 'backup-directory-alist
-               `(,tramp-file-name-regexp nil)))
-(setq backup-directory-alist
-      `(("." . ,user-temporary-file-directory)))
-(setq auto-save-list-file-prefix
-      (concat user-temporary-file-directory ".auto-saves-"))
-(setq auto-save-file-name-transforms
-      `((".*" ,user-temporary-file-directory t)))
+(defun switch-to-previous-buffer ()
+  "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-;; swaps windows
+;;;; Windows
+
 (defun transpose-windows ()
   "If you have two windows, it swaps them."
   (interactive)
@@ -796,47 +747,6 @@ flycheck indicators moved to the right fringe.")
     (switch-to-buffer-other-window this-buffer)
     (other-window -1)))
 
-;; Convert word DOuble CApitals to Single Capitals
-(defun dcaps-to-scaps ()
-  "Convert word in DOuble CApitals to Single Capitals."
-  (interactive)
-  (and (= ?w (char-syntax (char-before)))
-       (save-excursion
-         (and (if (called-interactively-p 1)
-                  (skip-syntax-backward "w")
-                (= -3 (skip-syntax-backward "w")))
-              (let (case-fold-search)
-                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
-              (capitalize-word 1)))))
-
-(add-hook 'post-self-insert-hook #'dcaps-to-scaps)
-
-;; Copy the buffer filename to the kill ring
-(defun copy-buffer-file-name-as-kill (choice)
-  "Copy the buffer-file-name to the kill-ring."
-  (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
-  (let ((new-kill-string)
-        (name (if (eq major-mode 'dired-mode)
-                  (dired-get-filename)
-                (or (buffer-file-name) ""))))
-    (cond ((eq choice ?f)
-           (setq new-kill-string name))
-          ((eq choice ?p)
-           (setq new-kill-string (file-name-directory name)))
-          ((eq choice ?n)
-           (setq new-kill-string (file-name-nondirectory name)))
-          (t (message "Quit")))
-    (when new-kill-string
-      (message "%s copied" new-kill-string)
-      (kill-new new-kill-string))))
-
-;; toggle between most recent buffers
-(defun switch-to-previous-buffer ()
-  "Switch to the most recent buffer.  Toggle back and forth between the two most recent buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-;; toggle window split
 (defun toggle-window-split ()
   (interactive)
   (if (= (count-windows) 2)
@@ -862,8 +772,82 @@ flycheck indicators moved to the right fringe.")
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
-;; When popping the mark, continue popping until the cursor actually moves
-;; Also, if the last command was a copy - skip past all the expand-region cruft.
+;;;; Text Manipulation
+
+(defun dcaps-to-scaps ()
+  "Convert word in DOuble CApitals to Single Capitals."
+  (interactive)
+  (and (= ?w (char-syntax (char-before)))
+       (save-excursion
+         (and (if (called-interactively-p 1)
+                  (skip-syntax-backward "w")
+                (= -3 (skip-syntax-backward "w")))
+              (let (case-fold-search)
+                (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+              (capitalize-word 1)))))
+
+(add-hook 'post-self-insert-hook #'dcaps-to-scaps)
+
+(defun copy-buffer-file-name-as-kill (choice)
+  "Copy the buffer-file-name to the kill-ring."
+  (interactive "cCopy Buffer Name (f) full, (p) path, (n) name")
+  (let ((new-kill-string)
+        (name (if (eq major-mode 'dired-mode)
+                  (dired-get-filename)
+                (or (buffer-file-name) ""))))
+    (cond ((eq choice ?f)
+           (setq new-kill-string name))
+          ((eq choice ?p)
+           (setq new-kill-string (file-name-directory name)))
+          ((eq choice ?n)
+           (setq new-kill-string (file-name-nondirectory name)))
+          (t (message "Quit")))
+    (when new-kill-string
+      (message "%s copied" new-kill-string)
+      (kill-new new-kill-string))))
+
+;;;; Utilities
+
+(defun reload-config()
+  "Reload Emacs configuration"
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
+
+(defun stop-using-minibuffer ()
+  "Kill the minibuffer when you use the mouse in another window."
+  (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+    (abort-recursive-edit)))
+
+(add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
+
+;;;; Dired
+
+(defun mydired-sort ()
+  "Sort dired listings with directories first."
+  (save-excursion
+    (let (buffer-read-only)
+      (forward-line 2)
+      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max)))
+    (set-buffer-modified-p nil)))
+
+(advice-add 'dired-readin :after #'mydired-sort)
+
+;;;; Org
+
+(defun my-org-config/after-org-archive ()
+  (org-save-all-org-buffers))
+
+(add-hook 'org-archive-hook 'my-org-config/after-org-archive)
+
+;;; Advice
+
+(defun my/no-query-kill-emacs (orig-fun &rest args)
+  "Prevent active process query on quit."
+  (cl-letf (((symbol-function 'process-list) (lambda () nil)))
+    (apply orig-fun args)))
+
+(advice-add 'save-buffers-kill-emacs :around #'my/no-query-kill-emacs)
+
 (defun my/pop-to-mark-ensure-new-position (orig-fun &rest args)
   "Continue popping until cursor moves. Skip expand-region cruft after copy."
   (let ((p (point)))
@@ -871,41 +855,17 @@ flycheck indicators moved to the right fringe.")
       (dotimes (_ 3) (apply orig-fun args)))
     (dotimes (_ 10)
       (when (= p (point)) (apply orig-fun args)))))
+
 (advice-add 'pop-to-mark-command :around #'my/pop-to-mark-ensure-new-position)
 
 (setq set-mark-command-repeat-pop t)
 
-;; Sort directories first in dired-mode
-(defun mydired-sort ()
-  "Sort dired listings with directories first."
-  (save-excursion
-    (let (buffer-read-only)
-      (forward-line 2) ;; beyond dir. header
-      (sort-regexp-fields t "^.*$" "[ ]*." (point) (point-max)))
-    (set-buffer-modified-p nil)))
-;; sort dired listings with directories first before adding marks
-(advice-add 'dired-readin :after #'mydired-sort)
-
-;; Kill the minibuffer when you use the mouse in another window
-;; http://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
-(defun stop-using-minibuffer ()
-  "kill the minibuffer"
-  (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
-    (abort-recursive-edit)))
-(add-hook 'mouse-leave-buffer-hook #'stop-using-minibuffer)
-
-(defun my-org-config/after-org-archive ()
-  (org-save-all-org-buffers))
-(add-hook 'org-archive-hook 'my-org-config/after-org-archive)
-
-;;----------------------------------------------------------------------------
-;; Key Bindings
-;;----------------------------------------------------------------------------
+;;; Key Bindings
 
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
-;; duplicate the current line
+;; duplicate line or region
 (global-set-key (kbd "C-c d") #'duplicate-dwim)
 
 ;; switch to previous buffer
@@ -933,21 +893,7 @@ flycheck indicators moved to the right fringe.")
 ;; zap to char
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 
-;;----------------------------------------------------------------------------
-;; MacOS Specific
-;;----------------------------------------------------------------------------
-
-(when (eq system-type 'darwin)
-  (setq mac-option-modifier 'meta
-        mac-command-modifier 'super
-        mac-allow-anti-aliasing t
-        ns-pop-up-frames nil)
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . light)))
-
-;;----------------------------------------------------------------------------
-;; Finalization
-;;----------------------------------------------------------------------------
+;;; Finalization
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
