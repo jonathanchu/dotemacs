@@ -680,6 +680,11 @@
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c i" . org-time-stamp-inactive))
+  :custom-face
+  (org-table ((t (:inherit fixed-pitch))))
+    (org-code ((t (:inherit fixed-pitch))))
+    (org-block ((t (:inherit fixed-pitch))))
+    (org-verbatim ((t (:inherit fixed-pitch))))
   :config
   (setq org-directory "~/Dropbox/Notes/"
         org-default-notes-file (concat org-directory "inbox.org")
