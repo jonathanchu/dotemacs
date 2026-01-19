@@ -691,6 +691,18 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELLED(c@)")))
 
+  ;; Formatting for org agenda views
+  ;; Example: %-25:c
+  ;; - = left-align
+  ;; 25 = width in characters
+  ;; : = truncate if too long
+  ;; c = category
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12:c%?-12t% s")
+          (todo   . " %i %-25:c")
+          (tags   . " %i %-12:c")
+          (search . " %i %-12:c")))
+
   ;; Agenda files
   (setq org-agenda-files (list org-directory))
 
