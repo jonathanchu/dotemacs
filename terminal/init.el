@@ -149,6 +149,18 @@
   ;; Agenda files
   (setq org-agenda-files (list org-directory))
 
+  ;; Formatting for org agenda views
+  ;; Example: %-25:c
+  ;; - = left-align
+  ;; 25 = width in characters
+  ;; : = truncate if too long
+  ;; c = category
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12:c%?-12t% s")
+          (todo   . " %i %-25:c")
+          (tags   . " %i %-12:c")
+          (search . " %i %-12:c")))
+
   ;; Refile to headings in agenda files
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
         org-refile-use-outline-path 'file
