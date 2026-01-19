@@ -341,6 +341,11 @@
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
+;;; Key Bindings
+
+;; eval region
+(global-set-key (kbd "C-c e r") #'eval-region)
+
 ;;; Finalization
 
 (unless window-system

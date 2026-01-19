@@ -942,6 +942,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; zap to char
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 
+;; evaluate the region
+(global-set-key (kbd "C-c e r") #'eval-region)
+
 ;;; Finalization
 
 (when window-system
