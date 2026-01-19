@@ -133,7 +133,8 @@
 (use-package org
   :ensure nil
   :bind (("C-c a" . org-agenda)
-         ("C-c c" . org-capture))
+         ("C-c c" . org-capture)
+         ("C-c i" . org-time-stamp-inactive))
   :config
   (setq org-directory "~/Dropbox/Notes/"
         org-default-notes-file (concat org-directory "inbox.org")
