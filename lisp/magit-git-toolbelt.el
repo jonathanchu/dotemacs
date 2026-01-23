@@ -29,15 +29,27 @@
 ;; https://github.com/nvie/git-toolbelt
 ;;
 ;; Usage:
-;;   M-x magit-git-toolbelt or press "@" in Magit buffers
+;;   M-x magit-git-toolbelt or press "\" in Magit buffers (customizable)
+;;
+;; To change the keybinding (to "."):
+;;
+;;   (use-package magit-git-toolbelt
+;;     :ensure t
+;;     :custom
+;;     (magit-git-toolbelt-key "."))
 ;;
 ;; git-toolbelt must be installed and available in your PATH.
 ;; See: https://github.com/nvie/git-toolbelt#installation
 
 ;;; Code:
 
-(require 'magit)
 (require 'transient)
+
+(declare-function magit-git-string "magit-git")
+(declare-function magit-git-command "magit-git")
+(declare-function magit-show-commit "magit-diff")
+(declare-function magit-refresh "magit-mode")
+(defvar magit-mode-map)
 
 ;;; Custom Variables
 
@@ -49,6 +61,15 @@
 (defcustom magit-git-toolbelt-recent-branches-since "1.week.ago"
   "Default time range for recent-branches command."
   :type 'string
+  :group 'magit-git-toolbelt)
+
+(defcustom magit-git-toolbelt-key "\\"
+  "Key to invoke magit-git-toolbelt in Magit buffers.
+  Set to nil to disable automatic keybinding.
+  If you change this after loading, call `magit-git-toolbelt-setup-key'
+  to apply the new binding."
+  :type '(choice (string :tag "Key")
+                 (const :tag "Disable" nil))
   :group 'magit-git-toolbelt)
 
 ;;; Transient Menu
@@ -254,9 +275,16 @@
 
 ;;; Integration with Magit
 
-(transient-append-suffix 'magit-dispatch "!"
-  '("@" "Git Toolbelt" magit-git-toolbelt))
-(define-key magit-mode-map "@" #'magit-git-toolbelt)
+(defun magit-git-toolbelt-setup-key ()
+  "Set up the keybinding for magit-git-toolbelt.
+  Uses the key defined in `magit-git-toolbelt-key'."
+  (when magit-git-toolbelt-key
+    (transient-append-suffix 'magit-dispatch "/"
+      `(,magit-git-toolbelt-key "Git Toolbelt" magit-git-toolbelt))
+    (define-key magit-mode-map (kbd magit-git-toolbelt-key) #'magit-git-toolbelt)))
+
+(with-eval-after-load 'magit
+  (magit-git-toolbelt-setup-key))
 
 (provide 'magit-git-toolbelt)
 
