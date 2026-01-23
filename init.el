@@ -555,7 +555,10 @@
   (magit-mode . (lambda () (setq-local left-fringe-width 16))))
 
 (use-package magit-git-toolbelt
-  :load-path "lisp/")
+  :load-path "lisp/"
+  :custom
+  (magit-git-toolbelt-key ".")
+  )
 
 ;;;; Git Gutter
 
