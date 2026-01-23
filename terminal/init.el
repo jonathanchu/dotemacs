@@ -135,8 +135,14 @@
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c i" . org-time-stamp-inactive))
+  :custom-face
+  (org-table ((t (:inherit fixed-pitch))))
+  (org-code ((t (:inherit fixed-pitch))))
+  (org-block ((t (:inherit fixed-pitch))))
+  (org-verbatim ((t (:inherit fixed-pitch))))
   :config
-  (setq org-directory "~/Dropbox/Notes/"
+  ;; keep org and tasks separate from (De)notes
+  (setq org-directory "~/Dropbox/org/"
         org-default-notes-file (concat org-directory "inbox.org")
         org-log-done 'time
         org-log-into-drawer t
@@ -147,8 +153,10 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELLED(c@)")))
 
-  ;; Agenda files
-  (setq org-agenda-files (list org-directory))
+  ;; Tags
+  (setq org-tag-alist '(("work" . ?w)
+                        ("personal" . ?p)
+                        ("idea" . ?i)))
 
   ;; Formatting for org agenda views
   ;; Example: %-25:c
@@ -162,15 +170,35 @@
           (tags   . " %i %-12:c")
           (search . " %i %-12:c")))
 
+  ;; Agenda files
+  (setq org-agenda-files (list org-directory))
+
+  ;; Archive to subdirectory
+  (setq org-archive-location "archive/%s_archive::")
+
   ;; Refile to headings in agenda files
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2))
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil)
 
-  ;; Simple capture template
+  ;; Capture templates
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline org-default-notes-file "Inbox")
-           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n"))))
+        '(("t" "Task" entry (file+headline org-default-notes-file "Inbox")
+           "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
+          ("w" "Work log" entry (file+olp+datetree "~/Dropbox/org/work_log.org")
+           "* %U %?\n")
+          ("i" "Idea" entry (file+headline "~/Dropbox/org/someday.org" "Ideas")
+           "* %? :idea:\n:PROPERTIES:\n:CREATED: %U\n:END:\n")))
+
+  ;; Custom agenda views
+  (setq org-agenda-custom-commands
+        '(("d" "Dashboard"
+           ((agenda "" ((org-agenda-span 'day)))
+            (todo "NEXT" ((org-agenda-overriding-header "Next Actions")))
+            (todo "WAITING" ((org-agenda-overriding-header "Waiting On")))))
+          ("w" "Work" tags-todo "+work")
+          ("p" "Personal" tags-todo "+personal")
+          ("i" "Ideas" tags "+idea"))))
 
 ;;; UI & Appearance
 
