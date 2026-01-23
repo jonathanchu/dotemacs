@@ -187,7 +187,7 @@
            "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
           ("w" "Work log" entry (file+olp+datetree "~/Dropbox/org/work_log.org")
            "* %U %?\n")
-          ("i" "Idea" entry (file+headline "~/Dropbox/org/someday.org" "Ideas")
+          ("i" "Idea" entry (file+headline "~/Dropbox/org/ideas.org" "Ideas")
            "* %? :idea:\n:PROPERTIES:\n:CREATED: %U\n:END:\n")))
 
   ;; Custom agenda views
