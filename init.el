@@ -689,6 +689,10 @@
   (org-block ((t (:inherit fixed-pitch))))
   (org-verbatim ((t (:inherit fixed-pitch))))
   :config
+  ;; fix the line number rendering in GUI only
+  (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)
+
   ;; keep org and tasks separate from (De)notes
   (setq org-directory "~/Dropbox/org/"
         org-default-notes-file (concat org-directory "inbox.org")
