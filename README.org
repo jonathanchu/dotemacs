@@ -23,8 +23,8 @@
 
 - Emacs Lisp
 - Python
-- LSP support
-- JavaScript
+- JavaScript/TypeScript
+- Clojure
 
 ** Installation
 
