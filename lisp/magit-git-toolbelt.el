@@ -204,7 +204,7 @@ Set this variable before loading the package to use a custom key."
       (message "Could not get SHA"))))
 
 (defun magit-git-toolbelt-local-commits ()
-  "Returns a list of commits that are still in local, but not yet pushed."
+  "Return a list of commits that are still in local, but not yet pushed."
   (interactive)
   (let ((output (shell-command-to-string "git local-commits")))
     (magit-git-toolbelt--display-output "Local Commits" output)))
@@ -228,7 +228,7 @@ Set this variable before loading the package to use a custom key."
       (magit-git-toolbelt--display-output "Unmerged Branches" output))))
 
 (defun magit-git-toolbelt-merge-status ()
-  "Shows merge status of all local branches against main branch."
+  "Show merge status of all local branches against main branch."
   (interactive)
   (let ((output (shell-command-to-string "git merge-status")))
     (magit-git-toolbelt--display-output "Merge Status" output)))
@@ -254,7 +254,7 @@ Set this variable before loading the package to use a custom key."
 ;;; Action Commands
 
 (defun magit-git-toolbelt-undo-commit ()
-  "Undo the last commit (keeps changes staged)."
+  "Undo the last commit but leave modifications staged."
   (interactive)
   (when (yes-or-no-p "Undo the last commit? ")
     (magit-git-command "undo-commit" default-directory)
