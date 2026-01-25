@@ -617,6 +617,14 @@
         flycheck-display-errors-delay 0.5)
   (flycheck-pos-tip-mode +1))
 
+(use-package package-lint
+  :defer t
+  :commands (package-lint-current-buffer))
+
+(use-package flycheck-package
+  :after flycheck
+  :config (flycheck-package-setup))
+
 ;;;; Snippets
 
 (use-package yasnippet
