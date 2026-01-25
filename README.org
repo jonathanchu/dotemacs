@@ -26,6 +26,8 @@
 - JavaScript/TypeScript
 - Clojure
 
+  As part of my constant tweaking and rewrites, I created a dedicated terminal-only `init.el` found in `./terminal/init.el` that is meant to be the absolute minimum carried over from my main config.
+
 ** Installation
 
    To install, it's recommended to clone this repo wherever you prefer
@@ -46,7 +48,7 @@
 
    #+BEGIN_SRC shell
    $ brew tap daviderestivo/emacs-head
-   $ brew install emacs-head@28 --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
+   $ brew install emacs-head@30 --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
    #+END_SRC
 
    Please note, this requires [[http://brew.sh][Homebrew]] to be installed.
@@ -77,19 +79,3 @@
    To update the third-party packages, type @@html:<kbd>@@M-x
    list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
    followed by @@html:<kbd>@@x@@html:</kbd>@@.
-
-   I recently started to use @Malabarba's excellent [[https://github.com/Malabarba/paradox/][paradox]], which can be
-   invoked similarly as such - @@html:<kbd>@@M-x
-   paradox-list-packages@@html:</kbd>@@, then
-   @@html:<kbd>@@U@@html:</kbd>@@ followed by
-   @@html:<kbd>@@x@@html:</kbd>@@.
-
-** Email
-
-There are a few requirements needed to receive and send email with this config.
-
-#+BEGIN_SRC shell
-$ brew install isync
-$ brew install msmtp
-$ brew install notmuch
-#+END_SRC
