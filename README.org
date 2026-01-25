@@ -6,8 +6,8 @@
 
 #+CAPTION: doom-modeline, centaur-tabs, doom-city-lights color theme, Operator Mono font
 #+NAME: Screenshot
-[[https://raw.githubusercontent.com/jonathanchu/dotemacs/master/screenshots/2019-07-05_at_11.46_AM.png]]
-/Screenshot of my Emacs. Some notable packages in screenshot include doom-modeline, centaur-tabs, doom-city-lights color theme, and Operator Mono font./
+[[https://raw.githubusercontent.com/jonathanchu/dotemacs/refs/heads/main/screenshots/2026-01-24_at_19.12.57.png]]
+/Screenshot of my Emacs. Some notable packages in screenshot include doom-modeline, Catppuccin Latte color theme, and JetBrains Mono font./
 
 ** Introduction
 
