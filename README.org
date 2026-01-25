@@ -61,17 +61,8 @@
    #+BEGIN_SRC shell
    $ brew install gpg
    $ brew install ag
-   $ brew install ripgrep
    $ brew install node
    $ npm install -g eslint
-   $ npm install -g bash-language-server
-   #+END_SRC
-
-   For using =python-mode= and =elpy=, you'll need to have =pip=
-   installed and install the following packages:
-
-   #+BEGIN_SRC shell
-   $ pip install flake8
    #+END_SRC
 
 ** Package Updates
