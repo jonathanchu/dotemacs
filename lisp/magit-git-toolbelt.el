@@ -29,27 +29,30 @@
 ;; https://github.com/nvie/git-toolbelt
 ;;
 ;; Usage:
-;;   M-x magit-git-toolbelt or press "\" in Magit buffers (customizable)
+;;   M-x magit-git-toolbelt or press "\" in Magit buffers
 ;;
-;; To change the keybinding (to "."):
+;; Setup with use-package:
 ;;
 ;;   (use-package magit-git-toolbelt
 ;;     :ensure t
-;;     :custom
-;;     (magit-git-toolbelt-key "."))
+;;     :after magit)
+;;
+;; To use a custom keybinding (e.g., "."), set the variable before
+;; the package loads:
+;;
+;;   (use-package magit-git-toolbelt
+;;     :ensure t
+;;     :after magit
+;;     :init
+;;     (setq magit-git-toolbelt-key "."))
 ;;
 ;; git-toolbelt must be installed and available in your PATH.
 ;; See: https://github.com/nvie/git-toolbelt#installation
 
 ;;; Code:
 
+(require 'magit)
 (require 'transient)
-
-(declare-function magit-git-string "magit-git")
-(declare-function magit-git-command "magit-git")
-(declare-function magit-show-commit "magit-diff")
-(declare-function magit-refresh "magit-mode")
-(defvar magit-mode-map)
 
 ;;; Custom Variables
 
@@ -64,12 +67,9 @@
   :group 'magit-git-toolbelt)
 
 (defcustom magit-git-toolbelt-key "\\"
-  "Key to invoke magit-git-toolbelt in Magit buffers.
-  Set to nil to disable automatic keybinding.
-  If you change this after loading, call `magit-git-toolbelt-setup-key'
-  to apply the new binding."
-  :type '(choice (string :tag "Key")
-                 (const :tag "Disable" nil))
+  "Key to bind `magit-git-toolbelt' in Magit buffers.
+Set this variable before loading the package to use a custom key."
+  :type 'string
   :group 'magit-git-toolbelt)
 
 ;;; Transient Menu
@@ -162,7 +162,7 @@
     (magit-git-toolbelt--display-output "Remote Tracking Branch" output)))
 
 (defun magit-git-toolbelt-active-branches ()
-  "Returns a list of local or remote branches."
+  "Return a list of local or remote branches."
   (interactive)
   (let ((output (shell-command-to-string "git active-branches")))
     (magit-git-toolbelt--display-output "Active Branches" output)))
@@ -275,16 +275,10 @@
 
 ;;; Integration with Magit
 
-(defun magit-git-toolbelt-setup-key ()
-  "Set up the keybinding for magit-git-toolbelt.
-  Uses the key defined in `magit-git-toolbelt-key'."
-  (when magit-git-toolbelt-key
-    (transient-append-suffix 'magit-dispatch "/"
-      `(,magit-git-toolbelt-key "Git Toolbelt" magit-git-toolbelt))
-    (define-key magit-mode-map (kbd magit-git-toolbelt-key) #'magit-git-toolbelt)))
+(transient-append-suffix 'magit-dispatch "/"
+  `(,magit-git-toolbelt-key "Git Toolbelt" magit-git-toolbelt))
 
-(with-eval-after-load 'magit
-  (magit-git-toolbelt-setup-key))
+(define-key magit-mode-map (kbd magit-git-toolbelt-key) #'magit-git-toolbelt)
 
 (provide 'magit-git-toolbelt)
 
