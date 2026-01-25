@@ -556,9 +556,9 @@
 
 (use-package magit-git-toolbelt
   :load-path "lisp/"
-  :custom
-  (magit-git-toolbelt-key ".")
-  )
+  :after magit
+  :init
+  (setq magit-git-toolbelt-key "."))
 
 ;;;; Git Gutter
 
