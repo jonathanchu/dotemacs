@@ -505,19 +505,16 @@
 
 ;;; Project Management
 
-(use-package projectile
-  :defer t
-  :bind-keymap ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-completion-system 'default)
+(use-package project
+  :ensure nil
+  :bind-keymap ("C-c p" . project-prefix-map)
+  :bind (("s-t" . project-find-file))
   :config
-  (setq projectile-project-search-path '("~/projects/")
-        projectile-switch-project-action #'projectile-dired)
-  (projectile-mode +1))
-
-(use-package consult-projectile
-  :after (consult projectile)
-  :bind (("s-t" . consult-projectile-find-file)))
+  (setq project-switch-commands '((project-find-file "Find file")
+                                  (project-find-regexp "Find regexp")
+                                  (project-dired "Dired")
+                                  (magit-project-status "Magit" ?m)))
+  (setq project-vc-extra-root-markers '(".project" ".projectile" "package.json")))
 
 ;;; Version Control
 
