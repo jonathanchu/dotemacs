@@ -86,7 +86,7 @@
 
 ;; custom settings in a separate file
 (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file :no-error-if-file-is-missing)
+(load custom-file 'noerror 'nomessage)
 
 ;; recent files mode
 (setq recentf-max-saved-items 100)
@@ -103,7 +103,9 @@
       initial-scratch-message nil)
 
 ;; only type 'y' or 'n' instead of 'yes' or 'no'
-(setq use-short-answers t)
+(if (boundp 'use-short-answers)
+    (setq use-short-answers t)
+  (fset 'yes-or-no-p 'y-or-n-p))
 
 ;; delete selection, insert text
 (delete-selection-mode t)
