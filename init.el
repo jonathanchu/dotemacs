@@ -33,6 +33,9 @@
 
 ;;; Bootstrapping
 
+(when (< emacs-major-version 29)
+  (error "This configuration requires Emacs 29 or newer"))
+
 (defconst emacs-start-time (current-time))
 
 (setq user-full-name "Jonathan Chu"
@@ -59,16 +62,11 @@
 
 (package-initialize)
 
-;; Bootstrap `use-package'
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
+;; use-package is built-in since Emacs 29
 (setq-default use-package-verbose nil
               use-package-expand-minimally t
               use-package-always-ensure t)
-(eval-when-compile
-  (require 'use-package))
+(require 'use-package)
 
 ;; for now
 (setq package-check-signature 'allow-unsigned)
@@ -173,8 +171,7 @@
       scroll-conservatively 10000
       scroll-margin 3)
 
-(when (>= emacs-major-version 29)
-  (pixel-scroll-precision-mode 1))
+(pixel-scroll-precision-mode 1)
 
 ;;;; Editing Defaults
 
