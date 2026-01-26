@@ -367,6 +367,23 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;;;; Corfu
+
+(use-package corfu
+  :init
+  (global-corfu-mode)
+  :config
+  (setq corfu-auto t
+        corfu-auto-delay 0.2
+        corfu-auto-prefix 2
+        corfu-cycle t
+        corfu-preselect 'prompt))
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
+
 ;;; Editor
 
 ;;;; Line Numbers
@@ -591,6 +608,14 @@
   :defer t)
 
 ;;; Programming Languages
+
+;;;; Tree-sitter
+
+(use-package treesit-auto
+  :demand t
+  :config
+  (setq treesit-auto-install 'prompt)
+  (global-treesit-auto-mode))
 
 ;;;; Syntax Checking
 
