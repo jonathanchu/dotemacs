@@ -606,14 +606,6 @@
 
 ;;; Programming Languages
 
-;;;; Tree-sitter
-
-(use-package treesit-auto
-  :demand t
-  :config
-  (setq treesit-auto-install 'prompt)
-  (global-treesit-auto-mode))
-
 ;;;; Syntax Checking
 
 (use-package flycheck
