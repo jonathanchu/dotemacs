@@ -577,7 +577,9 @@
 (use-package forge
   :after magit
   :custom
-  (auth-sources '("~/.authinfo")))
+  (auth-sources '("~/.authinfo.gpg")))
+
+(setq epg-pinentry-mode 'loopback)  ; handle GPG passphrase in minibuffer
 
 ;;;; Git Gutter
 
