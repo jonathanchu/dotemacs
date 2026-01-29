@@ -572,6 +572,13 @@
   :init
   (setq magit-git-toolbelt-key "."))
 
+;;;; Forge
+
+(use-package forge
+  :after magit
+  :custom
+  (auth-sources '("~/.authinfo")))
+
 ;;;; Git Gutter
 
 (defvar +vc-gutter-default-style t
