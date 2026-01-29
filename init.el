@@ -572,14 +572,11 @@
   :init
   (setq magit-git-toolbelt-key "."))
 
-;;;; Forge
-
-(use-package forge
+(use-package magit-gh
+  :load-path "lisp/"
   :after magit
-  :custom
-  (auth-sources '("~/.authinfo.gpg")))
-
-(setq epg-pinentry-mode 'loopback)  ; handle GPG passphrase in minibuffer
+  :init
+  (setq magit-gh-key ","))
 
 ;;;; Git Gutter
 
