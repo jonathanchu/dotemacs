@@ -274,7 +274,7 @@ Set this variable before loading the package to use a custom key."
   "Undo the last commit but leave modifications staged."
   (interactive)
   (when (yes-or-no-p "Undo the last commit? ")
-    (magit-git-command "undo-commit" default-directory)
+    (shell-command-to-string "git undo-commit")
     (magit-refresh)))
 
 ;;; Helper Functions
