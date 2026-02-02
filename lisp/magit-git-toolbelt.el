@@ -292,7 +292,7 @@ Set this variable before loading the package to use a custom key."
 
 ;;; Integration with Magit
 
-(transient-append-suffix 'magit-dispatch "/"
+(transient-append-suffix 'magit-dispatch "!"
   `(,magit-git-toolbelt-key "Git Toolbelt" magit-git-toolbelt))
 
 (define-key magit-mode-map (kbd magit-git-toolbelt-key) #'magit-git-toolbelt)
