@@ -295,7 +295,7 @@
 
 ;;;; Fonts
 
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-14"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono-15"))
 
 ;;;; Icons
 
