@@ -776,7 +776,16 @@
             (todo "WAITING" ((org-agenda-overriding-header "Waiting On")))))
           ("w" "Work" tags-todo "+work")
           ("p" "Personal" tags-todo "+personal")
-          ("i" "Ideas" tags "+idea"))))
+          ("i" "Ideas" tags "+idea")))
+
+  ;; Babel
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)))
+  (setq org-babel-python-command "python3")
+
+  (use-package ob-typescript
+    :after org))
 
 ;;;; Org Export
 
