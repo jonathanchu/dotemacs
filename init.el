@@ -179,7 +179,7 @@
 (setq-default indent-tabs-mode nil
               truncate-lines t
               line-spacing 4
-              cursor-type 'bar)
+              cursor-type 'box)
 
 (setq fill-column 80
       tab-always-indent 'complete
