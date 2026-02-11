@@ -4,7 +4,7 @@
 #+EMAIL:     me@jonathanchu.is
 #+DATE:      2020-06-14
 
-#+CAPTION: doom-modeline, centaur-tabs, doom-city-lights color theme, Operator Mono font
+#+CAPTION: doom-modeline, Catppuccin Latte color theme, JetBrains Mono font
 #+NAME: Screenshot
 [[https://raw.githubusercontent.com/jonathanchu/dotemacs/refs/heads/main/screenshots/2026-01-24_at_19.12.57.png]]
 /Screenshot of my Emacs. Some notable packages in screenshot include doom-modeline, Catppuccin Latte color theme, and JetBrains Mono font./
