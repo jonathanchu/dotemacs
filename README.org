@@ -12,8 +12,10 @@
 ** Introduction
 
    This is my Emacs configuration, a somewhat simple config compared
-   to most. It's geared towards OS X, although it should work on most
-   *nix configs. I've never tried this on Windows, so YMMV.
+   to most. The setup and installation is geared towards OS X,
+   although it should work on most *nix configs. I also run this same
+   config on Fedora with no issues. I've never tried this on Windows,
+   so YMMV.
 
    This configuration aims to provide you with a bare-bones
    configuration with sane defaults, built upon =package.el=.
