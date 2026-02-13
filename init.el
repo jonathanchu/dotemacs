@@ -317,7 +317,7 @@
 
 (use-package catppuccin-theme
   :config
-  (setq catppuccin-flavor 'macchiato)
+  (setq catppuccin-flavor 'frappe)
   (load-theme 'catppuccin t))
 
 ;;; Completion Framework
