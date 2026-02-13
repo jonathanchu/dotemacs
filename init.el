@@ -313,15 +313,8 @@
 
 (use-package catppuccin-theme
   :config
-  (setq catppuccin-flavor 'latte)
+  (setq catppuccin-flavor 'macchiato)
   (load-theme 'catppuccin t))
-
-(defun jc/toggle-theme ()
-  "Toggle between light (latte) and dark (mocha) catppuccin flavors."
-  (interactive)
-  (setq catppuccin-flavor
-        (if (eq catppuccin-flavor 'latte) 'mocha 'latte))
-  (catppuccin-reload))
 
 ;;; Completion Framework
 
