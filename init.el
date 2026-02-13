@@ -217,6 +217,9 @@
 ;; variable pitch mode for text
 (add-hook 'text-mode-hook #'variable-pitch-mode)
 
+;; but keep fixed pitch in git commit buffers
+(add-hook 'git-commit-mode-hook (lambda () (variable-pitch-mode -1)))
+
 ;;;; Completion Behavior
 
 (setq read-file-name-completion-ignore-case t
@@ -296,6 +299,7 @@
 ;;;; Fonts
 
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono-15"))
+(set-face-attribute 'default nil :family "JetBrains Mono" :height 150)
 
 ;;;; Icons
 
