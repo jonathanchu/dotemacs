@@ -463,13 +463,16 @@
 
 ;;;; Folding
 
-(use-package origami
-  :hook (prog-mode . origami-mode)
-  :bind
-  ("s-[" . origami-close-node-recursively)
-  ("s-]" . origami-open-node-recursively)
-  ("M-[" . origami-close-all-nodes)
-  ("M-]" . origami-open-all-nodes))
+(use-package hideshow
+  :ensure nil
+  :hook (prog-mode . hs-minor-mode)
+  :bind (:map hs-minor-mode-map
+         ("C-c f t" . hs-toggle-hiding)
+         ("C-c f c" . hs-hide-block)
+         ("C-c f o" . hs-show-block)
+         ("C-c f C" . hs-hide-all)
+         ("C-c f O" . hs-show-all)
+         ("C-c f l" . hs-hide-level)))
 
 ;;;; Multiple Cursors
 
