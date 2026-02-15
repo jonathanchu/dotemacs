@@ -65,6 +65,7 @@
 (require 'transient)
 (require 'json)
 (require 'diff-mode)
+(require 'iso8601)
 
 ;;; Custom Variables
 
@@ -171,6 +172,11 @@ One of \"open\", \"closed\", \"merged\", or \"all\".")
   "Face for the header line in the PR list."
   :group 'magit-gh)
 
+(defface magit-gh-pr-age
+  '((t :inherit magit-dimmed))
+  "Face for age and merged columns in the PR list."
+  :group 'magit-gh)
+
 ;;; Helper functions
 
 (defun magit-gh--repo-dir ()
@@ -189,7 +195,7 @@ STATE is one of \"open\", \"closed\", \"merged\", or \"all\" (default \"open\").
   (magit-gh--check-gh)
   (let* ((default-directory (magit-gh--repo-dir))
          (state (or state "open"))
-         (cmd (format "gh pr list --state %s --json number,title,author,headRefName,reviewDecision --limit %d"
+         (cmd (format "gh pr list --state %s --json number,title,author,headRefName,reviewDecision,createdAt --limit %d"
                       state magit-gh-pr-limit))
          (output (shell-command-to-string cmd))
          (trimmed (string-trim output)))
@@ -203,12 +209,24 @@ Returns an alist with `createdBy' and `needsReview' keys,
 each containing a list of PR alists."
   (magit-gh--check-gh)
   (let* ((default-directory (magit-gh--repo-dir))
-         (cmd "gh pr status --json number,title,author,headRefName,reviewDecision")
+         (cmd "gh pr status --json number,title,author,headRefName,reviewDecision,createdAt")
          (output (shell-command-to-string cmd))
          (trimmed (string-trim output)))
     (if (string-prefix-p "{" trimmed)
         (json-parse-string trimmed :array-type 'list :object-type 'alist)
       (user-error "Failed to fetch PR status: %s" trimmed))))
+
+(defun magit-gh--fetch-recently-merged ()
+  "Fetch recently merged PRs for the current repository via gh CLI.
+Returns a list of PR alists."
+  (magit-gh--check-gh)
+  (let* ((default-directory (magit-gh--repo-dir))
+         (cmd "gh pr list --state merged --json number,title,author,headRefName,reviewDecision,createdAt,mergedAt --limit 10")
+         (output (shell-command-to-string cmd))
+         (trimmed (string-trim output)))
+    (if (string-prefix-p "[" trimmed)
+        (json-parse-string trimmed :array-type 'list :object-type 'alist)
+      (user-error "Failed to fetch recently merged PRs: %s" trimmed))))
 
 (defun magit-gh--pr-number-at-point ()
   "Get the PR number from the text property at point."
@@ -246,6 +264,22 @@ so the branch change is immediately visible."
     (_
      (propertize "—" 'face 'magit-gh-pr-author))))
 
+(defun magit-gh--format-age (iso-timestamp)
+  "Format ISO-TIMESTAMP as a compact age string.
+Returns \"<1d\", \"3d\", \"2w\", \"3mo\", or \"1y\".
+Returns \"\" for nil input."
+  (if (null iso-timestamp)
+      ""
+    (let* ((parsed (iso8601-parse iso-timestamp))
+           (time (encode-time parsed))
+           (days (/ (float-time (time-subtract nil time)) 86400)))
+      (cond
+       ((< days 1) "<1d")
+       ((< days 14) (format "%dd" (floor days)))
+       ((< days 60) (format "%dw" (floor (/ days 7))))
+       ((< days 365) (format "%dmo" (floor (/ days 30))))
+       (t (format "%dy" (floor (/ days 365))))))))
+
 (defun magit-gh--pr-choices (prs)
   "Build an alist of display strings to PR numbers from PRS."
   (mapcar (lambda (pr)
@@ -255,20 +289,29 @@ so the branch change is immediately visible."
                     number)))
           prs))
 
-(defun magit-gh--insert-pr-header ()
-  "Insert column header and separator line for a PR table."
-  (insert (propertize (format "%-7s %-50s %-20s %-20s %s\n"
-                              "PR" "Title" "Author" "Review" "Branch")
+(defun magit-gh--insert-pr-header (&optional show-merged-col)
+  "Insert column header and separator line for a PR table.
+When SHOW-MERGED-COL is non-nil, append a \"Merged\" column."
+  (insert (propertize (format "%-7s %-5s %-50s %-20s %-20s %s"
+                              "PR" "Age" "Title" "Author" "Review" "Branch")
                       'face 'magit-gh-header))
-  (insert (propertize (make-string 130 ?─) 'face 'magit-gh-header) "\n"))
+  (when show-merged-col
+    (insert (propertize (format "  %-6s" "Merged") 'face 'magit-gh-header)))
+  (insert "\n")
+  (insert (propertize (make-string (if show-merged-col 144 136) ?─)
+                      'face 'magit-gh-header)
+          "\n"))
 
-(defun magit-gh--insert-pr-row (pr)
-  "Insert a single PR row with text properties for PR alist."
+(defun magit-gh--insert-pr-row (pr &optional show-merged-col)
+  "Insert a single PR row with text properties for PR alist.
+When SHOW-MERGED-COL is non-nil, append the merged age at end of row."
   (let* ((number (alist-get 'number pr))
          (title (alist-get 'title pr))
          (author (alist-get 'login (alist-get 'author pr)))
          (review (alist-get 'reviewDecision pr))
          (branch (alist-get 'headRefName pr))
+         (created-at (alist-get 'createdAt pr))
+         (age-display (magit-gh--format-age created-at))
          (title-display (if (> (length title) 48)
                             (concat (substring title 0 45) "...")
                           title))
@@ -276,14 +319,20 @@ so the branch change is immediately visible."
          (start (point)))
     (insert (propertize (format "%-7s " (format "#%d" number))
                         'face 'magit-gh-pr-number)
+            (propertize (format "%-5s " age-display)
+                        'face 'magit-gh-pr-age)
             (propertize (format "%-50s " title-display)
                         'face 'magit-gh-pr-title)
             (propertize (format "%-20s " (or author ""))
                         'face 'magit-gh-pr-author)
             (format "%-20s " review-display)
             (propertize (or branch "")
-                        'face 'magit-gh-pr-branch)
-            "\n")
+                        'face 'magit-gh-pr-branch))
+    (when show-merged-col
+      (let ((merged-at (alist-get 'mergedAt pr)))
+        (insert (propertize (format "  %-6s" (magit-gh--format-age merged-at))
+                            'face 'magit-gh-pr-age))))
+    (insert "\n")
     (put-text-property start (point) 'magit-gh-pr-number number)))
 
 ;;; PR Diff Mode
@@ -483,13 +532,15 @@ STATE is one of \"open\", \"closed\", \"merged\", or \"all\" (default \"open\").
 
 (defun magit-gh-pr-status ()
   "Show PR status dashboard for the current repository.
-Displays PRs created by you and PRs awaiting your review."
+Displays PRs created by you, PRs awaiting your review,
+and your recently merged PRs."
   (interactive)
   (let* ((repo-dir (magit-gh--repo-dir))
          (default-directory repo-dir)
          (status (magit-gh--fetch-pr-status))
          (created (alist-get 'createdBy status))
          (needs-review (alist-get 'needsReview status))
+         (recently-merged (magit-gh--fetch-recently-merged))
          (buf (get-buffer-create "*magit-gh: PR Status*")))
     (with-current-buffer buf
       (let ((inhibit-read-only t))
@@ -508,7 +559,15 @@ Displays PRs created by you and PRs awaiting your review."
             (insert (propertize "None.\n" 'face 'magit-gh-pr-author))
           (magit-gh--insert-pr-header)
           (dolist (pr needs-review)
-            (magit-gh--insert-pr-row pr))))
+            (magit-gh--insert-pr-row pr)))
+        (insert "\n")
+        ;; Recently merged
+        (insert (propertize "Recently merged\n" 'face 'magit-gh-header))
+        (if (null recently-merged)
+            (insert (propertize "None.\n" 'face 'magit-gh-pr-author))
+          (magit-gh--insert-pr-header t)
+          (dolist (pr recently-merged)
+            (magit-gh--insert-pr-row pr t))))
       (goto-char (point-min))
       (magit-gh-pr-status-mode)
       (setq magit-gh-pr-status--repo-dir repo-dir))
