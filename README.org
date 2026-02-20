@@ -63,6 +63,7 @@
    #+BEGIN_SRC shell
    $ brew install gpg
    $ brew install ag
+   $ brew install ripgrep
    $ brew install node
    $ npm install -g eslint
    #+END_SRC
