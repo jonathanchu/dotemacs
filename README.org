@@ -61,8 +61,6 @@
    All of these pre-requisites can be installed via =homebrew= and =npm=.
 
    #+BEGIN_SRC shell
-   $ brew install gpg
-   $ brew install ag
    $ brew install ripgrep
    $ brew install node
    $ npm install -g eslint
