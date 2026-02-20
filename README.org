@@ -12,13 +12,13 @@
 ** Introduction
 
    This is my Emacs configuration, a somewhat simple config compared
-   to most. The setup and installation is geared towards OS X,
+   to most. The setup and installation is geared towards macOS,
    although it should work on most *nix configs. I also run this same
    config on Fedora with no issues. I've never tried this on Windows,
    so YMMV.
 
    This configuration aims to provide you with a bare-bones
-   configuration with sane defaults, built upon =package.el=.
+   configuration with sane defaults, built upon =use-package=.
 
    Although Emacs has support for many programming languages, this
    config is geared towards the following languages and workflows:
@@ -26,7 +26,7 @@
 - Emacs Lisp
 - Python
 - JavaScript/TypeScript
-- Clojure
+- Go
 
   As part of my constant tweaking and rewrites, I created a dedicated terminal-only `init.el` found in `./terminal/init.el` that is meant to be the absolute minimum carried over from my main config.
 
@@ -50,7 +50,7 @@
 
    #+BEGIN_SRC shell
    $ brew tap daviderestivo/emacs-head
-   $ brew install emacs-head@30 --with-cocoa --with-imagemagick --with-retro-icon-gnu-head
+   $ brew install emacs-head@30 --with-cocoa --with-imagemagick --with-liquid-glass
    #+END_SRC
 
    Please note, this requires [[http://brew.sh][Homebrew]] to be installed.
@@ -61,13 +61,8 @@
    All of these pre-requisites can be installed via =homebrew= and =npm=.
 
    #+BEGIN_SRC shell
+   $ brew install gh
    $ brew install ripgrep
    $ brew install node
    $ npm install -g eslint
    #+END_SRC
-
-** Package Updates
-
-   To update the third-party packages, type @@html:<kbd>@@M-x
-   list-packages@@html:</kbd>@@, then @@html:<kbd>@@U@@html:</kbd>@@
-   followed by @@html:<kbd>@@x@@html:</kbd>@@.
