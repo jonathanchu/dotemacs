@@ -6,7 +6,7 @@
 
 #+CAPTION: doom-modeline, Catppuccin Latte color theme, JetBrains Mono font
 #+NAME: Screenshot
-[[https://raw.githubusercontent.com/jonathanchu/dotemacs/refs/heads/main/screenshots/2026-01-24_at_19.12.57.png]]
+[[https://raw.githubusercontent.com/jonathanchu/dotemacs/refs/heads/main/screenshots/2026-02-21_at_11.38.55.png]]
 /Screenshot of my Emacs. Some notable packages in screenshot include doom-modeline, Catppuccin Latte color theme, and JetBrains Mono font./
 
 ** Introduction
