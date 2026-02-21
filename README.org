@@ -28,7 +28,9 @@
 - JavaScript/TypeScript
 - Go
 
-  As part of my constant tweaking and rewrites, I created a dedicated terminal-only `init.el` found in `./terminal/init.el` that is meant to be the absolute minimum carried over from my main config.
+  As part of my constant tweaking and rewrites, I created a dedicated
+  terminal-only `init.el` found in `./terminal/init.el` that is meant
+  to be the absolute minimum carried over from my main config.
 
 ** Installation
 
