@@ -23,13 +23,13 @@
    Although Emacs has support for many programming languages, this
    config is geared towards the following languages and workflows:
 
-- Emacs Lisp
-- Python
-- JavaScript/TypeScript
-- Go
+   - Emacs Lisp
+   - Python
+   - JavaScript/TypeScript
+   - Go
 
   As part of my constant tweaking and rewrites, I created a dedicated
-  terminal-only `init.el` found in `./terminal/init.el` that is meant
+  terminal-only =init.el= found in =./terminal/init.el= that is meant
   to be the absolute minimum carried over from my main config.
 
 ** Installation
