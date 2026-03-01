@@ -783,6 +783,40 @@
 (use-package ox-hugo
   :after ox)
 
+;;;; Org Present
+
+(use-package org-present
+  :after org
+  :bind (:map org-present-mode-keymap
+              ("<right>" . org-present-next)
+              ("<left>"  . org-present-prev)
+              ("n" . org-present-next)
+              ("p" . org-present-prev))
+  :config
+  (advice-add 'org-present-add-overlays :override #'ignore)
+  :hook
+  ((org-present-mode . (lambda ()
+                          (org-present-big)
+                          (org-display-inline-images)
+                          (org-present-read-only)
+                          (setq-local org-hide-emphasis-markers t)
+                          (font-lock-flush)
+                          (font-lock-ensure)
+                          (setq-local header-line-format " ")
+                          (display-line-numbers-mode -1)
+                          (visual-line-mode 1)))
+   (org-present-mode-quit . (lambda ()
+                               (org-present-small)
+                               (org-remove-inline-images)
+                               (org-present-show-cursor)
+                               (org-present-read-write)
+                               (kill-local-variable 'org-hide-emphasis-markers)
+                               (font-lock-flush)
+                               (font-lock-ensure)
+                               (setq-local header-line-format nil)
+                               (display-line-numbers-mode 1)
+                               (visual-line-mode 1)))))
+
 ;;;; Denote
 
 (use-package denote
