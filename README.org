@@ -68,3 +68,13 @@
    $ brew install node
    $ npm install -g eslint
    #+END_SRC
+
+** Language servers (eglot)
+
+   Install language servers for Python, TypeScript/JavaScript, and Go:
+
+   #+BEGIN_SRC shell
+   $ npm install -g pyright --prefix "$HOME/.local"
+   $ npm install -g typescript-language-server typescript --prefix "$HOME/.local"
+   $ go install golang.org/x/tools/gopls@latest
+   #+END_SRC
