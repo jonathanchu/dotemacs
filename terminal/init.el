@@ -127,6 +127,41 @@
 ;; consider all themes as safe
 (setq custom-safe-themes t)
 
+;;;; Tree-sitter
+
+(defconst my/treesit-grammars
+  '(bash css elisp go html javascript json python toml tsx typescript yaml)
+  "Tree-sitter grammars to install for this config.")
+
+(when (and (fboundp 'treesit-available-p)
+           (treesit-available-p))
+  (setq treesit-language-source-alist
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (css "https://github.com/tree-sitter/tree-sitter-css")
+          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (go "https://github.com/tree-sitter/tree-sitter-go")
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+  (defun my/treesit-install-all-grammars ()
+    "Install all grammars listed in `my/treesit-grammars'."
+    (interactive)
+    (dolist (grammar my/treesit-grammars)
+      (treesit-install-language-grammar grammar)))
+
+  (defun my/treesit-install-missing-grammars ()
+    "Install only missing grammars from `my/treesit-grammars'."
+    (interactive)
+    (dolist (grammar my/treesit-grammars)
+      (unless (treesit-language-available-p grammar)
+        (treesit-install-language-grammar grammar)))))
+
 ;;;; Org
 
 ;; conservative indention for org src blocks
