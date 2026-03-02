@@ -279,7 +279,6 @@
       (unless (treesit-language-available-p grammar)
         (treesit-install-language-grammar grammar))))
 
-  ;; Phase 4: incremental remaps to tree-sitter-based major modes.
   (dolist (mapping '((json-mode . json-ts-mode)
                      (python-mode . python-ts-mode)
                      (go-mode . go-ts-mode)
@@ -680,6 +679,19 @@
   :after flycheck
   :config (flycheck-package-setup))
 
+;;;; LSP
+
+(use-package eglot
+  :ensure nil
+  :defer t
+  :hook ((python-ts-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)
+         (js-ts-mode . eglot-ensure)
+         (typescript-ts-mode . eglot-ensure)
+         (tsx-ts-mode . eglot-ensure)
+         (python-mode . eglot-ensure)
+         (go-mode . eglot-ensure)))
+
 ;;;; Snippets
 
 (use-package yasnippet
@@ -690,12 +702,6 @@
   :after yasnippet)
 
 ;;;; Python
-
-(use-package elpy
-  :defer t
-  :init (advice-add 'python-mode :before 'elpy-enable)
-  :config
-  (setq elpy-rpc-python-command "python3"))
 
 (use-package jinja2-mode)
 
