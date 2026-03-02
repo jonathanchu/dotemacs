@@ -789,7 +789,8 @@
   :after org
   :ensure nil
   :commands (org-present)
-  :bind (:map org-present-mode-keymap
+  :bind (("C-c P" . org-present)
+         :map org-present-mode-keymap
               ("<right>" . org-present-next)
               ("<left>"  . org-present-prev)
               ("n" . org-present-next)
