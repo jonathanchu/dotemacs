@@ -279,10 +279,13 @@
       (unless (treesit-language-available-p grammar)
         (treesit-install-language-grammar grammar))))
 
-  ;; Phase 4, wave 1: low-risk remaps to tree-sitter-based major modes.
+  ;; Phase 4: incremental remaps to tree-sitter-based major modes.
   (dolist (mapping '((json-mode . json-ts-mode)
                      (python-mode . python-ts-mode)
                      (go-mode . go-ts-mode)
+                     (js-mode . js-ts-mode)
+                     (css-mode . css-ts-mode)
+                     (html-mode . html-ts-mode)
                      (yaml-mode . yaml-ts-mode)
                      (toml-mode . toml-ts-mode)))
     (when (fboundp (cdr mapping))
@@ -701,19 +704,6 @@
 (use-package go-mode)
 
 ;;;; Web
-
-(use-package web-mode
-  :config
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2)
-  (add-to-list 'auto-mode-alist '("\\.hb\\.html\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode)))
 
 (use-package json-mode)
 

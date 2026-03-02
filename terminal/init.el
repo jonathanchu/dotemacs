@@ -162,10 +162,13 @@
       (unless (treesit-language-available-p grammar)
         (treesit-install-language-grammar grammar))))
 
-  ;; Phase 4, wave 1: low-risk remaps to tree-sitter-based major modes.
+  ;; Phase 4: incremental remaps to tree-sitter-based major modes.
   (dolist (mapping '((json-mode . json-ts-mode)
                      (python-mode . python-ts-mode)
                      (go-mode . go-ts-mode)
+                     (js-mode . js-ts-mode)
+                     (css-mode . css-ts-mode)
+                     (html-mode . html-ts-mode)
                      (yaml-mode . yaml-ts-mode)
                      (toml-mode . toml-ts-mode)))
     (when (fboundp (cdr mapping))
