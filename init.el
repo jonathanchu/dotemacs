@@ -348,7 +348,7 @@
 ;;;; Consult
 
 (use-package consult
-  :bind (("C-c k" . consult-ripgrep)
+  :bind (("C-c s" . consult-ripgrep)
          ("C-x C-r" . consult-recent-file)
          ("C-s" . consult-line)
          ("C-c C-r" . consult-history)
