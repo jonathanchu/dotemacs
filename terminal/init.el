@@ -160,7 +160,14 @@
     (interactive)
     (dolist (grammar my/treesit-grammars)
       (unless (treesit-language-available-p grammar)
-        (treesit-install-language-grammar grammar)))))
+        (treesit-install-language-grammar grammar))))
+
+  ;; Phase 4, wave 1: low-risk remaps to tree-sitter-based major modes.
+  (dolist (mapping '((json-mode . json-ts-mode)
+                     (yaml-mode . yaml-ts-mode)
+                     (toml-mode . toml-ts-mode)))
+    (when (fboundp (cdr mapping))
+      (add-to-list 'major-mode-remap-alist mapping))))
 
 ;;;; Org
 

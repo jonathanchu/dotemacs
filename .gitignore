@@ -66,3 +66,4 @@ eln-cache
 undo
 custom.el
 /tree-sitter/
+/terminal/tree-sitter/
