@@ -309,7 +309,7 @@
 
 (use-package exec-path-from-shell
   :defer 1
-  :if (memq window-system '(mac ns))
+  :if (memq window-system '(mac ns pgtk))
   :config
   (exec-path-from-shell-initialize))
 
