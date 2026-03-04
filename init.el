@@ -559,7 +559,8 @@
 (use-package project
   :ensure nil
   :bind-keymap ("C-c p" . project-prefix-map)
-  :bind (("s-t" . project-find-file))
+  :bind (("s-t" . project-find-file)
+         ("C-c t" . project-find-file))
   :config
   (setq project-switch-commands '((project-find-file "Find file")
                                   (project-find-regexp "Find regexp")
