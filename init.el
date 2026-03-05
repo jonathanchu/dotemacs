@@ -399,7 +399,8 @@
          ("C-s" . consult-line)
          ("C-c C-r" . consult-history)
          ("C-x b" . consult-buffer)
-         ("C-c o" . consult-outline))
+         ("C-c o" . consult-outline)
+         ("C-c l" . consult-goto-line))
   :config
   (setq consult-narrow-key "<"))
 
