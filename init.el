@@ -534,7 +534,6 @@
 
 (use-package fullframe
   :config
-  (fullframe magit-status magit-mode-quit-window)
   (fullframe ibuffer ibuffer-quit))
 
 (use-package ibuffer
@@ -595,6 +594,7 @@
   (magit-section-cache-visibility t)
   (magit-log-section-commit-count 15)
   (magit-status-show-hashes-in-headers t)
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   :config
   (defun magit-status-with-prefix-arg ()
     "Call `magit-status` with a prefix."

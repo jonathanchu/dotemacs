@@ -366,7 +366,6 @@
 (use-package fullframe
   :after magit
   :config
-  (fullframe magit-status magit-mode-quit-window)
   (fullframe ibuffer ibuffer-quit))
 
 ;;; Project Management
@@ -407,6 +406,7 @@
   (magit-revision-insert-related-refs nil)
   (magit-refresh-status-buffer nil)
   (magit-section-cache-visibility t)
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   :config
   (defun magit-status-with-prefix-arg ()
     "Call `magit-status` with a prefix."
