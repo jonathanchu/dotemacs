@@ -361,12 +361,11 @@
 
 (use-package ibuffer
   :ensure nil
-  :bind ("C-x C-b" . ibuffer))
-
-(use-package fullframe
-  :after magit
+  :bind ("C-x C-b" . ibuffer)
   :config
-  (fullframe ibuffer ibuffer-quit))
+  (add-to-list 'display-buffer-alist
+               '("\\*Ibuffer\\*"
+                 (display-buffer-same-window))))
 
 ;;; Project Management
 

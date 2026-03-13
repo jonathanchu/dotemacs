@@ -532,13 +532,13 @@
   :config
   (popwin-mode t))
 
-(use-package fullframe
-  :config
-  (fullframe ibuffer ibuffer-quit))
-
 (use-package ibuffer
   :ensure nil
-  :bind ("C-x C-b" . ibuffer))
+  :bind ("C-x C-b" . ibuffer)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*Ibuffer\\*"
+                 (display-buffer-full-frame))))
 
 (use-package ibuffer-vc
   :defer t
