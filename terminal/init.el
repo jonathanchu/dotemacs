@@ -332,6 +332,7 @@
   :defer
   :ensure nil
   :custom
+  (display-line-numbers-type 'relative)
   (display-line-numbers-width-start t)
   :hook
   (prog-mode . display-line-numbers-mode)
