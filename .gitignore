@@ -19,46 +19,26 @@ tramp
 /eshell/history
 /eshell/lastdir
 
-# reftex files
-*.rel
-
-# AUCTeX auto folder
-/auto/
-
-# cask packages
-.cask/
-
 # Flycheck
 flycheck_*.el
 
 # server auth directory
 /server/
 
-# python
-elpy
-
 # misc
-helm-adaptive-history
-session*
-ac-comphist.dat
 projectile-bookmarks.eld
 projects
 recentf
 saved-places
 request
-ido.last
-smex-items
 /games/
 /var
 /url
 *.log
-/.python-environments
-/persp-confs
 bookmarks
 transient
 elpa
 *__pycache__
-.lsp-*
 /*.sqlite
 /*.cache
 network-security.data
