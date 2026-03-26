@@ -61,6 +61,8 @@
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; use-package is built-in since Emacs 29
 (setq-default use-package-verbose nil
