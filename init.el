@@ -722,9 +722,6 @@
 
 ;;;; Shell & Config
 
-(use-package make-mode :ensure nil)
-(use-package sh-script :ensure nil)
-
 (use-package fish-mode
   :defer t
   :hook
