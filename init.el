@@ -54,7 +54,6 @@
 
 (require 'package)
 (setq load-prefer-newer t
-      package-enable-at-startup nil
       package-user-dir (concat user-emacs-directory "elpa")
       package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
