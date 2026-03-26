@@ -305,7 +305,6 @@
 
 (eval-when-compile
   (require 'cl-lib))
-(require 'bind-key)
 
 (use-package diminish
   :defer t)
