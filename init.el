@@ -356,8 +356,7 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :config
-  (setq doom-modeline-height 30
-        doom-modeline-indent-info t))
+  (setq doom-modeline-height 30))
 
 ;;;; Theme
 
