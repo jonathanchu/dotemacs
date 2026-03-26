@@ -303,9 +303,6 @@
 
 ;;;; Required Libraries
 
-(eval-when-compile
-  (require 'cl-lib))
-
 (use-package diminish
   :defer t)
 
