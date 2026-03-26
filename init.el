@@ -73,7 +73,7 @@
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
 (use-package auto-compile
-  :init (auto-compile-on-load-mode))
+  :config (auto-compile-on-load-mode))
 
 ;;; Core
 
