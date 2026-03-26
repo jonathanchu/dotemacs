@@ -73,6 +73,9 @@
 (setq package-check-signature 'allow-unsigned)
 (setq package-unsigned-archives '("gnu" "nongnu"))
 
+(use-package auto-compile
+  :init (auto-compile-on-load-mode))
+
 ;;; Core
 
 ;;;; Performance
