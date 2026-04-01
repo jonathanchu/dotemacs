@@ -293,7 +293,11 @@
                      (yaml-mode . yaml-ts-mode)
                      (toml-mode . toml-ts-mode)))
     (when (fboundp (cdr mapping))
-      (add-to-list 'major-mode-remap-alist mapping))))
+      (add-to-list 'major-mode-remap-alist mapping)))
+
+  ;; TypeScript/TSX have no built-in mode to remap from, so register directly
+  (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode)))
 
 ;;;; Server
 
