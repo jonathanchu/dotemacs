@@ -878,6 +878,14 @@
   (("C-c n s" . consult-denote-find)
    ("C-c n g" . consult-denote-grep)))
 
+;;;; Grove
+
+(use-package grove
+  :load-path "lisp/grove"
+  :bind-keymap ("C-c v" . grove-command-map)
+  :custom
+  (grove-directory "~/Dropbox/Notes/"))
+
 ;;;; Dired
 
 (use-package dired-narrow
