@@ -129,6 +129,7 @@ Directories come first, then files.  Hidden files are excluded."
 
 (defun grove-tree--toggle-expand ()
   "Toggle expand/collapse for the directory node at point."
+  (interactive)
   (let ((ewoc-node (grove-tree--node-at-point)))
     (when ewoc-node
       (let ((node (ewoc-data ewoc-node)))
@@ -159,8 +160,21 @@ Directories come first, then files.  Hidden files are excluded."
         (setq next (ewoc-next grove-tree--ewoc next))
         (ewoc-delete grove-tree--ewoc to-delete)))))
 
+(defun grove-tree--preview ()
+  "Preview the file at point in the main window without switching focus."
+  (interactive)
+  (let ((ewoc-node (grove-tree--node-at-point)))
+    (when ewoc-node
+      (let ((node (ewoc-data ewoc-node)))
+        (unless (grove-tree-node-directory-p node)
+          (let ((path (grove-tree-node-path node))
+                (win (or (grove-tree--main-window) (next-window))))
+            (with-selected-window win
+              (find-file path))))))))
+
 (defun grove-tree--open-file ()
-  "Open the file at point in the main window."
+  "Open the file at point in the main window and focus it."
+  (interactive)
   (let ((ewoc-node (grove-tree--node-at-point)))
     (when ewoc-node
       (let ((node (ewoc-data ewoc-node)))
@@ -182,6 +196,27 @@ Directories come first, then files.  Hidden files are excluded."
            (unless (window-parameter win 'window-side)
              (throw 'found win))))))))
 
+;;;; Navigation
+
+(defun grove-tree--skip-blank-lines (direction)
+  "Move in DIRECTION (1 or -1) skipping blank lines."
+  (forward-line direction)
+  (while (and (not (eobp)) (not (bobp))
+              (looking-at-p "^$"))
+    (forward-line direction)))
+
+(defun grove-tree-next ()
+  "Move to the next entry and preview it."
+  (interactive)
+  (grove-tree--skip-blank-lines 1)
+  (grove-tree--preview))
+
+(defun grove-tree-previous ()
+  "Move to the previous entry and preview it."
+  (interactive)
+  (grove-tree--skip-blank-lines -1)
+  (grove-tree--preview))
+
 ;;;; Refresh
 
 (defun grove-tree-refresh ()
@@ -194,7 +229,7 @@ Directories come first, then files.  Hidden files are excluded."
         (let ((inhibit-read-only t))
           (erase-buffer)
           (setq grove-tree--ewoc
-                (ewoc-create #'grove-tree--print "" "" t))
+                (ewoc-create #'grove-tree--print "" ""))
           (dolist (node (grove-tree--list-entries grove-directory 0))
             (ewoc-enter-last grove-tree--ewoc node)))))))
 
@@ -206,8 +241,10 @@ Directories come first, then files.  Hidden files are excluded."
     (define-key map (kbd "TAB") #'grove-tree--toggle-expand)
     (define-key map (kbd "g") #'grove-tree-refresh)
     (define-key map (kbd "q") #'grove-tree-close)
-    (define-key map (kbd "n") #'next-line)
-    (define-key map (kbd "p") #'previous-line)
+    (define-key map (kbd "n") #'grove-tree-next)
+    (define-key map (kbd "p") #'grove-tree-previous)
+    (define-key map (kbd "C-n") #'grove-tree-next)
+    (define-key map (kbd "C-p") #'grove-tree-previous)
     map)
   "Keymap for `grove-tree-mode'.")
 
@@ -217,7 +254,8 @@ Directories come first, then files.  Hidden files are excluded."
   (setq-local cursor-type nil
               truncate-lines t
               mode-line-format nil
-              header-line-format (propertize " Grove" 'face 'bold)))
+              header-line-format (propertize " Grove" 'face 'bold))
+  (hl-line-mode 1))
 
 ;;;; Open / Close
 

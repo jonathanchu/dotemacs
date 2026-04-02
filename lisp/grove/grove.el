@@ -208,18 +208,6 @@ Only re-parses files whose mtime has changed."
 
 ;;;; Global keymap
 
-(declare-function grove-open "grove-ui")
-(declare-function grove-close "grove-ui")
-(declare-function grove-toggle "grove-ui")
-(declare-function grove-capture "grove-capture")
-(declare-function grove-find "grove-search")
-(declare-function grove-search "grove-search")
-(declare-function grove-search-tag "grove-search")
-(declare-function grove-daily "grove-daily")
-(declare-function grove-backlinks "grove-backlink")
-(declare-function grove-inbox-review "grove-inbox")
-(declare-function grove-link-insert "grove-link")
-
 (defvar grove-command-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "v") #'grove-open)
@@ -232,10 +220,21 @@ Only re-parses files whose mtime has changed."
     (define-key map (kbd "b") #'grove-backlinks)
     (define-key map (kbd "i") #'grove-inbox-review)
     (define-key map (kbd "l") #'grove-link-insert)
+    (define-key map (kbd "g") #'grove-graph)
     map)
   "Keymap for grove commands, bound under a prefix key.
 Bind this to a prefix key in your init file, e.g.:
   (global-set-key (kbd \"C-c v\") grove-command-map)")
 
 (provide 'grove)
+
+(require 'grove-ui)
+(require 'grove-capture)
+(require 'grove-search)
+(require 'grove-daily)
+(require 'grove-backlink)
+(require 'grove-inbox)
+(require 'grove-link)
+(require 'grove-graph)
+
 ;;; grove.el ends here

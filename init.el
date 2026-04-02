@@ -884,7 +884,8 @@
   :load-path "lisp/grove"
   :bind-keymap ("C-c v" . grove-command-map)
   :custom
-  (grove-directory "~/Dropbox/Notes/"))
+  (grove-directory "~/Dropbox/Notes/")
+  (grove-graph-display 'side))
 
 ;;;; Dired
 
