@@ -885,7 +885,8 @@
   :bind-keymap ("C-c v" . grove-command-map)
   :custom
   (grove-directory "~/Dropbox/Notes/")
-  (grove-graph-display 'side))
+  (grove-graph-display 'side)
+  (grove-tree-icons t))
 
 ;;;; Dired
 

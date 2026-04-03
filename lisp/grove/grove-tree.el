@@ -38,6 +38,12 @@
   :type 'integer
   :group 'grove)
 
+(defcustom grove-tree-icons nil
+  "Whether to show nerd font icons in the tree sidebar.
+Requires a Nerd Font to be installed and active."
+  :type 'boolean
+  :group 'grove)
+
 ;;;; Faces
 
 (defface grove-tree-directory
@@ -55,6 +61,16 @@
   "Face for expand/collapse markers in the tree sidebar."
   :group 'grove)
 
+(defface grove-tree-guide
+  '((t :inherit font-lock-comment-face))
+  "Face for indent guide lines in the tree sidebar."
+  :group 'grove)
+
+(defface grove-tree-current
+  '((t :inherit font-lock-constant-face :weight bold))
+  "Face for the currently open file in the tree sidebar."
+  :group 'grove)
+
 ;;;; Data model
 
 (cl-defstruct grove-tree-node
@@ -70,25 +86,74 @@
 (defvar-local grove-tree--ewoc nil
   "The ewoc instance for the current tree buffer.")
 
+(defvar-local grove-tree--expanded (make-hash-table :test #'equal)
+  "Set of expanded directory paths in the tree.")
+
+(defvar-local grove-tree--current-file nil
+  "Path of the file currently open in the main window.")
+
 (defconst grove-tree-buffer-name "*grove-tree*"
   "Name of the tree sidebar buffer.")
+
+(defun grove-tree--indent-string (depth)
+  "Return an indent guide string for DEPTH levels of nesting."
+  (if (zerop depth)
+      ""
+    (propertize (apply #'concat (make-list depth "│ "))
+                'face 'grove-tree-guide)))
+
+(defun grove-tree--item-count (directory)
+  "Return the number of visible items (org files and subdirs) in DIRECTORY."
+  (let ((count 0))
+    (dolist (file (directory-files directory nil))
+      (unless (string-prefix-p "." file)
+        (when (or (file-directory-p (expand-file-name file directory))
+                  (string-suffix-p ".org" file))
+          (cl-incf count))))
+    count))
+
+(defun grove-tree--icon (dir-p expanded)
+  "Return an icon string for a tree node.
+DIR-P is non-nil for directories, EXPANDED is non-nil if expanded."
+  (if (not grove-tree-icons)
+      ""
+    (concat (cond
+             ((not dir-p) "\xe612 ")         ; nf-seti-text (file)
+             (expanded    "\xf115 ")         ; nf-fa-folder_open
+             (t           "\xf114 "))        ; nf-fa-folder
+            )))
 
 (defun grove-tree--print (node)
   "Print NODE as a line in the ewoc buffer."
   (let* ((depth (grove-tree-node-depth node))
-         (indent (make-string (* depth 2) ?\s))
+         (indent (grove-tree--indent-string depth))
          (dir-p (grove-tree-node-directory-p node))
-         (expanded (grove-tree-node-expanded-p node))
+         (expanded (and dir-p (gethash (grove-tree-node-path node)
+                                       grove-tree--expanded)))
          (name (grove-tree-node-name node))
+         (icon (grove-tree--icon dir-p expanded))
          (marker (cond
                   ((not dir-p) "  ")
                   (expanded "▾ ")
                   (t "▸ "))))
-    (insert indent
-            (propertize marker 'face 'grove-tree-marker)
-            (propertize name 'face (if dir-p
-                                       'grove-tree-directory
-                                     'grove-tree-file)))))
+    (let ((current-p (and (not dir-p)
+                          grove-tree--current-file
+                          (string= (grove-tree-node-path node)
+                                   grove-tree--current-file)))
+          (count (when dir-p
+                   (grove-tree--item-count (grove-tree-node-path node)))))
+      (insert indent
+              (propertize marker 'face 'grove-tree-marker)
+              (propertize icon 'face (if dir-p
+                                         'grove-tree-directory
+                                       'grove-tree-file))
+              (propertize name 'face (cond
+                                      (current-p 'grove-tree-current)
+                                      (dir-p 'grove-tree-directory)
+                                      (t 'grove-tree-file)))
+              (if count
+                  (propertize (format " (%d)" count) 'face 'grove-tree-guide)
+                "")))))
 
 (defun grove-tree--list-entries (directory depth)
   "Return a sorted list of `grove-tree-node' structs for DIRECTORY at DEPTH.
@@ -127,21 +192,29 @@ Directories come first, then files.  Hidden files are excluded."
   (and grove-tree--ewoc
        (ewoc-locate grove-tree--ewoc)))
 
+(defun grove-tree--has-children-p (ewoc-node node)
+  "Return non-nil if EWOC-NODE has visible children in the ewoc."
+  (let ((next (ewoc-next grove-tree--ewoc ewoc-node)))
+    (and next
+         (> (grove-tree-node-depth (ewoc-data next))
+            (grove-tree-node-depth node)))))
+
 (defun grove-tree--toggle-expand ()
   "Toggle expand/collapse for the directory node at point."
   (interactive)
-  (let ((ewoc-node (grove-tree--node-at-point)))
+  (let ((inhibit-read-only t)
+        (ewoc-node (grove-tree--node-at-point)))
     (when ewoc-node
       (let ((node (ewoc-data ewoc-node)))
         (when (grove-tree-node-directory-p node)
-          (if (grove-tree-node-expanded-p node)
+          (if (grove-tree--has-children-p ewoc-node node)
               (grove-tree--collapse ewoc-node node)
             (grove-tree--expand ewoc-node node))
           (ewoc-invalidate grove-tree--ewoc ewoc-node))))))
 
 (defun grove-tree--expand (ewoc-node node)
   "Expand NODE by inserting its children after EWOC-NODE."
-  (setf (grove-tree-node-expanded-p node) t)
+  (puthash (grove-tree-node-path node) t grove-tree--expanded)
   (let ((children (grove-tree--list-entries
                    (grove-tree-node-path node)
                    (1+ (grove-tree-node-depth node))))
@@ -151,14 +224,14 @@ Directories come first, then files.  Hidden files are excluded."
 
 (defun grove-tree--collapse (ewoc-node node)
   "Collapse NODE by removing all its descendants after EWOC-NODE."
-  (setf (grove-tree-node-expanded-p node) nil)
   (let ((next (ewoc-next grove-tree--ewoc ewoc-node))
         (target-depth (grove-tree-node-depth node)))
     (while (and next
                 (> (grove-tree-node-depth (ewoc-data next)) target-depth))
       (let ((to-delete next))
         (setq next (ewoc-next grove-tree--ewoc next))
-        (ewoc-delete grove-tree--ewoc to-delete)))))
+        (ewoc-delete grove-tree--ewoc to-delete))))
+  (remhash (grove-tree-node-path node) grove-tree--expanded))
 
 (defun grove-tree--preview ()
   "Preview the file at point in the main window without switching focus."
@@ -181,6 +254,7 @@ Directories come first, then files.  Hidden files are excluded."
         (if (grove-tree-node-directory-p node)
             (grove-tree--toggle-expand)
           (let ((path (grove-tree-node-path node)))
+            (grove-tree--set-current-file path)
             (select-window
              (or (grove-tree--main-window)
                  (next-window)))
@@ -233,6 +307,22 @@ Directories come first, then files.  Hidden files are excluded."
           (dolist (node (grove-tree--list-entries grove-directory 0))
             (ewoc-enter-last grove-tree--ewoc node)))))))
 
+;;;; Current file tracking
+
+(defun grove-tree--set-current-file (file)
+  "Set FILE as the current file and refresh the tree display."
+  (let ((buf (get-buffer grove-tree-buffer-name)))
+    (when (and buf (buffer-live-p buf))
+      (with-current-buffer buf
+        (unless (equal file grove-tree--current-file)
+          (setq grove-tree--current-file file)
+          (when grove-tree--ewoc
+            (let ((inhibit-read-only t)
+                  (pos (point)))
+              (ewoc-refresh grove-tree--ewoc)
+              (goto-char pos)
+              (hl-line-highlight))))))))
+
 ;;;; Mode
 
 (defvar grove-tree-mode-map
@@ -265,7 +355,11 @@ Directories come first, then files.  Hidden files are excluded."
   (let ((buf (get-buffer-create grove-tree-buffer-name)))
     (with-current-buffer buf
       (grove-tree-mode)
-      (grove-tree-refresh))
+      (grove-tree-refresh)
+      (let ((main-win (grove-tree--main-window)))
+        (when main-win
+          (grove-tree--set-current-file
+           (buffer-file-name (window-buffer main-win))))))
     (let ((win (display-buffer-in-side-window
                 buf
                 `((side . left)
