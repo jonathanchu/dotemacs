@@ -97,6 +97,10 @@ shows a welcome message."
   "Close the grove workspace and restore the previous window configuration."
   (interactive)
   (grove-tree-close)
+  (when-let ((buf (get-buffer "*grove-graph*")))
+    (when-let ((win (get-buffer-window buf)))
+      (delete-window win))
+    (kill-buffer buf))
   (when-let ((buf (get-buffer "*grove-welcome*")))
     (kill-buffer buf))
   (when grove--saved-window-config
