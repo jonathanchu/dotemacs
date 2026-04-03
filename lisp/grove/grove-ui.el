@@ -55,7 +55,10 @@ and displays a note in the main area."
   (let ((main-win (or (grove-tree--main-window)
                       (selected-window))))
     (select-window main-win)
-    (grove--open-initial-note))
+    (grove--open-initial-note)
+    ;; Update the tree to highlight the note we just opened
+    (when-let ((file (buffer-file-name (window-buffer main-win))))
+      (grove-tree--set-current-file file)))
   (setq grove--active-p t)
   (message "Grove opened: %s" (abbreviate-file-name grove-directory)))
 
