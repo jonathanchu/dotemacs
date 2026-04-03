@@ -28,6 +28,7 @@
 ;;; Code:
 
 (require 'grove)
+(require 'image)
 
 ;;;; Customization
 
@@ -150,7 +151,6 @@ Returns an alist of (SOURCE-TITLE . (TARGET-TITLE ...))."
 
 ;;;; Render
 
-
 (defun grove-graph--render-svg (dot-string)
   "Render DOT-STRING to SVG using Graphviz.  Returns the SVG string."
   (unless (executable-find grove-graph-executable)
@@ -166,6 +166,18 @@ Returns an alist of (SOURCE-TITLE . (TARGET-TITLE ...))."
       (unless (zerop exit-code)
         (user-error "Graphviz failed (exit %d): %s" exit-code (buffer-string)))
       (buffer-string))))
+
+;;;; Mode
+
+(defvar-keymap grove-graph-mode-map
+  :parent special-mode-map
+  "+" #'image-increase-size
+  "-" #'image-decrease-size
+  "0" #'image-transform-fit-to-window)
+
+(define-derived-mode grove-graph-mode special-mode "Grove-Graph"
+  "Major mode for viewing the grove graph."
+  :interactive nil)
 
 ;;;; Command
 
@@ -184,7 +196,7 @@ Returns an alist of (SOURCE-TITLE . (TARGET-TITLE ...))."
         (erase-buffer)
         (insert-image (create-image svg 'svg t))
         (goto-char (point-min))
-        (special-mode)))
+        (grove-graph-mode)))
     (grove-graph--display buf)
     (message "Graph: %d notes, %d links"
              (length adjacency)

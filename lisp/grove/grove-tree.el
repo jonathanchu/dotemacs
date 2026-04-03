@@ -266,15 +266,17 @@ Directories come first, then files.  Hidden files are excluded."
     (with-current-buffer buf
       (grove-tree-mode)
       (grove-tree-refresh))
-    (display-buffer-in-side-window
-     buf
-     `((side . left)
-       (slot . 0)
-       (window-width . ,grove-tree-width)
-       (window-parameters
-        . ((no-other-window . nil)
-           (no-delete-other-windows . t)))))
-    buf))
+    (let ((win (display-buffer-in-side-window
+                buf
+                `((side . left)
+                  (slot . 0)
+                  (window-width . ,grove-tree-width)
+                  (window-parameters
+                   . ((no-other-window . nil)
+                      (no-delete-other-windows . t)))))))
+      (when win
+        (window-preserve-size win t t))
+      buf)))
 
 (defun grove-tree-close ()
   "Close the tree sidebar."
