@@ -162,7 +162,16 @@ Syntax:
     (when project
       (dolist (f docket-files)
         (when-let ((pos (docket-capture--find-project-heading project f)))
-          (setq file f target-pos pos))))
+          (setq file f target-pos pos)))
+      (unless target-pos
+        (if (y-or-n-p (format "Project \"%s\" doesn't exist.  Create it? " project))
+            (with-current-buffer (find-file-noselect file)
+              (save-excursion
+                (goto-char (point-max))
+                (unless (bolp) (insert "\n"))
+                (insert (format "* %s\n" project))
+                (setq target-pos (point))))
+          (setq project nil))))
     (unless target-pos
       (setq target-pos (docket-capture--find-inbox file)))
     ;; Build the heading
@@ -219,8 +228,28 @@ Syntax: Buy milk #errands p1 tomorrow /Shopping
                           (docket-capture-result-date result)))
                ""))))
 
+;;;###autoload
+(defun docket-create-project (name)
+  "Create a new empty project heading named NAME."
+  (interactive "sProject name: ")
+  (docket--ensure-files)
+  (let ((file (car docket-files)))
+    ;; Check if project already exists
+    (dolist (f docket-files)
+      (when (docket-capture--find-project-heading name f)
+        (user-error "Project \"%s\" already exists" name)))
+    (with-current-buffer (find-file-noselect file)
+      (save-excursion
+        (goto-char (point-max))
+        (unless (bolp) (insert "\n"))
+        (insert (format "* %s\n" name)))
+      (save-buffer))
+    (docket--refresh-cache)
+    (message "Created project: %s" name)))
+
 ;; Register in command map
 (define-key docket-command-map (kbd "a") #'docket-capture)
+(define-key docket-command-map (kbd "p") #'docket-create-project)
 
 (provide 'docket-capture)
 ;;; docket-capture.el ends here
