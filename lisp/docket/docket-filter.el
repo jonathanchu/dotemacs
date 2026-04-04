@@ -72,25 +72,27 @@ TITLE is the header, PREDICATE filters tasks."
                         (lambda (task)
                           (member (docket-task-state task) docket-todo-states))
                         tasks))
-               (sorted (docket--sort-tasks active)))
+               (sorted (docket--sort-tasks active))
+               (task-count (length sorted)))
           (if sorted
               (progn
                 (ewoc-enter-last
                  docket-filter--ewoc
                  (docket-view-node-create
                   :type 'section
-                  :label (format "%s (%d)" title (length sorted))))
+                  :label (format "%s (%d)" title task-count)))
                 (dolist (task sorted)
                   (ewoc-enter-last
                    docket-filter--ewoc
                    (docket-view-node-create :type 'task :task task))))
             (insert (propertize (format "No tasks matching \"%s\"." title)
-                                'face 'font-lock-comment-face))))
-        (when docket-filter--ewoc
-          (ewoc-refresh docket-filter--ewoc))
-        (goto-char (point-min))
-        (setq-local header-line-format
-                    (propertize (format " %s" title) 'face 'bold))))
+                                'face 'font-lock-comment-face)))
+          (when docket-filter--ewoc
+            (ewoc-refresh docket-filter--ewoc))
+          (goto-char (point-min))
+          (setq-local header-line-format
+                      (propertize (format " %s (%d)" title task-count)
+                                  'face 'bold)))))
     (require 'docket-ui)
     (docket--display-in-main buf)))
 

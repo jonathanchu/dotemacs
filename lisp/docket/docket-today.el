@@ -250,17 +250,20 @@
         (erase-buffer)
         (setq docket-today--ewoc
               (ewoc-create #'docket--view-print "" ""))
-        (let ((nodes (docket--today-build-nodes)))
+        (let* ((nodes (docket--today-build-nodes))
+               (task-count (cl-count 'task nodes
+                                     :key #'docket-view-node-type)))
           (if nodes
               (dolist (node nodes)
                 (ewoc-enter-last docket-today--ewoc node))
             (insert (propertize "No tasks for today — you're all caught up!"
-                                'face 'font-lock-comment-face))))
-        (when docket-today--ewoc
-          (ewoc-refresh docket-today--ewoc))
-        (goto-char (point-min))
-        (setq-local header-line-format
-                    (propertize " Today" 'face 'bold))))
+                                'face 'font-lock-comment-face)))
+          (when docket-today--ewoc
+            (ewoc-refresh docket-today--ewoc))
+          (goto-char (point-min))
+          (setq-local header-line-format
+                      (propertize (format " Today (%d)" task-count)
+                                  'face 'bold)))))
     (require 'docket-ui)
     (docket--display-in-main buf)))
 
@@ -425,8 +428,10 @@
     (require 'docket-upcoming)
     (docket--render-upcoming))
    ((bound-and-true-p docket-filter--ewoc)
-    ;; Filter views need to be re-triggered from sidebar
-    (message "Press g in the sidebar to refresh filters"))))
+    (require 'docket-filter)
+    (when (and docket-filter--title docket-filter--predicate)
+      (docket--render-filter :title docket-filter--title
+                             :predicate docket-filter--predicate)))))
 
 ;;;; Mode
 

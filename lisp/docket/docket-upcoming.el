@@ -113,17 +113,20 @@
         (erase-buffer)
         (setq docket-upcoming--ewoc
               (ewoc-create #'docket--view-print "" ""))
-        (let ((nodes (docket--upcoming-build-nodes)))
+        (let* ((nodes (docket--upcoming-build-nodes))
+               (task-count (cl-count 'task nodes
+                                     :key #'docket-view-node-type)))
           (if nodes
               (dolist (node nodes)
                 (ewoc-enter-last docket-upcoming--ewoc node))
             (insert (propertize "No upcoming tasks scheduled."
-                                'face 'font-lock-comment-face))))
-        (when docket-upcoming--ewoc
-          (ewoc-refresh docket-upcoming--ewoc))
-        (goto-char (point-min))
-        (setq-local header-line-format
-                    (propertize " Upcoming" 'face 'bold))))
+                                'face 'font-lock-comment-face)))
+          (when docket-upcoming--ewoc
+            (ewoc-refresh docket-upcoming--ewoc))
+          (goto-char (point-min))
+          (setq-local header-line-format
+                      (propertize (format " Upcoming (%d)" task-count)
+                                  'face 'bold)))))
     (require 'docket-ui)
     (docket--display-in-main buf)))
 
