@@ -139,6 +139,7 @@
 
 ;;;; Interaction
 
+(declare-function docket-sidebar-help "docket-transient")
 (declare-function docket--render-today "docket-today")
 (declare-function docket--render-upcoming "docket-upcoming")
 (declare-function docket--render-filter "docket-filter")
@@ -248,6 +249,7 @@
     (define-key map (kbd "p") #'docket-sidebar-previous)
     (define-key map (kbd "C-n") #'docket-sidebar-next)
     (define-key map (kbd "C-p") #'docket-sidebar-previous)
+    (define-key map (kbd "?") #'docket-sidebar-help)
     map)
   "Keymap for `docket-sidebar-mode'.")
 

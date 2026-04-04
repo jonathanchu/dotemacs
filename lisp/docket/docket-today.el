@@ -334,7 +334,10 @@ Tasks without dates sort to the end."
         ;; Update the node with refreshed task data
         (setf (docket-view-node-task (ewoc-data ewoc-node))
               (docket--find-task-by-id (docket-task-id task)))
-        (ewoc-invalidate ewoc ewoc-node)))))
+        (ewoc-invalidate ewoc ewoc-node)))
+    ;; Update sidebar counts
+    (when (get-buffer "*docket-sidebar*")
+      (docket-sidebar-refresh))))
 
 (defun docket--find-task-by-id (id)
   "Find a task in the cache by ID."
@@ -455,6 +458,45 @@ Tasks without dates sort to the end."
       (when node
         (ewoc-goto-node ewoc node)))))
 
+(defun docket-view-refile ()
+  "Move the task at point to a different project."
+  (interactive)
+  (when-let ((task (docket-view--task-at-point)))
+    (let* ((projects (cons docket-inbox-heading
+                           (cl-remove docket-inbox-heading
+                                      docket--projects :test #'equal)))
+           (target (completing-read "Move to project: " projects nil t))
+           (file (docket-task-file task))
+           (pos (docket-task-point task))
+           (target-file nil)
+           (target-pos nil))
+      ;; Find target project heading
+      (dolist (f docket-files)
+        (when-let ((p (docket-capture--find-project-heading target f)))
+          (setq target-file f target-pos p)))
+      (unless target-pos
+        (user-error "Project \"%s\" not found" target))
+      ;; Cut the subtree from source
+      (with-current-buffer (find-file-noselect file)
+        (save-excursion
+          (goto-char pos)
+          (org-cut-subtree)))
+      ;; Paste under target project
+      (with-current-buffer (find-file-noselect target-file)
+        (save-excursion
+          (goto-char target-pos)
+          (org-end-of-subtree t)
+          (unless (bolp) (insert "\n"))
+          (org-paste-subtree 2))
+        (save-buffer))
+      ;; Save source if different file
+      (unless (equal file target-file)
+        (with-current-buffer (find-file-noselect file)
+          (save-buffer)))
+      (docket--refresh-cache)
+      (docket-view-refresh)
+      (message "Moved \"%s\" → %s" (docket-task-title task) target))))
+
 (defun docket-view-cycle-sort ()
   "Cycle the sort mode: priority → date → project → priority."
   (interactive)
@@ -466,8 +508,11 @@ Tasks without dates sort to the end."
     (docket-view-refresh)
     (message "Sort: %s" next)))
 
+(declare-function docket-sidebar-refresh "docket-sidebar")
+(declare-function docket-view-help "docket-transient")
+
 (defun docket-view-refresh ()
-  "Refresh the current view."
+  "Refresh the current view and update sidebar counts."
   (interactive)
   (docket--refresh-cache)
   (cond
@@ -480,7 +525,10 @@ Tasks without dates sort to the end."
     (require 'docket-filter)
     (when (and docket-filter--title docket-filter--predicate)
       (docket--render-filter :title docket-filter--title
-                             :predicate docket-filter--predicate)))))
+                             :predicate docket-filter--predicate))))
+  ;; Update sidebar counts
+  (when (get-buffer "*docket-sidebar*")
+    (docket-sidebar-refresh)))
 
 ;;;; Show/hide completed tasks
 
@@ -510,8 +558,10 @@ Tasks without dates sort to the end."
     (define-key map (kbd "C-n") #'docket-view-next)
     (define-key map (kbd "C-p") #'docket-view-previous)
     (define-key map (kbd "g") #'docket-view-refresh)
+    (define-key map (kbd "/") #'docket-view-refile)
     (define-key map (kbd "H") #'docket-view-toggle-show-done)
     (define-key map (kbd "S") #'docket-view-cycle-sort)
+    (define-key map (kbd "?") #'docket-view-help)
     (define-key map (kbd "q") #'docket-close)
     map)
   "Keymap for docket view buffers (today, upcoming, filter).")

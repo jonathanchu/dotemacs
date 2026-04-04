@@ -111,7 +111,8 @@ Returns nil if TS is nil."
 
 (defun docket--parse-file (file)
   "Parse FILE and return a list of `docket-task' structs."
-  (let (tasks current-project)
+  (let (tasks current-project
+        (title-counts (make-hash-table :test #'equal)))
     (with-temp-buffer
       (insert-file-contents file)
       (delay-mode-hooks (org-mode))
@@ -134,20 +135,27 @@ Returns nil if TS is nil."
               (setq current-project title))
             ;; Collect tasks (headings with a TODO keyword)
             (when todo
-              (push (docket-task-create
-                     :id (format "%s::%d" (file-name-nondirectory file) pos)
-                     :title title
-                     :state todo
-                     :priority (when priority (char-to-string priority))
-                     :tags tags
-                     :deadline deadline
-                     :scheduled scheduled
-                     :closed closed
-                     :project (if (= level 1) title current-project)
-                     :file file
-                     :point pos
-                     :level level)
-                    tasks))))))
+              (let* ((base-id (format "%s::%s::%s"
+                                      (file-name-nondirectory file)
+                                      (or current-project "") title))
+                     (count (gethash base-id title-counts 0))
+                     (id (if (zerop count) base-id
+                           (format "%s::%d" base-id count))))
+                (puthash base-id (1+ count) title-counts)
+                (push (docket-task-create
+                       :id id
+                       :title title
+                       :state todo
+                       :priority (when priority (char-to-string priority))
+                       :tags tags
+                       :deadline deadline
+                       :scheduled scheduled
+                       :closed closed
+                       :project (if (= level 1) title current-project)
+                       :file file
+                       :point pos
+                       :level level)
+                      tasks)))))))
     (nreverse tasks)))
 
 (defun docket--refresh-cache ()
@@ -336,5 +344,6 @@ Bind this to a prefix key in your init file, e.g.:
 (require 'docket-capture)
 (require 'docket-upcoming)
 (require 'docket-filter)
+(require 'docket-transient)
 
 ;;; docket.el ends here
