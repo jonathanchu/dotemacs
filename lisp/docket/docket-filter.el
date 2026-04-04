@@ -59,7 +59,8 @@ Each entry is a plist (:name NAME :type TYPE :value VALUE) where:
 TITLE is the header, PREDICATE filters tasks."
   (let ((buf (get-buffer-create "*docket-filter*")))
     (with-current-buffer buf
-      (docket-view-mode)
+      (unless (derived-mode-p 'docket-view-mode)
+        (docket-view-mode))
       (let ((inhibit-read-only t))
         (erase-buffer)
         (setq docket-filter--ewoc
@@ -85,6 +86,8 @@ TITLE is the header, PREDICATE filters tasks."
                    (docket-view-node-create :type 'task :task task))))
             (insert (propertize (format "No tasks matching \"%s\"." title)
                                 'face 'font-lock-comment-face))))
+        (when docket-filter--ewoc
+          (ewoc-refresh docket-filter--ewoc))
         (goto-char (point-min))
         (setq-local header-line-format
                     (propertize (format " %s" title) 'face 'bold))))

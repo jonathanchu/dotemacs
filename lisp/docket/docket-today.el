@@ -134,7 +134,7 @@
                          'face 'docket-overdue)))
          (tag-str (when tags
                     (propertize
-                     (concat " " (mapconcat (lambda (t) (concat "#" t))
+                     (concat " " (mapconcat (lambda (tag) (concat "#" tag))
                                             tags " "))
                      'face (if done-p 'docket-task-done 'docket-task-tag))))
          (proj-str (when project
@@ -244,7 +244,8 @@
   "Render the today view in the main window."
   (let ((buf (get-buffer-create "*docket-today*")))
     (with-current-buffer buf
-      (docket-view-mode)
+      (unless (derived-mode-p 'docket-view-mode)
+        (docket-view-mode))
       (let ((inhibit-read-only t))
         (erase-buffer)
         (setq docket-today--ewoc
@@ -255,6 +256,8 @@
                 (ewoc-enter-last docket-today--ewoc node))
             (insert (propertize "No tasks for today — you're all caught up!"
                                 'face 'font-lock-comment-face))))
+        (when docket-today--ewoc
+          (ewoc-refresh docket-today--ewoc))
         (goto-char (point-min))
         (setq-local header-line-format
                     (propertize " Today" 'face 'bold))))

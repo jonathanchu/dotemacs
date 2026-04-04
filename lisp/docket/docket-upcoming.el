@@ -107,7 +107,8 @@
   "Render the upcoming view in the main window."
   (let ((buf (get-buffer-create "*docket-upcoming*")))
     (with-current-buffer buf
-      (docket-view-mode)
+      (unless (derived-mode-p 'docket-view-mode)
+        (docket-view-mode))
       (let ((inhibit-read-only t))
         (erase-buffer)
         (setq docket-upcoming--ewoc
@@ -118,6 +119,8 @@
                 (ewoc-enter-last docket-upcoming--ewoc node))
             (insert (propertize "No upcoming tasks scheduled."
                                 'face 'font-lock-comment-face))))
+        (when docket-upcoming--ewoc
+          (ewoc-refresh docket-upcoming--ewoc))
         (goto-char (point-min))
         (setq-local header-line-format
                     (propertize " Upcoming" 'face 'bold))))
