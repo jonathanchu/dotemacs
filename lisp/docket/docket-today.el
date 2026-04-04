@@ -198,7 +198,7 @@
                                  (decoded-time-day decoded)
                                  (decoded-time-month decoded)
                                  (decoded-time-year decoded)))
-         overdue-tasks today-tasks next-tasks nodes)
+         overdue-tasks today-tasks next-tasks done-tasks nodes)
     ;; Categorize tasks
     (dolist (task (docket--active-tasks))
       (let ((dl (docket-task-deadline task))
@@ -216,6 +216,11 @@
          ;; NEXT state
          ((string= state "NEXT")
           (push task next-tasks)))))
+    ;; Collect completed tasks when toggled on
+    (when docket-view--show-done
+      (dolist (task (docket--tasks))
+        (when (member (docket-task-state task) docket-done-states)
+          (push task done-tasks))))
     ;; Build nodes
     (when overdue-tasks
       (push (docket-view-node-create :type 'section
@@ -237,6 +242,13 @@
                                                     (length next-tasks)))
             nodes)
       (dolist (task (docket--sort-tasks next-tasks))
+        (push (docket-view-node-create :type 'task :task task) nodes)))
+    (when done-tasks
+      (push (docket-view-node-create :type 'section
+                                     :label (format "Completed (%d)"
+                                                    (length done-tasks)))
+            nodes)
+      (dolist (task done-tasks)
         (push (docket-view-node-create :type 'task :task task) nodes)))
     (nreverse nodes)))
 
@@ -433,6 +445,18 @@
       (docket--render-filter :title docket-filter--title
                              :predicate docket-filter--predicate)))))
 
+;;;; Show/hide completed tasks
+
+(defvar-local docket-view--show-done nil
+  "When non-nil, include completed tasks in the current view.")
+
+(defun docket-view-toggle-show-done ()
+  "Toggle showing completed tasks in the current view."
+  (interactive)
+  (setq docket-view--show-done (not docket-view--show-done))
+  (docket-view-refresh)
+  (message "Completed tasks: %s" (if docket-view--show-done "shown" "hidden")))
+
 ;;;; Mode
 
 (defvar docket-view-mode-map
@@ -449,6 +473,7 @@
     (define-key map (kbd "C-n") #'docket-view-next)
     (define-key map (kbd "C-p") #'docket-view-previous)
     (define-key map (kbd "g") #'docket-view-refresh)
+    (define-key map (kbd "H") #'docket-view-toggle-show-done)
     (define-key map (kbd "q") #'docket-close)
     map)
   "Keymap for docket view buffers (today, upcoming, filter).")

@@ -72,9 +72,14 @@ TITLE is the header, PREDICATE filters tasks."
                         (lambda (task)
                           (member (docket-task-state task) docket-todo-states))
                         tasks))
+               (done (when docket-view--show-done
+                       (cl-remove-if-not
+                        (lambda (task)
+                          (member (docket-task-state task) docket-done-states))
+                        tasks)))
                (sorted (docket--sort-tasks active))
-               (task-count (length sorted)))
-          (if sorted
+               (task-count (+ (length sorted) (length done))))
+          (if (or sorted done)
               (progn
                 (ewoc-enter-last
                  docket-filter--ewoc
@@ -84,7 +89,17 @@ TITLE is the header, PREDICATE filters tasks."
                 (dolist (task sorted)
                   (ewoc-enter-last
                    docket-filter--ewoc
-                   (docket-view-node-create :type 'task :task task))))
+                   (docket-view-node-create :type 'task :task task)))
+                (when done
+                  (ewoc-enter-last
+                   docket-filter--ewoc
+                   (docket-view-node-create
+                    :type 'section
+                    :label (format "Completed (%d)" (length done))))
+                  (dolist (task done)
+                    (ewoc-enter-last
+                     docket-filter--ewoc
+                     (docket-view-node-create :type 'task :task task)))))
             (insert (propertize (format "No tasks matching \"%s\"." title)
                                 'face 'font-lock-comment-face)))
           (when docket-filter--ewoc
