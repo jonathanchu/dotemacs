@@ -168,6 +168,13 @@
 
 ;;;; Sorting
 
+(defvar-local docket-view--sort-mode 'priority
+  "Current sort mode for task views.
+One of `priority', `date', or `project'.")
+
+(defconst docket--sort-modes '(priority date project)
+  "Available sort modes, cycled by `docket-view-cycle-sort'.")
+
 (defun docket--task-sort-key (task)
   "Return a sort key for TASK (lower = higher priority)."
   (let ((pri (docket-task-priority task))
@@ -175,11 +182,30 @@
     (+ (pcase pri ("A" 0) ("B" 100) ("C" 200) (_ 300))
        (pcase state ("NEXT" 0) ("TODO" 10) ("WAIT" 20) ("SOMEDAY" 30) (_ 50)))))
 
+(defun docket--task-date-key (task)
+  "Return a time value for sorting TASK by date.
+Tasks without dates sort to the end."
+  (or (docket-task-deadline task)
+      (docket-task-scheduled task)
+      (encode-time 0 0 0 1 1 2100)))
+
 (defun docket--sort-tasks (tasks)
-  "Sort TASKS by priority then state."
-  (sort (copy-sequence tasks)
-        (lambda (a b)
-          (< (docket--task-sort-key a) (docket--task-sort-key b)))))
+  "Sort TASKS according to `docket-view--sort-mode'."
+  (let ((sorted (copy-sequence tasks)))
+    (pcase docket-view--sort-mode
+      ('priority
+       (sort sorted (lambda (a b)
+                      (< (docket--task-sort-key a)
+                         (docket--task-sort-key b)))))
+      ('date
+       (sort sorted (lambda (a b)
+                      (time-less-p (docket--task-date-key a)
+                                   (docket--task-date-key b)))))
+      ('project
+       (sort sorted (lambda (a b)
+                      (string< (or (docket-task-project a) "")
+                               (or (docket-task-project b) "")))))
+      (_ sorted))))
 
 ;;;; Today view
 
@@ -429,6 +455,17 @@
       (when node
         (ewoc-goto-node ewoc node)))))
 
+(defun docket-view-cycle-sort ()
+  "Cycle the sort mode: priority → date → project → priority."
+  (interactive)
+  (let* ((current docket-view--sort-mode)
+         (idx (cl-position current docket--sort-modes))
+         (next (nth (mod (1+ (or idx 0)) (length docket--sort-modes))
+                    docket--sort-modes)))
+    (setq docket-view--sort-mode next)
+    (docket-view-refresh)
+    (message "Sort: %s" next)))
+
 (defun docket-view-refresh ()
   "Refresh the current view."
   (interactive)
@@ -474,6 +511,7 @@
     (define-key map (kbd "C-p") #'docket-view-previous)
     (define-key map (kbd "g") #'docket-view-refresh)
     (define-key map (kbd "H") #'docket-view-toggle-show-done)
+    (define-key map (kbd "S") #'docket-view-cycle-sort)
     (define-key map (kbd "q") #'docket-close)
     map)
   "Keymap for docket view buffers (today, upcoming, filter).")
