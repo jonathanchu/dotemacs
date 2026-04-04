@@ -888,6 +888,14 @@
   (grove-graph-display 'side)
   (grove-tree-icons t))
 
+;;;; Docket
+
+(use-package docket
+  :load-path "lisp/docket"
+  :bind-keymap ("C-c d" . docket-command-map)
+  :custom
+  (docket-files '("~/Dropbox/org/test-gtd.org")))
+
 ;;;; Dired
 
 (use-package dired-narrow
