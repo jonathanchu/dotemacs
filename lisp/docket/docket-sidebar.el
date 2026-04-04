@@ -154,8 +154,11 @@
            (key (docket-sidebar-node-key node)))
       (unless (eq type 'section)
         (setq docket-sidebar--active key)
-        (let ((inhibit-read-only t))
-          (ewoc-refresh docket-sidebar--ewoc))
+        (let ((inhibit-read-only t)
+              (saved-pos (point)))
+          (ewoc-refresh docket-sidebar--ewoc)
+          (goto-char saved-pos)
+          (hl-line-highlight))
         (pcase key
           ("today"
            (require 'docket-today)
@@ -190,7 +193,10 @@
               (docket--render-filter
                :title (concat "#" key)
                :predicate (lambda (task)
-                            (member key (docket-task-tags task))))))))))))
+                            (member key (docket-task-tags task))))))))
+        ;; Focus the main view window
+        (when-let ((main-win (docket--main-window)))
+          (select-window main-win))))))
 
 ;;;; Navigation
 
