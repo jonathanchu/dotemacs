@@ -1061,9 +1061,6 @@ point reaches the beginning or end of the buffer, stop there."
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line] #'smarter-move-beginning-of-line)
 
-;; duplicate line or region
-;; (global-set-key (kbd "C-c d") #'duplicate-dwim)
-
 ;; switch to previous buffer
 (global-set-key (kbd "C-`") #'switch-to-previous-buffer)
 
