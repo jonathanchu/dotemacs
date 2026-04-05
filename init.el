@@ -252,13 +252,14 @@
 ;;;; Tree-sitter
 
 (defconst my/treesit-grammars
-  '(bash css elisp go html javascript json python toml tsx typescript yaml)
+  '(astro bash css elisp go html javascript json python toml tsx typescript yaml)
   "Tree-sitter grammars to install for this config.")
 
 (when (and (fboundp 'treesit-available-p)
            (treesit-available-p))
   (setq treesit-language-source-alist
-        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        '((astro "https://github.com/virchau13/tree-sitter-astro")
+          (bash "https://github.com/tree-sitter/tree-sitter-bash")
           (css "https://github.com/tree-sitter/tree-sitter-css")
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
           (go "https://github.com/tree-sitter/tree-sitter-go")
@@ -298,6 +299,8 @@
   ;; TypeScript/TSX have no built-in mode to remap from, so register directly
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode)))
+
+(use-package astro-ts-mode)
 
 ;;;; Server
 
