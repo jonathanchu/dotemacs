@@ -75,6 +75,16 @@
   "Face for overdue date indicators."
   :group 'docket)
 
+(defface docket-date-today
+  '((t :inherit success))
+  "Face for dates that are today."
+  :group 'docket)
+
+(defface docket-date
+  '((t :inherit font-lock-comment-face))
+  "Face for future date indicators."
+  :group 'docket)
+
 (defface docket-section-header
   '((t :inherit font-lock-keyword-face :weight bold :height 1.1))
   "Face for section headers in task views."
@@ -105,6 +115,38 @@
     ("C" 'docket-priority-c)
     (_ 'docket-task-title)))
 
+;;;; Date formatting
+
+(defun docket--format-date (time)
+  "Format TIME as a human-readable relative date string.
+Uses \"Today\", \"Tomorrow\", day names for this week, or \"Mon DD\" otherwise."
+  (let* ((now (decode-time))
+         (today (encode-time 0 0 0
+                             (decoded-time-day now)
+                             (decoded-time-month now)
+                             (decoded-time-year now)))
+         (tomorrow (time-add today (* 24 60 60)))
+         (next-week (time-add today (* 7 24 60 60))))
+    (cond
+     ((time-less-p time today) (format-time-string "%b %d" time))
+     ((time-less-p time tomorrow) "Today")
+     ((time-less-p time (time-add tomorrow (* 24 60 60))) "Tomorrow")
+     ((time-less-p time next-week) (format-time-string "%A" time))
+     (t (format-time-string "%b %d" time)))))
+
+(defun docket--date-face (time)
+  "Return the face for a date at TIME."
+  (let* ((now (decode-time))
+         (today (encode-time 0 0 0
+                             (decoded-time-day now)
+                             (decoded-time-month now)
+                             (decoded-time-year now)))
+         (tomorrow (time-add today (* 24 60 60))))
+    (cond
+     ((time-less-p time today) 'docket-overdue)
+     ((time-less-p time tomorrow) 'docket-date-today)
+     (t 'docket-date))))
+
 ;;;; Task rendering
 
 (defun docket--format-task-line (task)
@@ -117,6 +159,7 @@
          (project (docket-task-project task))
          (tags (docket-task-tags task))
          (deadline (docket-task-deadline task))
+         (scheduled (docket-task-scheduled task))
          (title-face (if done-p 'docket-task-done 'docket-task-title))
          (pri-str (if priority
                       (propertize (format "[%s] " priority)
@@ -127,11 +170,11 @@
                            (if priority
                                (docket--priority-face priority)
                              'docket-task-title)))
-         (overdue-str (when (and deadline (not done-p)
-                                 (time-less-p deadline (current-time)))
-                        (propertize
-                         (format " ⚠ %s" (format-time-string "%b %d" deadline))
-                         'face 'docket-overdue)))
+         (date-str (unless done-p
+                     (let ((date (or deadline scheduled)))
+                       (when date
+                         (propertize (format "  <%s>" (docket--format-date date))
+                                     'face (docket--date-face date))))))
          (tag-str (when tags
                     (propertize
                      (concat " " (mapconcat (lambda (tag) (concat "#" tag))
@@ -145,7 +188,7 @@
             " "
             pri-str
             (propertize title 'face title-face)
-            (or overdue-str "")
+            (or date-str "")
             (or tag-str "")
             (or proj-str ""))))
 
@@ -361,7 +404,8 @@ Tasks without dates sort to the end."
       (with-current-buffer (find-file-noselect file)
         (save-excursion
           (goto-char pos)
-          (org-priority (if new-pri (string-to-char new-pri) ?\s))))
+          (org-priority (if new-pri (string-to-char new-pri) ?\s)))
+        (save-buffer))
       (docket--refresh-cache)
       (when-let ((ewoc (docket-view--current-ewoc)))
         (let ((inhibit-read-only t)
@@ -384,41 +428,60 @@ Tasks without dates sort to the end."
                 (docket--find-task-by-id (docket-task-id task)))
           (ewoc-invalidate ewoc ewoc-node))))))
 
+(defun docket-view--read-date (prompt)
+  "Read a date string using PROMPT.
+Accepts the same inputs as `docket-capture--parse-relative-date'
+\(today, tomorrow, day names, +Nd) as well as YYYY-MM-DD dates.
+Returns an Emacs time value."
+  (require 'docket-capture)
+  (let* ((input (read-string prompt))
+         (time (or (docket-capture--parse-relative-date input)
+                   (and (string-match-p "^[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}$" input)
+                        (encode-time (org-parse-time-string (concat input " 00:00"))))
+                   (user-error "Unrecognized date: %s" input))))
+    time))
+
+(defun docket-view--set-date (task keyword time)
+  "Set KEYWORD (\"SCHEDULED\" or \"DEADLINE\") on TASK to TIME.
+TIME is an Emacs time value."
+  (let ((file (docket-task-file task))
+        (pos (docket-task-point task))
+        (ts (format-time-string "<%Y-%m-%d %a>" time)))
+    (with-current-buffer (find-file-noselect file)
+      (save-excursion
+        (goto-char pos)
+        (let ((end (save-excursion (org-end-of-subtree t) (point))))
+          ;; Remove existing keyword line if present
+          (save-excursion
+            (when (re-search-forward
+                   (format "^[ \t]*%s: " keyword) end t)
+              (beginning-of-line)
+              (delete-region (point) (progn (forward-line 1) (point)))))
+          ;; Insert new keyword line after heading
+          (forward-line 1)
+          (insert (format "   %s: %s\n" keyword ts))))
+      (save-buffer))
+    (docket--refresh-cache)
+    (when-let ((ewoc (docket-view--current-ewoc)))
+      (let ((inhibit-read-only t)
+            (ewoc-node (ewoc-locate ewoc)))
+        (setf (docket-view-node-task (ewoc-data ewoc-node))
+              (docket--find-task-by-id (docket-task-id task)))
+        (ewoc-invalidate ewoc ewoc-node)))))
+
 (defun docket-view-set-scheduled ()
   "Set the scheduled date of the task at point."
   (interactive)
   (when-let ((task (docket-view--task-at-point)))
-    (let ((file (docket-task-file task))
-          (pos (docket-task-point task)))
-      (with-current-buffer (find-file-noselect file)
-        (save-excursion
-          (goto-char pos)
-          (org-schedule nil)))
-      (docket--refresh-cache)
-      (when-let ((ewoc (docket-view--current-ewoc)))
-        (let ((inhibit-read-only t)
-              (ewoc-node (ewoc-locate ewoc)))
-          (setf (docket-view-node-task (ewoc-data ewoc-node))
-                (docket--find-task-by-id (docket-task-id task)))
-          (ewoc-invalidate ewoc ewoc-node))))))
+    (docket-view--set-date task "SCHEDULED"
+                           (docket-view--read-date "Scheduled: "))))
 
 (defun docket-view-set-deadline ()
   "Set the deadline of the task at point."
   (interactive)
   (when-let ((task (docket-view--task-at-point)))
-    (let ((file (docket-task-file task))
-          (pos (docket-task-point task)))
-      (with-current-buffer (find-file-noselect file)
-        (save-excursion
-          (goto-char pos)
-          (org-deadline nil)))
-      (docket--refresh-cache)
-      (when-let ((ewoc (docket-view--current-ewoc)))
-        (let ((inhibit-read-only t)
-              (ewoc-node (ewoc-locate ewoc)))
-          (setf (docket-view-node-task (ewoc-data ewoc-node))
-                (docket--find-task-by-id (docket-task-id task)))
-          (ewoc-invalidate ewoc ewoc-node))))))
+    (docket-view--set-date task "DEADLINE"
+                           (docket-view--read-date "Deadline: "))))
 
 (defun docket-view-set-tags ()
   "Edit the tags of the task at point."
@@ -429,7 +492,8 @@ Tasks without dates sort to the end."
       (with-current-buffer (find-file-noselect file)
         (save-excursion
           (goto-char pos)
-          (org-set-tags-command)))
+          (org-set-tags-command))
+        (save-buffer))
       (docket--refresh-cache)
       (when-let ((ewoc (docket-view--current-ewoc)))
         (let ((inhibit-read-only t)
