@@ -859,27 +859,6 @@
                                (display-line-numbers-mode 1)
                                (visual-line-mode 1)))))
 
-;;;; Denote
-
-(use-package denote
-  :hook (dired-mode . denote-dired-mode)
-  :bind
-  (("C-c n n" . denote)
-   ("C-c n r" . denote-rename-file)
-   ("C-c n l" . denote-link)
-   ("C-c n b" . denote-backlinks)
-   ("C-c n d" . denote-dired)
-   ("C-c n g" . denote-grep))
-  :config
-  (setq denote-directory (expand-file-name "~/Dropbox/Notes/")
-        denote-sort-keywords t)
-  (denote-rename-buffer-mode 1))
-
-(use-package consult-denote
-  :after (denote consult)
-  :bind
-  (("C-c n s" . consult-denote-find)
-   ("C-c n g" . consult-denote-grep)))
 
 ;;;; Grove
 
