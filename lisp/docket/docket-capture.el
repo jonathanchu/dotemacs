@@ -87,33 +87,48 @@ Syntax:
   #tag        → org tag
   p1/p2/p3    → priority A/B/C
   !deadline   → next date word sets deadline instead of scheduled
-  /project    → refile under project heading
+  /project    → refile under project heading (multi-word: /Side Projects)
   today/tomorrow/monday/+3d → scheduled date"
   (let ((words (split-string input))
         title-words tags priority date date-type project
-        use-deadline)
+        use-deadline in-project)
     (dolist (word words)
       (cond
+       ;; Continuing a multi-word project name — stop on special tokens
+       ((and in-project
+             (not (string-prefix-p "#" word))
+             (not (string-prefix-p "/" word))
+             (not (string= (downcase word) "!deadline"))
+             (not (and (string-match-p "^p[1-3]$" (downcase word))
+                       (null priority)))
+             (not (docket-capture--parse-relative-date word)))
+        (setq project (concat project " " word)))
        ;; Tags: #errands
        ((string-prefix-p "#" word)
+        (setq in-project nil)
         (push (substring word 1) tags))
        ;; Priority: p1, p2, p3
        ((and (string-match-p "^p[1-3]$" (downcase word))
              (null priority))
+        (setq in-project nil)
         (setq priority (pcase (downcase word)
                          ("p1" "A") ("p2" "B") ("p3" "C"))))
        ;; Deadline modifier
        ((string= (downcase word) "!deadline")
+        (setq in-project nil)
         (setq use-deadline t))
-       ;; Project: /ProjectName
+       ;; Project: /ProjectName (may continue with following words)
        ((string-prefix-p "/" word)
-        (setq project (substring word 1)))
+        (setq project (substring word 1))
+        (setq in-project t))
        ;; Date words
        ((docket-capture--parse-relative-date word)
+        (setq in-project nil)
         (setq date (docket-capture--parse-relative-date word))
         (setq date-type (if use-deadline 'deadline 'scheduled)))
        ;; Normal title word
        (t
+        (setq in-project nil)
         (push word title-words))))
     (docket-capture-result-create
      :title (string-join (nreverse title-words) " ")
