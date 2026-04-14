@@ -34,10 +34,13 @@
 ;; - Quick note capture
 ;; - Wikilinks with backlinks (ripgrep-powered, no database)
 ;; - Daily notes
-;; - Consult integration for search
+;; - Full-text and tag search (Consult integration optional)
+;; - Graph view (Graphviz-based)
+;; - Inbox review for triaging untagged notes
 ;;
 ;; Usage:
 ;;   (setq grove-directory "~/notes/")
+;;   (global-grove-mode 1)   ; auto-enable grove-mode in vault files
 ;;   (grove-open)
 
 ;;; Code:
