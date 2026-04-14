@@ -868,7 +868,9 @@
   :custom
   (grove-directory "~/Dropbox/grove-demo/")
   (grove-graph-display 'side)
-  (grove-tree-icons t))
+  (grove-tree-icons t)
+  :config
+  (global-grove-mode 1))
 
 ;;;; Docket
 

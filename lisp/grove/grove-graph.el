@@ -29,6 +29,7 @@
 
 (require 'grove)
 (require 'image)
+(require 'image-mode)
 
 ;;;; Customization
 

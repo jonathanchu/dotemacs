@@ -43,7 +43,7 @@ it is created with a title template."
     (find-file path)
     (when new-p
       (insert "#+title: " (format-time-string "%A, %B %e, %Y" time) "\n")
-      (insert "#+date: " (format-time-string "%Y-%m-%d" time) "\n\n")
+      (insert "#+date: " (format-time-string "%F" time) "\n\n")
       (save-buffer))))
 
 ;;;###autoload

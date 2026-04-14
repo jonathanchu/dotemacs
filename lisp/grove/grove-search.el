@@ -66,7 +66,7 @@ available, otherwise falls back to `grep'."
 
 ;;;###autoload
 (defun grove-find ()
-  "Find a note by title using completing-read over cached titles."
+  "Find a note by title using `completing-read' over cached titles."
   (interactive)
   (grove--ensure-directory)
   (grove--refresh-cache)
