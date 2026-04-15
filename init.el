@@ -878,7 +878,9 @@
   :load-path "lisp/docket"
   :bind-keymap ("C-c d" . docket-command-map)
   :custom
-  (docket-files '("~/Dropbox/org/docket-gtd.org")))
+  (docket-files '("~/Dropbox/org/docket-gtd.org"))
+  :config
+  (global-docket-mode 1))
 
 ;;;; Dired
 

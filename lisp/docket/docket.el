@@ -304,15 +304,19 @@ Includes: overdue, due today (deadline/scheduled), and NEXT tasks."
       (add-hook 'after-save-hook #'docket--after-save-hook nil t)
     (remove-hook 'after-save-hook #'docket--after-save-hook t)))
 
-(defun docket--maybe-enable ()
-  "Enable `docket-mode' if the current buffer is a docket file."
+(defun docket--turn-on ()
+  "Turn on `docket-mode' if the current buffer is visiting a docket file."
   (when (and docket-files
              (buffer-file-name)
              (member (expand-file-name (buffer-file-name))
                      (mapcar #'expand-file-name docket-files)))
     (docket-mode 1)))
 
-(add-hook 'find-file-hook #'docket--maybe-enable)
+;;;###autoload
+(define-globalized-minor-mode global-docket-mode
+  docket-mode
+  docket--turn-on
+  :group 'docket)
 
 ;;;; Command map (populated by submodules)
 
