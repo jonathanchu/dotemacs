@@ -31,6 +31,8 @@
 (require 'ewoc)
 (require 'docket)
 
+(declare-function hl-line-highlight "hl-line")
+
 ;;;; Faces
 
 (defface docket-sidebar-section

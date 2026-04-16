@@ -63,7 +63,7 @@
     (dolist (task sorted)
       (let ((date (docket--upcoming-task-date task)))
         (if (time-less-p date seven-days)
-            (let ((day-key (format-time-string "%Y-%m-%d" date)))
+            (let ((day-key (format-time-string "%F" date)))
               (puthash day-key
                        (append (gethash day-key day-groups) (list task))
                        day-groups)
@@ -95,8 +95,8 @@
 
 (defun docket--upcoming-day-label (date day-key)
   "Return a human-readable label for DATE with DAY-KEY."
-  (let ((today (format-time-string "%Y-%m-%d"))
-        (tomorrow (format-time-string "%Y-%m-%d"
+  (let ((today (format-time-string "%F"))
+        (tomorrow (format-time-string "%F"
                                       (time-add (current-time) (* 24 60 60)))))
     (cond
      ((string= day-key today) "Today")
@@ -129,9 +129,6 @@
                                   'face 'bold)))))
     (require 'docket-ui)
     (docket--display-in-main buf)))
-
-;; Register in command map
-(define-key docket-command-map (kbd "u") #'docket-view-upcoming)
 
 ;;;###autoload
 (defun docket-view-upcoming ()

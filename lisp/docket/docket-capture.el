@@ -196,7 +196,7 @@ Syntax:
                            (when tags
                              (concat "  :" (mapconcat #'identity tags ":") ":"))))
           (timestamp (when date
-                       (let ((ts-str (format-time-string "<%Y-%m-%d %a>" date)))
+                       (let ((ts-str (format-time-string "<%F %a>" date)))
                          (if (eq date-type 'deadline)
                              (format "DEADLINE: %s" ts-str)
                            (format "SCHEDULED: %s" ts-str))))))
@@ -261,10 +261,6 @@ Syntax: Buy milk #errands p1 tomorrow /Shopping
       (save-buffer))
     (docket--refresh-cache)
     (message "Created project: %s" name)))
-
-;; Register in command map
-(define-key docket-command-map (kbd "a") #'docket-capture)
-(define-key docket-command-map (kbd "p") #'docket-create-project)
 
 (provide 'docket-capture)
 ;;; docket-capture.el ends here

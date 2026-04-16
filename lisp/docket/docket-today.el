@@ -446,7 +446,7 @@ Returns an Emacs time value."
 TIME is an Emacs time value."
   (let ((file (docket-task-file task))
         (pos (docket-task-point task))
-        (ts (format-time-string "<%Y-%m-%d %a>" time)))
+        (ts (format-time-string "<%F %a>" time)))
     (with-current-buffer (find-file-noselect file)
       (save-excursion
         (goto-char pos)

@@ -6,7 +6,7 @@
 ;; URL: https://github.com/jonathanchu/docket
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "29.1"))
-;; Keywords: org-mode gtd productivity
+;; Keywords: outlines convenience
 
 ;; This file is not part of GNU Emacs.
 
@@ -221,13 +221,12 @@ Includes: overdue, due today (deadline/scheduled), and NEXT tasks."
 
 (defun docket--upcoming-tasks ()
   "Return tasks with a deadline or scheduled date in the future."
-  (let ((now (current-time)))
-    (cl-remove-if-not
-     (lambda (task)
-       (and (member (docket-task-state task) docket-todo-states)
-            (or (docket-task-deadline task)
-                (docket-task-scheduled task))))
-     (docket--tasks))))
+  (cl-remove-if-not
+   (lambda (task)
+     (and (member (docket-task-state task) docket-todo-states)
+          (or (docket-task-deadline task)
+              (docket-task-scheduled task))))
+   (docket--tasks)))
 
 (defun docket--tasks-for-project (project)
   "Return active tasks belonging to PROJECT."
@@ -282,7 +281,7 @@ Includes: overdue, due today (deadline/scheduled), and NEXT tasks."
     (find-file file)
     (goto-char pos)
     (org-reveal)
-    (org-show-entry)))
+    (org-fold-show-entry)))
 
 ;;;; After-save hook for auto-refresh
 
@@ -322,10 +321,15 @@ Includes: overdue, due today (deadline/scheduled), and NEXT tasks."
 
 (defvar docket-command-map
   (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "a") #'docket-capture)
     (define-key map (kbd "d") #'docket-open)
+    (define-key map (kbd "f") #'docket-filter)
+    (define-key map (kbd "l") #'docket-view-labels)
+    (define-key map (kbd "p") #'docket-create-project)
     (define-key map (kbd "q") #'docket-close)
-    (define-key map (kbd "t") #'docket-view-today)
     (define-key map (kbd "r") #'docket-refresh)
+    (define-key map (kbd "t") #'docket-view-today)
+    (define-key map (kbd "u") #'docket-view-upcoming)
     map)
   "Keymap for docket commands, bound under a prefix key.
 Bind this to a prefix key in your init file, e.g.:

@@ -241,9 +241,5 @@ Prompts for filter type and value."
          :title (format "#%s" tag-name)
          :predicate (docket--filter-by-tag tag-name))))))
 
-;; Register in command map
-(define-key docket-command-map (kbd "f") #'docket-filter)
-(define-key docket-command-map (kbd "l") #'docket-view-labels)
-
 (provide 'docket-filter)
 ;;; docket-filter.el ends here
