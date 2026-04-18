@@ -72,15 +72,19 @@
 ** Nerd Fonts
 
    =doom-modeline= and =nerd-icons= require a Nerd Font to render
-   icons correctly. Install the bundled Symbols Nerd Font Mono from
-   within Emacs:
+   icons correctly. Install the Symbols Nerd Font via Homebrew:
+
+   #+BEGIN_SRC shell
+   $ brew install --cask font-symbols-only-nerd-font
+   #+END_SRC
+
+   Then register the fonts with =nerd-icons= from within Emacs:
 
    #+BEGIN_SRC
    M-x nerd-icons-install-fonts
    #+END_SRC
 
-   On macOS this downloads the font to =~/Library/Fonts/=. Restart
-   Emacs afterwards.
+   Restart Emacs afterwards.
 
 ** Language servers (eglot)
 
