@@ -86,6 +86,21 @@
 
    Restart Emacs afterwards.
 
+** Tree-sitter grammars
+
+   This config uses tree-sitter for several languages. The grammar
+   sources are declared in =init.el= under =treesit-language-source-alist=.
+   Two helpers are provided to install them:
+
+   #+BEGIN_SRC
+   M-x my/treesit-install-all-grammars
+   M-x my/treesit-install-missing-grammars
+   #+END_SRC
+
+   Use the first for a fresh install or to force-update every grammar;
+   use the second to fill in only what's missing. Requires a C
+   compiler available on =PATH=.
+
 ** Language servers (eglot)
 
    Install language servers for Python, TypeScript/JavaScript, and Go:
