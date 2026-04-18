@@ -69,6 +69,19 @@
    $ npm install -g eslint
    #+END_SRC
 
+** Nerd Fonts
+
+   =doom-modeline= and =nerd-icons= require a Nerd Font to render
+   icons correctly. Install the bundled Symbols Nerd Font Mono from
+   within Emacs:
+
+   #+BEGIN_SRC
+   M-x nerd-icons-install-fonts
+   #+END_SRC
+
+   On macOS this downloads the font to =~/Library/Fonts/=. Restart
+   Emacs afterwards.
+
 ** Language servers (eglot)
 
    Install language servers for Python, TypeScript/JavaScript, and Go:
