@@ -30,7 +30,7 @@
 (require 'cl-lib)
 (require 'ewoc)
 (require 'hl-line)
-(require 'grove)
+(require 'grove-core)
 
 ;;;; Customization
 

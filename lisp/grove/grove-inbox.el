@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-(require 'grove)
+(require 'grove-core)
 (require 'grove-backlink)
 
 (defconst grove-inbox-buffer-name "*grove-inbox*"

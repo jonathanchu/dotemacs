@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'grove)
+(require 'grove-core)
 
 ;;;; Faces
 
@@ -121,7 +121,7 @@ If the note doesn't exist, offer to create it."
     (if path
         (find-file path)
       (if (y-or-n-p (format "Note \"%s\" not found.  Create it? " title))
-          (let* ((filename (concat (grove-capture--sanitize-filename title) ".org"))
+          (let* ((filename (concat (grove--sanitize-filename title) ".org"))
                  (path (expand-file-name filename grove-directory)))
             (find-file path)
             (insert "#+title: " title "\n\n"))

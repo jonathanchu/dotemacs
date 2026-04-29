@@ -27,7 +27,7 @@
 
 ;;; Code:
 
-(require 'grove)
+(require 'grove-core)
 
 ;;;###autoload
 (defun grove-daily (&optional time)

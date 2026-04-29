@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'grove)
+(require 'grove-core)
 
 (declare-function consult--grep "consult")
 (declare-function consult--grep-make-builder "consult")

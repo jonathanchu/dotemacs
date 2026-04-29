@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'grove)
+(require 'grove-core)
 
 (defconst grove-backlink-buffer-name "*grove-backlinks*"
   "Name of the backlinks buffer.")
