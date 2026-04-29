@@ -146,6 +146,7 @@
 (declare-function docket--render-upcoming "docket-upcoming")
 (declare-function docket--render-filter "docket-filter")
 (declare-function docket--display-in-main "docket-ui")
+(declare-function docket--main-window "docket-ui")
 
 (defun docket-sidebar--activate ()
   "Activate the item at point in the sidebar."

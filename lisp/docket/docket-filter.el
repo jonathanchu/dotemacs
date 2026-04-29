@@ -33,6 +33,8 @@
 (require 'docket)
 (require 'docket-today)
 
+(declare-function docket--display-in-main "docket-ui")
+
 ;;;; Customization
 
 (defcustom docket-saved-filters nil

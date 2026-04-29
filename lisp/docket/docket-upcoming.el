@@ -32,6 +32,8 @@
 (require 'docket)
 (require 'docket-today)
 
+(declare-function docket--display-in-main "docket-ui")
+
 ;;;; Upcoming view
 
 (defvar-local docket-upcoming--ewoc nil

@@ -31,6 +31,7 @@
 
 ;;;; View help menu
 
+;;;###autoload
 (defun docket-view-help ()
   "Show help menu for docket task views."
   (interactive)
@@ -58,6 +59,7 @@
 
 ;;;; Sidebar help menu
 
+;;;###autoload
 (defun docket-sidebar-help ()
   "Show help menu for the docket sidebar."
   (interactive)
@@ -76,6 +78,7 @@
 
 ;;;; Global help menu
 
+;;;###autoload (autoload 'docket-help "docket-transient" nil t)
 (transient-define-prefix docket-help ()
   "Help menu for docket commands."
   ["Workspace"
