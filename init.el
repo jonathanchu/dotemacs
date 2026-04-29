@@ -219,11 +219,13 @@
 ;; turn on visual line mode for text
 (add-hook 'text-mode-hook #'visual-line-mode)
 
-;; variable pitch mode for text
-(add-hook 'text-mode-hook #'variable-pitch-mode)
+;; mixed pitch for text: variable-pitch for prose, fixed-pitch preserved
+;; for code, tables, verbatim, etc. (avoids alignment issues in org tables)
+(use-package mixed-pitch
+  :hook (text-mode . mixed-pitch-mode))
 
-;; but keep fixed pitch in git commit buffers
-(add-hook 'git-commit-mode-hook (lambda () (variable-pitch-mode -1)))
+;; but keep fully fixed pitch in git commit buffers
+(add-hook 'git-commit-mode-hook (lambda () (mixed-pitch-mode -1)))
 
 ;;;; Completion Behavior
 
