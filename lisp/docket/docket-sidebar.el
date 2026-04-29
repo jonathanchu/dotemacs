@@ -29,7 +29,7 @@
 
 (require 'cl-lib)
 (require 'ewoc)
-(require 'docket)
+(require 'docket-core)
 
 (declare-function hl-line-highlight "hl-line")
 

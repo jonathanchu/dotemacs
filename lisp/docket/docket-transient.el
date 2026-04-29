@@ -27,7 +27,7 @@
 ;;; Code:
 
 (require 'transient)
-(require 'docket)
+(require 'docket-core)
 
 ;;;; View help menu
 

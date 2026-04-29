@@ -30,7 +30,7 @@
 ;;; Code:
 
 (require 'cl-lib)
-(require 'docket)
+(require 'docket-core)
 
 ;;;; Date parsing
 

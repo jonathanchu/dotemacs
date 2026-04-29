@@ -28,7 +28,7 @@
 
 ;;; Code:
 
-(require 'docket)
+(require 'docket-core)
 
 ;;;; Window configuration
 

@@ -30,7 +30,7 @@
 
 (require 'cl-lib)
 (require 'ewoc)
-(require 'docket)
+(require 'docket-core)
 (require 'docket-today)
 
 (declare-function docket--display-in-main "docket-ui")
