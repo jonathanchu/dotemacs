@@ -110,9 +110,9 @@ prompt the user to choose."
 (defun grove-link-follow-at-point ()
   "Follow the grove wikilink at point."
   (interactive)
-  (if-let ((target (grove-link--target-at-point)))
-      (grove-link-follow target)
-    (user-error "No grove link at point")))
+  (let ((target (grove-link--target-at-point)))
+    (unless target (user-error "No grove link at point"))
+    (grove-link-follow target)))
 
 (defun grove-link-follow (title)
   "Follow a grove wikilink to TITLE.
