@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'grove-core)
+(require 'subr-x)
 
 (declare-function consult--grep "consult")
 (declare-function consult--grep-make-builder "consult")
@@ -58,7 +59,7 @@ available, otherwise falls back to `grep'."
 (defun grove-search--grep (&optional initial)
   "Search vault with grep.  INITIAL is the initial input."
   (let ((pattern (read-string "Grove search: " initial)))
-    (grep (format "rg --no-heading --line-number --glob=*.org %s %s"
+    (grep (format "rg --no-heading --line-number --glob='*.org' %s %s"
                   (shell-quote-argument pattern)
                   (shell-quote-argument grove-directory)))))
 
@@ -77,6 +78,23 @@ available, otherwise falls back to `grep'."
 
 ;;;; Tag search
 
+(defun grove-search--normalize-tag (tag)
+  "Normalize TAG input from the minibuffer.
+Accepts bare tag names plus #tag and :tag: syntax, and returns the
+plain tag name."
+  (let ((normalized (string-trim tag)))
+    (setq normalized (replace-regexp-in-string "\\`#+" "" normalized))
+    (setq normalized (replace-regexp-in-string "\\`:+\\|:+\\'" "" normalized))
+    normalized))
+
+(defun grove-search--tag-pattern (tag)
+  "Build a ripgrep pattern for TAG."
+  (let* ((normalized (grove-search--normalize-tag tag))
+         (quoted (regexp-quote normalized)))
+    (when (string-empty-p normalized)
+      (user-error "Tag cannot be empty"))
+    (format "(#%s\\b|:%s:)" quoted quoted)))
+
 ;;;###autoload
 (defun grove-search-tag (&optional initial)
   "Search for notes by tag.
@@ -85,13 +103,13 @@ With optional INITIAL input string.  Searches for both org-style
   (interactive)
   (grove--ensure-directory)
   (let* ((tag (or initial (read-string "Tag: ")))
-         (pattern (format "(#%s\\b|:%s:)" tag tag)))
+         (pattern (grove-search--tag-pattern tag)))
     (if (featurep 'consult)
         (let ((consult-ripgrep-args
                (concat consult-ripgrep-args " --glob=*.org")))
           (consult--grep "Grove tags" #'consult--grep-make-builder
                          grove-directory pattern))
-      (grep (format "rg --no-heading --line-number --glob=*.org %s %s"
+      (grep (format "rg --no-heading --line-number --glob='*.org' %s %s"
                     (shell-quote-argument pattern)
                     (shell-quote-argument grove-directory))))))
 

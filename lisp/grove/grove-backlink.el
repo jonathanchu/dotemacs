@@ -48,7 +48,7 @@ Uses the cache if available, otherwise the filename."
 Each result is a plist (:file :line :context) found via ripgrep."
   (grove--ensure-directory)
   (let* ((pattern (format "\\[\\[%s\\]\\]" (regexp-quote title)))
-         (cmd (format "rg --no-heading --line-number --context 1 --glob=*.org %s %s"
+         (cmd (format "rg --no-heading --line-number --context 1 --glob='*.org' %s %s"
                       (shell-quote-argument pattern)
                       (shell-quote-argument grove-directory)))
          (output (shell-command-to-string cmd))

@@ -67,6 +67,33 @@ Passed to `format-time-string'."
   "Hash table mapping absolute file paths to note metadata plists.
 Each value is a plist with keys :title :tags :links :mtime.")
 
+(defconst grove--hashtag-regexp
+  "\\(?:^\\|[^[:alnum:]_#]\\)#\\([[:alnum:]_][[:alnum:]_/-]*\\)\\b"
+  "Regexp matching inline hashtags in note content.")
+
+(defun grove--collect-inline-tags ()
+  "Return inline hashtags from the current buffer.
+Matches #tag-style markers while ignoring Org keyword lines such as
+#+title: and returns tags without the leading hash."
+  (let (tags)
+    (goto-char (point-min))
+    (while (re-search-forward grove--hashtag-regexp nil t)
+      (push (match-string-no-properties 1) tags))
+    (nreverse tags)))
+
+(defun grove--merge-tags (&rest tag-lists)
+  "Return unique tags from TAG-LISTS, preserving first-seen order."
+  (let ((seen (make-hash-table :test #'equal))
+        result)
+    (dolist (tags tag-lists)
+      (dolist (tag tags)
+        (unless (or (null tag)
+                    (string-empty-p tag)
+                    (gethash tag seen))
+          (puthash tag t seen)
+          (push tag result))))
+    (nreverse result)))
+
 (defun grove--ensure-directory ()
   "Ensure `grove-directory' is set and exists, or prompt the user."
   (unless grove-directory
@@ -107,10 +134,11 @@ Returns (:title TITLE :tags TAGS :links LINKS :mtime MTIME)."
       (goto-char (point-min))
       (when (re-search-forward "^#\\+title:\\s-*\\(.+\\)" nil t)
         (setq title (string-trim (match-string 1))))
-      ;; Extract #+filetags: or inline #hashtags
+      ;; Extract #+filetags: and inline #hashtags.
       (goto-char (point-min))
       (when (re-search-forward "^#\\+filetags:\\s-*\\(.+\\)" nil t)
         (setq tags (split-string (match-string 1) ":" t "\\s-*")))
+      (setq tags (grove--merge-tags tags (grove--collect-inline-tags)))
       ;; Extract [[wikilinks]]
       (goto-char (point-min))
       (while (re-search-forward "\\[\\[\\([^]]+\\)\\]\\]" nil t)
@@ -120,7 +148,7 @@ Returns (:title TITLE :tags TAGS :links LINKS :mtime MTIME)."
             (push link links)))))
     (list :title (or title (file-name-sans-extension
                             (file-name-nondirectory file)))
-          :tags tags
+          :tags (and tags (copy-sequence tags))
           :links (nreverse links)
           :mtime mtime)))
 
