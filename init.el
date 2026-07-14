@@ -317,8 +317,10 @@
 (use-package diminish
   :defer t)
 
+;; Not deferred: desktop restore can open buffers (and fire `eglot-ensure')
+;; during startup, so `exec-path' must be correct before then or eglot fails to
+;; find language servers installed outside the default GUI PATH.
 (use-package exec-path-from-shell
-  :defer 1
   :if (memq window-system '(mac ns pgtk))
   :config
   (exec-path-from-shell-initialize))
