@@ -704,7 +704,18 @@
          (typescript-ts-mode . eglot-ensure)
          (tsx-ts-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (go-mode . eglot-ensure)))
+         (go-mode . eglot-ensure))
+  :init
+  ;; Compose hover docs and flymake diagnostics into one eldoc message instead
+  ;; of only showing whichever source answers first.
+  (setq eldoc-documentation-strategy #'eldoc-documentation-compose))
+
+(use-package eldoc-box
+  :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode)
+  :init
+  (setq eldoc-box-only-multi-line t
+        eldoc-box-max-pixel-width 600
+        eldoc-box-max-pixel-height 400))
 
 ;;;; Snippets
 
