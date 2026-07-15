@@ -427,6 +427,30 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;;;; Corfu
+
+;; In-buffer completion popup (the as-you-type dropdown for eglot/LSP
+;; candidates). Corfu is to `completion-at-point' what Vertico is to the
+;; minibuffer.
+(use-package corfu
+  :init
+  (global-corfu-mode)
+  :custom
+  (corfu-auto t)                 ;; pop up automatically as you type
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 2)          ;; after 2 chars
+  (corfu-cycle t)
+  (corfu-quit-no-match 'separator))
+
+;;;; Cape
+
+;; Extra `completion-at-point' backends (file paths, dabbrev, etc.) that
+;; compose with the LSP source Corfu displays.
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
+
 ;;; Editor
 
 ;;;; Line Numbers
