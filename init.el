@@ -481,6 +481,13 @@
   :config
   (require 'smartparens-config))
 
+;; Lisp keeps using smartparens above, so disable electric-pair there to
+;; avoid double-inserted pairs.
+(use-package elec-pair
+  :ensure nil
+  :hook ((prog-mode . electric-pair-local-mode)
+         (emacs-lisp-mode . (lambda () (electric-pair-local-mode -1)))))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -1078,7 +1085,7 @@ point reaches the beginning or end of the buffer, stop there."
       (when (= p (point)) (apply orig-fun args)))))
 
 (advice-add 'pop-to-mark-command :around #'my/pop-to-mark-ensure-new-position)
-
+let pairs: [string, number] = ["tehehe", 92];
 (setq set-mark-command-repeat-pop t)
 
 ;;; Key Bindings
