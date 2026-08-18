@@ -654,7 +654,7 @@
   (setq magit-git-toolbelt-key "."))
 
 (use-package magit-gh
-  :load-path "lisp/"
+  :load-path "lisp/magit-gh"
   :after magit
   :init
   (setq magit-gh-key ","))
