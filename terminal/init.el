@@ -190,7 +190,11 @@
          (typescript-ts-mode . eglot-ensure)
          (tsx-ts-mode . eglot-ensure)
          (python-mode . eglot-ensure)
-         (go-mode . eglot-ensure)))
+         (go-mode . eglot-ensure))
+  :init
+  ;; Compose hover docs and flymake diagnostics into one eldoc message instead
+  ;; of only showing whichever source answers first.
+  (setq eldoc-documentation-strategy #'eldoc-documentation-compose))
 
 ;;;; Org
 
