@@ -47,6 +47,8 @@
         ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; Bootstrap `use-package' when emacs v < 29
 (when (< emacs-major-version 29)
