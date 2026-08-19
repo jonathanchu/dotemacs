@@ -359,6 +359,13 @@
   :config
   (require 'smartparens-config))
 
+;; Lisp keeps using smartparens above, so disable electric-pair there to
+;; avoid double-inserted pairs.
+(use-package elec-pair
+  :ensure nil
+  :hook ((prog-mode . electric-pair-local-mode)
+         (emacs-lisp-mode . (lambda () (electric-pair-local-mode -1)))))
+
 ;;;; Navigation
 
 (use-package outline
