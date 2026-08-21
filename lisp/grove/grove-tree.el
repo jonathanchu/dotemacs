@@ -342,10 +342,17 @@ insert its visible descendants."
         (unless (equal file grove-tree--current-file)
           (setq grove-tree--current-file file)
           (when grove-tree--ewoc
-            (let ((inhibit-read-only t)
-                  (pos (point)))
+            ;; This runs from hooks with the tree window unselected, where
+            ;; buffer point is stale and `ewoc-refresh' clobbers window
+            ;; point.  Save and restore the window points, not `point'.
+            (let* ((saved (mapcar (lambda (win) (cons win (window-point win)))
+                                  (get-buffer-window-list buf nil t)))
+                   (inhibit-read-only t)
+                   (pos (if saved (cdar saved) (point))))
               (ewoc-refresh grove-tree--ewoc)
               (goto-char pos)
+              (dolist (entry saved)
+                (set-window-point (car entry) (cdr entry)))
               (hl-line-highlight))))))))
 
 (defun grove-tree--track-current-file (&rest _)
