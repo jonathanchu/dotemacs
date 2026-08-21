@@ -90,7 +90,7 @@ Returns an alist of (SOURCE-TITLE . (TARGET-TITLE ...))."
     ;; Collect all note titles
     (maphash (lambda (_path meta)
                (puthash (plist-get meta :title) t all-titles))
-             grove--cache)
+             (grove--active-cache))
     ;; Build edges from cached link data
     (maphash (lambda (_path meta)
                (let ((source (plist-get meta :title))
@@ -98,7 +98,7 @@ Returns an alist of (SOURCE-TITLE . (TARGET-TITLE ...))."
                  (dolist (target links)
                    (when (gethash target all-titles)
                      (push target (gethash source adjacency))))))
-             grove--cache)
+             (grove--active-cache))
     ;; Convert to alist and include isolated nodes
     (let (result)
       (maphash (lambda (title _)

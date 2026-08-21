@@ -96,6 +96,9 @@ Requires a Nerd Font to be installed and active."
 (defconst grove-tree-buffer-name "*grove-tree*"
   "Name of the tree sidebar buffer.")
 
+(defvar grove-tree--tracking-enabled nil
+  "Non-nil when Grove is tracking the current file across window changes.")
+
 (defun grove-tree--indent-string (depth)
   "Return an indent guide string for DEPTH levels of nesting."
   (if (zerop depth)
@@ -303,10 +306,31 @@ Directories come first, then files.  Hidden files are excluded."
       (with-current-buffer buf
         (let ((inhibit-read-only t))
           (erase-buffer)
+          (setq header-line-format
+                (propertize
+                 (if grove--active-profile
+                     (format " Grove [%s]" grove--active-profile)
+                   " Grove")
+                 'face 'bold))
           (setq grove-tree--ewoc
                 (ewoc-create #'grove-tree--print "" ""))
-          (dolist (node (grove-tree--list-entries grove-directory 0))
-            (ewoc-enter-last grove-tree--ewoc node)))))))
+          (grove-tree--populate (grove--active-directory) 0 nil))))))
+
+(defun grove-tree--populate (directory depth parent-node)
+  "Insert DIRECTORY entries at DEPTH after PARENT-NODE.
+If a directory is marked expanded in `grove-tree--expanded', recursively
+insert its visible descendants."
+  (let ((prev parent-node))
+    (dolist (node (grove-tree--list-entries directory depth))
+      (setq prev (if prev
+                     (ewoc-enter-after grove-tree--ewoc prev node)
+                   (ewoc-enter-last grove-tree--ewoc node)))
+      (when (and (grove-tree-node-directory-p node)
+                 (gethash (grove-tree-node-path node) grove-tree--expanded))
+        (setq prev (grove-tree--populate (grove-tree-node-path node)
+                                         (1+ depth)
+                                         prev))))
+    prev))
 
 ;;;; Current file tracking
 
@@ -323,6 +347,31 @@ Directories come first, then files.  Hidden files are excluded."
               (ewoc-refresh grove-tree--ewoc)
               (goto-char pos)
               (hl-line-highlight))))))))
+
+(defun grove-tree--track-current-file (&rest _)
+  "Update the tree highlight to match the currently selected Grove file."
+  (when grove-tree--tracking-enabled
+    (let ((file (buffer-file-name (window-buffer (selected-window)))))
+      (when (grove-file-p file)
+        (grove-tree--set-current-file file)))))
+
+(defun grove-tree--enable-tracking ()
+  "Enable tree updates when the selected window changes."
+  (unless grove-tree--tracking-enabled
+    (add-hook 'window-selection-change-functions
+              #'grove-tree--track-current-file)
+    (add-hook 'buffer-list-update-hook
+              #'grove-tree--track-current-file)
+    (setq grove-tree--tracking-enabled t)))
+
+(defun grove-tree--disable-tracking ()
+  "Disable tree updates for current file tracking."
+  (when grove-tree--tracking-enabled
+    (remove-hook 'window-selection-change-functions
+                 #'grove-tree--track-current-file)
+    (remove-hook 'buffer-list-update-hook
+                 #'grove-tree--track-current-file)
+    (setq grove-tree--tracking-enabled nil)))
 
 ;;;; Mode
 
@@ -371,11 +420,13 @@ Directories come first, then files.  Hidden files are excluded."
                       (no-delete-other-windows . t)))))))
       (when win
         (window-preserve-size win t t))
+      (grove-tree--enable-tracking)
       buf)))
 
 (defun grove-tree-close ()
   "Close the tree sidebar."
   (interactive)
+  (grove-tree--disable-tracking)
   (let ((win (get-buffer-window grove-tree-buffer-name)))
     (when win
       (delete-window win)))

@@ -30,6 +30,8 @@
 
 (require 'grove-core)
 
+(declare-function grove--unique-path "grove-core" (directory filename))
+
 (defvar grove-capture-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c C-c") #'grove-capture-finalize)
@@ -41,22 +43,6 @@
   "Minor mode active in grove capture buffers."
   :lighter " Grove-Capture"
   :keymap grove-capture-mode-map)
-
-(defun grove-capture--unique-path (directory filename)
-  "Return a unique file path in DIRECTORY for FILENAME.
-Appends a numeric suffix if the file already exists."
-  (let ((base (file-name-sans-extension filename))
-        (ext (file-name-extension filename t))
-        (path (expand-file-name filename directory)))
-    (if (not (file-exists-p path))
-        path
-      (let ((n 1))
-        (while (file-exists-p
-                (setq path (expand-file-name
-                            (concat base (format "-%d" n) ext)
-                            directory)))
-          (setq n (1+ n)))
-        path))))
 
 ;;;###autoload
 (defun grove-capture ()
@@ -88,7 +74,7 @@ Type freely, then press \\[grove-capture-finalize] to save or
              (title (string-trim (car lines)))
              (body (string-join (cdr lines) "\n"))
              (filename (concat (grove--sanitize-filename title) ".org"))
-             (path (grove-capture--unique-path (grove--inbox-path) filename)))
+             (path (grove--unique-path (grove--inbox-path) filename)))
         (with-temp-file path
           (insert "#+title: " title "\n")
           (unless (string-empty-p body)

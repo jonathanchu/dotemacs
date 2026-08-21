@@ -4,7 +4,7 @@
 
 ;; Author: Jonathan Chu <me@jonathanchu.is>
 ;; URL: https://github.com/jonathanchu/grove
-;; Version: 0.1.0
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "29.1"))
 ;; Keywords: notes outlines tools
 
@@ -39,7 +39,13 @@
 ;; - Inbox review for triaging untagged notes
 ;;
 ;; Usage:
+;;   ;;;; Single note location
 ;;   (setq grove-directory "~/notes/")
+;;   ;;;; Profile mode for different storage locations.
+;;   (setq grove-profiles
+;;         '((personal :directory "~/remoteFolder/personal")
+;;           (work     :directory "~/localFolder/work")
+;;           (other    :directory "~/otherNotes")))
 ;;   (global-grove-mode 1)   ; auto-enable grove-mode in vault files
 ;;   (grove-open)
 
@@ -84,6 +90,36 @@
   grove--turn-on
   :group 'grove)
 
+;;;; Profile switching
+
+;;;###autoload
+(defun grove-switch-profile (name)
+  "Switch the active grove profile to NAME.
+NAME is a symbol or string naming a key in `grove-profiles'."
+  (interactive
+   (list (progn
+           (unless grove-profiles
+             (user-error "No grove profiles configured; see `grove-profiles'"))
+           (completing-read "Grove profile: "
+                            (mapcar (lambda (p) (symbol-name (car p)))
+                                    grove-profiles)
+                            nil t))))
+  (let ((profile (if (symbolp name) name (intern name)))
+        (previous grove--active-profile))
+    (unless (assq profile grove-profiles)
+      (user-error "Unknown grove profile: %s" profile))
+    (setq grove--active-profile profile)
+    ;; Restore the previous profile if the switch is aborted, so grove is
+    ;; never left half-switched.
+    (condition-case err
+        (when (get-buffer grove-tree-buffer-name)
+          (grove-tree-refresh))
+      (error (setq grove--active-profile previous)
+             (signal (car err) (cdr err))))
+    (message "Grove profile: %s (%s)"
+             profile
+             (abbreviate-file-name (grove--active-directory)))))
+
 ;;;; Global keymap
 
 (defvar grove-command-map
@@ -99,6 +135,7 @@
     (define-key map (kbd "i") #'grove-inbox-review)
     (define-key map (kbd "l") #'grove-link-insert)
     (define-key map (kbd "g") #'grove-graph)
+    (define-key map (kbd "p") #'grove-switch-profile)
     map)
   "Keymap for grove commands, bound under a prefix key.
 Bind this to a prefix key in your init file, e.g.:

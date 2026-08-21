@@ -60,7 +60,11 @@ and displays a note in the main area."
     (when-let ((file (buffer-file-name (window-buffer main-win))))
       (grove-tree--set-current-file file)))
   (setq grove--active-p t)
-  (message "Grove opened: %s" (abbreviate-file-name grove-directory)))
+  (message "Grove opened: %s%s"
+           (if grove--active-profile
+               (format "[%s] " grove--active-profile)
+             "")
+           (abbreviate-file-name (grove--active-directory))))
 
 (defun grove--open-initial-note ()
   "Open an initial note in the current window.

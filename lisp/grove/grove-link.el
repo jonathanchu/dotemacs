@@ -30,6 +30,8 @@
 
 (require 'grove-core)
 
+(declare-function grove--unique-path "grove-core" (directory filename))
+
 ;;;; Faces
 
 (defface grove-link
@@ -40,9 +42,9 @@
 ;;;; Font-lock
 
 (defconst grove-link--regexp
-  "\\[\\[\\([^]:\n]+\\)\\]\\]"
+  "\\[\\[\\([^]\n]+\\)\\]\\]"
   "Regexp matching grove wikilinks.
-Matches [[text]] but not [[protocol:text]] (standard org links).")
+Matches [[text]], including note titles containing colons.")
 
 (defvar grove-link--keymap
   (let ((map (make-sparse-keymap)))
@@ -55,15 +57,17 @@ Matches [[text]] but not [[protocol:text]] (standard org links).")
   "Font-lock matcher for grove wikilinks up to LIMIT.
 Adds the grove-link face and a clickable keymap."
   (while (re-search-forward grove-link--regexp limit t)
-    (let ((start (match-beginning 0))
-          (end (match-end 0)))
-      (add-text-properties
-       start end
-       (list 'face 'grove-link
-             'mouse-face 'highlight
-             'keymap grove-link--keymap
-             'help-echo (format "grove: %s" (match-string 1))
-             'grove-link-target (match-string 1)))))
+    (let ((target (match-string 1)))
+      (unless (grove--org-link-target-p target)
+        (let ((start (match-beginning 0))
+              (end (match-end 0)))
+          (add-text-properties
+           start end
+           (list 'face 'grove-link
+                 'mouse-face 'highlight
+                 'keymap grove-link--keymap
+                 'help-echo (format "grove: %s" target)
+                 'grove-link-target target))))))
   nil)
 
 (defun grove-link-setup-font-lock ()
@@ -114,18 +118,39 @@ prompt the user to choose."
     (unless target (user-error "No grove link at point"))
     (grove-link-follow target)))
 
+(defun grove-link--profile-with-title (title)
+  "Return the profile name that has a note matching TITLE, or nil.
+Only searches profiles other than the currently active one.  Vaults are
+scanned on demand, so this also finds notes in profiles that have not
+been activated in this session."
+  (catch 'found
+    (dolist (profile grove-profiles)
+      (let ((name (car profile)))
+        (unless (eq name grove--active-profile)
+          (when-let ((cache (grove--profile-cache name)))
+            (maphash
+             (lambda (_file meta)
+               (when (string-equal-ignore-case (plist-get meta :title) title)
+                 (throw 'found name)))
+             cache)))))))
+
 (defun grove-link-follow (title)
   "Follow a grove wikilink to TITLE.
 If the note doesn't exist, offer to create it."
   (let ((path (grove-link--resolve title)))
     (if path
         (find-file path)
-      (if (y-or-n-p (format "Note \"%s\" not found.  Create it? " title))
+      (let ((other-profile (grove-link--profile-with-title title)))
+        (cond
+         (other-profile
+          (message "Note \"%s\" is in profile [%s] — switch profiles to follow"
+                   title other-profile))
+         ((y-or-n-p (format "Note \"%s\" not found.  Create it? " title))
           (let* ((filename (concat (grove--sanitize-filename title) ".org"))
-                 (path (expand-file-name filename grove-directory)))
+                 (path (grove--unique-path (grove--active-directory) filename)))
             (find-file path)
-            (insert "#+title: " title "\n\n"))
-        (message "Link not followed")))))
+            (insert "#+title: " title "\n\n")))
+         (t (message "Link not followed")))))))
 
 ;;;; Insert
 

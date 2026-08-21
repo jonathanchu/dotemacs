@@ -29,16 +29,22 @@
 ;;; Code:
 
 (require 'grove-core)
+(require 'subr-x)
+
+(declare-function grove--profile-for-file "grove-core")
 
 (defconst grove-backlink-buffer-name "*grove-backlinks*"
   "Name of the backlinks buffer.")
+
+(defconst grove-backlink-ripgrep-executable "rg"
+  "Ripgrep executable used for backlink search.")
 
 ;;;; Core
 
 (defun grove-backlink--title-for-file (file)
   "Return the grove title for FILE.
 Uses the cache if available, otherwise the filename."
-  (let ((meta (gethash file grove--cache)))
+  (let ((meta (gethash file (grove--active-cache))))
     (if meta
         (plist-get meta :title)
       (file-name-sans-extension (file-name-nondirectory file)))))
@@ -47,28 +53,37 @@ Uses the cache if available, otherwise the filename."
   "Return a list of backlink results for TITLE.
 Each result is a plist (:file :line :context) found via ripgrep."
   (grove--ensure-directory)
+  (unless (executable-find grove-backlink-ripgrep-executable)
+    (user-error "Ripgrep not found. Install `%s` and ensure it is on your PATH"
+                grove-backlink-ripgrep-executable))
   (let* ((pattern (format "\\[\\[%s\\]\\]" (regexp-quote title)))
-         (cmd (format "rg --no-heading --line-number --context 1 --glob='*.org' %s %s"
-                      (shell-quote-argument pattern)
-                      (shell-quote-argument grove-directory)))
-         (output (shell-command-to-string cmd))
+         (args (list "--no-heading" "--line-number" "--context" "1"
+                     "--glob=*.org" pattern (grove--active-directory)))
          results current-file)
-    (dolist (line (split-string output "\n" t))
-      (cond
-       ;; Context separator
-       ((string-match-p "^--$" line))
-       ;; Match line: file:line:content
-       ((string-match "^\\(.+\\.org\\):\\([0-9]+\\):\\(.*\\)$" line)
-        (let ((file (match-string 1 line))
-              (lnum (string-to-number (match-string 2 line)))
-              (context (string-trim (match-string 3 line))))
-          ;; Skip self-references
-          (unless (and current-file
-                       (string= file current-file))
-            (push (list :file file :line lnum :context context)
-                  results))))
-       ;; Context line: file-line-content
-       ((string-match "^\\(.+\\.org\\)-\\([0-9]+\\)-\\(.*\\)$" line))))
+    (with-temp-buffer
+      (let ((exit-code (apply #'process-file grove-backlink-ripgrep-executable
+                              nil t nil args)))
+        (unless (memq exit-code '(0 1))
+          (user-error "Ripgrep failed (exit %s): %s"
+                      exit-code
+                      (string-trim (buffer-string)))))
+      (goto-char (point-min))
+      (dolist (line (split-string (buffer-string) "\n" t))
+        (cond
+         ;; Context separator
+         ((string-match-p "^--$" line))
+         ;; Match line: file:line:content
+         ((string-match "^\\(.+\\.org\\):\\([0-9]+\\):\\(.*\\)$" line)
+          (let ((file (match-string 1 line))
+                (lnum (string-to-number (match-string 2 line)))
+                (context (string-trim (match-string 3 line))))
+            ;; Skip self-references
+            (unless (and current-file
+                         (string= file current-file))
+              (push (list :file file :line lnum :context context)
+                    results))))
+         ;; Context line: file-line-content
+         ((string-match "^\\(.+\\.org\\)-\\([0-9]+\\)-\\(.*\\)$" line)))))
     (setq current-file (buffer-file-name))
     ;; Filter out self-references
     (cl-remove-if
@@ -149,10 +164,15 @@ Each result is a plist (:file :line :context) found via ripgrep."
 (defun grove-backlinks ()
   "Show backlinks for the current note."
   (interactive)
-  (unless (and (buffer-file-name) (grove-file-p (buffer-file-name)))
-    (user-error "Not visiting a grove note"))
+  (unless (buffer-file-name)
+    (user-error "Not visiting a file"))
+  (unless (grove-file-p (buffer-file-name))
+    (let ((other (grove--profile-for-file (buffer-file-name))))
+      (if other
+          (user-error "Note is in profile [%s] — switch profiles first" other)
+        (user-error "Not visiting a grove note"))))
   (grove--refresh-cache)
-  (let* ((meta (gethash (buffer-file-name) grove--cache))
+  (let* ((meta (gethash (buffer-file-name) (grove--active-cache)))
          (title (or (plist-get meta :title)
                     (file-name-sans-extension
                      (file-name-nondirectory (buffer-file-name)))))
