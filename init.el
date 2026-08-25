@@ -302,7 +302,9 @@
   (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode)))
 
-(use-package astro-ts-mode)
+;; astro-ts-mode 4.0 requires Emacs 31; skip it on older versions.
+(when (>= emacs-major-version 31)
+  (use-package astro-ts-mode))
 
 ;;;; Server
 
