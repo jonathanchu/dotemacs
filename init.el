@@ -377,6 +377,16 @@
   (setq catppuccin-flavor 'frappe)
   (load-theme 'catppuccin t))
 
+;; Local copy of the theme I maintain, for testing changes with
+;; `M-x load-theme RET atom-one-dark'.  Re-copy from
+;; ~/projects/atom-one-dark-theme/ after making changes upstream.
+(use-package atom-one-dark-theme
+  :ensure nil
+  :load-path "lisp/"
+  :init
+  (add-to-list 'custom-theme-load-path
+               (expand-file-name "lisp" user-emacs-directory)))
+
 ;;; Completion Framework
 
 ;;;; Vertico
