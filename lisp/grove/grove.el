@@ -1,4 +1,4 @@
-;;; grove.el --- Obsidian-like note-taking for org files -*- lexical-binding: t -*-
+;;; grove.el --- Obsidian-like Org and Markdown notes -*- lexical-binding: t -*-
 
 ;; Copyright 2026 Jonathan Chu
 
@@ -26,10 +26,12 @@
 ;;; Commentary:
 
 ;; Grove is a simple, fast note-taking mode for Emacs that provides an
-;; Obsidian-like experience for org files.  One keybinding opens a full
-;; UI with a file tree sidebar and note editing area.
+;; Obsidian-like experience for a directory of notes.  One keybinding
+;; opens a full UI with a file tree sidebar and note editing area.
+;; Org and Markdown notes can share one vault.
 ;;
 ;; Features:
+;; - Org and Markdown notes side by side in one vault
 ;; - Built-in file tree sidebar
 ;; - Quick note capture
 ;; - Wikilinks with backlinks (ripgrep-powered, no database)
@@ -70,7 +72,7 @@
   "Keymap for `grove-mode'.")
 
 (define-minor-mode grove-mode
-  "Minor mode active in org buffers that are part of a grove vault."
+  "Minor mode active in buffers visiting a note in a grove vault."
   :lighter " Grove"
   :keymap grove-mode-map
   (if grove-mode
@@ -78,11 +80,13 @@
     (grove-link-remove-font-lock)))
 
 (defun grove--turn-on ()
-  "Turn on `grove-mode' if the current buffer is visiting a grove file."
-  (when (and (derived-mode-p 'org-mode)
-             (buffer-file-name)
-             (grove-file-p (buffer-file-name)))
-    (grove-mode 1)))
+  "Turn on `grove-mode' if the current buffer is visiting a grove note.
+Keyed on the file rather than the major mode, so wikilinks work in
+Markdown notes whether or not `markdown-mode' is installed."
+  (when-let ((file (buffer-file-name)))
+    (when (and (grove--note-file-p file)
+               (grove-file-p file))
+      (grove-mode 1))))
 
 ;;;###autoload
 (define-globalized-minor-mode global-grove-mode

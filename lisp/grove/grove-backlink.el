@@ -57,8 +57,14 @@ Each result is a plist (:file :line :context) found via ripgrep."
     (user-error "Ripgrep not found. Install `%s` and ensure it is on your PATH"
                 grove-backlink-ripgrep-executable))
   (let* ((pattern (format "\\[\\[%s\\]\\]" (regexp-quote title)))
-         (args (list "--no-heading" "--line-number" "--context" "1"
-                     "--glob=*.org" pattern (grove--active-directory)))
+         (args (append (list "--no-heading" "--line-number" "--context" "1")
+                       (grove--rg-glob-args)
+                       (list pattern (grove--active-directory))))
+         (extension (grove--note-extension-regexp))
+         (match-regexp
+          (concat "^\\(.+" extension "\\):\\([0-9]+\\):\\(.*\\)$"))
+         (context-regexp
+          (concat "^\\(.+" extension "\\)-\\([0-9]+\\)-\\(.*\\)$"))
          results current-file)
     (with-temp-buffer
       (let ((exit-code (apply #'process-file grove-backlink-ripgrep-executable
@@ -73,7 +79,7 @@ Each result is a plist (:file :line :context) found via ripgrep."
          ;; Context separator
          ((string-match-p "^--$" line))
          ;; Match line: file:line:content
-         ((string-match "^\\(.+\\.org\\):\\([0-9]+\\):\\(.*\\)$" line)
+         ((string-match match-regexp line)
           (let ((file (match-string 1 line))
                 (lnum (string-to-number (match-string 2 line)))
                 (context (string-trim (match-string 3 line))))
@@ -83,7 +89,7 @@ Each result is a plist (:file :line :context) found via ripgrep."
               (push (list :file file :line lnum :context context)
                     results))))
          ;; Context line: file-line-content
-         ((string-match "^\\(.+\\.org\\)-\\([0-9]+\\)-\\(.*\\)$" line)))))
+         ((string-match context-regexp line)))))
     (setq current-file (buffer-file-name))
     ;; Filter out self-references
     (cl-remove-if

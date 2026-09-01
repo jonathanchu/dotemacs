@@ -22,7 +22,7 @@
 
 ;;; Commentary:
 
-;; Quick note capture for grove.  Opens a temporary org buffer where
+;; Quick note capture for grove.  Opens a temporary buffer where
 ;; the user can type freely.  On save, the first non-empty line becomes
 ;; the title and the note is saved to the inbox directory.
 
@@ -53,7 +53,7 @@ Type freely, then press \\[grove-capture-finalize] to save or
   (grove--ensure-directory)
   (let ((buf (get-buffer-create "*grove-capture*")))
     (switch-to-buffer buf)
-    (org-mode)
+    (grove--enable-format-mode)
     (grove-capture-mode 1)
     (let ((inhibit-read-only t))
       (erase-buffer))
@@ -73,10 +73,10 @@ Type freely, then press \\[grove-capture-finalize] to save or
       (let* ((lines (split-string content "\n"))
              (title (string-trim (car lines)))
              (body (string-join (cdr lines) "\n"))
-             (filename (concat (grove--sanitize-filename title) ".org"))
+             (filename (grove--new-note-filename title))
              (path (grove--unique-path (grove--inbox-path) filename)))
         (with-temp-file path
-          (insert "#+title: " title "\n")
+          (insert (grove--note-header title))
           (unless (string-empty-p body)
             (insert "\n" body "\n")))
         (kill-buffer (current-buffer))

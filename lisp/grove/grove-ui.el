@@ -70,14 +70,14 @@ and displays a note in the main area."
   "Open an initial note in the current window.
 Tries the daily note, then the first note in the vault, otherwise
 shows a welcome message."
-  (let ((daily (expand-file-name
-                (concat (format-time-string grove-daily-format) ".org")
-                (grove--daily-path))))
+  (let ((daily (grove--existing-note-path
+                (grove--daily-path)
+                (format-time-string grove-daily-format))))
     (cond
      ;; If today's daily note exists, open it
-     ((file-exists-p daily)
+     (daily
       (find-file daily))
-     ;; Otherwise open the first org file found
+     ;; Otherwise open the first note found
      ((let ((notes (grove--note-titles)))
         (when notes
           (find-file (cdar notes))

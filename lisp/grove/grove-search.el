@@ -52,14 +52,16 @@ available, otherwise falls back to `grep'."
 (defun grove-search--consult-ripgrep (&optional initial)
   "Search vault with consult-ripgrep.  INITIAL is the initial input."
   (let ((consult-ripgrep-args
-         (concat consult-ripgrep-args " --glob=*.org")))
+         (concat consult-ripgrep-args " "
+                 (string-join (grove--rg-glob-args) " "))))
     (consult--grep "Grove search" #'consult--grep-make-builder
                    (grove--active-directory) initial)))
 
 (defun grove-search--grep (&optional initial)
   "Search vault with grep.  INITIAL is the initial input."
   (let ((pattern (read-string "Grove search: " initial)))
-    (grep (format "rg --no-heading --line-number --glob='*.org' %s %s"
+    (grep (format "rg --no-heading --line-number %s %s %s"
+                  (mapconcat #'shell-quote-argument (grove--rg-glob-args) " ")
                   (shell-quote-argument pattern)
                   (shell-quote-argument (grove--active-directory))))))
 
@@ -106,10 +108,12 @@ With optional INITIAL input string.  Searches for both org-style
          (pattern (grove-search--tag-pattern tag)))
     (if (featurep 'consult)
         (let ((consult-ripgrep-args
-               (concat consult-ripgrep-args " --glob=*.org")))
+               (concat consult-ripgrep-args " "
+                       (string-join (grove--rg-glob-args) " "))))
           (consult--grep "Grove tags" #'consult--grep-make-builder
                          (grove--active-directory) pattern))
-      (grep (format "rg --no-heading --line-number --glob='*.org' %s %s"
+      (grep (format "rg --no-heading --line-number %s %s %s"
+                    (mapconcat #'shell-quote-argument (grove--rg-glob-args) " ")
                     (shell-quote-argument pattern)
                     (shell-quote-argument (grove--active-directory)))))))
 
